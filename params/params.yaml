@@ -1,0 +1,12 @@
+
+# Samplesheets
+
+samplesheet: "${projectDir}/resources/seqera_nf_tower_data/manifest-6samples.txt"
+
+# Main output dir
+
+outdir: "${projectDir}/results"
+
+# Reference files
+
+fasta: "${projectDir}/references/Homo_sapiens_assembly38.fasta"
