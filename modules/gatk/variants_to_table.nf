@@ -1,0 +1,2 @@
+
+ $JAVA -Xmx64G -jar $GATK VariantsToTable -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.filtered_SNP.ExDR.IncComplex.vcf.gz -GF GT -O /dev/stdout | sed -e 's/^\t//g' | sed -e 's/*/-/g' | sed -e 's/\./-/g' | sed '2,${/^.*\(-.*\)\{'"$CLUSTER_COVERAGE_THRESHOLD"',\}.*$/d}' | $DATAMASH transpose | sed -e 's/^/>/g' | sed -e 's/-GT/\n/g' | sed -e 's/\t//g' > $OUT_DIR/fasta/$JOINT_NAME/$JOINT_NAME.95X.IncComplex.fa

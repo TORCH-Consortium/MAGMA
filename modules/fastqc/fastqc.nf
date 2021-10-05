@@ -1,0 +1,2 @@
+
+$FASTQC $SEQ_R1 -t $FASTQC_THREADS -o $OUT_DIR/fastqc/
