@@ -1,5 +1,11 @@
 nextflow.enable.dsl = 2
 
+
+params.results_dir = "${params.outdir}/gatk4/haplotype_caller"
+params.save_mode = 'copy'
+params.should_publish = true
+
+
 params.gatk_path = "gatk"
 params.java_opts = "-Xmx4G"
 params.contamination = 0
@@ -7,6 +13,9 @@ params.contamination = 0
 process GATK_HAPLOTYPE_CALLER {
     tag "${sampleId}_${interval_chunk_name}"
     label 'gatk4_container'
+
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+
 
     input:
 
