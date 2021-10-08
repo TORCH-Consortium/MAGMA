@@ -1,75 +1,48 @@
-
-$JAVA -Xmx64G -jar $GATK SelectVariants -R $REFERENCE -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz --select-type-to-include SNP -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_SNP.vcf.gz --remove-unused-alternates --exclude-non-variants
-
-
-$JAVA -Xmx64G -jar $GATK SelectVariants -R $REFERENCE -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz --select-type-to-include INDEL -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_INDEL.vcf.gz --remove-unused-alternates --exclude-non-variants
-
-
-$JAVA -Xmx64G -jar $GATK SelectVariants -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.filtered_SNP_inc-rRNA.vcf.gz -XL $RRNA -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.filtered_SNP_exc-rRNA.vcf.gz
-
-
 nextflow.enable.dsl = 2
 
 
-params.results_dir = "${params.outdir}/gatk4/haplotype_caller"
+params.results_dir = "${params.outdir}/gatk4/select_variants"
 params.save_mode = 'copy'
 params.should_publish = true
 
 
-params.gatk_path = "gatk"
-params.java_opts = "-Xmx4G"
-params.contamination = 0
+// NOTE: Process-1 for SNP/INDELS
 
-process GATK_HAPLOTYPE_CALLER {
-    tag "${sampleId}_${interval_chunk_name}"
-    label 'gatk4_container'
+process GATK_SELECT_VARIANTS {
+    tag ""
 
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 
     input:
 
-    tuple val(sampleId),
-            path(input_recal_merged_bam),
-            path(input_recal_merged_bai),
-            path(input_recal_merged_md5),
-            val(scatter_id),
-            val(interval_chunk_name),
-            path(interval_list_file)
-
-    path(ref_dict)
-    path(ref_fasta)
-    path(ref_fasta_fai)
-
-
     output:
-
-    tuple val(sampleId),
-            path("${sampleId}.${scatter_id.toString().padLeft(2, '0')}.${interval_chunk_name}.vcf"),
-            path("${sampleId}.${scatter_id.toString().padLeft(2, '0')}.${interval_chunk_name}.vcf.idx")
-
 
     script:
 
-    """
-    set -e
 
-    ${params.gatk_path} --java-options "${params.java_opts}" \
-                        HaplotypeCaller \
-                        -R ${ref_fasta} \
-                        -I ${input_recal_merged_bam} \
-                        --output "${sampleId}.${scatter_id.toString().padLeft(2, '0')}.${interval_chunk_name}.vcf" \
-                        -contamination ${params.contamination} \
-                        -ERC GVCF \
-                        -L ${interval_list_file}
+    //TODO: Accomodate in design the type-to-include and file name depends on the variant type SNP/INDEL
+    """
+    gatk SelectVariants -Xmx${task.memory.giga}G \\
+    -R $REFERENCE \\
+    -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz \\
+    --select-type-to-include SNP \\
+    --remove-unused-alternates \\
+    --exclude-non-variants \\
+    -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_SNP.vcf.gz
+
+    gatk SelectVariants -Xmx${task.memory.giga}G \\
+    -R $REFERENCE \\
+    -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz \\
+    --select-type-to-include INDEL \\
+    --remove-unused-alternates \\
+    --exclude-non-variants \\
+    -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_INDEL.vcf.gz
+
     """
 
     stub:
 
     """
-    touch "${sampleId}.${scatter_id.toString().padLeft(2, '0')}.${interval_chunk_name}.vcf" 
-    touch "${sampleId}.${scatter_id.toString().padLeft(2, '0')}.${interval_chunk_name}.vcf.idx" 
-
     """
 }
-
