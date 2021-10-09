@@ -16,9 +16,9 @@ process GATK_FLAG_STAT {
 
     """
     gatk FlagStat -Xmx${task.memory.giga}G \\
-    -R $REFERENCE \\
-    -I $OUT_DIR/mapped/$SAMPLE_ID.recal_reads.bam  \\
-    > $OUT_DIR/stats/$SAMPLE_ID.recal_reads.FlagStat
+        -R $REFERENCE \\
+        -I $OUT_DIR/mapped/$SAMPLE_ID.recal_reads.bam  \\
+        > $OUT_DIR/stats/$SAMPLE_ID.recal_reads.FlagStat
 
     """
 

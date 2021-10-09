@@ -21,7 +21,7 @@ process GATK_INDEX_FEATURE_FILE {
 
     """
     gatk IndexFeatureFile -Xmx${task.memory.giga}G \\
-    -I $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz
+        -I $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz
     """
 
     stub:

@@ -1,6 +1,3 @@
-$FASTQC $SEQ_R1 -t $FASTQC_THREADS -o $OUT_DIR/fastqc/
-
-
 nextflow.enable.dsl = 2
 
 params.results_dir = "${params.outdir}/fastqc"
@@ -21,7 +18,7 @@ process FASTQC {
     script:
 
     """
-    fastqc *fastq*
+    fastqc *fastq* -t ${task.cpus}
     """
 
     stub:

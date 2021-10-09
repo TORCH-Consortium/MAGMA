@@ -24,20 +24,20 @@ process GATK_SELECT_VARIANTS {
     //TODO: Accomodate in design the type-to-include and file name depends on the variant type SNP/INDEL
     """
     gatk SelectVariants -Xmx${task.memory.giga}G \\
-    -R $REFERENCE \\
-    -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz \\
-    --select-type-to-include SNP \\
-    --remove-unused-alternates \\
-    --exclude-non-variants \\
-    -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_SNP.vcf.gz
+        -R $REFERENCE \\
+        -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz \\
+        --select-type-to-include SNP \\
+        --remove-unused-alternates \\
+        --exclude-non-variants \\
+        -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_SNP.vcf.gz
 
     gatk SelectVariants -Xmx${task.memory.giga}G \\
-    -R $REFERENCE \\
-    -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz \\
-    --select-type-to-include INDEL \\
-    --remove-unused-alternates \\
-    --exclude-non-variants \\
-    -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_INDEL.vcf.gz
+        -R $REFERENCE \\
+        -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz \\
+        --select-type-to-include INDEL \\
+        --remove-unused-alternates \\
+        --exclude-non-variants \\
+        -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_INDEL.vcf.gz
 
     """
 

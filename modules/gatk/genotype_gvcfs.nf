@@ -20,12 +20,12 @@ process GATK_GENOTYPE_GVCFS {
 
     """
     gatk GenotypeGVCFs -Xmx${task.memory.giga}G \\
-    -R $REFERENCE \\
-    -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.combined.vcf.gz \\
-    -G StandardAnnotation \\
-    -G AS_StandardAnnotation \\
-    --sample-ploidy 1 \\
-    -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.vcf.gz
+        -R $REFERENCE \\
+        -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.combined.vcf.gz \\
+        -G StandardAnnotation \\
+        -G AS_StandardAnnotation \\
+        --sample-ploidy 1 \\
+        -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.vcf.gz
     """
 
     stub:

@@ -19,10 +19,10 @@ process GATK_COMBINE_GVCFS {
 
     """
     gatk CombineGVCFs -Xmx${task.memory.giga}G \\
-    -R $REFERENCE \\
-    -G StandardAnnotation \\
-    -G AS_StandardAnnotation $GVCFs \\
-    -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.combined.vcf.gz
+        -R $REFERENCE \\
+        -G StandardAnnotation \\
+        -G AS_StandardAnnotation $GVCFs \\
+        -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.combined.vcf.gz
     """
 
     stub:

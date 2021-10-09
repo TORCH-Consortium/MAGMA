@@ -21,9 +21,9 @@ process GATK_SELECT_VARIANTS_INTERVALS {
 
     """
     gatk SelectVariants -Xmx${task.memory.giga}G \\
-    -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.filtered_SNP_inc-rRNA.vcf.gz \\
-    --exclude-intervals $RRNA \\
-    -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.filtered_SNP_exc-rRNA.vcf.gz
+        -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.filtered_SNP_inc-rRNA.vcf.gz \\
+        --exclude-intervals $RRNA \\
+        -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.filtered_SNP_exc-rRNA.vcf.gz
 
     """
 

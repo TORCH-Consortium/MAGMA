@@ -18,9 +18,9 @@ process GATK_MARK_DUPLICATES {
 
     """
     gatk MarkDuplicates -Xmx${task.memory.giga}G \\
-    --METRICS_FILE $OUT_DIR/stats/$SAMPLE_ID.MarkDupMetrics \\
-    -I $OUT_DIR/mapped/$SAMPLE_ID.sorted_reads.bam \\
-    -O $OUT_DIR/mapped/$SAMPLE_ID.dedup_reads.bam
+        --METRICS_FILE $OUT_DIR/stats/$SAMPLE_ID.MarkDupMetrics \\
+        -I $OUT_DIR/mapped/$SAMPLE_ID.sorted_reads.bam \\
+        -O $OUT_DIR/mapped/$SAMPLE_ID.dedup_reads.bam
     """
 
     stub:

@@ -18,9 +18,9 @@ process GATK_MERGE_VCFS {
 
     """
     gatk MergeVcfs -Xmx${task.memory.giga}G \\
-    -I $JOINT_NAME/$JOINT_NAME.filtered_SNP_exc-rRNA.vcf.gz \\
-    -I $JOINT_NAME/$JOINT_NAME.raw_INDEL.vcf.gz \\
-    -O $JOINT_NAME/$JOINT_NAME.filtered_SNP.RawIndels.vcf.gz
+        -I $JOINT_NAME/$JOINT_NAME.filtered_SNP_exc-rRNA.vcf.gz \\
+        -I $JOINT_NAME/$JOINT_NAME.raw_INDEL.vcf.gz \\
+        -O $JOINT_NAME/$JOINT_NAME.filtered_SNP.RawIndels.vcf.gz
     """
 
     stub:

@@ -17,10 +17,10 @@ process GATK_BASE_RECALIBRATOR {
 
     """
     gatk BaseRecalibrator -Xmx${task.memory.giga}G \\
-    --known-sites ${dbsnp} \\
-    -R ${ref_fasta} \\
-	-I $OUT_DIR/mapped/$SAMPLE_ID.dedup_reads.bam \\
-    -O $OUT_DIR/mapped/$SAMPLE_ID.recal_data.table
+        --known-sites ${dbsnp} \\
+        -R ${ref_fasta} \\
+	    -I $OUT_DIR/mapped/$SAMPLE_ID.dedup_reads.bam \\
+        -O $OUT_DIR/mapped/$SAMPLE_ID.recal_data.table
     """
 
     stub:

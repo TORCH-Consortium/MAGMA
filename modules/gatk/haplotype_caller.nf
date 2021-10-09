@@ -21,14 +21,14 @@ process GATK_HAPLOTYPE_CALLER {
 
     """
     gatk HaplotypeCaller -Xmx${task.memory.giga}G \\
-	-R $REFERENCE \\
-    -I $OUT_DIR/mapped/$SAMPLE_ID.recal_reads.bam \\
-    -ploidy 1 \\
-    -ERC GVCF \\
-    --read-filter MappingQualityNotZeroReadFilter \\
-    -G StandardAnnotation \\
-    -G AS_StandardAnnotation \\
-    -O $OUT_DIR/gvcf/$SAMPLE_ID.g.vcf.gz
+	    -R $REFERENCE \\
+        -I $OUT_DIR/mapped/$SAMPLE_ID.recal_reads.bam \\
+        -ploidy 1 \\
+        -ERC GVCF \\
+        --read-filter MappingQualityNotZeroReadFilter \\
+        -G StandardAnnotation \\
+        -G AS_StandardAnnotation \\
+        -O $OUT_DIR/gvcf/$SAMPLE_ID.g.vcf.gz
     """
 
     stub:

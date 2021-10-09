@@ -18,10 +18,10 @@ process GATK_COLLECT_WGS_METRICS {
 
     """
     gatk CollectWgsMetrics -Xmx${task.memory.giga}G \\
-    -R $REFERENCE \\
-    -I $OUT_DIR/mapped/$SAMPLE_ID.recal_reads.bam \\
-    ${params.arguments} \\
-    -O $OUT_DIR/stats/$SAMPLE_ID.recal_reads.WgsMetrics
+        -R $REFERENCE \\
+        -I $OUT_DIR/mapped/$SAMPLE_ID.recal_reads.bam \\
+        ${params.arguments} \\
+        -O $OUT_DIR/stats/$SAMPLE_ID.recal_reads.WgsMetrics
     """
 
     stub:
