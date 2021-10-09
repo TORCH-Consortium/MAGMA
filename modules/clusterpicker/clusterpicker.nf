@@ -10,6 +10,7 @@ process CLUSTER_PICKER{
     publishdir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
+
     path(fasta)
     path(newick_tree)
     val(bootstrap_1)
