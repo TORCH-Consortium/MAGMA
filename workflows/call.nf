@@ -27,7 +27,7 @@ workflow CALL_WF {
         SAMTOOLS_INDEX(GATK_MARK_DUPLICATES.out)
 
         // call_haplotype_caller
-        GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out)
+        GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out, params.ref_fasta)
 
         //TODO
         // call_haplotype_caller_minor_variants

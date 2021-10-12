@@ -32,13 +32,22 @@ reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv"
 
             unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
 
-            // Accomodate single/multi reads
+            //NOTE: Accomodate single/multi reads
             if (row[4] && row[5]) {
+
+                // Both read1 and read2 are present
                 return tuple(unique_sample_id, tuple(file(read1), file(read2)))
+
             } else if (row[4]) {
+
+                // Only read1 is present
                 return tuple(unique_sample_id, tuple(file(read1)))
+
             } else {
+
+                // Only read2 is present
                 return tuple(unique_sample_id, tuple(file(read2)))
+
             }
         }
     }

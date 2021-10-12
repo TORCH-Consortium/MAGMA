@@ -25,6 +25,9 @@ process QUANTTB_QUANT {
     stub:
 
     """
+
+    echo "quanttb quant ${sampleReads} -o ${sampleName}.quant.txt -k"
+
     touch ${sampleName}.quant.txt
     """
 
