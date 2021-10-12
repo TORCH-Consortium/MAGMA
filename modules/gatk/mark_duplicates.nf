@@ -6,26 +6,35 @@ params.should_publish = true
 
 
 process GATK_MARK_DUPLICATES {
-    tag ""
-
+    tag "$sampleName"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
+    tuple val(sampleName), path(mergedBam)
 
     output:
+    tuple val(sampleName), path(".*dedup_reads.bam")
+    path(".*MarkDupMetrics.txt")
 
     script:
 
     """
     gatk MarkDuplicates -Xmx${task.memory.giga}G \\
-        --METRICS_FILE $OUT_DIR/stats/$SAMPLE_ID.MarkDupMetrics \\
-        -I $OUT_DIR/mapped/$SAMPLE_ID.sorted_reads.bam \\
-        -O $OUT_DIR/mapped/$SAMPLE_ID.dedup_reads.bam
+        --METRICS_FILE ${sampleName}.MarkDupMetrics.txt \\
+        -I ${mergedBam} \\
+        -O ${sampleName}.dedup_reads.bam
     """
 
     stub:
 
     """
+    echo " gatk MarkDuplicates -Xmx${task.memory.giga}G \\
+        --METRICS_FILE ${sampleName}.MarkDupMetrics.txt \\
+        -I ${mergedBam} \\
+        -O ${sampleName}.dedup_reads.bam"
+
+    touch ${sampleName}.MarkDupMetrics.txt
+    touch ${sampleName}.dedup_reads.bam
     """
 
 }
