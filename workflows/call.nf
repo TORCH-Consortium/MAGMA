@@ -29,13 +29,13 @@ workflow CALL_WF {
         // call_haplotype_caller
         GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out, params.ref_fasta)
 
-        //TODO
         // call_haplotype_caller_minor_variants
-        GATK_HAPLOTYPE_CALLER_MINOR_VARIANTS
+        GATK_HAPLOTYPE_CALLER_MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta)
 
         // call_ntm
-        LOFREQ_CALL
+        LOFREQ_CALL_NTM(GATK_HAPLOTYPE_CALLER.out, params.ref_fasta)
 
+        //TODO
         // call_lofreq
         LOFREQ_INDELQUAL
         SAMTOOLS_INDEX

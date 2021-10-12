@@ -1,10 +1,7 @@
-nextflow.enable.dsl = 2
+/*
+FIXME: Documentation comments
 
-params.results_dir = "${params.outdir}/quanttb"
-params.save_mode = 'copy'
-params.should_publish = true
-
-
+*/
 
 process QUANTTB_QUANT {
     tag "${sampleName}"

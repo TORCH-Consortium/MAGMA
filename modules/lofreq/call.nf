@@ -1,1 +1,41 @@
-	$LOFREQ call -f $REFERENCE -m 60 --call-indels $OUT_DIR/minor_vars/$SAMPLE_ID.dindel.bam > $OUT_DIR/minor_vars/$SAMPLE_ID.LoFreq.vcf #-a 1
+/*
+FIXME: Documentation comments
+
+*/
+
+
+process LOFREQ_CALL_NTM {
+    tag "${sampleName}"
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+
+    input:
+    tuple val(sampleName), path(recalibratedBam)
+    path(ref_fasta)
+
+    output:
+    tuple val(sampleName), path("*.potential_NTM_fraction.txt")
+
+    shell:
+
+    '''
+	lofreq call \\
+	    -f !{ref_fasta} \\
+	    -r !{ref_fasta.getName()}:!{params.region} \\
+	    -m 60 \\
+	    -Q 20 \\
+	    -a 1 \\
+	    !{recalibratedBam} \\
+	| grep -v "#" \\
+	| cut -f 2 -d ";" \\
+	| tr -d 'AF=' \\
+	| awk '{Total=Total+$1} END{print Total}' \\
+	> !{sampleName}.potential_NTM_fraction.txt
+    '''
+
+    stub:
+
+    """
+	echo "${ref_fasta} -- ${ref_fasta.getName()} -- ${params.region} -- ${sampleName} -- ${recalibratedBam}"
+    """
+
+}

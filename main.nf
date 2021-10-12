@@ -6,7 +6,7 @@ nextflow.enable.dsl = 2
 //================================================================================
 
 include { MAP_WF } from './workflows/map.nf'
-include { QUANTTB_QUANT } from './modules/quanttb/quant.nf'
+include { QUANTTB_QUANT } from './modules/quanttb/quant.nf' addParams( params.QUANTTB_QUANT )
 
 //================================================================================
 // Prepare channels
@@ -61,7 +61,7 @@ reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv"
 
 workflow TEST {
 
-    MAP_WF(reads_ch)
+    // MAP_WF(reads_ch)
     QUANTTB_QUANT(reads_ch)
 
 }
