@@ -7,7 +7,7 @@ params.should_publish = true
 
 
 process QUANTTB_QUANT {
-    tag ""
+    tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
@@ -25,7 +25,7 @@ process QUANTTB_QUANT {
     stub:
 
     """
-    touch ${sampleName}.quanttb.txt
+    touch ${sampleName}.quant.txt
     """
 
 }
