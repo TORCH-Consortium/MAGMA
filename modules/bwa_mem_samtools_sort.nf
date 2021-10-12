@@ -4,16 +4,13 @@ params.results_dir = "${params.outdir}/bwa/mem"
 params.save_mode = 'copy'
 params.should_publish = true
 
-process BWA_MEM {
+process BWA_MEM_SAMTOOLS_SORT {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
     tuple val(sampleName), path(sampleReads), val(RG)
     path(reference)
-
-    output:
-    path("*.sorted_reads.bam")
 
 
     script:
@@ -45,8 +42,6 @@ process BWA_MEM {
         -O BAM \\
         -o ${sampleName}.sorted_reads.bam -
     "
-
-    touch ${sampleName}.sorted_reads.bam
     """
 
 }

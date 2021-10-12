@@ -5,21 +5,17 @@ nextflow.enable.dsl = 2
 // Include sub-workflows/modules and (soft) override workflow-level parameters
 //================================================================================
 
+include { MAP_WF } from './workflows/map.nf'
+include { QUANTTB_QUANT } from './modules/quanttb/quant.nf'
 
 //================================================================================
 // Prepare channels
 //================================================================================
 
-// unique_sample_id = '{study}.{sample}.L{library}.A{attempt}.{flowcell}.{lane}.{index_sequence}'
 
-
-//================================================================================
-// TEST workflow
-//================================================================================
-workflow TEST {
-
-//  0      1       2       3    4  5     6      7      8
+//   0     1       2       3    4  5     6      7       8
 // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
+
 
 reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv")
         .splitCsv(header: false, skip: 1)
@@ -35,12 +31,30 @@ reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv"
                     index_sequence = row[8]
 
             unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
-            tuple(unique_sample_id, file(read1), file(read2))
+
+            // Accomodate single/multi reads
+            if (row[4] && row[5]) {
+                return tuple(unique_sample_id, tuple(file(read1), file(read2)))
+            } else if (row[4]) {
+                return tuple(unique_sample_id, tuple(file(read1)))
+            } else {
+                return tuple(unique_sample_id, tuple(file(read2)))
             }
         }
+    }
 
 
-reads_ch.view()
+
+
+//================================================================================
+// TEST workflow
+//================================================================================
+
+workflow TEST {
+
+    MAP_WF(reads_ch)
+    QUANTTB_QUANT(reads_ch)
+
 }
 
 
@@ -51,9 +65,11 @@ reads_ch.view()
 
 workflow {
 
-    MAP_WF()
+    //DONE
+    MAP_WF(reads_ch)
+    QUANTTB(reads_ch)
 
-    QUANTTB(MAP_WF.out)
+    //TODO
     CALL_WF(MAP_WF.out)
 
     MERGE_WF(QUANTTB.out, CALL_WF.out)

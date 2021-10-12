@@ -6,23 +6,26 @@ params.should_publish = true
 
 
 
-process process_name {
+process QUANTTB_QUANT {
     tag ""
-    publishdir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
+    tuple val(sampleName), path(sampleReads)
 
     output:
+    path("*.quant.txt")
 
     script:
 
     """
-    quanttb quant $FASTQ_FILES -o $OUT_DIR/quanttb/$SAMPLE_ID. -k
+    quanttb quant ${sampleReads} -o ${sampleName}.quant.txt -k
     """
 
     stub:
 
     """
+    touch ${sampleName}.quanttb.txt
     """
 
 }
