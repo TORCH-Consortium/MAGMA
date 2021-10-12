@@ -5,7 +5,7 @@ params.save_mode = 'copy'
 params.should_publish = true
 
 
-process SAMTOOLS_MERGE {
+process SAMTOOLS_INDEX {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
@@ -13,7 +13,7 @@ process SAMTOOLS_MERGE {
     tuple val(sampleName), path(bam)
 
     output:
-    tuple val(sampleName), path("*.bai")
+    tuple val(sampleName), path("*.bai"), path(bam)
 
     script:
 

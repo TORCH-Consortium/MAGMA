@@ -7,6 +7,7 @@ nextflow.enable.dsl = 2
 
 include { MAP_WF } from './workflows/map.nf'
 include { QUANTTB_QUANT } from './modules/quanttb/quant.nf' addParams( params.QUANTTB_QUANT )
+include { LOFREQ_CALL_NTM } from './modules/lofreq/call_ntm.nf' addParams( params.LOFREQ_CALL_NTM )
 
 //================================================================================
 // Prepare channels
@@ -62,8 +63,11 @@ reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv"
 workflow TEST {
 
     // MAP_WF(reads_ch)
-    QUANTTB_QUANT(reads_ch)
+    // QUANTTB_QUANT(reads_ch)
 
+    lofreq_all_ntm_ch = Channel.of(["SCIENSANO.07-0789.L1.A1.1.1.1", "${projectDir}/results_mock/bwa/mem/SCIENSANO.07-0789.L1.A1.1.1.1.sorted_reads.bam"])
+
+    LOFREQ_CALL_NTM(lofreq_all_ntm_ch, params.ref_fasta)
 }
 
 

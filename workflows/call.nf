@@ -35,13 +35,13 @@ workflow CALL_WF {
         // call_ntm
         LOFREQ_CALL_NTM(GATK_HAPLOTYPE_CALLER.out, params.ref_fasta)
 
-        //TODO
         // call_lofreq
-        LOFREQ_INDELQUAL
-        SAMTOOLS_INDEX
-        LOFREQ_CALL
-        LOFREQ_FILTER
+        LOFREQ_INDELQUAL(GATK_HAPLOTYPE_CALLER.out, params.ref_fasta)
+        SAMTOOLS_INDEX(LOFREQ_INDELQUAL.out,params.ref_fasta)
+        LOFREQ_CALL(SAMTOOLS_INDEX.out)
+        LOFREQ_FILTER(LOFREQ_CALL.out)
 
+        //TODO
         // call_sv
         DELLY_CALL
         BCFTOOLS_VIEW

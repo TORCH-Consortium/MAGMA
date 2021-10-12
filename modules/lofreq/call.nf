@@ -4,38 +4,38 @@ FIXME: Documentation comments
 */
 
 
-process LOFREQ_CALL_NTM {
+process LOFREQ_CALL {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    tuple val(sampleName), path(recalibratedBam)
+    tuple val(sampleName), path(dindleBam), path(bai)
     path(ref_fasta)
 
     output:
-    tuple val(sampleName), path("*.potential_NTM_fraction.txt")
+    tuple val(sampleName), path("*.lofreq.vcf")
 
-    shell:
+    script:
 
-    '''
-	lofreq call \\
-	    -f !{ref_fasta} \\
-	    -r !{ref_fasta.getName()}:!{params.region} \\
-	    -m 60 \\
-	    -Q 20 \\
-	    -a 1 \\
-	    !{recalibratedBam} \\
-	| grep -v "#" \\
-	| cut -f 2 -d ";" \\
-	| tr -d 'AF=' \\
-	| awk '{Total=Total+$1} END{print Total}' \\
-	> !{sampleName}.potential_NTM_fraction.txt
-    '''
+    """
+
+    lofreq call \\
+        ${arguments} \\
+        --call-indels \\
+        ${dindleBam} \\
+    > ${sampleName}.lofreq.vcf
+    """
 
     stub:
 
     """
-	echo "${ref_fasta} -- ${ref_fasta.getName()} -- ${params.region} -- ${sampleName} -- ${recalibratedBam}"
+    echo "lofreq call \\
+        ${arguments} \\
+        --call-indels \\
+        ${dindleBam} \\
+        > ${sampleName}.lofreq.vcf"
+
+    touch ${sampleName}.lofreq.vcf
     """
 
 }
