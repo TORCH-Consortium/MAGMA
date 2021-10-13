@@ -23,7 +23,7 @@ workflow CALL_WF {
         //NOTE: (XBS_call#L63) Seems to depend up on the BASE_RECALIBRATOR - commented out by default.
         // GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta)
 
-        // NOTE: If APPLY_BQSR is NOT used, then this directly connects to MARK_DUPLICATES
+        //NOTE: If APPLY_BQSR is NOT used, then this directly connects to MARK_DUPLICATES
         SAMTOOLS_INDEX(GATK_MARK_DUPLICATES.out)
 
         // call_haplotype_caller
@@ -41,14 +41,15 @@ workflow CALL_WF {
         LOFREQ_CALL(SAMTOOLS_INDEX.out)
         LOFREQ_FILTER(LOFREQ_CALL.out)
 
-        //TODO
         // call_sv
-        DELLY_CALL
-        BCFTOOLS_VIEW
-        GATK_INDEX_FEATURE_FILE
+        DELLY_CALL(GATK_MARK_DUPLICATES.out)
+        BCFTOOLS_VIEW(DELLY_CALL.out)
+        GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW)
         //TODO: Confirm whether this is correct? (XBS_call#L140)
+        //Enable this once a proper file with DR genes has been made:
         //$JAVA -Xmx64G -jar $GATK -V PREFIX.potentialSV.vcf.gz -O PREFIX.potentialSV.DRgenes.vcf.gz -XL $RESOURCE_PATH/DRgenes.list
 
+        // FIXME add the inputs
         // call_stats
         SAMTOOLS_STATS
         GATK_COLLECT_WGS_METRICS

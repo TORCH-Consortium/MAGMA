@@ -18,7 +18,6 @@ process LOFREQ_CALL {
     script:
 
     """
-
     lofreq call \\
         ${arguments} \\
         --call-indels \\

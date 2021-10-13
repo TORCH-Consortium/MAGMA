@@ -1,36 +1,36 @@
-
-	check_exit $SAMTOOLS stats -F DUP,SUPPLEMENTARY,SECONDARY,UNMAP,QCFAIL $OUT_DIR/mapped/$SAMPLE_ID.recal_reads.bam -r $REFERENCE > $OUT_DIR/stats/$SAMPLE_ID.recal_reads.SamtoolStats
-
-
-
 nextflow.enable.dsl = 2
 
-params.results_dir = "${params.outdir}/tbbwa"
+params.results_dir = "${params.outdir}/samtools/stats"
 params.save_mode = 'copy'
 params.should_publish = true
 
+params.arguments = "-F DUP,SUPPLEMENTARY,SECONDARY,UNMAP,QCFAIL"
 
-
-process process_name {
-    tag "something"
-    publishdir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+process SAMTOOLS_STATS {
+    tag "${sampleName}"
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    path(somefile)
+    tuple val(sampleName), path(bam)
+    path(ref_fasta)
 
     output:
-    path("pattern"),  emit: "ch_output"
+    tuple val(sampleName), path(".*SamtoolStats.txt")
 
     script:
 
     """
-    echo "nothing"
+    samtools stats \\
+        ${arguments} \\
+        ${bam} \\
+        -r ${ref_fasta} \\
+    > ${sampleName}.SamtoolStats.txt
     """
 
     stub:
 
     """
-    echo "nothing on stub"
+    touch ${sampleName}.SamtoolStats.txt
     """
 
 }

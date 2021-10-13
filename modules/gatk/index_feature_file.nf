@@ -6,22 +6,24 @@ params.should_publish = true
 
 
 process GATK_INDEX_FEATURE_FILE {
-    tag ""
-
+    tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 
     input:
+    tuple val(sampleName), path(vcf)
 
 
     output:
+    //FIXME
+    val(sampleName)
 
 
     script:
 
     """
     gatk IndexFeatureFile -Xmx${task.memory.giga}G \\
-        -I $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.annotated.vcf.gz
+        -I ${vcf}
     """
 
     stub:
