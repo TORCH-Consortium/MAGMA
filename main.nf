@@ -5,10 +5,8 @@ nextflow.enable.dsl = 2
 // Include sub-workflows/modules and (soft) override workflow-level parameters
 //================================================================================
 
-include { MAP_WF } from './workflows/map.nf'
+include { MAP_WF } from './workflows/map_wf.nf'
 include { QUANTTB_QUANT } from './modules/quanttb/quant.nf' addParams( params.QUANTTB_QUANT )
-include { LOFREQ_CALL_NTM } from './modules/lofreq/call_ntm.nf' addParams( params.LOFREQ_CALL_NTM )
-include { GATK_VARIANT_RECALIBRATOR } from './modules/gatk/variant_recalibrator.nf' addParams( params.GATK_VARIANT_RECALIBRATOR )
 
 //================================================================================
 // Prepare channels
@@ -35,6 +33,7 @@ reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv"
             unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
 
             //NOTE: Accomodate single/multi reads
+            //TODO: Consider using read1 and read2 identifiers - confirm before refactor.
             if (row[4] && row[5]) {
 
                 // Both read1 and read2 are present
@@ -63,14 +62,8 @@ reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv"
 
 workflow TEST {
 
-    // MAP_WF(reads_ch)
-    // QUANTTB_QUANT(reads_ch)
-
-    lofreq_all_ntm_ch = Channel.of(["SCIENSANO.07-0789.L1.A1.1.1.1", "${projectDir}/results_mock/bwa/mem/SCIENSANO.07-0789.L1.A1.1.1.1.sorted_reads.bam"])
-
-    LOFREQ_CALL_NTM(lofreq_all_ntm_ch, params.ref_fasta)
-
-    GATK_VARIANT_RECALIBRATOR()
+    MAP_WF(reads_ch)
+    QUANTTB_QUANT(reads_ch)
 
 }
 
@@ -84,11 +77,10 @@ workflow {
 
     //DONE
     MAP_WF(reads_ch)
-    QUANTTB(reads_ch)
-
-    //TODO
+    QUANTTB_QUANT(reads_ch)
     CALL_WF(MAP_WF.out)
 
+    //TODO
     MERGE_WF(QUANTTB.out, CALL_WF.out)
 
 }

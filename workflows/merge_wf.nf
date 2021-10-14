@@ -1,5 +1,31 @@
 nextflow.enable.dsl = 2
 
+workflow PREPARE_COHORT_VCF {
+
+    //FIXME merge_combine
+    GATK_COMBINE_GVCFS(params.vcf_name, FIXME_gvcfs, params.ref_fasta)
+
+
+    // merge_genotype
+    GATK_GENOTYPE_GVCFS(GATK_COMBINE_GVCFS.out, params.ref_fasta)
+
+    // merge_snpeff_annotate
+    GUNZIP
+    SED
+    SNPEFF
+    SED
+    //-----
+    BGZIP
+    //-----
+    GATK_INDEX_FEATURE_FILE
+
+
+    // merge_snp_indel_vcf
+    GATK_MERGE_VCFS
+
+
+
+}
 
 workflow SNP_ANALYSIS {
 
@@ -69,28 +95,10 @@ workflow MERGE_WF {
 
     //TODO: select samples based on that CSV
 
-    //FIXME merge_combine
-    GATK_COMBINE_GVCFS(params.vcf_name, FIXME_gvcfs, params.ref_fasta)
+    PREPARE_COHORT_VCF()
 
-
-    // merge_genotype
-    GATK_GENOTYPE_GVCFS(GATK_COMBINE_GVCFS.out, params.ref_fasta)
-
-    // merge_snpeff_annotate
-    GUNZIP
-    SED
-    SNPEFF
-    SED
-    //-----
-    BGZIP
-    //-----
-    GATK_INDEX_FEATURE_FILE
-
-
-    // merge_snp_indel_vcf
-    GATK_MERGE_VCFS
-
-
+    SNP_ANALYSIS()
+    INDEL_ANALYSIS()
 
     PHYLOGENY_ANALYSIS__INCCOMPLEX()
     PHYLOGENY_ANALYSIS__EXCOMPLEX()

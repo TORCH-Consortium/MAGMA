@@ -45,9 +45,8 @@ workflow CALL_WF {
         DELLY_CALL(GATK_MARK_DUPLICATES.out)
         BCFTOOLS_VIEW(DELLY_CALL.out)
         GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW)
-        //TODO: Confirm whether this is correct? (XBS_call#L140)
         //Enable this once a proper file with DR genes has been made:
-        //$JAVA -Xmx64G -jar $GATK -V PREFIX.potentialSV.vcf.gz -O PREFIX.potentialSV.DRgenes.vcf.gz -XL $RESOURCE_PATH/DRgenes.list
+        //$JAVA -Xmx64G -jar $GATK SelectVariants -V PREFIX.potentialSV.vcf.gz -O PREFIX.potentialSV.DRgenes.vcf.gz -L $RESOURCE_PATH/DRgenes.list
 
         // FIXME add the inputs
         // call_stats
