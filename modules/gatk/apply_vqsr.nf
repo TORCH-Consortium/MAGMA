@@ -1,12 +1,12 @@
-nextflow.enable.dsl = 2
+/*
+FIXME: Documentation comments
 
-params.results_dir = "${params.outdir}/gatk4/apply_vqsr"
-params.save_mode = 'copy'
-params.should_publish = true
+*/
+
 
 
 process GATK_APPLY_VQSR {
-    tag ""
+    tag "${joint_name}"
 
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
@@ -24,7 +24,8 @@ process GATK_APPLY_VQSR {
         --recal-file $OUT_DIR/vqsr/$JOINT_NAME/$JOINT_NAME.SNP.recal.vcf.gz \\
         --ts-filter-level 99.90 \\
         -AS \\
-        --exclude-filtered -mode SNP \\
+        --exclude-filtered \\
+        -mode ${params.mode} \\
         -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.filtered_SNP_inc-rRNA.vcf.gz
     """
 
