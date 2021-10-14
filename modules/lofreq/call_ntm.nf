@@ -20,7 +20,7 @@ process LOFREQ_CALL_NTM {
     '''
 	lofreq call \\
 	    -f !{ref_fasta} \\
-	    -r !{ref_fasta.getName()}:!{params.region} \\
+	    -r !{ref_fasta.getBaseName()}:!{params.region} \\
         !{arguments} \\
 	    !{recalibratedBam} \\
 	| grep -v "#" \\
@@ -33,8 +33,9 @@ process LOFREQ_CALL_NTM {
     stub:
 
     """
-	echo "${ref_fasta} -- ${ref_fasta.getName()} -- ${params.region} -- ${sampleName} -- ${recalibratedBam}"
+	echo "${ref_fasta} -- ${ref_fasta.getBaseName()} -- ${params.region} -- ${sampleName} -- ${recalibratedBam}"
 
+    echo "${params.arguments}"
 
     touch ${sampleName}.potential_NTM_fraction.txt
     """

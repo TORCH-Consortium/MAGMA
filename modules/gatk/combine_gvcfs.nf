@@ -1,33 +1,37 @@
-nextflow.enable.dsl = 2
+/*
+FIXME: Documentation comments
 
-params.results_dir = "${params.outdir}/gatk4/combine_gvcfs"
-params.save_mode = 'copy'
-params.should_publish = true
+*/
+
 
 process GATK_COMBINE_GVCFS {
-    tag ""
+    tag "${joint_name}"
 
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 
     input:
+    tuple val(joint_name), path(gvcfs)
+    path(ref_fasta)
 
     output:
+    tuple val(joint_name), path("*.combined.vcf.gz")
 
 
     script:
 
     """
     gatk CombineGVCFs -Xmx${task.memory.giga}G \\
-        -R $REFERENCE \\
-        -G StandardAnnotation \\
-        -G AS_StandardAnnotation $GVCFs \\
-        -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.combined.vcf.gz
+        -R ${ref_fasta} \\
+        ${params.arguments} \\
+        ${gvcfs} \\
+        -O ${joint_name}.combined.vcf.gz
     """
 
     stub:
 
     """
+    touch ${joint_name}.combined.vcf.gz
     """
 }
 

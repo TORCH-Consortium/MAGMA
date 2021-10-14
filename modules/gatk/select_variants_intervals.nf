@@ -5,8 +5,6 @@ params.save_mode = 'copy'
 params.should_publish = true
 
 
-// NOTE: Process-2 for excluding intervals
-
 process GATK_SELECT_VARIANTS_INTERVALS {
     tag ""
 

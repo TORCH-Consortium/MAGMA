@@ -1,8 +1,7 @@
-nextflow.enable.dsl = 2
+/*
+FIXME: Documentation comments
 
-params.results_dir = "${params.outdir}/gatk4/index_feature_file"
-params.save_mode = 'copy'
-params.should_publish = true
+*/
 
 
 process GATK_INDEX_FEATURE_FILE {
@@ -11,7 +10,7 @@ process GATK_INDEX_FEATURE_FILE {
 
 
     input:
-    tuple val(sampleName), path(vcf)
+    tuple val(sampleName), path(annotatedVcf)
 
 
     output:
@@ -23,7 +22,7 @@ process GATK_INDEX_FEATURE_FILE {
 
     """
     gatk IndexFeatureFile -Xmx${task.memory.giga}G \\
-        -I ${vcf}
+        -I ${annotatedVcf}
     """
 
     stub:

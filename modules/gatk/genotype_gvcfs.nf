@@ -1,31 +1,32 @@
-nextflow.enable.dsl = 2
+/*
+FIXME: Documentation comments
 
-params.results_dir = "${params.outdir}/gatk4/genotype_gvcfs"
-params.save_mode = 'copy'
-params.should_publish = true
+*/
+
 
 process GATK_GENOTYPE_GVCFS {
-    tag ""
+    tag "${joint_name}"
 
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 
     input:
+    tuple val(joint_name), path(combinedVcf)
+    path(ref_fasta)
 
 
     output:
+    tuple val(joint_name), path("*.raw_variants.vcf.gz")
 
 
     script:
 
     """
     gatk GenotypeGVCFs -Xmx${task.memory.giga}G \\
-        -R $REFERENCE \\
-        -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.combined.vcf.gz \\
-        -G StandardAnnotation \\
-        -G AS_StandardAnnotation \\
-        --sample-ploidy 1 \\
-        -O $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.raw_variants.vcf.gz
+        -R ${ref_fasta} \\
+        -V ${combinedVcf} \\
+        ${params.arguments} \\
+        -O ${joint_name}.raw_variants.vcf.gz
     """
 
     stub:
