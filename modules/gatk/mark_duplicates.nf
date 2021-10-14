@@ -1,41 +1,40 @@
 nextflow.enable.dsl = 2
 
-params.gatk_path = "gatk"
-params.java_opts = "-Xms4000m"
-params.compression_level = 5
+params.results_dir = "${params.outdir}/gatk4/mark_duplicates"
+params.save_mode = 'copy'
+params.should_publish = true
+
 
 process GATK_MARK_DUPLICATES {
-    tag "${sampleId}"
-    label 'gatk4_container'
+    tag "$sampleName"
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    val(sampleId)
-    path(input_mapped_merged_bam)
+    tuple val(sampleName), path(mergedBam)
 
     output:
-    val(sampleId)
-    path("${sampleId}_merged.deduped.bam")
-    path("${sampleId}_merged.deduped.metrics.txt")
+    tuple val(sampleName), path(".*dedup_reads.bam")
+    path(".*MarkDupMetrics.txt")
 
     script:
 
     """
-    ${params.gatk_path} --java-options "-Dsamjdk.compression_level=${params.compression_level} ${params.java_opts}" \
-                        MarkDuplicates \
-                        --INPUT ${input_mapped_merged_bam} \
-                        --OUTPUT ${sampleId}_merged.deduped.bam \
-                        --METRICS_FILE ${sampleId}_merged.deduped.metrics.txt \
-                        --VALIDATION_STRINGENCY SILENT \
-                        --OPTICAL_DUPLICATE_PIXEL_DISTANCE 2500 \
-                        --ASSUME_SORT_ORDER "queryname" \
-                        --CREATE_MD5_FILE true
+    gatk MarkDuplicates -Xmx${task.memory.giga}G \\
+        --METRICS_FILE ${sampleName}.MarkDupMetrics.txt \\
+        -I ${mergedBam} \\
+        -O ${sampleName}.dedup_reads.bam
     """
 
     stub:
 
     """
-    touch ${sampleId}_merged.deduped.bam
-    touch ${sampleId}_merged.deduped.metrics.txt
+    echo " gatk MarkDuplicates -Xmx${task.memory.giga}G \\
+        --METRICS_FILE ${sampleName}.MarkDupMetrics.txt \\
+        -I ${mergedBam} \\
+        -O ${sampleName}.dedup_reads.bam"
+
+    touch ${sampleName}.MarkDupMetrics.txt
+    touch ${sampleName}.dedup_reads.bam
     """
 
 }

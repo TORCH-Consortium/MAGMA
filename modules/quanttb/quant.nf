@@ -1,35 +1,31 @@
+/*
+FIXME: Documentation comments
 
-quanttb quant $FASTQ_FILES -o $OUT_DIR/quanttb/$SAMPLE_ID. -k
+*/
 
-
-nextflow.enable.dsl = 2
-
-params.results_dir = "${params.outdir}/tbbwa"
-params.save_mode = 'copy'
-params.should_publish = true
-
-
-
-process process_name {
-    tag "something"
-    publishdir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+process QUANTTB_QUANT {
+    tag "${sampleName}"
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    path(somefile)
+    tuple val(sampleName), path(sampleReads)
 
     output:
-    path("pattern"),  emit: "ch_output"
+    tuple val(sampleName), path("*.quant.txt")
 
     script:
 
     """
-    echo "nothing"
+    quanttb quant ${sampleReads} -o ${sampleName}.quant.txt -k
     """
 
     stub:
 
     """
-    echo "nothing on stub"
+
+    echo "quanttb quant ${sampleReads} -o ${sampleName}.quant.txt -k"
+
+    touch ${sampleName}.quant.txt
     """
 
 }

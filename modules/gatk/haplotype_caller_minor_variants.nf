@@ -4,7 +4,7 @@ FIXME: Documentation comments
 */
 
 
-process GATK_HAPLOTYPE_CALLER {
+process GATK_HAPLOTYPE_CALLER_MINOR_VARIANTS {
     tag "$sampleName"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
@@ -14,7 +14,7 @@ process GATK_HAPLOTYPE_CALLER {
     path(ref_fasta)
 
     output:
-    tuple val(sampleName), path("*.g.vcf.gz")
+    tuple val(sampleName), path("*.AllSites.g.vcf.gz")
 
 
     script:
@@ -23,9 +23,8 @@ process GATK_HAPLOTYPE_CALLER {
     gatk HaplotypeCaller -Xmx${task.memory.giga}G \\
         -R ${ref_fasta} \\
         -I ${bam} \\
-        -ERC GVCF \\
         ${params.arguments} \\
-        -O ${sampleName}.g.vcf.gz
+        -O  ${sampleName}.AllSites.g.vcf.gz
     """
 
     stub:
@@ -34,11 +33,10 @@ process GATK_HAPLOTYPE_CALLER {
     echo "gatk HaplotypeCaller -Xmx${task.memory.giga}G \\
         -R ${ref_fasta} \\
         -I ${bam} \\
-        -ERC GVCF \\
         ${params.arguments} \\
-        -O ${sampleName}.g.vcf.gz"
+        -O  ${sampleName}.AllSites.g.vcf.gz"
 
-    touch ${sampleName}.g.vcf.gz
+    touch ${sampleName}.AllSites.g.vcf.gz
     """
 }
 
