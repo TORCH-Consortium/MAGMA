@@ -20,15 +20,15 @@ include { QUANTTB_QUANT } from './modules/quanttb/quant.nf' addParams( params.QU
 reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv")
         .splitCsv(header: false, skip: 1)
         .map { row -> {
-                    study = row[0]
-                    sample = row[1]
-                    library = row[2]
-                    attempt = row[3]
-                    read1 = row[4]
-                    read2 = row[5]
-                    flowcell = row[6]
-                    lane = row[7]
-                    index_sequence = row[8]
+                    study           = row[0]
+                    sample          = row[1]
+                    library         = row[2]
+                    attempt         = row[3]
+                    read1           = row[4]
+                    read2           = row[5]
+                    flowcell        = row[6]
+                    lane            = row[7]
+                    index_sequence  = row[8]
 
             //TODO: Confirm whether '.' can be replaced with '_'
             unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"

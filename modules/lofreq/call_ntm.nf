@@ -10,7 +10,7 @@ process LOFREQ_CALL_NTM {
 
     input:
     tuple val(sampleName), path(recalibratedBam)
-    path(ref_fasta)
+    path(reference)
 
     output:
     tuple val(sampleName), path("*.potential_NTM_fraction.txt")
@@ -19,8 +19,8 @@ process LOFREQ_CALL_NTM {
 
     '''
 	lofreq call \\
-	    -f !{ref_fasta} \\
-	    -r !{ref_fasta.getBaseName()}:!{params.region} \\
+	    -f !{reference} \\
+	    -r !{reference.getBaseName()}:!{params.region} \\
         !{arguments} \\
 	    !{recalibratedBam} \\
 	| grep -v "#" \\
@@ -33,7 +33,7 @@ process LOFREQ_CALL_NTM {
     stub:
 
     """
-	echo "${ref_fasta} -- ${ref_fasta.getBaseName()} -- ${params.region} -- ${sampleName} -- ${recalibratedBam}"
+    echo "${reference} -- ${reference.getBaseName()} -- ${params.region} -- ${sampleName} -- ${recalibratedBam}"
 
     echo "${params.arguments}"
 
