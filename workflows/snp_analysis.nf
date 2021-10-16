@@ -42,5 +42,7 @@ files_ch = arg_files_ch
     GATK_SELECT_VARIANTS__EXCLUSION__SNP('SNP', GATK_APPLY_VQSR__SNP.out, params.rrna_file)
 
 
+    emit:
+    GATK_SELECT_VARIANTS__EXCLUSION__SNP.out
 
 }

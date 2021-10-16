@@ -40,6 +40,8 @@ files_ch = arg_files_ch
     GATK_APPLY_VQSR__INDEL('INDEL', GATK_SELECT_VARIANTS__INDEL.out, GATK_VARIANT_RECALIBRATOR__INDEL.out.recalVcf, params.ref_fasta)
 
 
-
+    emit:
+    //NOTE: This is supposed to be temporary output XBS_merge#L189
+    GATK_SELECT_VARIANTS.out
 
 }

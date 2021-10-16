@@ -12,19 +12,21 @@ process GATK_SELECT_VARIANTS {
 
     input:
     val(variantType)
-
+    val(resourceFilesArg)
+    path("*")
 
     output:
 
     script:
 
-//TODO accomodate the variable number of -XL files
+    def finalResourceFilesArg =    (resourceFilesArg  ? "-XL:${resourceFilesArg}" : "")
 
     """
     gatk SelectVariants -Xmx${task.memory.giga}G \\
         -R ${reference} \\
         -V ${annotatedVcf} \\
         --select-type-to-include ${variantType} \\
+        ${finalResourceFilesArg} \\
         ${params.arguments} \\
         -O ${joint_name}.raw_${variantType}.vcf.gz
     """
