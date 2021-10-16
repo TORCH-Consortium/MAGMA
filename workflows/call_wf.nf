@@ -30,7 +30,7 @@ workflow CALL_WF {
         GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out, params.ref_fasta)
 
         // call_haplotype_caller_minor_variants
-        GATK_HAPLOTYPE_CALLER_MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta)
+        GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta)
 
         // call_ntm
         LOFREQ_CALL_NTM(GATK_HAPLOTYPE_CALLER.out, params.ref_fasta)
@@ -53,5 +53,11 @@ workflow CALL_WF {
         SAMTOOLS_STATS
         GATK_COLLECT_WGS_METRICS
         GATK_FLAG_STAT
+
+
+        //TODO: Make sure that all of the stat files belong to the same sample (join operator)
+        UTILS_SAMPLE_STATS
+
+        UTILS_COHORT_STATS(UTILS_SAMPLE_STATS.out.collect())
 
 }

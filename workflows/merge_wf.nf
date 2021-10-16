@@ -2,8 +2,8 @@ nextflow.enable.dsl = 2
 
 
 workflow MERGE_WF {
-
-    //TODO: collect joint stats - from utils
+    take:
+        path(cohort_stats_file)
 
     //TODO: select samples based on that CSV
 
