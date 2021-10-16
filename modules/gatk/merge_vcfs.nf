@@ -6,7 +6,7 @@ params.save_mode = 'copy'
 params.should_publish = true
 
 process GATK_MERGE_VCFS {
-    tag ""
+    tag "${joint_name}"
 
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 

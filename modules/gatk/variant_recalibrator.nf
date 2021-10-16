@@ -12,28 +12,32 @@ process GATK_VARIANT_RECALIBRATOR {
 
 
     input:
+    val(analysisMode)
+    path(variantsVcf)
+    val(resourceFilesArg)
+    path("*")
 
     output:
-
-
-    //TODO: A good candidate to refactor later on to accomodate dynamic number of files
+    path("*.recal.vcf.gz"), emit: recalVcf
+    path("*.tranches")
+    path("*.R")
+    path("*.model")
 
     script:
+
+    def finalResourceFilesArg =    (resourceFilesArg  ? "--resource:${resourceFilesArg}" : "")
 
     """
     gatk VariantRecalibrator -Xmx${task.memory.giga}G \\
         -R ${reference} \\
-        -V ${raw_snp} \\
-        --resource:coll2014,known=false,training=true,truth=true,prior=15.0 ${coll2014_vcf} \\
-        --resource:coll2018,known=false,training=true,truth=true,prior=15.0 ${coll2018_vcf} \\
-        --resource:Napier2020,known=false,training=true,truth=true,prior=15.0 ${napier2020_vcf} \\
-        --resource:Benavente2015,known=true,training=false,truth=false,prior=5.0 ${benavente2015} \\
+        -V ${variantsVcf} \\
+        ${finalResourceFilesArg} \\
         ${params.arguments} \\
-        -mode ${params.mode} \\
-        --tranches-file ${joint_name}.snp.tranches \\
-        --rscript-file ${joint_name}.snp.R \\
-        --output ${joint_name}.snp.recal.vcf.gz \\
-        --output-model ${joint_name}.snp.model
+        -mode ${analysisMode} \\
+        --tranches-file ${joint_name}.${analysisMode}.tranches \\
+        --rscript-file ${joint_name}.${analysisMode}.R \\
+        --output ${joint_name}.${analysisMode}.recal.vcf.gz \\
+        --output-model ${joint_name}.${analysisMode}.model
     """
 
     stub:

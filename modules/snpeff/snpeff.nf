@@ -15,7 +15,7 @@ process SNPEFF {
     tuple val(joint_name), path(".*annotated.vcf")
     path(ref_fasta)
 
-    //TODO: Add warning in readme NOT to include a reference file with multiple dots in name.
+    //FIXME: Add warning in readme NOT to include a reference file with multiple dots in name.
 
     script:
 
@@ -32,7 +32,7 @@ process SNPEFF {
 
     rm ${joint_name}.raw_variants.vcf
 
-    sed -i 's/^Chromosome/${ref_fasta.getBaseName()}/g' ${joint_name}.raw_variants.vcf
+    sed -i 's/^Chromosome/${ref_fasta.getBaseName()}/g' ${joint_name}.raw_variants.annotated.vcf
 
     """
 

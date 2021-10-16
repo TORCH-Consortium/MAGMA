@@ -30,6 +30,7 @@ reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv"
                     lane = row[7]
                     index_sequence = row[8]
 
+            //TODO: Confirm whether '.' can be replaced with '_'
             unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
 
             //NOTE: Accomodate single/multi reads
@@ -78,7 +79,7 @@ workflow {
     //DONE
     MAP_WF(reads_ch)
     QUANTTB_QUANT(reads_ch)
-    CALL_WF(MAP_WF.out)
+    // CALL_WF(MAP_WF.out)
 
     //TODO
     MERGE_WF(QUANTTB.out, CALL_WF.out)
