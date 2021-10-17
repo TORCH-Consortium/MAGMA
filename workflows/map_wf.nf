@@ -1,6 +1,3 @@
-nextflow.enable.dsl = 2
-
-
 include { FASTQC } from '../modules/fastqc/fastqc.nf' addParams (params.FASTQC)
 include { BWA_MEM } from '../modules/bwa/mem.nf' addParams (params.BWA_MEM)
 

@@ -1,9 +1,3 @@
-nextflow.enable.dsl = 2
-
-params.results_dir = "${params.outdir}/gatk4/base_recalibrator"
-params.save_mode = 'copy'
-params.should_publish = true
-
 process GATK_BASE_RECALIBRATOR {
     tag "$sampleName"
 

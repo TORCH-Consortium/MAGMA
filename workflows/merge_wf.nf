@@ -1,11 +1,10 @@
-nextflow.enable.dsl = 2
 
 
 workflow MERGE_WF {
     take:
         path(cohort_stats_file)
 
-    //TODO: select samples based on that CSV
+    //TODO: select samples based on that CSV - publish files for both (passing/failing) samples
 
 
     if [ "$COVERAGE" -ge "$MEDIAN_COVERAGE_CUTOFF" ] && [ 1 -eq "$(echo "$BREADTH_OF_COVERAGE >= $BREADTH_OF_COVERAGE_CUTOFF" | bc)" ] && rel_abundance_threshold_met $REL_ABUNDANCE_CUTOFF $REL_ABUNDANCE && ntm_fraction_threshold_met $NTM_FRACTION_CUTOFF $NTM_FRACTION;

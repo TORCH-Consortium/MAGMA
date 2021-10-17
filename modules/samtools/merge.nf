@@ -1,10 +1,3 @@
-nextflow.enable.dsl = 2
-
-params.results_dir = "${params.outdir}/samtools/merge"
-params.save_mode = 'copy'
-params.should_publish = true
-
-
 process SAMTOOLS_MERGE {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
