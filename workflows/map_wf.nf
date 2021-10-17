@@ -27,6 +27,7 @@ workflow MAP_WF {
                     index_sequence = row[8]
             }
               RG="@RG\tID:${flowcell}.${lane}\tSM:${study}.${sample}\tPL:illumina\tLB:lib${library}\tPU:${flowcell}.${lane}.${index_sequence}"
+              //TODO: Confirm whether '.' can be replaced with '_'
               unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
               return tuple(unique_sample_id, RG)
         }

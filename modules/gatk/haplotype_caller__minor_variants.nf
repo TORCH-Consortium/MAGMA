@@ -4,7 +4,7 @@ FIXME: Documentation comments
 */
 
 
-process GATK_HAPLOTYPE_CALLER_MINOR_VARIANTS {
+process GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS {
     tag "$sampleName"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 

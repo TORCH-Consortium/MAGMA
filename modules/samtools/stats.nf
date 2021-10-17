@@ -12,7 +12,7 @@ process SAMTOOLS_STATS {
 
     input:
     tuple val(sampleName), path(bam)
-    path(ref_fasta)
+    path(reference)
 
     output:
     tuple val(sampleName), path(".*SamtoolStats.txt")
@@ -23,7 +23,7 @@ process SAMTOOLS_STATS {
     samtools stats \\
         ${arguments} \\
         ${bam} \\
-        -r ${ref_fasta} \\
+        -r ${reference} \\
     > ${sampleName}.SamtoolStats.txt
     """
 

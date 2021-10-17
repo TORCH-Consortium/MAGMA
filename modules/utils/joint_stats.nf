@@ -15,7 +15,9 @@ do
     AVG_QUAL=$(cat ${OUT_DIR}/stats/${i}.recal_reads.SamtoolStats | grep "average quality" | cut -f 3)
     WGS_METR=$(cat ${OUT_DIR}/stats/${i}.recal_reads.WgsMetrics | grep "^4411532" | cut -f 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,20,22,27)
     NTM_FRACTION=$(cat ${OUT_DIR}/stats/${i}.potential_NTM_fraction.txt)
+
     echo -e "${i}\t${TOTAL_SEQS}\t${MAPPED_P}\t${INS_SIZE}\t${AVG_QUAL}\t${REL_ABUNDANCE}\t${DEPTH}\t${WGS_METR}\t${NTM_FRACTION}" >> ${OUT_DIR}/stats/$JOINT_NAME.summary.tsv
+
     if [ "$COVERAGE" -ge "$MEDIAN_COVERAGE_CUTOFF" ] && [ 1 -eq "$(echo "$BREADTH_OF_COVERAGE >= $BREADTH_OF_COVERAGE_CUTOFF" | bc)" ] && rel_abundance_threshold_met $REL_ABUNDANCE_CUTOFF $REL_ABUNDANCE && ntm_fraction_threshold_met $NTM_FRACTION_CUTOFF $NTM_FRACTION;
     then
         echo "Adding ${i}"

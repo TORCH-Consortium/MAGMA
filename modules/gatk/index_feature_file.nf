@@ -14,8 +14,8 @@ process GATK_INDEX_FEATURE_FILE {
 
 
     output:
-    //FIXME
-    val(sampleName)
+    //FIXME Find the format of the
+    tuple val(sampleName), path(annotatedVcf)
 
 
     script:
