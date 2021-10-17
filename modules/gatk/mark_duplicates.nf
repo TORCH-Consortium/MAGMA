@@ -7,7 +7,7 @@ process GATK_MARK_DUPLICATES {
 
     output:
     tuple val(sampleName), path(".*dedup_reads.bam")
-    tuple val(sampleName), path(".*MarkDupMetrics.txt")
+    tuple val(sampleName), path(".*MarkDupMetrics.txt"),           emit: metrics
 
     script:
 

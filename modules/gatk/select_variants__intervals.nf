@@ -5,7 +5,7 @@ process GATK_SELECT_VARIANTS__INCLUSION {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    path(potentialVariantsVcf)
+    tuple val(sampleName), path(structuralVariantsIndex), path(structuralVariantsVcf)
     path(intervalsFile)
 
     output:
@@ -14,15 +14,10 @@ process GATK_SELECT_VARIANTS__INCLUSION {
     script:
 
     """
-
-
-//-V PREFIX.potentialSV.vcf.gz -O PREFIX.potentialSV.DRgenes.vcf.gz -L $RESOURCE_PATH/DRgenes.list
-
     gatk SelectVariants -Xmx${task.memory.giga}G \\
-        -V ${potentialVariantsVcf} \\
+        -V ${structuralVariantsVcf} \\
         -L ${intervalsFile} \\
-        -O ${joint_name}.filtered_${analysisMode}_exc-rRNA.vcf.gz
-
+        -O ${sampleName}.potentialSV.DRgenes.vcf.gz
     """
 
     stub:

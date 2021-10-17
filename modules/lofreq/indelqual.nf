@@ -7,16 +7,16 @@ process LOFREQ_INDELQUAL {
     path(ref_fasta)
 
     output:
-    tuple val(sampleName), path("*..dindel.bam")
+    tuple val(sampleName), path("*.dindel.bam")
 
     script:
 
     """
-	lofreq indelqual \\
-	    -f ${ref_fasta} \\
-	    --dindel \\
-	    -o ${sampleName}.dindel.bam \\
-	    ${recalibratedBam}
+    lofreq indelqual \\
+        -f ${ref_fasta} \\
+        --dindel \\
+        -o ${sampleName}.dindel.bam \\
+        ${recalibratedBam}
     """
 
     stub:

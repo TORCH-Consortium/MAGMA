@@ -7,16 +7,15 @@ process LOFREQ_CALL {
     path(ref_fasta)
 
     output:
-    tuple val(sampleName), path("*.lofreq.vcf")
+    tuple val(sampleName), path("*.LoFreq.vcf")
 
     script:
 
     """
     lofreq call \\
         ${arguments} \\
-        --call-indels \\
         ${dindleBam} \\
-    > ${sampleName}.lofreq.vcf
+    > ${sampleName}.LoFreq.vcf
     """
 
     stub:

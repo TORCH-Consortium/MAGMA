@@ -37,25 +37,46 @@ workflow CALL_WF {
         // call_mark_duplicates
         GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
 
-        // call_base_recal
-        //NOTE: (XBS_call#L48) Disabled by default - Enable for non-contaminated datasets only.
-        //GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out, params.dbsnp, params.ref_fasta)
+        if (params.dataset_is_not_contaminated) {
+            // call_base_recal
+            GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out, params.dbsnp, params.ref_fasta)
 
-        // call_apply_bqsr
-        //NOTE: (XBS_call#L63) Seems to depend up on the BASE_RECALIBRATOR - commented out by default.
-        // GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta)
+            // call_apply_bqsr
+            GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta)
 
-        //NOTE: If APPLY_BQSR is NOT used, then this directly connects to MARK_DUPLICATES
-        SAMTOOLS_INDEX(GATK_MARK_DUPLICATES.out)
+            SAMTOOLS_INDEX(GATK_APPLY_BQSR.out)
+
+        } else {
+
+            SAMTOOLS_INDEX(GATK_MARK_DUPLICATES.out)
+        }
+
+
+        //----------------------------------------------------------------------------------
+        // Call Variants for follow up calling
+        //----------------------------------------------------------------------------------
+
+
 
         // call_haplotype_caller
         GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out, params.ref_fasta)
 
-        // call_haplotype_caller_minor_variants
-        GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta)
+        if (params.compute_minor_variants) {
+            // call_haplotype_caller_minor_variants
+            GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta)
+        }
+
+        //----------------------------------------------------------------------------------
+        // Infer potential NTM contamination
+        //----------------------------------------------------------------------------------
 
         // call_ntm
         LOFREQ_CALL__NTM(GATK_HAPLOTYPE_CALLER.out, params.ref_fasta)
+
+
+        //----------------------------------------------------------------------------------
+        // Infer minor variants with LoFreq
+        //----------------------------------------------------------------------------------
 
         // call_lofreq
         LOFREQ_INDELQUAL(GATK_HAPLOTYPE_CALLER.out, params.ref_fasta)
@@ -63,14 +84,30 @@ workflow CALL_WF {
         LOFREQ_CALL(SAMTOOLS_INDEX.out)
         LOFREQ_FILTER(LOFREQ_CALL.out)
 
+        //----------------------------------------------------------------------------------
+        // Infer structural variants
+        //NOTE: This inference can not handle a contaminant and MTB allele on the same site, if so the site will be excluded.
+        //----------------------------------------------------------------------------------
+
         // call_sv
-        DELLY_CALL(GATK_MARK_DUPLICATES.out)
+        //
+        //
+
+
+        if (params.dataset_is_not_contaminated) {
+
+            DELLY_CALL(GATK_APPLY_BQSR.out)
+
+        } else {
+
+            DELLY_CALL(GATK_MARK_DUPLICATES.out)
+        }
+
         BCFTOOLS_VIEW(DELLY_CALL.out)
-        GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW)
+        GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out)
 
         //Enable this once a proper file with DR genes has been made:
-        //FIXME add inputs
-        GATK_SELECT_VARIANTS__INTERVALS()
+        GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
 
         // FIXME add the inputs
         // call_stats
