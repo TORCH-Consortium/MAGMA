@@ -32,4 +32,7 @@ workflow MAP_WF {
 
         BWA_MEM(reads_ch.join(bew_mem_rg_ch), params.ref_fasta)
 
+    emit:
+        sorted_reads = BWA_MEM.out
+
 }

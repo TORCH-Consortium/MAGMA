@@ -7,7 +7,7 @@ process BWA_MEM {
     path(reference)
 
     output:
-    path("*.sorted_reads.bam")
+    tuple val(sampleName), path("*.sorted_reads.bam")
 
 
     script:

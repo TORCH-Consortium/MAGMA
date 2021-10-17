@@ -27,7 +27,7 @@ process GATK_BASE_RECALIBRATOR {
     echo "gatk BaseRecalibrator -Xmx${task.memory.giga}G \\
         --known-sites ${dbsnp} \\
         -R ${ref_fasta} \\
-	    -I ${dedupedBam} \\
+        -I ${dedupedBam} \\
         -O ${sampleName}.recal_data.table"
 
     touch ${sampleName}.recal_data.table

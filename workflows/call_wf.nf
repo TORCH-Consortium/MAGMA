@@ -1,4 +1,3 @@
-
 include { SAMTOOLS_MERGE } from "../../modules/samtools/merge.nf" addParams ( params.SAMTOOLS_MERGE )
 include { GATK_MARK_DUPLICATES } from "../../modules/gatk/mark_duplicates.nf" addParams ( params.GATK_MARK_DUPLICATES )
 include { GATK_BASE_RECALIBRATOR } from "../../modules/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR )
@@ -26,13 +25,14 @@ include { UTILS_COHORT_STATS } from "../../modules/utils/cohort_stats.nf" addPar
 
 workflow CALL_WF {
     take:
+        sorted_reads_ch
 
 
     main:
 
         // call_merge
         //NOTE: The output of this seems to overwrite the output of XBS_map#L31
-        SAMTOOLS_MERGE()
+        SAMTOOLS_MERGE(sorted_reads_ch)
 
         // call_mark_duplicates
         GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
@@ -83,5 +83,7 @@ workflow CALL_WF {
         UTILS_SAMPLE_STATS
 
         UTILS_COHORT_STATS(UTILS_SAMPLE_STATS.out.collect())
+
+    emit:
 
 }

@@ -1,5 +1,3 @@
-nextflow.enable.dsl = 2
-
 process GATK_COLLECT_WGS_METRICS {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
