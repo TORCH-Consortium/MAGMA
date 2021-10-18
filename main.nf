@@ -7,6 +7,7 @@ nextflow.enable.dsl = 2
 
 include { MAP_WF } from './workflows/map_wf.nf'
 include { QUANTTB_QUANT } from './modules/quanttb/quant.nf' addParams( params.QUANTTB_QUANT )
+include { CALL_WF } from './workflows/call_wf.nf'
 
 //================================================================================
 // Prepare channels
@@ -63,8 +64,9 @@ reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv"
 
 workflow TEST {
 
-    MAP_WF(reads_ch)
     QUANTTB_QUANT(reads_ch)
+    MAP_WF(reads_ch)
+    CALL_WF(MAP_WF.out.sorted_reads)
 
 }
 
@@ -77,11 +79,11 @@ workflow TEST {
 workflow {
 
     //DONE
-    MAP_WF(reads_ch)
     QUANTTB_QUANT(reads_ch)
-    // CALL_WF(MAP_WF.out)
+    MAP_WF(reads_ch)
+    CALL_WF(MAP_WF.out.sorted_reads)
 
     //TODO
-    MERGE_WF(QUANTTB.out, CALL_WF.out)
+    // MERGE_WF(QUANTTB.out, CALL_WF.out)
 
 }

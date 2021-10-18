@@ -1,8 +1,3 @@
-/*
-FIXME: Documentation comments
-
-*/
-
 process BCFTOOLS_VIEW {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish

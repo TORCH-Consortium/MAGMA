@@ -1,9 +1,3 @@
-/*
-FIXME: Documentation comments
-
-*/
-
-
 process LOFREQ_FILTER {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
@@ -18,7 +12,7 @@ process LOFREQ_FILTER {
     script:
 
     """
-	lofreq filter \\
+    lofreq filter \\
         ${arguments} \\
         -i $OUT_DIR/minor_vars/${vcf}  \\
     > ${sampleName}.Filtered_AF.vcf

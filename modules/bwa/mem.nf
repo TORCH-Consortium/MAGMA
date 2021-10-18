@@ -1,9 +1,3 @@
-nextflow.enable.dsl = 2
-
-params.results_dir = "${params.outdir}/bwa/mem"
-params.save_mode = 'copy'
-params.should_publish = true
-
 process BWA_MEM {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
@@ -13,7 +7,7 @@ process BWA_MEM {
     path(reference)
 
     output:
-    path("*.sorted_reads.bam")
+    tuple val(sampleName), path("*.sorted_reads.bam")
 
 
     script:

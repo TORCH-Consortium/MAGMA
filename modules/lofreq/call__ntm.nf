@@ -1,10 +1,4 @@
-/*
-FIXME: Documentation comments
-
-*/
-
-
-process LOFREQ_CALL_NTM {
+process LOFREQ_CALL__NTM {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
@@ -18,16 +12,13 @@ process LOFREQ_CALL_NTM {
     shell:
 
     '''
-	lofreq call \\
-	    -f !{reference} \\
-	    -r !{reference.getBaseName()}:!{params.region} \\
-        !{arguments} \\
-	    !{recalibratedBam} \\
-	| grep -v "#" \\
-	| cut -f 2 -d ";" \\
-	| tr -d 'AF=' \\
-	| awk '{Total=Total+$1} END{print Total}' \\
-	> !{sampleName}.potential_NTM_fraction.txt
+
+    if [[ $(lofreq call -f !{reference} -r !{reference.getBaseName()}:!{params.region} !{arguments} !{recalibratedBam} | grep -v "#" | cut -f 2 -d ";" | tr -d 'AF=') ]]
+    then
+        lofreq call -f !{reference} -r !{reference.getBaseName()}:!{params.region} !{arguments} !{recalibratedBam} | grep -v "#" | cut -f 2 -d ";" | tr -d 'AF=' | awk '{Total=Total+$1} END{print Total}' > !{sampleName}.potential_NTM_fraction.txt
+    else
+        echo "0" > !{sampleName}.potential_NTM_fraction.txt
+    fi
     '''
 
     stub:

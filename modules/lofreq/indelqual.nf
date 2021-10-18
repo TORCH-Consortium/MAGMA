@@ -1,9 +1,3 @@
-/*
-FIXME: Documentation comments
-
-*/
-
-
 process LOFREQ_INDELQUAL {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
@@ -13,16 +7,16 @@ process LOFREQ_INDELQUAL {
     path(ref_fasta)
 
     output:
-    tuple val(sampleName), path("*..dindel.bam")
+    tuple val(sampleName), path("*.dindel.bam")
 
     script:
 
     """
-	lofreq indelqual \\
-	    -f ${ref_fasta} \\
-	    --dindel \\
-	    -o ${sampleName}.dindel.bam \\
-	    ${recalibratedBam}
+    lofreq indelqual \\
+        -f ${ref_fasta} \\
+        --dindel \\
+        -o ${sampleName}.dindel.bam \\
+        ${recalibratedBam}
     """
 
     stub:

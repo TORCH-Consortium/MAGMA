@@ -1,6 +1,3 @@
-nextflow.enable.dsl = 2
-
-
 include { FASTQC } from '../modules/fastqc/fastqc.nf' addParams (params.FASTQC)
 include { BWA_MEM } from '../modules/bwa/mem.nf' addParams (params.BWA_MEM)
 
@@ -34,5 +31,8 @@ workflow MAP_WF {
 
 
         BWA_MEM(reads_ch.join(bew_mem_rg_ch), params.ref_fasta)
+
+    emit:
+        sorted_reads = BWA_MEM.out
 
 }
