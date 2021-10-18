@@ -44,13 +44,15 @@ workflow CALL_WF {
             // call_apply_bqsr
             GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta)
 
-            SAMTOOLS_INDEX(GATK_APPLY_BQSR.out)
+
+            recalibrated_bam_ch = GATK_APPLY_BQSR.out
 
         } else {
 
-            SAMTOOLS_INDEX(GATK_MARK_DUPLICATES.out)
+            recalibrated_bam_ch = GATK_MARK_DUPLICATES.out
         }
 
+        SAMTOOLS_INDEX(recalibrated_bam_ch)
 
         //----------------------------------------------------------------------------------
         // Call Variants for follow up calling
@@ -86,41 +88,44 @@ workflow CALL_WF {
 
         //----------------------------------------------------------------------------------
         // Infer structural variants
+        //
         //NOTE: This inference can not handle a contaminant and MTB allele on the same site, if so the site will be excluded.
         //----------------------------------------------------------------------------------
 
         // call_sv
-        //
-        //
+        //TODO: Should SV-calling be optional?
 
-
-        if (params.dataset_is_not_contaminated) {
-
-            DELLY_CALL(GATK_APPLY_BQSR.out)
-
-        } else {
-
-            DELLY_CALL(GATK_MARK_DUPLICATES.out)
-        }
-
+        DELLY_CALL(recalibrated_bam_ch)
         BCFTOOLS_VIEW(DELLY_CALL.out)
         GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out)
 
         //Enable this once a proper file with DR genes has been made:
         GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
 
-        // FIXME add the inputs
+
+        //----------------------------------------------------------------------------------
+        // STATS
+        //----------------------------------------------------------------------------------
+
+
         // call_stats
-        SAMTOOLS_STATS
-        GATK_COLLECT_WGS_METRICS
-        GATK_FLAG_STAT
+        SAMTOOLS_STATS(recalibrated_bam_ch, params.ref_fasta)
+        GATK_COLLECT_WGS_METRICS(recalibrated_bam_ch, params.ref_fasta)
+        GATK_FLAG_STAT(recalibrated_bam_ch, params.ref_fasta)
 
 
-        //TODO: Make sure that all of the stat files belong to the same sample (join operator)
-        UTILS_SAMPLE_STATS
+        sample_stats_ch = (SAMTOOLS_STATS.out)
+            .join(GATK_COLLECT_WGS_METRICS.out)
+            .join(GATK_FLAG_STAT.out)
+            .join(QUANTTB_QUANT.out)
+            .join(LOFREQ_CALL__NTM.out)
+
+
+        UTILS_SAMPLE_STATS(sample_stats_ch)
 
         UTILS_COHORT_STATS(UTILS_SAMPLE_STATS.out.collect())
 
     emit:
+        cohort_stats_tsv = UTILS_COHORT_STATS.out
 
 }
