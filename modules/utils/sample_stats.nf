@@ -52,7 +52,7 @@ function ntm_fraction_threshold_met () {
     return 1
 }
 
-
+IFS=' '
 
     COVERAGE=$(cat !{wgsMetrics} | grep "^4411532" | cut -f 4)
     BREADTH_OF_COVERAGE=$(cat !{wgsMetrics} | grep "^4411532" | cut -f 14)
