@@ -12,7 +12,7 @@ process LOFREQ_INDELQUAL {
     script:
 
     """
-    lofreq indelqual \\
+    ${params.lofreq_path} indelqual \\
         -f ${ref_fasta} \\
         --dindel \\
         -o ${sampleName}.dindel.bam \\
@@ -22,11 +22,11 @@ process LOFREQ_INDELQUAL {
     stub:
 
     """
-	echo "lofreq indelqual \\
-	    -f ${ref_fasta} \\
-	    --dindel \\
-	    -o ${sampleName}.dindel.bam \\
-	    ${recalibratedBam} "
+    echo "lofreq indelqual \\
+        -f ${ref_fasta} \\
+        --dindel \\
+        -o ${sampleName}.dindel.bam \\
+        ${recalibratedBam} "
 
     touch ${sampleName}.potential_NTM_fraction.txt
     """

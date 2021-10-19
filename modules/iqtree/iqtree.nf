@@ -12,6 +12,7 @@ process process_name {
 
     output:
 
+    //FIXME
     script:
 
     """

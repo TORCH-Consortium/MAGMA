@@ -14,7 +14,7 @@ process GATK_INDEX_FEATURE_FILE {
     script:
 
     """
-    gatk IndexFeatureFile -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} IndexFeatureFile -Xmx${task.memory.giga}G \\
         -I ${annotatedVcf} \\
         -O ${sampleName}.potentialSV.idx.vcf.gz
     """

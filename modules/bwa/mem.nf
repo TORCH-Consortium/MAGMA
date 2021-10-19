@@ -13,13 +13,13 @@ process BWA_MEM {
     script:
 
     """
-    bwa mem \\
+    ${params.bwa_path} mem \\
         -M \\
         -t ${task.cpus} \\
         -R ${RG}  \\
         ${reference} \\
         ${sampleReads} \\
-    | samtools sort \\
+    | ${params.samtools_path} sort \\
         -@ ${task.cpus} \\
         -O BAM \\
         -o ${sampleName}.sorted_reads.bam -
@@ -28,13 +28,13 @@ process BWA_MEM {
     stub:
 
     """
-    echo "bwa mem \\
+    echo "${params.bwa_path} mem \\
         -M \\
         -t ${task.cpus} \\
         -R ${RG}  \\
         ${reference} \\
         ${sampleReads} \\
-    | samtools sort \\
+    | ${params.samtools_path} sort \\
         -@ ${task.cpus} \\
         -O BAM \\
         -o ${sampleName}.sorted_reads.bam -

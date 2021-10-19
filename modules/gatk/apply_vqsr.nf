@@ -1,10 +1,3 @@
-/*
-FIXME: Documentation comments
-
-*/
-
-
-
 process GATK_APPLY_VQSR {
     tag "${joint_name}"
 
@@ -22,7 +15,7 @@ process GATK_APPLY_VQSR {
     script:
 
     """
-    gatk ApplyVQSR -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} ApplyVQSR -Xmx${task.memory.giga}G \\
         -R ${reference} \\
         -V ${variantsVcf} \\
         --tranches-file ${joint_name}.${analysisMode}.tranches \\

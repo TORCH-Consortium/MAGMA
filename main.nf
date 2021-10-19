@@ -18,7 +18,7 @@ include { CALL_WF } from './workflows/call_wf.nf'
 // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
 
 
-reads_ch = Channel.fromPath("${projectDir}/data/mock_data/input_samplesheet.csv")
+reads_ch = Channel.fromPath(params.input_samplesheet)
         .splitCsv(header: false, skip: 1)
         .map { row -> {
                     study           = row[0]
@@ -66,7 +66,7 @@ workflow TEST {
 
     QUANTTB_QUANT(reads_ch)
     MAP_WF(reads_ch)
-    CALL_WF(MAP_WF.out.sorted_reads)
+    // CALL_WF(MAP_WF.out.sorted_reads)
 
 }
 

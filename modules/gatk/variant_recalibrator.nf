@@ -1,10 +1,3 @@
-/*
-FIXME: Documentation comments
-
-*/
-
-
-
 process GATK_VARIANT_RECALIBRATOR {
     tag "${joint_name}"
 
@@ -28,7 +21,7 @@ process GATK_VARIANT_RECALIBRATOR {
     def finalResourceFilesArg =    (resourceFilesArg  ? "--resource:${resourceFilesArg}" : "")
 
     """
-    gatk VariantRecalibrator -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} VariantRecalibrator -Xmx${task.memory.giga}G \\
         -R ${reference} \\
         -V ${variantsVcf} \\
         ${finalResourceFilesArg} \\
@@ -43,5 +36,9 @@ process GATK_VARIANT_RECALIBRATOR {
     stub:
 
     """
+    touch ${joint_name}.${analysisMode}.tranches
+    touch ${joint_name}.${analysisMode}.R
+    touch ${joint_name}.${analysisMode}.recal.vcf.gz
+    touch ${joint_name}.${analysisMode}.mod
     """
 }

@@ -1,10 +1,3 @@
-nextflow.enable.dsl = 2
-
-params.results_dir = "${params.outdir}/cluster_picker"
-params.save_mode = 'copy'
-params.should_publish = true
-
-
 process CLUSTER_PICKER {
     tag "snpCount - ${snpCount}"
     publishdir params.results_dir, mode: params.save_mode, enabled: params.should_publish

@@ -1,5 +1,3 @@
-
-
 process TBPROFILER_VCF_PROFILE__SAMPLE {
     tag "${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
