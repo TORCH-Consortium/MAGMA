@@ -65,7 +65,7 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
 workflow TEST {
 
     QUANTTB_QUANT(reads_ch)
-    MAP_WF(reads_ch)
+    // MAP_WF(reads_ch)
     // CALL_WF(MAP_WF.out.sorted_reads)
 
 }
