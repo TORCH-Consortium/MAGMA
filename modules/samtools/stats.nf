@@ -12,7 +12,7 @@ process SAMTOOLS_STATS {
     script:
 
     """
-    samtools stats \\
+    ${params.samtools_path} stats \\
         ${arguments} \\
         ${bam} \\
         -r ${reference} \\

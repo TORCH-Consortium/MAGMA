@@ -1,9 +1,3 @@
-/*
-FIXME: Documentation comments
-
-*/
-
-
 process GATK_SELECT_VARIANTS {
     tag "type: ${variantType}"
 
@@ -16,13 +10,15 @@ process GATK_SELECT_VARIANTS {
     path("*")
 
     output:
+    path("*.raw_${variantType}.vcf.gz")
+
 
     script:
 
     def finalResourceFilesArg =    (resourceFilesArg  ? "-XL:${resourceFilesArg}" : "")
 
     """
-    gatk SelectVariants -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} SelectVariants -Xmx${task.memory.giga}G \\
         -R ${reference} \\
         -V ${annotatedVcf} \\
         --select-type-to-include ${variantType} \\
@@ -34,5 +30,12 @@ process GATK_SELECT_VARIANTS {
     stub:
 
     """
+    echo "${params.gatk_path} SelectVariants -Xmx${task.memory.giga}G \\
+        -R ${reference} \\
+        -V ${annotatedVcf} \\
+        --select-type-to-include ${variantType} \\
+        ${finalResourceFilesArg} \\
+        ${params.arguments} \\
+        -O ${joint_name}.raw_${variantType}.vcf.gz"
     """
 }

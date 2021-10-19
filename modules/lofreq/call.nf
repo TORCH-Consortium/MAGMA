@@ -12,7 +12,7 @@ process LOFREQ_CALL {
     script:
 
     """
-    lofreq call \\
+    ${params.lofreq_path} call \\
         ${arguments} \\
         ${dindleBam} \\
     > ${sampleName}.LoFreq.vcf

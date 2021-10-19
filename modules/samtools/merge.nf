@@ -11,7 +11,7 @@ process SAMTOOLS_MERGE {
     script:
 
     """
-    samtools merge \\
+    ${params.samtools_path} merge \\
         -f \\
         ${sampleName}.sorted_reads.bam \\
         bams/* \\

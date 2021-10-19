@@ -12,7 +12,7 @@ process LOFREQ_FILTER {
     script:
 
     """
-    lofreq filter \\
+    ${params.lofreq_path} filter \\
         ${arguments} \\
         -i $OUT_DIR/minor_vars/${vcf}  \\
     > ${sampleName}.Filtered_AF.vcf

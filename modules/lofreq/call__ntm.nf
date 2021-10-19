@@ -13,9 +13,9 @@ process LOFREQ_CALL__NTM {
 
     '''
 
-    if [[ $(lofreq call -f !{reference} -r !{reference.getBaseName()}:!{params.region} !{arguments} !{recalibratedBam} | grep -v "#" | cut -f 2 -d ";" | tr -d 'AF=') ]]
+    if [[ $(!{params.lofreq_path} call -f !{reference} -r !{reference.getBaseName()}:!{params.region} !{arguments} !{recalibratedBam} | grep -v "#" | cut -f 2 -d ";" | tr -d 'AF=') ]]
     then
-        lofreq call -f !{reference} -r !{reference.getBaseName()}:!{params.region} !{arguments} !{recalibratedBam} | grep -v "#" | cut -f 2 -d ";" | tr -d 'AF=' | awk '{Total=Total+$1} END{print Total}' > !{sampleName}.potential_NTM_fraction.txt
+        !{params.lofreq_path} call -f !{reference} -r !{reference.getBaseName()}:!{params.region} !{arguments} !{recalibratedBam} | grep -v "#" | cut -f 2 -d ";" | tr -d 'AF=' | awk '{Total=Total+$1} END{print Total}' > !{sampleName}.potential_NTM_fraction.txt
     else
         echo "0" > !{sampleName}.potential_NTM_fraction.txt
     fi

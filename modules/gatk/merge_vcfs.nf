@@ -20,7 +20,7 @@ process GATK_MERGE_VCFS {
     script:
 
     """
-    gatk MergeVcfs -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} MergeVcfs -Xmx${task.memory.giga}G \\
         -I ${filteredSnpVcf} \\
         -I ${fileteredIndelVcf} \\
         -O ${joint_name}.filtered_SNP.RawIndels.vcf.gz

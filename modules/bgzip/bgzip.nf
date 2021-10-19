@@ -1,10 +1,3 @@
-/*
-FIXME: Documentation comments
-
-*/
-
-
-
 process BGZIP {
     tag "${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish

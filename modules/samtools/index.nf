@@ -11,7 +11,7 @@ process SAMTOOLS_INDEX {
     script:
 
     """
-    samtools index ${bam}
+    ${params.samtools_path} index ${bam}
     """
 
     stub:

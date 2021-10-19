@@ -12,14 +12,14 @@ process FASTQC {
     script:
 
     """
-    fastqc \\
+    ${params.fastqc_path} \\
         ${sampleReads} \\
         -t ${task.cpus}
     """
 
     stub:
     """
-    echo "fastqc \\
+    echo "${params.fastqc_path} \\
               ${sampleReads} \\
               -t ${task.cpus}"
 

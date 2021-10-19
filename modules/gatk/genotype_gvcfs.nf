@@ -1,9 +1,3 @@
-/*
-FIXME: Documentation comments
-
-*/
-
-
 process GATK_GENOTYPE_GVCFS {
     tag "${joint_name}"
 
@@ -22,7 +16,7 @@ process GATK_GENOTYPE_GVCFS {
     script:
 
     """
-    gatk GenotypeGVCFs -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} GenotypeGVCFs -Xmx${task.memory.giga}G \\
         -R ${ref_fasta} \\
         -V ${combinedVcf} \\
         ${params.arguments} \\

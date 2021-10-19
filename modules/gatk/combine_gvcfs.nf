@@ -1,9 +1,3 @@
-/*
-FIXME: Documentation comments
-
-*/
-
-
 process GATK_COMBINE_GVCFS {
     tag "${joint_name}"
 
@@ -21,7 +15,7 @@ process GATK_COMBINE_GVCFS {
     script:
 
     """
-    gatk CombineGVCFs -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} CombineGVCFs -Xmx${task.memory.giga}G \\
         -R ${ref_fasta} \\
         ${params.arguments} \\
         ${gvcfs} \\

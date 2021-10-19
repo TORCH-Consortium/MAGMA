@@ -14,10 +14,10 @@ process GATK_BASE_RECALIBRATOR {
     script:
 
     """
-    gatk BaseRecalibrator -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} BaseRecalibrator -Xmx${task.memory.giga}G \\
         --known-sites ${dbsnp} \\
         -R ${ref_fasta} \\
-	    -I ${dedupedBam} \\
+        -I ${dedupedBam} \\
         -O ${sampleName}.recal_data.table
     """
 

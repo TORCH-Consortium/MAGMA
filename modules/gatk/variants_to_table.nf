@@ -15,12 +15,12 @@ process GATK_VARIANTS_TO_TABLE {
 
     output:
 
-
+//FIXME
     shell:
 
     '''
     gatk VariantsToTable -Xmx!{task.memory.giga}G \\
-    -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.filtered_SNP.ExDR.IncComplex.vcf.gz \\
+    -V !{joint_name}.filtered_SNP.ExDR.IncComplex.vcf.gz \\
     -GF GT \\
     -O /dev/stdout \\
     | sed -e 's/^\t//g' \\

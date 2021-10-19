@@ -4,7 +4,7 @@ process DELLY_CALL {
 
     input:
     tuple val(sampleName), path(recalibratedBam)
-    path(ref_fasta)
+    path(reference)
 
     output:
     tuple val(sampleName), path("*.delly.bcf")
@@ -12,8 +12,8 @@ process DELLY_CALL {
     script:
 
     """
-    delly call \\
-        -g ${ref_fasta} \\
+    ${params.delly_path} call \\
+        -g ${reference} \\
         ${recalibratedBam} \\
         ${arguments} \\
         -o ${sampleName}.delly.bcf
@@ -23,8 +23,8 @@ process DELLY_CALL {
     stub:
 
     """
-    echo "delly call \\
-        -g ${ref_fasta} \\
+    echo "${params.delly_path} call \\
+        -g ${reference} \\
         ${recalibratedBam} \\
         ${arguments} \\
         -o ${sampleName}.delly.bcf"

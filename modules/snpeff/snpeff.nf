@@ -1,9 +1,3 @@
-/*
-FIXME: Documentation comments
-
-*/
-
-
 process SNPEFF {
     tag "${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
@@ -24,7 +18,7 @@ process SNPEFF {
 
     sed -i 's/^${ref_fasta.getBaseName()}/Chromosome/g' ${joint_name}.raw_variants.vcf
 
-    snpEff \\
+    ${params.snpeff_path} \\
         -nostats -ud 40 \\
         Mycobacterium_tuberculosis_h37rv \\
         ${rawJointVariantsFile} \\
