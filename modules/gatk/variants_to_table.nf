@@ -1,44 +1,41 @@
-nextflow.enable.dsl = 2
-
-params.results_dir = "${params.outdir}/gatk4/variants_to_table"
-params.save_mode = 'copy'
-params.should_publish = true
-
 
 process GATK_VARIANTS_TO_TABLE {
-    tag ""
+    tag "${joint_name}"
 
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 
     input:
+    tuple val(joint_name), path(filteredSnpIncComplexVcfGz)
 
     output:
+    path("*.95X.IncComplex.fa")
+
 
 //FIXME
     shell:
 
     '''
-    gatk VariantsToTable -Xmx!{task.memory.giga}G \\
-    -V !{joint_name}.filtered_SNP.ExDR.IncComplex.vcf.gz \\
+    !{params.gatk_path} VariantsToTable -Xmx!{task.memory.giga}G \\
+    -V !{filteredSnpIncComplexVcfGz} \\
     -GF GT \\
     -O /dev/stdout \\
     | sed -e 's/^\t//g' \\
     | sed -e 's/*/-/g' \\
     | sed -e 's/\./-/g' \\
-    | sed '2,${/^.*\(-.*\)\{'"$CLUSTER_COVERAGE_THRESHOLD"',\}.*$/d}' \\
-    | $DATAMASH transpose \\
+    | sed '2,${/^.*\(-.*\)\{'"!{params.median_coverage_cutoff}"',\}.*$/d}' \\
+    | !{params.datamash_path} transpose \\
     | sed -e 's/^/>/g' \\
     | sed -e 's/-GT/\n/g' \\
     | sed -e 's/\t//g' \\
-    > $OUT_DIR/fasta/$JOINT_NAME/$JOINT_NAME.95X.IncComplex.fa
+    > !{joint_name}.95X.IncComplex.fa
 
     '''
 
     stub:
 
     """
-
+    touch ${joint_name}.95X.IncComplex.fa
     """
 }
 

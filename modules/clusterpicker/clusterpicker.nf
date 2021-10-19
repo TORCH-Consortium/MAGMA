@@ -29,7 +29,7 @@ process CLUSTER_PICKER {
 
     jvm_mem_opts="-Xmx!{task.memory.giga}G"
 
-    cluster-picker \\
+    !{params.cluster_picker_path} \\
         !{fasta} \\
         !{newickTree} \\
         !{params.bootstrap_1} \\

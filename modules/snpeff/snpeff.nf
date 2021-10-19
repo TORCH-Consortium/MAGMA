@@ -19,7 +19,7 @@ process SNPEFF {
     sed -i 's/^${ref_fasta.getBaseName()}/Chromosome/g' ${joint_name}.raw_variants.vcf
 
     ${params.snpeff_path} \\
-        -nostats -ud 40 \\
+        ${params.arguments} \\
         Mycobacterium_tuberculosis_h37rv \\
         ${rawJointVariantsFile} \\
     > ${joint_name}.raw_variants.annotated.vcf
