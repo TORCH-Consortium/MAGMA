@@ -1,26 +1,25 @@
-//FIXME
- $SNP_DISTS $OUT_DIR/fasta/$JOINT_NAME/$JOINT_NAME.95X.variable.IncComplex.fa -b > $OUT_DIR/phylogeny/$JOINT_NAME/$JOINT_NAME.IncComplex.snp_dists.tsv
-
-process process_name {
-    tag "something"
-    publishdir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+process SNPDISTS {
+    tag "${joint_name}"
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    path(somefile)
+    tuple val(joint_name), path(alignmentFasta)
+    val(type)
 
     output:
-    path("pattern"),  emit: "ch_output"
+    path("*.snp_dists.tsv")
 
     script:
 
     """
-    echo "nothing"
+    ${params.snp_dists_path} ${alignmentFasta} -b \\
+    > ${joint_name}.${type}.snp_dists.tsv
     """
 
     stub:
 
     """
-    echo "nothing on stub"
+    touch ${joint_name}.${type}.snp_dists.tsv
     """
 
 }

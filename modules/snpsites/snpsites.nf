@@ -1,27 +1,26 @@
-//FIXME
-$SNP_SITES -o $OUT_DIR/fasta/$JOINT_NAME/$JOINT_NAME.95X.variable.IncComplex.fa $OUT_DIR/fasta/$JOINT_NAME/$JOINT_NAME.95X.IncComplex.fa
-
-
-process process_name {
-    tag "something"
-    publishdir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+process SNP_SITES {
+    tag "${joint_name}"
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    path(somefile)
+    tuple val(joint_name), path(alignmentFasta)
+    val(type)
+
 
     output:
-    path("pattern"),  emit: "ch_output"
+    tuple val(joint_name), path("*.95X.variable.${type}.fa")
+
 
     script:
 
     """
-    echo "nothing"
+    ${params.snp_sites_path} -o ${joint_name}.95X.variable.${type}.fa ${alignmentFasta}
     """
 
     stub:
 
     """
-    echo "nothing on stub"
+    touch ${joint_name}.95X.variable.${type}.fa
     """
 
 }
