@@ -1,34 +1,26 @@
-//FIXME
-tb-profiler collate --db $RESISTANCE_DB -d $OUT_DIR/resistance/$JOINT_NAME/XBS/results/ -p $OUT_DIR/resistance/$JOINT_NAME/XBS/$JOINT_NAME.XBS.resistance
-
-
-
-nextflow.enable.dsl = 2
-
-params.results_dir = "${params.outdir}/tbprofiler/collate"
-params.save_mode = 'copy'
-params.should_publish = true
-
-
 process TBPROFILER_COLLATE {
     publishdir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
+    //FIXME This is only relevant for the
+    beforeScript "source ${params.conda_dir}/etc/profile.d/conda.sh"
+    conda "${params.tb_profiler_venv}"
+    afterScript "conda deactivate"
+
+
     input:
-    path("results/*")
+    tuple val(joint_name), path(resistanceDb)
 
     output:
-    path("tbprofiler*")
+    path("*.XBS.resistance*")
 
     script:
     """
-    tb-profiler update_tbdb
-    tb-profiler collate
-    cp tbprofiler.txt tbprofiler_cohort_report.tsv
+    tb-profiler collate --db ${resistanceDb} -p ${joint_name}.XBS.resistance.txt
     """
 
     stub:
     """
-    touch tbprofiler_cohort_report.tsv
+    touch ${joint_name}.XBS.resistance.txt
     """
 }
 
