@@ -1,4 +1,3 @@
-
 process GATK_VARIANTS_TO_TABLE {
     tag "${joint_name}"
 
