@@ -12,7 +12,7 @@ process GATK_APPLY_BQSR {
     script:
 
     """
-    gatk ApplyBQSR -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} ApplyBQSR -Xmx${task.memory.giga}G \\
         -R ${ref_fasta} \\
         -I ${dedupedBam} \\
         --bqsr ${recalibrationTable} \\
