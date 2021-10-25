@@ -5,6 +5,7 @@ process BWA_MEM {
     input:
     tuple val(sampleName), path(sampleReads), val(RG)
     path(reference)
+    path("*")
 
     output:
     tuple val(sampleName), path("*.sorted_reads.bam")
