@@ -7,7 +7,7 @@ nextflow.enable.dsl = 2
 
 include { MAP_WF } from './workflows/map_wf.nf'
 include { QUANTTB_QUANT } from './modules/quanttb/quant.nf' addParams( params.QUANTTB_QUANT )
-// include { CALL_WF } from './workflows/call_wf.nf'
+include { CALL_WF } from './workflows/call_wf.nf'
 
 //================================================================================
 // Prepare channels
