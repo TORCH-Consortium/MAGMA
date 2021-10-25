@@ -36,13 +36,13 @@ workflow MAP_WF {
 
     BWA_MEM(reads_ch.join(bew_mem_rg_ch),
             params.ref_fasta,
-            params.ref_fasta_dict,
+            [params.ref_fasta_dict,
             params.ref_fasta_amb,
             params.ref_fasta_ann,
             params.ref_fasta_bwt,
             params.ref_fasta_fai,
             params.ref_fasta_pac,
-            params.ref_fasta_sa)
+             params.ref_fasta_sa])
 
 
 
