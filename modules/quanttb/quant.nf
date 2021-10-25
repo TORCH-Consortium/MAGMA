@@ -16,7 +16,7 @@ process QUANTTB_QUANT {
     script:
 
     """
-    quanttb quant ${sampleReads} -o ${sampleName}.quant.txt -k
+    ${params.quanttb_path} quant ${sampleReads} -o ${sampleName}.quant.txt -k
     """
 
     stub:
