@@ -3,7 +3,7 @@
 tmp/
 
 data/mock_data/
-results_mock
+data/test_data/
 
 
 */**/*fastq.gz
