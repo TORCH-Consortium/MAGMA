@@ -39,7 +39,7 @@ workflow CALL_WF {
 
         if (params.dataset_is_not_contaminated) {
             // call_base_recal
-            GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out, params.dbsnp, params.ref_fasta)
+            GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out, params.dbsnp_vcf, params.ref_fasta)
 
             // call_apply_bqsr
             GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta)

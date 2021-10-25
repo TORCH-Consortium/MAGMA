@@ -7,7 +7,7 @@ nextflow.enable.dsl = 2
 
 include { MAP_WF } from './workflows/map_wf.nf'
 include { QUANTTB_QUANT } from './modules/quanttb/quant.nf' addParams( params.QUANTTB_QUANT )
-include { CALL_WF } from './workflows/call_wf.nf'
+// include { CALL_WF } from './workflows/call_wf.nf'
 
 //================================================================================
 // Prepare channels
@@ -63,9 +63,11 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
 //================================================================================
 
 workflow TEST {
-
     MAP_WF(reads_ch)
     // QUANTTB_QUANT(reads_ch)
+
+    //TODO: The following error originates within the CALL_WF
+    //unknown recognition error type: groovyjarjarantlr4.v4.runtime.LexerNoViableAltException
     // CALL_WF(MAP_WF.out.sorted_reads)
 
 
