@@ -6,7 +6,7 @@ process SAMTOOLS_MERGE {
     tuple val(sampleName), path("bams/*")
 
     output:
-    tuple val(sampleName), path(".*sorted_reads.bam")
+    tuple val(sampleName), path("*.sorted_reads.bam")
 
     script:
 
