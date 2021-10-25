@@ -16,7 +16,7 @@ process BWA_MEM {
     ${params.bwa_path} mem \\
         -M \\
         -t ${task.cpus} \\
-        -R ${RG}  \\
+        -R "${RG}"  \\
         ${reference} \\
         ${sampleReads} \\
     | ${params.samtools_path} sort \\
