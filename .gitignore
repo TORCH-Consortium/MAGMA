@@ -4,3 +4,14 @@ tmp/
 
 data/mock_data/
 results_mock
+
+
+*/**/*fastq.gz
+*/**/*fasta
+*/**/*gbk
+
+.idea
+work/
+data/full_data
+results*
+*.nextflow*
