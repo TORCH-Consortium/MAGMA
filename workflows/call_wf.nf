@@ -86,10 +86,10 @@ workflow CALL_WF {
         //----------------------------------------------------------------------------------
 
         // call_lofreq
-        LOFREQ_INDELQUAL(GATK_HAPLOTYPE_CALLER.out, params.ref_fasta)
+        LOFREQ_INDELQUAL(recalibrated_bam_ch, params.ref_fasta)
         SAMTOOLS_INDEX__LOFREQ(LOFREQ_INDELQUAL.out)
         LOFREQ_CALL(SAMTOOLS_INDEX__LOFREQ.out, params.ref_fasta, [params.ref_fasta_fai])
-        LOFREQ_FILTER(LOFREQ_CALL.out)
+        LOFREQ_FILTER(LOFREQ_CALL.out, params.ref_fasta)
 
     /*
         //----------------------------------------------------------------------------------
