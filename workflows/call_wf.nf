@@ -3,9 +3,9 @@ include { GATK_MARK_DUPLICATES } from "../modules/gatk/mark_duplicates.nf" addPa
 include { GATK_BASE_RECALIBRATOR } from "../modules/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR )
 include { GATK_APPLY_BQSR } from "../modules/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR )
 include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
-// include { GATK_HAPLOTYPE_CALLER } from "../modules/gatk/haplotype_caller.nf" addParams ( params.GATK_HAPLOTYPE_CALLER )
-// include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/gatk/haplotype_caller__minor_variants.nf" addParams ( params.GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS )
-// include { LOFREQ_CALL__NTM } from "../modules/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
+include { GATK_HAPLOTYPE_CALLER } from "../modules/gatk/haplotype_caller.nf" addParams ( params.GATK_HAPLOTYPE_CALLER )
+include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/gatk/haplotype_caller__minor_variants.nf" addParams ( params.GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS )
+include { LOFREQ_CALL__NTM } from "../modules/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
 // include { LOFREQ_INDELQUAL } from "../modules/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
 // include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
 // include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
@@ -38,24 +38,24 @@ workflow CALL_WF {
         // call_mark_duplicates
         GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
 
-        if (params.dataset_is_not_contaminated) {
-            // call_base_recal
-            GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out.bam_tuple, params.dbsnp_vcf, params.ref_fasta)
+    //FIXME: Uncomment after testing
+        // if (params.dataset_is_not_contaminated) {
+        //     // call_base_recal
+        //     GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out.bam_tuple, params.dbsnp_vcf, params.ref_fasta)
 
-            // call_apply_bqsr
-            GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta)
+        //     // call_apply_bqsr
+        //     GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta)
 
 
-            recalibrated_bam_ch = GATK_APPLY_BQSR.out
+        //     recalibrated_bam_ch = GATK_APPLY_BQSR.out
 
-        } else {
+        // } else {
 
             recalibrated_bam_ch = GATK_MARK_DUPLICATES.out.bam_tuple
-        }
+        // }
 
         SAMTOOLS_INDEX(recalibrated_bam_ch)
 
-    /*
         //----------------------------------------------------------------------------------
         // Call Variants for follow up calling
         //----------------------------------------------------------------------------------
@@ -65,18 +65,21 @@ workflow CALL_WF {
         // call_haplotype_caller
         GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out, params.ref_fasta)
 
-        if (params.compute_minor_variants) {
-            // call_haplotype_caller_minor_variants
-            GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta)
-        }
+    //FIXME: Uncomment after testing
+        // if (params.compute_minor_variants) {
+        //     // call_haplotype_caller_minor_variants
+        //     GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta)
+        // }
 
         //----------------------------------------------------------------------------------
         // Infer potential NTM contamination
         //----------------------------------------------------------------------------------
 
+
         // call_ntm
         LOFREQ_CALL__NTM(GATK_HAPLOTYPE_CALLER.out, params.ref_fasta)
 
+    /*
 
         //----------------------------------------------------------------------------------
         // Infer minor variants with LoFreq
