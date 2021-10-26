@@ -16,7 +16,7 @@ process GATK_GENOTYPE_GVCFS {
     script:
 
     """
-    ${params.gatk_path} GenotypeGVCFs -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} GenotypeGVCFs --java-options "-Xmx${task.memory.giga}G" \\
         -R ${ref_fasta} \\
         -V ${combinedVcf} \\
         ${params.arguments} \\

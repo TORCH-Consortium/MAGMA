@@ -15,7 +15,7 @@ process GATK_COMBINE_GVCFS {
     script:
 
     """
-    ${params.gatk_path} CombineGVCFs -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} CombineGVCFs --java-options "-Xmx${task.memory.giga}G" \\
         -R ${ref_fasta} \\
         ${params.arguments} \\
         ${gvcfs} \\

@@ -14,7 +14,7 @@ process GATK_BASE_RECALIBRATOR {
     script:
 
     """
-    ${params.gatk_path} BaseRecalibrator -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} BaseRecalibrator --java-options "-Xmx${task.memory.giga}G" \\
         --known-sites ${dbsnp} \\
         -R ${ref_fasta} \\
         -I ${dedupedBam} \\

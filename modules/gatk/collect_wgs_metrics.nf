@@ -13,7 +13,7 @@ process GATK_COLLECT_WGS_METRICS {
     script:
 
     """
-    ${params.gatk_path} CollectWgsMetrics -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} CollectWgsMetrics --java-options "-Xmx${task.memory.giga}G" \\
         -R ${reference} \\
         -I ${bam} \\
         ${arguments} \\

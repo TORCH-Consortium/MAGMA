@@ -18,7 +18,7 @@ process GATK_SELECT_VARIANTS {
     def finalResourceFilesArg =    (resourceFilesArg  ? "-XL:${resourceFilesArg}" : "")
 
     """
-    ${params.gatk_path} SelectVariants -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} SelectVariants --java-options "-Xmx${task.memory.giga}G" \\
         -R ${reference} \\
         -V ${annotatedVcf} \\
         --select-type-to-include ${variantType} \\

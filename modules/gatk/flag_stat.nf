@@ -13,7 +13,7 @@ process GATK_FLAG_STAT {
     script:
 
     """
-    ${params.gatk_path} FlagStat -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} FlagStat --java-options "-Xmx${task.memory.giga}G" \\
         -R ${ref_fasta} \\
         -I ${bam}  \\
     > ${sampleName}.FlagStat.txt

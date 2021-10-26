@@ -14,7 +14,7 @@ process GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS {
     script:
 
     """
-    ${params.gatk_path} HaplotypeCaller -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} HaplotypeCaller --java-options "-Xmx${task.memory.giga}G" \\
         -R ${reference} \\
         -I ${bam} \\
         ${params.arguments} \\

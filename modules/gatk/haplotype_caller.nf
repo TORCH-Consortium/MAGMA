@@ -14,7 +14,7 @@ process GATK_HAPLOTYPE_CALLER {
     script:
 
     """
-    ${params.gatk_path} HaplotypeCaller -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} HaplotypeCaller --java-options "-Xmx${task.memory.giga}G" \\
         -R ${ref_fasta} \\
         -I ${bam} \\
         -ERC GVCF \\

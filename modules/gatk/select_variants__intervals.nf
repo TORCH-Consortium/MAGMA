@@ -14,7 +14,7 @@ process GATK_SELECT_VARIANTS__INCLUSION {
     script:
 
     """
-    ${params.gatk_path} SelectVariants -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} SelectVariants --java-options "-Xmx${task.memory.giga}G" \\
         -V ${structuralVariantsVcf} \\
         -L ${intervalsFile} \\
         -O ${sampleName}.potentialSV.DRgenes.vcf.gz
