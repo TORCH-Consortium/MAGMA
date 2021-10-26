@@ -15,7 +15,7 @@ process GATK_VARIANTS_TO_TABLE {
     shell:
 
     '''
-    !{params.gatk_path} VariantsToTable -Xmx!{task.memory.giga}G \\
+    !{params.gatk_path} VariantsToTable --java-options "-Xmx!{task.memory.giga}G" \\
     -V !{filteredSnpIncComplexVcfGz} \\
     -GF GT \\
     -O /dev/stdout \\

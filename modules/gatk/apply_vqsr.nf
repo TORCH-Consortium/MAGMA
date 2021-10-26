@@ -15,7 +15,7 @@ process GATK_APPLY_VQSR {
     script:
 
     """
-    ${params.gatk_path} ApplyVQSR -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} ApplyVQSR --java-options "-Xmx${task.memory.giga}G" \\
         -R ${reference} \\
         -V ${variantsVcf} \\
         --tranches-file ${joint_name}.${analysisMode}.tranches \\

@@ -6,7 +6,8 @@ workflow MAP_WF {
         reads_ch
 
     main:
-        FASTQC(reads_ch)
+        //TODO: Enable this after the testing is done.
+        // FASTQC(reads_ch)
 
 
         //TODO: Can be refactored in next iteration to re-use the reads_ch channel
@@ -33,7 +34,17 @@ workflow MAP_WF {
         }
 
 
-        BWA_MEM(reads_ch.join(bew_mem_rg_ch), params.ref_fasta)
+    BWA_MEM(reads_ch.join(bew_mem_rg_ch),
+            params.ref_fasta,
+            [params.ref_fasta_dict,
+            params.ref_fasta_amb,
+            params.ref_fasta_ann,
+            params.ref_fasta_bwt,
+            params.ref_fasta_fai,
+            params.ref_fasta_pac,
+             params.ref_fasta_sa])
+
+
 
     emit:
         sorted_reads = BWA_MEM.out

@@ -63,10 +63,12 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
 //================================================================================
 
 workflow TEST {
-
     MAP_WF(reads_ch)
     // QUANTTB_QUANT(reads_ch)
-    // CALL_WF(MAP_WF.out.sorted_reads)
+
+    //TODO: The following error originates within the CALL_WF
+    //unknown recognition error type: groovyjarjarantlr4.v4.runtime.LexerNoViableAltException
+    CALL_WF(MAP_WF.out.sorted_reads)
 
 
 

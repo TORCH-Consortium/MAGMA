@@ -21,7 +21,7 @@ process GATK_VARIANT_RECALIBRATOR {
     def finalResourceFilesArg =    (resourceFilesArg  ? "--resource:${resourceFilesArg}" : "")
 
     """
-    ${params.gatk_path} VariantRecalibrator -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} VariantRecalibrator --java-options "-Xmx${task.memory.giga}G" \\
         -R ${reference} \\
         -V ${variantsVcf} \\
         ${finalResourceFilesArg} \\

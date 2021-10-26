@@ -8,12 +8,12 @@ process GATK_FLAG_STAT {
 
 
     output:
-    tuple val(sampleName), path(".*FlagStat.txt")
+    tuple val(sampleName), path("*.FlagStat.txt")
 
     script:
 
     """
-    ${params.gatk_path} FlagStat -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} FlagStat --java-options "-Xmx${task.memory.giga}G" \\
         -R ${ref_fasta} \\
         -I ${bam}  \\
     > ${sampleName}.FlagStat.txt

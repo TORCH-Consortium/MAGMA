@@ -3,7 +3,7 @@ process DELLY_CALL {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    tuple val(sampleName), path(recalibratedBam)
+    tuple val(sampleName), path(bai), path(recalibratedBam)
     path(reference)
 
     output:
@@ -15,7 +15,7 @@ process DELLY_CALL {
     ${params.delly_path} call \\
         -g ${reference} \\
         ${recalibratedBam} \\
-        ${arguments} \\
+        ${params.arguments} \\
         -o ${sampleName}.delly.bcf
 
     """
@@ -26,7 +26,7 @@ process DELLY_CALL {
     echo "${params.delly_path} call \\
         -g ${reference} \\
         ${recalibratedBam} \\
-        ${arguments} \\
+        ${params.arguments} \\
         -o ${sampleName}.delly.bcf"
 
     touch ${sampleName}.delly.bcf

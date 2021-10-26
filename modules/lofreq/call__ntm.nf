@@ -3,8 +3,9 @@ process LOFREQ_CALL__NTM {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    tuple val(sampleName), path(recalibratedBam)
+    tuple val(sampleName), path(bamIndex), path(recalibratedBam)
     path(reference)
+    path("*")
 
     output:
     tuple val(sampleName), path("*.potential_NTM_fraction.txt")
@@ -13,9 +14,9 @@ process LOFREQ_CALL__NTM {
 
     '''
 
-    if [[ $(!{params.lofreq_path} call -f !{reference} -r !{reference.getBaseName()}:!{params.region} !{arguments} !{recalibratedBam} | grep -v "#" | cut -f 2 -d ";" | tr -d 'AF=') ]]
+    if [[ $(!{params.lofreq_path} call -f !{reference} -r !{reference.getBaseName()}:!{params.region} !{params.arguments} !{recalibratedBam} | grep -v "#" | cut -f 2 -d ";" | tr -d 'AF=') ]]
     then
-        !{params.lofreq_path} call -f !{reference} -r !{reference.getBaseName()}:!{params.region} !{arguments} !{recalibratedBam} | grep -v "#" | cut -f 2 -d ";" | tr -d 'AF=' | awk '{Total=Total+$1} END{print Total}' > !{sampleName}.potential_NTM_fraction.txt
+        !{params.lofreq_path} call -f !{reference} -r !{reference.getBaseName()}:!{params.region} !{params.arguments} !{recalibratedBam} | grep -v "#" | cut -f 2 -d ";" | tr -d 'AF=' | awk '{Total=Total+$1} END{print Total}' > !{sampleName}.potential_NTM_fraction.txt
     else
         echo "0" > !{sampleName}.potential_NTM_fraction.txt
     fi

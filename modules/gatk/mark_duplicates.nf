@@ -6,13 +6,13 @@ process GATK_MARK_DUPLICATES {
     tuple val(sampleName), path(mergedBam)
 
     output:
-    tuple val(sampleName), path(".*dedup_reads.bam")
-    tuple val(sampleName), path(".*MarkDupMetrics.txt"),           emit: metrics
+    tuple val(sampleName), path("*.dedup_reads.bam"),              emit: bam_tuple
+    tuple val(sampleName), path("*.MarkDupMetrics.txt"),           emit: metrics
 
     script:
 
     """
-    ${params.gatk_path} MarkDuplicates -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} MarkDuplicates --java-options "-Xmx${task.memory.giga}G" \\
         --METRICS_FILE ${sampleName}.MarkDupMetrics.txt \\
         -I ${mergedBam} \\
         -O ${sampleName}.dedup_reads.bam
