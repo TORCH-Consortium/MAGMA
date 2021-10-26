@@ -32,12 +32,13 @@ workflow CALL_WF {
 
         // call_merge
         //NOTE: The output of this seems to overwrite the output of XBS_map#L31
+        //TODO: Confirm whether this is really necessary as the results are the same and we don't have multiple BAM files
         SAMTOOLS_MERGE(sorted_reads_ch)
 
-    /*
         // call_mark_duplicates
         GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
 
+    /*
         if (params.dataset_is_not_contaminated) {
             // call_base_recal
             GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out, params.dbsnp_vcf, params.ref_fasta)
