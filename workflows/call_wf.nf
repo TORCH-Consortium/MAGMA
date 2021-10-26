@@ -9,7 +9,7 @@ include { LOFREQ_CALL__NTM } from "../modules/lofreq/call__ntm.nf" addParams ( p
 include { LOFREQ_INDELQUAL } from "../modules/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
 include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
 include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
-// include { LOFREQ_FILTER } from "../modules/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
+include { LOFREQ_FILTER } from "../modules/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
 // include { DELLY_CALL } from "../modules/delly/call.nf" addParams ( params.DELLY_CALL )
 // include { BCFTOOLS_VIEW } from "../modules/bcftools/view.nf" addParams ( params.BCFTOOLS_VIEW )
 // include { GATK_INDEX_FEATURE_FILE } from "../modules/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE )
