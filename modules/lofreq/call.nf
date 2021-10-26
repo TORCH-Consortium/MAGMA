@@ -14,7 +14,7 @@ process LOFREQ_CALL {
 
     """
     ${params.lofreq_path} call \\
-        ${arguments} \\
+        ${params.arguments} \\
         ${dindleBam} \\
     > ${sampleName}.LoFreq.vcf
     """
@@ -23,7 +23,7 @@ process LOFREQ_CALL {
 
     """
     echo "lofreq call \\
-        ${arguments} \\
+        ${params.arguments} \\
         --call-indels \\
         ${dindleBam} \\
         > ${sampleName}.lofreq.vcf"
