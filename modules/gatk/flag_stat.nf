@@ -8,7 +8,7 @@ process GATK_FLAG_STAT {
 
 
     output:
-    tuple val(sampleName), path(".*FlagStat.txt")
+    tuple val(sampleName), path("*.FlagStat.txt")
 
     script:
 

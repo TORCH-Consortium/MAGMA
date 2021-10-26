@@ -9,7 +9,7 @@ process GATK_BASE_RECALIBRATOR {
     path(ref_fasta)
 
     output:
-    tuple val(sampleName), path(".*recal_data.table"), path(dedupedBam)
+    tuple val(sampleName), path("*.recal_data.table"), path(dedupedBam)
 
     script:
 

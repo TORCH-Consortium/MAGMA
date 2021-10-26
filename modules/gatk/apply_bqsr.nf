@@ -7,12 +7,12 @@ process GATK_APPLY_BQSR {
     path(ref_fasta)
 
     output:
-    tuple val(sampleName), path(".*recal_reads.bam")
+    tuple val(sampleName), path("*.recal_reads.bam")
 
     script:
 
     """
-    ${params.gatk_path} ApplyBQSR -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} ApplyBQSR --java-options "-Xmx${task.memory.giga}G" \\
         -R ${ref_fasta} \\
         -I ${dedupedBam} \\
         --bqsr ${recalibrationTable} \\

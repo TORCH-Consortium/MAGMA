@@ -7,7 +7,7 @@ process GATK_COLLECT_WGS_METRICS {
     path(reference)
 
     output:
-    tuple val(sampleName), path(".*WgsMetrics.txt")
+    tuple val(sampleName), path("*.WgsMetrics.txt")
 
 
     script:

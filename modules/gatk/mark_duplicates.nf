@@ -6,8 +6,8 @@ process GATK_MARK_DUPLICATES {
     tuple val(sampleName), path(mergedBam)
 
     output:
-    tuple val(sampleName), path(".*dedup_reads.bam"),              emit: bam_tuple
-    tuple val(sampleName), path(".*MarkDupMetrics.txt"),           emit: metrics
+    tuple val(sampleName), path("*.dedup_reads.bam"),              emit: bam_tuple
+    tuple val(sampleName), path("*.MarkDupMetrics.txt"),           emit: metrics
 
     script:
 
