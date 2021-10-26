@@ -5,6 +5,7 @@ process LOFREQ_CALL__NTM {
     input:
     tuple val(sampleName), path(recalibratedBam)
     path(reference)
+    path("*")
 
     output:
     tuple val(sampleName), path("*.potential_NTM_fraction.txt")

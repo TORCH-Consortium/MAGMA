@@ -63,9 +63,9 @@ workflow CALL_WF {
 
 
         // call_haplotype_caller
-    GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
+        GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
 
-    //FIXME: Uncomment after testing
+        //FIXME: Uncomment after testing
         // if (params.compute_minor_variants) {
         //     // call_haplotype_caller_minor_variants
         //     GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
@@ -77,7 +77,7 @@ workflow CALL_WF {
 
 
         // call_ntm
-        LOFREQ_CALL__NTM(GATK_HAPLOTYPE_CALLER.out, params.ref_fasta)
+        LOFREQ_CALL__NTM(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai])
 
     /*
 
