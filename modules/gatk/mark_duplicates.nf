@@ -12,7 +12,7 @@ process GATK_MARK_DUPLICATES {
     script:
 
     """
-    ${params.gatk_path} MarkDuplicates -Xmx${task.memory.giga}G \\
+    ${params.gatk_path} MarkDuplicates --java-options "-Xmx${task.memory.giga}G" \\
         --METRICS_FILE ${sampleName}.MarkDupMetrics.txt \\
         -I ${mergedBam} \\
         -O ${sampleName}.dedup_reads.bam
