@@ -11,8 +11,8 @@ include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/i
 include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
 include { LOFREQ_FILTER } from "../modules/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
 include { DELLY_CALL } from "../modules/delly/call.nf" addParams ( params.DELLY_CALL )
-// include { BCFTOOLS_VIEW } from "../modules/bcftools/view.nf" addParams ( params.BCFTOOLS_VIEW )
-// include { GATK_INDEX_FEATURE_FILE } from "../modules/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE )
+include { BCFTOOLS_VIEW } from "../modules/bcftools/view.nf" addParams ( params.BCFTOOLS_VIEW )
+include { GATK_INDEX_FEATURE_FILE } from "../modules/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE )
 // include { SAMTOOLS_STATS } from "../modules/samtools/stats.nf" addParams ( params.SAMTOOLS_STATS )
 // include { GATK_COLLECT_WGS_METRICS } from "../modules/gatk/collect_wgs_metrics.nf" addParams ( params.GATK_COLLECT_WGS_METRICS )
 // include { GATK_FLAG_STAT } from "../modules/gatk/flag_stat.nf" addParams ( params.GATK_FLAG_STAT )
@@ -100,12 +100,12 @@ workflow CALL_WF {
         // call_sv
         //TODO: Should SV-calling be optional?
 
-        DELLY_CALL(recalibrated_bam_ch)
+        DELLY_CALL(recalibrated_bam_ch, params.ref_fasta)
         BCFTOOLS_VIEW(DELLY_CALL.out)
         GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out)
 
-        //Enable this once a proper file with DR genes has been made:
-        GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
+        //Enable this once a proper file with DR genes has been made available
+        // GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
 
     /*
 
