@@ -6,9 +6,9 @@ include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( param
 include { GATK_HAPLOTYPE_CALLER } from "../modules/gatk/haplotype_caller.nf" addParams ( params.GATK_HAPLOTYPE_CALLER )
 include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/gatk/haplotype_caller__minor_variants.nf" addParams ( params.GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS )
 include { LOFREQ_CALL__NTM } from "../modules/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
-// include { LOFREQ_INDELQUAL } from "../modules/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
-// include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
-// include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
+include { LOFREQ_INDELQUAL } from "../modules/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
+include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
 // include { LOFREQ_FILTER } from "../modules/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
 // include { DELLY_CALL } from "../modules/delly/call.nf" addParams ( params.DELLY_CALL )
 // include { BCFTOOLS_VIEW } from "../modules/bcftools/view.nf" addParams ( params.BCFTOOLS_VIEW )
@@ -76,10 +76,10 @@ workflow CALL_WF {
         //----------------------------------------------------------------------------------
 
 
+        //FIXME: This doesn't seem to be working
         // call_ntm
         LOFREQ_CALL__NTM(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai])
 
-    /*
 
         //----------------------------------------------------------------------------------
         // Infer minor variants with LoFreq
@@ -87,10 +87,11 @@ workflow CALL_WF {
 
         // call_lofreq
         LOFREQ_INDELQUAL(GATK_HAPLOTYPE_CALLER.out, params.ref_fasta)
-        SAMTOOLS_INDEX__LOFREQ(LOFREQ_INDELQUAL.out,params.ref_fasta)
-        LOFREQ_CALL(SAMTOOLS_INDEX.out)
+        SAMTOOLS_INDEX__LOFREQ(LOFREQ_INDELQUAL.out, params.ref_fasta)
+        LOFREQ_CALL(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai])
         LOFREQ_FILTER(LOFREQ_CALL.out)
 
+    /*
         //----------------------------------------------------------------------------------
         // Infer structural variants
         //

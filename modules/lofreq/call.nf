@@ -3,8 +3,9 @@ process LOFREQ_CALL {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    tuple val(sampleName), path(dindleBam), path(bai)
+    tuple val(sampleName), path(bai), path(dindleBam)
     path(ref_fasta)
+    path("*")
 
     output:
     tuple val(sampleName), path("*.LoFreq.vcf")
