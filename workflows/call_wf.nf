@@ -1,5 +1,5 @@
 include { SAMTOOLS_MERGE } from "../modules/samtools/merge.nf" addParams ( params.SAMTOOLS_MERGE )
-// include { GATK_MARK_DUPLICATES } from "../modules/gatk/mark_duplicates.nf" addParams ( params.GATK_MARK_DUPLICATES )
+include { GATK_MARK_DUPLICATES } from "../modules/gatk/mark_duplicates.nf" addParams ( params.GATK_MARK_DUPLICATES )
 // include { GATK_BASE_RECALIBRATOR } from "../modules/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR )
 // include { GATK_APPLY_BQSR } from "../modules/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR )
 // include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
@@ -38,7 +38,6 @@ workflow CALL_WF {
         // call_mark_duplicates
         GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
 
-    /*
         if (params.dataset_is_not_contaminated) {
             // call_base_recal
             GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out, params.dbsnp_vcf, params.ref_fasta)
@@ -56,6 +55,7 @@ workflow CALL_WF {
 
         SAMTOOLS_INDEX(recalibrated_bam_ch)
 
+    /*
         //----------------------------------------------------------------------------------
         // Call Variants for follow up calling
         //----------------------------------------------------------------------------------
