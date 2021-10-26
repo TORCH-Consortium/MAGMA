@@ -3,7 +3,7 @@ process DELLY_CALL {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    tuple val(sampleName), path(recalibratedBam)
+    tuple val(sampleName), path(bai), path(recalibratedBam)
     path(reference)
 
     output:
