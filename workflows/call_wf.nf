@@ -63,12 +63,12 @@ workflow CALL_WF {
 
 
         // call_haplotype_caller
-        GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out, params.ref_fasta)
+    GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai])
 
     //FIXME: Uncomment after testing
         // if (params.compute_minor_variants) {
         //     // call_haplotype_caller_minor_variants
-        //     GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta)
+        //     GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai])
         // }
 
         //----------------------------------------------------------------------------------

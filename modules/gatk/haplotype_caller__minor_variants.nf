@@ -6,6 +6,7 @@ process GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS {
     input:
     tuple val(sampleName), path(bai), path(bam)
     path(reference)
+    path("*")
 
     output:
     tuple val(sampleName), path("*.AllSites.g.vcf.gz")

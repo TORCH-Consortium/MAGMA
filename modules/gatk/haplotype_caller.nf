@@ -6,6 +6,7 @@ process GATK_HAPLOTYPE_CALLER {
     input:
     tuple val(sampleName), path(bai), path(bam)
     path(ref_fasta)
+    path("*")
 
     output:
     tuple val(sampleName), path("*.g.vcf.gz")
