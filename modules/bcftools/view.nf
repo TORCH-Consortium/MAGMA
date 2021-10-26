@@ -12,7 +12,7 @@ process BCFTOOLS_VIEW {
 
     '''
     !{params.bcftools_path} view !{bcf} | grep '1/1' | sed 's/1\/1/1/g' | cut -f 1-3,5 -d "," > !{sampleName}.headerlessvcf.temp
-    !{params.bcftools_path} view -h ${bcf} > ${sampleName}.header.temp
+    !{params.bcftools_path} view -h !{bcf} > !{sampleName}.header.temp
 
     cat !{sampleName}.header.temp !{sampleName}.headerlessvcf.temp \\
     | bgzip > !{sampleName}.potentialSV.vcf.gz
