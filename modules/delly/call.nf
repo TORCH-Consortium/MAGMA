@@ -15,7 +15,7 @@ process DELLY_CALL {
     ${params.delly_path} call \\
         -g ${reference} \\
         ${recalibratedBam} \\
-        ${arguments} \\
+        ${params.arguments} \\
         -o ${sampleName}.delly.bcf
 
     """
@@ -26,7 +26,7 @@ process DELLY_CALL {
     echo "${params.delly_path} call \\
         -g ${reference} \\
         ${recalibratedBam} \\
-        ${arguments} \\
+        ${params.arguments} \\
         -o ${sampleName}.delly.bcf"
 
     touch ${sampleName}.delly.bcf
