@@ -91,7 +91,6 @@ workflow CALL_WF {
         LOFREQ_CALL(SAMTOOLS_INDEX__LOFREQ.out, params.ref_fasta, [params.ref_fasta_fai])
         LOFREQ_FILTER(LOFREQ_CALL.out, params.ref_fasta)
 
-    /*
         //----------------------------------------------------------------------------------
         // Infer structural variants
         //
@@ -108,6 +107,7 @@ workflow CALL_WF {
         //Enable this once a proper file with DR genes has been made:
         GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
 
+    /*
 
         //----------------------------------------------------------------------------------
         // STATS
