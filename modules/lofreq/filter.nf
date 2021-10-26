@@ -13,8 +13,8 @@ process LOFREQ_FILTER {
 
     """
     ${params.lofreq_path} filter \\
-        ${arguments} \\
-        -i $OUT_DIR/minor_vars/${vcf}  \\
+        ${params.arguments} \\
+        -i ${vcf}  \\
     > ${sampleName}.Filtered_AF.vcf
     """
 
@@ -23,7 +23,7 @@ process LOFREQ_FILTER {
     """
     echo "lofreq filter \\
         ${arguments} \\
-        -i $OUT_DIR/minor_vars/${vcf}  \\
+        -i ${vcf}  \\
         ${sampleName}.Filtered_AF.vcf"
 
     touch ${sampleName}.Filtered_AF.vcf
