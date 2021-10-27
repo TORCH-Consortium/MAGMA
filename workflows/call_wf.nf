@@ -117,7 +117,7 @@ workflow CALL_WF {
         // call_stats
         SAMTOOLS_STATS(recalibrated_bam_ch, params.ref_fasta)
         GATK_COLLECT_WGS_METRICS(recalibrated_bam_ch, params.ref_fasta)
-        GATK_FLAG_STAT(recalibrated_bam_ch, params.ref_fasta)
+        GATK_FLAG_STAT(recalibrated_bam_ch, params.ref_fasta, [params.ref_fasta_fai])
 
 
     /*
