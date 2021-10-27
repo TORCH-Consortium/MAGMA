@@ -4,7 +4,7 @@
 
 
 process UTILS_COHORT_STATS {
-    tag "${params.vcf_name}"
+    tag "joint_name: ${params.vcf_name}"
 
     input:
     path("sample_stats/*")
