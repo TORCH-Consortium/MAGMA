@@ -6,7 +6,7 @@ process QUANTTB_QUANT {
     tuple val(sampleName), path(sampleReads)
 
     output:
-    tuple val(sampleName), path("*.quant.txt")
+    tuple val(sampleName), path("output/*.quant.txt")
 
     script:
 

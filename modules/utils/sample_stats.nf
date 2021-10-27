@@ -15,7 +15,7 @@ process UTILS_SAMPLE_STATS {
     shell:
 
     '''
-// this function checks whther the relative abundance threshold is met for one of the strains
+# This function checks whther the relative abundance threshold is met for one of the strains
 function rel_abundance_threshold_met () {
     IFS=';'
     local i
@@ -34,7 +34,7 @@ function rel_abundance_threshold_met () {
 }
 
 
-// this function checks whether the relative abundance threshold is met for one of the strains
+# This function checks whether the relative abundance threshold is met for one of the strains
 function ntm_fraction_threshold_met () {
     IFS=';'
     local i
