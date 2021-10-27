@@ -130,7 +130,7 @@ workflow CALL_WF {
 
         UTILS_SAMPLE_STATS(sample_stats_ch)
 
-        UTILS_COHORT_STATS(params.vcf_name, UTILS_SAMPLE_STATS.out.collect())
+        UTILS_COHORT_STATS(UTILS_SAMPLE_STATS.out.collect())
 
     emit:
         cohort_stats_tsv = UTILS_COHORT_STATS.out
