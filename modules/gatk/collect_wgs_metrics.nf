@@ -16,7 +16,7 @@ process GATK_COLLECT_WGS_METRICS {
     ${params.gatk_path} CollectWgsMetrics --java-options "-Xmx${task.memory.giga}G" \\
         -R ${reference} \\
         -I ${bam} \\
-        ${arguments} \\
+        ${params.arguments} \\
         -O ${sampleName}.WgsMetrics.txt
     """
 
@@ -26,7 +26,7 @@ process GATK_COLLECT_WGS_METRICS {
     echo "gatk CollectWgsMetrics -Xmx${task.memory.giga}G \\
         -R ${reference} \\
         -I ${bam} \\
-        ${arguments} \\
+        ${params.arguments} \\
         -O ${sampleName}.WgsMetrics.txt"
 
     touch ${sampleName}.WgsMetrics.txt

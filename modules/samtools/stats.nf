@@ -13,7 +13,7 @@ process SAMTOOLS_STATS {
 
     """
     ${params.samtools_path} stats \\
-        ${arguments} \\
+        ${params.arguments} \\
         ${bam} \\
         -r ${reference} \\
     > ${sampleName}.SamtoolStats.txt
