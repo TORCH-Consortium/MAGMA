@@ -4,6 +4,7 @@
 
 
 process UTILS_COHORT_STATS {
+    tag "${joint_name}"
 
     input:
     tuple val(joint_name), path("*")
