@@ -12,12 +12,12 @@ include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFR
 include { LOFREQ_FILTER } from "../modules/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
 include { DELLY_CALL } from "../modules/delly/call.nf" addParams ( params.DELLY_CALL )
 include { BCFTOOLS_VIEW } from "../modules/bcftools/view.nf" addParams ( params.BCFTOOLS_VIEW )
-// include { GATK_INDEX_FEATURE_FILE } from "../modules/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE )
-// include { SAMTOOLS_STATS } from "../modules/samtools/stats.nf" addParams ( params.SAMTOOLS_STATS )
-// include { GATK_COLLECT_WGS_METRICS } from "../modules/gatk/collect_wgs_metrics.nf" addParams ( params.GATK_COLLECT_WGS_METRICS )
-// include { GATK_FLAG_STAT } from "../modules/gatk/flag_stat.nf" addParams ( params.GATK_FLAG_STAT )
-// include { UTILS_SAMPLE_STATS } from "../modules/utils/sample_stats.nf" addParams ( params.UTILS_SAMPLE_STATS )
-// include { UTILS_COHORT_STATS } from "../modules/utils/cohort_stats.nf" addParams ( params.UTILS_COHORT_STATS )
+include { GATK_INDEX_FEATURE_FILE } from "../modules/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE )
+include { SAMTOOLS_STATS } from "../modules/samtools/stats.nf" addParams ( params.SAMTOOLS_STATS )
+include { GATK_COLLECT_WGS_METRICS } from "../modules/gatk/collect_wgs_metrics.nf" addParams ( params.GATK_COLLECT_WGS_METRICS )
+include { GATK_FLAG_STAT } from "../modules/gatk/flag_stat.nf" addParams ( params.GATK_FLAG_STAT )
+include { UTILS_SAMPLE_STATS } from "../modules/utils/sample_stats.nf" addParams ( params.UTILS_SAMPLE_STATS )
+include { UTILS_COHORT_STATS } from "../modules/utils/cohort_stats.nf" addParams ( params.UTILS_COHORT_STATS )
 
 
 
@@ -103,12 +103,11 @@ workflow CALL_WF {
 
         DELLY_CALL(SAMTOOLS_INDEX.out, params.ref_fasta)
         BCFTOOLS_VIEW(DELLY_CALL.out)
-        // GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out)
+        GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out)
 
         //Enable this once a proper file with DR genes has been made available
         // GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
 
-    /*
 
         //----------------------------------------------------------------------------------
         // STATS
@@ -121,6 +120,7 @@ workflow CALL_WF {
         GATK_FLAG_STAT(recalibrated_bam_ch, params.ref_fasta)
 
 
+    /*
         sample_stats_ch = (SAMTOOLS_STATS.out)
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
