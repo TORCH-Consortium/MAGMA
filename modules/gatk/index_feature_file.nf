@@ -15,7 +15,7 @@ process GATK_INDEX_FEATURE_FILE {
 
     """
     ${params.gatk_path} IndexFeatureFile --java-options "-Xmx${task.memory.giga}G" \\
-        -I ${annotatedVcf} \\
+        -I ${structuralVariantsVcf} \\
         -O ${sampleName}.potentialSV.idx.vcf.gz
     """
 
