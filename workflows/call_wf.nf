@@ -26,6 +26,7 @@ include { UTILS_COHORT_STATS } from "../modules/utils/cohort_stats.nf" addParams
 workflow CALL_WF {
     take:
         sorted_reads_ch
+        quanttb_results_ch
 
 
     main:
@@ -120,11 +121,10 @@ workflow CALL_WF {
         GATK_FLAG_STAT(recalibrated_bam_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
 
 
-    /*
         sample_stats_ch = (SAMTOOLS_STATS.out)
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
-            .join(QUANTTB_QUANT.out)
+            .join(quanttb_results_ch)
             .join(LOFREQ_CALL__NTM.out)
 
 
@@ -134,5 +134,4 @@ workflow CALL_WF {
 
     emit:
         cohort_stats_tsv = UTILS_COHORT_STATS.out
-*/
 }
