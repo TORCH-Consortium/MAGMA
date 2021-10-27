@@ -7,7 +7,7 @@ process SAMTOOLS_STATS {
     path(reference)
 
     output:
-    tuple val(sampleName), path(".*SamtoolStats.txt")
+    tuple val(sampleName), path("*.SamtoolStats.txt")
 
     script:
 
