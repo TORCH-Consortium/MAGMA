@@ -7,13 +7,13 @@ process SAMTOOLS_STATS {
     path(reference)
 
     output:
-    tuple val(sampleName), path(".*SamtoolStats.txt")
+    tuple val(sampleName), path("*.SamtoolStats.txt")
 
     script:
 
     """
     ${params.samtools_path} stats \\
-        ${arguments} \\
+        ${params.arguments} \\
         ${bam} \\
         -r ${reference} \\
     > ${sampleName}.SamtoolStats.txt

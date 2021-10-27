@@ -6,12 +6,12 @@ process BCFTOOLS_VIEW {
     tuple val(sampleName), path(bcf)
 
     output:
-    tuple val(sampleName), path(".*potentialSV.vcf.gz")
+    tuple val(sampleName), path("*.potentialSV.vcf.gz")
 
     shell:
 
     '''
-    !{params.bcftools_path} view !{bcf} | grep '1/1' | sed 's/1\/1/1/g' | cut -f 1-3,5 -d "," > !{sampleName}.headerlessvcf.temp
+    !{params.bcftools_path} view !{bcf} | grep '1/1' | sed 's/1\\/1/1/g' | cut -f 1-3,5 -d "," > !{sampleName}.headerlessvcf.temp
     !{params.bcftools_path} view -h !{bcf} > !{sampleName}.header.temp
 
     cat !{sampleName}.header.temp !{sampleName}.headerlessvcf.temp \\

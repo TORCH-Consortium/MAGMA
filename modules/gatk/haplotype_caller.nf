@@ -9,7 +9,7 @@ process GATK_HAPLOTYPE_CALLER {
     path("*")
 
     output:
-    tuple val(sampleName), path("*.g.vcf.gz")
+    tuple val(sampleName), path("*.g.vcf.gz.tbi"), path("*.g.vcf.gz")
 
 
     script:

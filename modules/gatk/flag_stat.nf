@@ -5,6 +5,7 @@ process GATK_FLAG_STAT {
     input:
     tuple val(sampleName), path(bam)
     path(ref_fasta)
+    path("*")
 
 
     output:

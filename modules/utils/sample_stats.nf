@@ -15,7 +15,7 @@ process UTILS_SAMPLE_STATS {
     shell:
 
     '''
-// this function checks whther the relative abundance threshold is met for one of the strains
+# This function checks whther the relative abundance threshold is met for one of the strains
 function rel_abundance_threshold_met () {
     IFS=';'
     local i
@@ -34,7 +34,7 @@ function rel_abundance_threshold_met () {
 }
 
 
-// this function checks whether the relative abundance threshold is met for one of the strains
+# This function checks whether the relative abundance threshold is met for one of the strains
 function ntm_fraction_threshold_met () {
     IFS=';'
     local i
@@ -65,6 +65,6 @@ IFS=' '
     WGS_METR=$(cat !{wgsMetrics} | grep "^4411532" | cut -f 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,20,22,27)
     NTM_FRACTION=$(cat !{ntmFraction})
 
-    echo -e "${i}\t${TOTAL_SEQS}\t${MAPPED_P}\t${INS_SIZE}\t${AVG_QUAL}\t${REL_ABUNDANCE}\t$(rel_abundance_threshold_met $REL_ABUNDANCE_CUTOFF $REL_ABUNDANCE)\t${DEPTH}\t${WGS_METR}\t${NTM_FRACTION}\t$(ntm_fraction_threshold_met $NTM_FRACTION_CUTOFF $NTM_FRACTION)" > !{sampleName}.stats.tsv
+    echo -e "!{sampleName}\t${TOTAL_SEQS}\t${MAPPED_P}\t${INS_SIZE}\t${AVG_QUAL}\t${REL_ABUNDANCE}\t$(rel_abundance_threshold_met $REL_ABUNDANCE_CUTOFF $REL_ABUNDANCE)\t${DEPTH}\t${WGS_METR}\t${NTM_FRACTION}\t$(ntm_fraction_threshold_met $NTM_FRACTION_CUTOFF $NTM_FRACTION)" > !{sampleName}.stats.tsv
     '''
 }

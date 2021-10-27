@@ -8,15 +8,15 @@ process GATK_INDEX_FEATURE_FILE {
 
 
     output:
-    tuple val(sampleName), path("*.potentialSV.idx.vcf.gz"), path(structuralVariantsVcf)
+    tuple val(sampleName), path("*.vcf.gz.tbi"), path(structuralVariantsVcf)
 
 
     script:
 
     """
     ${params.gatk_path} IndexFeatureFile --java-options "-Xmx${task.memory.giga}G" \\
-        -I ${annotatedVcf} \\
-        -O ${sampleName}.potentialSV.idx.vcf.gz
+        -I ${structuralVariantsVcf} \\
+        -O ${sampleName}.potentialSV.vcf.gz.tbi
     """
 
     stub:
