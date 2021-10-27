@@ -9,11 +9,11 @@ process UTILS_COHORT_STATS {
     tuple val(joint_name), path("*")
 
     output:
-    path(".*cohort_stats.tsv")
+    path("*.cohort_stats.tsv")
 
     shell:
     '''
     echo -e "SAMPLE\tAVG_INSERT_SIZE\tMAPPED_%\tRAW_TOTAL_SEQS\tAVERAGE_QUALITY\tQUANTTB_RELATIVE_ABUNDANCE\tRELATIVE_ABUNDANCE_THRESHOLD_MET\tQUANTTB_DEPTH\tMEAN_COVERAGE\tSD_COVERAGE\tNTM_FRACTION_THRESHOLD_MET\tMEDIAN_COVERAGE\tMAD_COVERAGE\tPCT_EXC_ADAPTER\tPCT_EXC_MAPQ\tPCT_EXC_DUPE\tPCT_EXC_UNPAIRED\tPCT_EXC_BASEQ\tPCT_EXC_OVERLAP\tPCT_EXC_CAPPED\tPCT_EXC_TOTAL\tPCT_1X\tPCT_5X\tPCT_10X\tPCT_30X\tPCT_50X\tPCT_100X\tNTM_FRACTION" > !{joint_name}.cohort_stats.tsv
-    cat *tsv >>
+    cat *tsv >> !{joint_name}.cohort_stats.tsv
     '''
 }
