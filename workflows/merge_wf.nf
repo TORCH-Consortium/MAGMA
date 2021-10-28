@@ -1,5 +1,3 @@
-
-
 workflow MERGE_WF {
     take:
         path(cohort_stats_file)
