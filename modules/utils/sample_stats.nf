@@ -67,9 +67,9 @@ IFS=' '
     WGS_METR=$(cat !{wgsMetrics} | grep "^4411532" | cut -f 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,20,22,27)
     NTM_FRACTION=$(cat !{ntmFraction})
 
-    ntm_fraction_threshold_met $NTM_FRACTION $NTM_FRACTION
-    rel_abundance_threshold_met $REL_ABUNDANCE $REL_ABUNDANCE
+    ntm_fraction_threshold_met !{params.ntm_fraction_cutoff} $NTM_FRACTION
+    rel_abundance_threshold_met !{params.rel_abundance_cutoff} $REL_ABUNDANCE
 
-    echo -e "!{sampleName}\t${TOTAL_SEQS}\t${MAPPED_P}\t${INS_SIZE}\t${AVG_QUAL}\t${REL_ABUNDANCE}\t${DEPTH}\t${WGS_METR}\t${NTM_FRACTION}\t$(ntm_fraction_threshold_met $NTM_FRACTION_CUTOFF $NTM_FRACTION)\t$(rel_abundance_threshold_met $REL_ABUNDANCE_CUTOFF $REL_ABUNDANCE)" > !{sampleName}.stats.tsv
+    echo -e "!{sampleName}\t${TOTAL_SEQS}\t${MAPPED_P}\t${INS_SIZE}\t${AVG_QUAL}\t${REL_ABUNDANCE}\t${DEPTH}\t${WGS_METR}\t${NTM_FRACTION}\t$(ntm_fraction_threshold_met !{params.ntm_fraction_cutoff} $NTM_FRACTION)\t$(rel_abundance_threshold_met !{params.rel_abundance_cutoff} $REL_ABUNDANCE)" > !{sampleName}.stats.tsv
     '''
 }
