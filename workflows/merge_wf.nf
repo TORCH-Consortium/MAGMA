@@ -2,12 +2,14 @@ include { PREPARE_COHORT_VCF } from "../modules/samtools/merge.nf" addParams ( p
 
 workflow MERGE_WF {
     take:
-        path(cohort_stats_file)
+    path(cohort_stats_file)
 
 
 
-    //TODO: select samples based on that CSV - publish files for both (passing/failing) samples
-    // PREPARE_COHORT_VCF(cohort_stats_file)
+    main:
+
+        //TODO: select samples based on that CSV - publish files for both (passing/failing) samples
+        PREPARE_COHORT_VCF(cohort_stats_file)
 
     /*
     SNP_ANALYSIS_WF(PREPARE_COHORT_VCF_WF.out)
