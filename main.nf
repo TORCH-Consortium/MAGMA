@@ -63,9 +63,11 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
 //================================================================================
 
 workflow TEST {
-    MAP_WF(reads_ch)
-    QUANTTB_QUANT(reads_ch)
+    // MAP_WF(reads_ch)
+    // QUANTTB_QUANT(reads_ch)
     CALL_WF(MAP_WF.out.sorted_reads, QUANTTB_QUANT.out)
+
+    CALL_WF.out.gvcf_ch.view()
 
 }
 
