@@ -70,56 +70,44 @@ workflow TEST {
 
 
     CALL_WF.out.cohort_stats_tsv
-        .splitCsv(header: true )
+        .splitCsv(header: false, skip: 1 )
+        .join(CALL_WF.out.gvcf_ch)
         .view()
 
-    // .map { row -> {
-    //                 study           = row[0]
-    //                 sample          = row[1]
-    //                 library         = row[2]
-    //                 attempt         = row[3]
-    //                 read1           = row[4]
-    //                 read2           = row[5]
-    //                 flowcell        = row[6]
-    //                 lane            = row[7]
-    //                 index_sequence  = row[8]
+    // .map  { row -> {
+    //             sample = row[]
+    //             avg_insert_size = row[]
+    //             mapped_percentage = row[]
+    //             raw_total_seqs = row[]
+    //             average_quality = row[]
+    //             quanttb_relative_abundance = row[]
+    //             quanttb_depth = row[]
+    //             mean_coverage = row[]
+    //             sd_coverage = row[]
+    //             median_coverage = row[]
+    //             mad_coverage = row[]
+    //             pct_exc_adapter = row[]
+    //             pct_exc_mapq = row[]
+    //             pct_exc_dupe = row[]
+    //             pct_exc_unpaired = row[]
+    //             pct_exc_baseq = row[]
+    //             pct_exc_overlap = row[]
+    //             pct_exc_capped = row[]
+    //             pct_exc_total = row[]
+    //             pct_1x = row[]
+    //             pct_5x = row[]
+    //             pct_10x = row[]
+    //             pct_30x = row[]
+    //             pct_50x = row[]
+    //             pct_100x = row[]
+    //             ntm_fraction = row[]
+    //             ntm_fraction_threshold_met = row[]
+    //             relative_abundance_threshold_met = row[]
+    //             coverage_threshold_met = row[]
+    //             breadth_of_coverage_threshold_met = row[]
+    //             all_thresholds_met = row[]
 
-
-    //             SAMPLE
-    //             AVG_INSERT_SIZE
-    //             MAPPED_PERCENTAGE
-    //             RAW_TOTAL_SEQS
-    //             AVERAGE_QUALITY
-    //             QUANTTB_RELATIVE_ABUNDANCE
-    //             QUANTTB_DEPTH
-    //             MEAN_COVERAGE
-    //             SD_COVERAGE
-    //             MEDIAN_COVERAGE
-    //             MAD_COVERAGE
-    //             PCT_EXC_ADAPTER
-    //             PCT_EXC_MAPQ
-    //             PCT_EXC_DUPE
-    //             PCT_EXC_UNPAIRED
-    //             PCT_EXC_BASEQ
-    //             PCT_EXC_OVERLAP
-    //             PCT_EXC_CAPPED
-    //             PCT_EXC_TOTAL
-    //             PCT_1X
-    //             PCT_5X
-    //             PCT_10X
-    //             PCT_30X
-    //             PCT_50X
-    //             PCT_100X
-    //             NTM_FRACTION
-    //             NTM_FRACTION_THRESHOLD_MET
-    //             RELATIVE_ABUNDANCE_THRESHOLD_MET
-    //             COVERAGE_THRESHOLD_MET
-    //             BREADTH_OF_COVERAGE_THRESHOLD_MET
-    //             ALL_THRESHOLDS_MET
-
-    //         //TODO: Confirm whether '.' can be replaced with '_'
-    //         unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
-    //     }
+    //      }
     // }
 
 
