@@ -67,52 +67,18 @@ workflow TEST {
     MAP_WF(reads_ch)
     CALL_WF(MAP_WF.out.sorted_reads, QUANTTB_QUANT.out)
 
+    collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
 
+    sample_stats_ch = Channel.fromPath("${projectDir}/resources/reference_set/xbs-nf.test.cohort.tsv")
+        .splitCsv(header: false, skip: 1, sep: '\t' )
+        .map { row -> [
+                row.first(),           // SAMPLE
+                row.last().toInteger() // ALL_THRESHOLDS_MET
+         ]
+    }
+    .filter { it[1] == 1} // Filter out all samples which meets all the thresholds
+    .view()
 
-    CALL_WF.out.cohort_stats_tsv
-        .splitCsv(header: false, skip: 1 )
-        .join(CALL_WF.out.gvcf_ch)
-        .view()
-
-    // .map  { row -> {
-    //             sample = row[]
-    //             avg_insert_size = row[]
-    //             mapped_percentage = row[]
-    //             raw_total_seqs = row[]
-    //             average_quality = row[]
-    //             quanttb_relative_abundance = row[]
-    //             quanttb_depth = row[]
-    //             mean_coverage = row[]
-    //             sd_coverage = row[]
-    //             median_coverage = row[]
-    //             mad_coverage = row[]
-    //             pct_exc_adapter = row[]
-    //             pct_exc_mapq = row[]
-    //             pct_exc_dupe = row[]
-    //             pct_exc_unpaired = row[]
-    //             pct_exc_baseq = row[]
-    //             pct_exc_overlap = row[]
-    //             pct_exc_capped = row[]
-    //             pct_exc_total = row[]
-    //             pct_1x = row[]
-    //             pct_5x = row[]
-    //             pct_10x = row[]
-    //             pct_30x = row[]
-    //             pct_50x = row[]
-    //             pct_100x = row[]
-    //             ntm_fraction = row[]
-    //             ntm_fraction_threshold_met = row[]
-    //             relative_abundance_threshold_met = row[]
-    //             coverage_threshold_met = row[]
-    //             breadth_of_coverage_threshold_met = row[]
-    //             all_thresholds_met = row[]
-
-    //      }
-    // }
-
-
-
-    // CALL_WF.out.gvcf_ch.view()
 
 }
 
@@ -128,6 +94,23 @@ workflow {
     QUANTTB_QUANT(reads_ch)
     MAP_WF(reads_ch)
     CALL_WF(MAP_WF.out.sorted_reads)
+
+
+
+    collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
+
+    sample_stats_ch = CALL_WF.out.cohort_stats_tsv
+        .splitCsv(header: false, skip: 1, sep: '\t' )
+        .map { row -> [
+                row.first(),           // SAMPLE
+                row.last().toInteger() // ALL_THRESHOLDS_MET
+         ]
+    }
+    .filter { it[1] == 1} // Filter out all samples which meets all the thresholds
+    .view()
+
+
+
 
     //TODO
     // MERGE_WF(QUANTTB.out, CALL_WF.out)
