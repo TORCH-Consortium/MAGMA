@@ -8,3 +8,6 @@ run_dev:
 
 run_test:
 	nextflow run main.nf -params-file params/standard.yml -entry test -resume
+
+sync:
+	bash _resources/sync.sh

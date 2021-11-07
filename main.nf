@@ -76,7 +76,7 @@ workflow TEST {
                 row.last().toInteger() // ALL_THRESHOLDS_MET
          ]
     }
-    .filter { it[1] == 1} // Filter out all samples which meets all the thresholds
+    .filter { it[1] == 1} // Filter out samples which meet all the thresholds
     .view()
 
 
