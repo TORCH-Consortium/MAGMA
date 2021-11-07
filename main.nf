@@ -35,20 +35,16 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
             unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
 
             //NOTE: Accomodate single/multi reads
-            //TODO: Consider using read1 and read2 identifiers - confirm before refactor.
-            if (row[4] && row[5]) {
+            if (read1 && read2) {
 
-                // Both read1 and read2 are present
                 return tuple(unique_sample_id, tuple(file(read1), file(read2)))
 
-            } else if (row[4]) {
+            } else if (read1) {
 
-                // Only read1 is present
                 return tuple(unique_sample_id, tuple(file(read1)))
 
             } else {
 
-                // Only read2 is present
                 return tuple(unique_sample_id, tuple(file(read2)))
 
             }
@@ -69,6 +65,7 @@ workflow TEST {
 
     collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
 
+    /*
     sample_stats_ch = Channel.fromPath("${projectDir}/resources/reference_set/xbs-nf.test.cohort.tsv")
         .splitCsv(header: false, skip: 1, sep: '\t' )
         .map { row -> [
@@ -79,6 +76,7 @@ workflow TEST {
     .filter { it[1] == 1} // Filter out samples which meet all the thresholds
     .view()
 
+    */
 
 }
 
