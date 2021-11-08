@@ -7,7 +7,7 @@ process SNPEFF {
     path(ref_fasta)
 
     output:
-    tuple val(joint_name), path(".*annotated.vcf")
+    tuple val(joint_name), path("*.annotated.vcf")
 
 
     shell:

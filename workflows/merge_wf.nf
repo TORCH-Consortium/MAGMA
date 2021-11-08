@@ -1,4 +1,5 @@
 include { PREPARE_COHORT_VCF } from "./subworkflows/prepare_cohort_vcf.nf"
+include { SNP_ANALYSIS } from "./subworkflows/snp_analysis.nf"
 
 workflow MERGE_WF {
     take:
@@ -8,8 +9,9 @@ workflow MERGE_WF {
     main:
         PREPARE_COHORT_VCF(selected_gvcfs_ch)
 
+        SNP_ANALYSIS(PREPARE_COHORT_VCF_WF.out)
+
     /*
-    SNP_ANALYSIS_WF(PREPARE_COHORT_VCF_WF.out)
     INDEL_ANALYSIS_WF(PREPARE_COHORT_VCF_WF.out)
 
     // merge_snp_indel_vcf

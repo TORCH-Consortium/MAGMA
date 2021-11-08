@@ -20,8 +20,8 @@ workflow PREPARE_COHORT_VCF {
 
         // merge_snpeff_annotate
         SNPEFF(GATK_GENOTYPE_GVCFS.out, params.ref_fasta)
-        // BGZIP(SNPEFF.out)
+        BGZIP(SNPEFF.out)
         //TODO: Refactor to rely upon the singular INDEX_FILE_FEATURE module
-        // GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out)
+        GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out)
 
 }
