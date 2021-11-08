@@ -11,17 +11,29 @@ workflow PREPARE_COHORT_VCF {
 
 
     main:
+
+    gvcfs_string_ch = cohort_gvcfs_ch
+        .flatten()
+        .filter {  it.getExtension()  == "gz" }
+        .reduce { a, b -> "$a --variant $b " }
+
+
         // merge_combine
-        GATK_COMBINE_GVCFS(params.vcf_name, cohort_gvcfs_ch, params.ref_fasta)
+        GATK_COMBINE_GVCFS(params.vcf_name, gvcfs_string_ch, cohort_gvcfs_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
 
 
         // merge_genotype
-        GATK_GENOTYPE_GVCFS(GATK_COMBINE_GVCFS.out, params.ref_fasta)
+        GATK_GENOTYPE_GVCFS(GATK_COMBINE_GVCFS.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
 
         // merge_snpeff_annotate
         SNPEFF(GATK_GENOTYPE_GVCFS.out, params.ref_fasta)
+    /*
         BGZIP(SNPEFF.out)
         //TODO: Refactor to rely upon the singular INDEX_FILE_FEATURE module
         GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out)
 
+
+    emit:
+        cohort_vcf_and_index_ch = GATK_INDEX_FEATURE_FILE__COHORT.out
+    */
 }

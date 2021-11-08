@@ -4,8 +4,9 @@ process GATK_GENOTYPE_GVCFS {
 
 
     input:
-    tuple val(joint_name), path(combinedVcf)
+    tuple val(joint_name), path(combinedVcfIndex), path(combinedVcf)
     path(ref_fasta)
+    path("*")
 
 
     output:
