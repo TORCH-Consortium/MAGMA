@@ -20,7 +20,8 @@ process QUANTTB_QUANT {
 
     echo "quanttb quant -f ${sampleReads} -o ${sampleName}.quant.txt -k"
 
-    touch ${sampleName}.quant.txt
+    mkdir output
+    touch output/${sampleName}.quant.txt
     """
 
 }

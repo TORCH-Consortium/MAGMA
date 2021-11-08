@@ -8,6 +8,7 @@ nextflow.enable.dsl = 2
 include { MAP_WF } from './workflows/map_wf.nf'
 include { QUANTTB_QUANT } from './modules/quanttb/quant.nf' addParams( params.QUANTTB_QUANT )
 include { CALL_WF } from './workflows/call_wf.nf'
+include { MERGE_WF } from './workflows/merge_wf.nf'
 
 //================================================================================
 // Prepare channels
@@ -65,7 +66,8 @@ workflow TEST {
 
     collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
 
-    /*
+    // collated_gvcfs_ch.view()
+
     sample_stats_ch = Channel.fromPath("${projectDir}/resources/reference_set/xbs-nf.test.cohort.tsv")
         .splitCsv(header: false, skip: 1, sep: '\t' )
         .map { row -> [
@@ -74,9 +76,17 @@ workflow TEST {
          ]
     }
     .filter { it[1] == 1} // Filter out samples which meet all the thresholds
-    .view()
+    .map { [ it[0] ] }
+    // .view()
 
-    */
+
+    selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
+        .flatten()
+        .filter { it.class  == sun.nio.fs.UnixPath }
+        // .view()
+
+
+    MERGE_WF(selected_gvcfs_ch.collect())
 
 }
 

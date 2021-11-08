@@ -1,11 +1,11 @@
 process GATK_COMBINE_GVCFS {
     tag "${joint_name}"
-
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 
     input:
-    tuple val(joint_name), path(gvcfs)
+    val(joint_name)
+    path(gvcfs)
     path(ref_fasta)
 
     output:

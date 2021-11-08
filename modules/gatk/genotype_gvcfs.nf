@@ -1,11 +1,10 @@
 process GATK_GENOTYPE_GVCFS {
     tag "${joint_name}"
-
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 
     input:
-    tuple val(joint_name), path(combinedVcf)
+    val(joint_name), path(combinedVcf)
     path(ref_fasta)
 
 
@@ -26,6 +25,7 @@ process GATK_GENOTYPE_GVCFS {
     stub:
 
     """
+    touch ${sampleName}.raw_variants.vcf.gz
     """
 }
 

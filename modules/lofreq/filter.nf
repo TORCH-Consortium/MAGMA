@@ -22,7 +22,7 @@ process LOFREQ_FILTER {
 
     """
     echo "lofreq filter \\
-        ${arguments} \\
+        ${params.arguments} \\
         -i ${vcf}  \\
         ${sampleName}.Filtered_AF.vcf"
 

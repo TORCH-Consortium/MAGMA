@@ -28,9 +28,9 @@ process LOFREQ_CALL {
         ${params.arguments} \\
         --call-indels \\
         ${dindleBam} \\
-        > ${sampleName}.lofreq.vcf"
+        > ${sampleName}.LoFreq.vcf"
 
-    touch ${sampleName}.lofreq.vcf
+    touch ${sampleName}.LoFreq.vcf
     """
 
 }

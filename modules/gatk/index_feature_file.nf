@@ -23,6 +23,7 @@ process GATK_INDEX_FEATURE_FILE {
 
     """
     touch ${sampleName}.potentialSV.idx.vcf.gz
+    touch ${sampleName}.potentialSV.idx.vcf.gz.tbi
 
     """
 }

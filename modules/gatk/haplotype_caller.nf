@@ -34,6 +34,7 @@ process GATK_HAPLOTYPE_CALLER {
         -O ${sampleName}.g.vcf.gz"
 
     touch ${sampleName}.g.vcf.gz
+    touch ${sampleName}.g.vcf.gz.tbi
     """
 }
 
