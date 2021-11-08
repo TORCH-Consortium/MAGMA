@@ -18,6 +18,8 @@ process SAMTOOLS_INDEX {
 
     """
     echo "samtools index ${bam}"
+    touch ${sampleName}.bam
+    touch ${sampleName}.bam.bai
     """
 
 }

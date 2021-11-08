@@ -4,6 +4,8 @@
 
 
 process UTILS_SAMPLE_STATS {
+    tag "${sampleName}"
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
     tuple val(sampleName), path(samtoolsStats), path(wgsMetrics), path(flagStats), path(quanttbStats), path(ntmFraction)
@@ -65,6 +67,30 @@ IFS=' '
     WGS_METR=$(cat !{wgsMetrics} | grep "^4411532" | cut -f 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,20,22,27)
     NTM_FRACTION=$(cat !{ntmFraction})
 
-    echo -e "!{sampleName}\t${TOTAL_SEQS}\t${MAPPED_P}\t${INS_SIZE}\t${AVG_QUAL}\t${REL_ABUNDANCE}\t$(rel_abundance_threshold_met $REL_ABUNDANCE_CUTOFF $REL_ABUNDANCE)\t${DEPTH}\t${WGS_METR}\t${NTM_FRACTION}\t$(ntm_fraction_threshold_met $NTM_FRACTION_CUTOFF $NTM_FRACTION)" > !{sampleName}.stats.tsv
+    if [COVERAGE -ge !{params.median_coverage_cutoff}]
+        then
+            COVERAGE_THRESHOLD_MET=1
+        else
+            COVERAGE_THRESHOLD_MET=0
+    fi
+
+
+    if [ 1 -eq "$(echo "$BREADTH_OF_COVERAGE >= !{params.breadth_of_coverage_cutoff}" | bc)" ]
+        then
+            BREADTH_OF_COVERAGE_THRESHOLD_MET=1
+        else
+            BREADTH_OF_COVERAGE_THRESHOLD_MET=0
+    fi
+
+
+    if [COVERAGE -ge !{params.median_coverage_cutoff}] && [ 1 -eq "$(echo "$BREADTH_OF_COVERAGE >= !{params.breadth_of_coverage_cutoff}" | bc)" ] && rel_abundance_threshold_met !{params.rel_abundance_cutoff} $REL_ABUNDANCE && ntm_fraction_threshold_met !{params.ntm_fraction_cutoff} $NTM_FRACTION;
+        then
+            ALL_THRESHOLDS_MET=1
+        else
+            ALL_THRESHOLDS_MET=0
+    fi
+
+
+    echo -e "!{sampleName}\t${TOTAL_SEQS}\t${MAPPED_P}\t${INS_SIZE}\t${AVG_QUAL}\t${REL_ABUNDANCE}\t${DEPTH}\t${WGS_METR}\t${NTM_FRACTION}\t$(ntm_fraction_threshold_met !{params.ntm_fraction_cutoff} $NTM_FRACTION)\t$(rel_abundance_threshold_met !{params.rel_abundance_cutoff} $REL_ABUNDANCE)\t${COVERAGE_THRESHOLD_MET}\t${BREADTH_OF_COVERAGE_THRESHOLD_MET}\t${ALL_THRESHOLDS_MET}" > !{sampleName}.stats.tsv
     '''
 }

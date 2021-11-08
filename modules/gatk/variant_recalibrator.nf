@@ -1,13 +1,15 @@
 process GATK_VARIANT_RECALIBRATOR {
-    tag "${joint_name}"
-
+    tag "analysisMode: ${analysisMode} ; ${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 
     input:
     val(analysisMode)
-    path(variantsVcf)
+    tuple val(joint_name), path(variantsIndex), path(variantsVcf)
     val(resourceFilesArg)
+    path(resourceFiles)
+    path(resourceFileIndexes)
+    path(reference)
     path("*")
 
     output:

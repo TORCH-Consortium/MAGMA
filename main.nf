@@ -8,6 +8,7 @@ nextflow.enable.dsl = 2
 include { MAP_WF } from './workflows/map_wf.nf'
 include { QUANTTB_QUANT } from './modules/quanttb/quant.nf' addParams( params.QUANTTB_QUANT )
 include { CALL_WF } from './workflows/call_wf.nf'
+include { MERGE_WF } from './workflows/merge_wf.nf'
 
 //================================================================================
 // Prepare channels
@@ -35,20 +36,16 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
             unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
 
             //NOTE: Accomodate single/multi reads
-            //TODO: Consider using read1 and read2 identifiers - confirm before refactor.
-            if (row[4] && row[5]) {
+            if (read1 && read2) {
 
-                // Both read1 and read2 are present
                 return tuple(unique_sample_id, tuple(file(read1), file(read2)))
 
-            } else if (row[4]) {
+            } else if (read1) {
 
-                // Only read1 is present
                 return tuple(unique_sample_id, tuple(file(read1)))
 
             } else {
 
-                // Only read2 is present
                 return tuple(unique_sample_id, tuple(file(read2)))
 
             }
@@ -63,9 +60,33 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
 //================================================================================
 
 workflow TEST {
-    MAP_WF(reads_ch)
     QUANTTB_QUANT(reads_ch)
+    MAP_WF(reads_ch)
     CALL_WF(MAP_WF.out.sorted_reads, QUANTTB_QUANT.out)
+
+    collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
+
+    // collated_gvcfs_ch.view()
+
+    sample_stats_ch = Channel.fromPath("${projectDir}/resources/reference_set/xbs-nf.test.cohort.tsv")
+        .splitCsv(header: false, skip: 1, sep: '\t' )
+        .map { row -> [
+                row.first(),           // SAMPLE
+                row.last().toInteger() // ALL_THRESHOLDS_MET
+         ]
+    }
+    .filter { it[1] == 1} // Filter out samples which meet all the thresholds
+    .map { [ it[0] ] }
+    // .view()
+
+
+    selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
+        .flatten()
+        .filter { it.class  == sun.nio.fs.UnixPath }
+        // .view()
+
+
+    MERGE_WF(selected_gvcfs_ch.collect())
 
 }
 
@@ -81,6 +102,23 @@ workflow {
     QUANTTB_QUANT(reads_ch)
     MAP_WF(reads_ch)
     CALL_WF(MAP_WF.out.sorted_reads)
+
+
+
+    collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
+
+    sample_stats_ch = CALL_WF.out.cohort_stats_tsv
+        .splitCsv(header: false, skip: 1, sep: '\t' )
+        .map { row -> [
+                row.first(),           // SAMPLE
+                row.last().toInteger() // ALL_THRESHOLDS_MET
+         ]
+    }
+    .filter { it[1] == 1} // Filter out all samples which meets all the thresholds
+    .view()
+
+
+
 
     //TODO
     // MERGE_WF(QUANTTB.out, CALL_WF.out)

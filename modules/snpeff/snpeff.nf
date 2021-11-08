@@ -4,35 +4,33 @@ process SNPEFF {
 
     input:
     tuple val(joint_name), path(rawJointVariantsFile)
-
-    output:
-    tuple val(joint_name), path(".*annotated.vcf")
     path(ref_fasta)
 
-    //FIXME: Add warning in readme NOT to include a reference file with multiple dots in name.
+    output:
+    tuple val(joint_name), path("*.annotated.vcf")
 
-    script:
 
-    """
-    gunzip -c ${rawJointVariantsFile} > ${joint_name}.raw_variants.vcf
+    shell:
 
-    sed -i 's/^${ref_fasta.getBaseName()}/Chromosome/g' ${joint_name}.raw_variants.vcf
+    '''
+    gunzip -c !{rawJointVariantsFile} > !{joint_name}.temp.raw_variants.vcf
 
-    ${params.snpeff_path} \\
-        ${params.arguments} \\
-        Mycobacterium_tuberculosis_h37rv \\
-        ${rawJointVariantsFile} \\
-    > ${joint_name}.raw_variants.annotated.vcf
+    sed -i 's/^!{ref_fasta.getBaseName()}/Chromosome/g' !{joint_name}.temp.raw_variants.vcf
 
-    rm ${joint_name}.raw_variants.vcf
+    !{params.snpeff_path} \\
+        !{params.arguments} \\
+        !{joint_name}.temp.raw_variants.vcf \\
+    > !{joint_name}.raw_variants.annotated.vcf
 
-    sed -i 's/^Chromosome/${ref_fasta.getBaseName()}/g' ${joint_name}.raw_variants.annotated.vcf
+    rm !{joint_name}.temp.raw_variants.vcf
 
-    """
+    sed -i 's/^Chromosome/!{ref_fasta.getBaseName()}/g' !{joint_name}.raw_variants.annotated.vcf
+    '''
 
     stub:
 
     """
+    touch ${joint_name}.raw_variants.annotated.vcf
     """
 
 }
