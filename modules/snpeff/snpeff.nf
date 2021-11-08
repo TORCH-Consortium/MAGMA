@@ -4,12 +4,11 @@ process SNPEFF {
 
     input:
     tuple val(joint_name), path(rawJointVariantsFile)
+    path(ref_fasta)
 
     output:
     tuple val(joint_name), path(".*annotated.vcf")
-    path(ref_fasta)
 
-    //FIXME: Add warning in readme NOT to include a reference file with multiple dots in name.
 
     script:
 
@@ -33,6 +32,7 @@ process SNPEFF {
     stub:
 
     """
+    touch ${joint_name}.raw_variants.annotated.vcf
     """
 
 }

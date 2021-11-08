@@ -4,7 +4,7 @@ process GATK_GENOTYPE_GVCFS {
 
 
     input:
-    val(joint_name), path(combinedVcf)
+    tuple val(joint_name), path(combinedVcf)
     path(ref_fasta)
 
 
@@ -25,7 +25,7 @@ process GATK_GENOTYPE_GVCFS {
     stub:
 
     """
-    touch ${sampleName}.raw_variants.vcf.gz
+    touch ${joint_name}.raw_variants.vcf.gz
     """
 }
 
