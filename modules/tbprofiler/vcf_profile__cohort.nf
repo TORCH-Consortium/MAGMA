@@ -6,7 +6,8 @@ process TBPROFILER_VCF_PROFILE__COHORT {
     tuple val(joint_name), path(mergedVcfIndex), path(mergedVcf)
     path(resistanceDb)
 
-    // output:
+    output:
+    tuple val(joint_name), path("results/*")
 
 
     script:
@@ -15,7 +16,6 @@ process TBPROFILER_VCF_PROFILE__COHORT {
     """
     ${params.tbprofiler_path} vcf_profile  \\
         ${optionalDb} \\
-        ${params.arguments} \\
         ${mergedVcf}
 
     """
