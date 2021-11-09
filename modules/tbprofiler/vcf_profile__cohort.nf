@@ -7,7 +7,7 @@ process TBPROFILER_VCF_PROFILE__COHORT {
     path(resistanceDb)
 
     output:
-    tuple val(joint_name), path("results/*")
+    path("results/*")
 
 
     script:

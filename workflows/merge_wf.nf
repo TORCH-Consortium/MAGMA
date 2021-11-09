@@ -7,6 +7,7 @@ include { RESISTANCE_ANALYSIS } from "./subworkflows/resistance_analysis.nf"
 workflow MERGE_WF {
     take:
         selected_gvcfs_ch
+        lofreq_vcf_ch
 
 
     main:
@@ -21,7 +22,7 @@ workflow MERGE_WF {
         // merge_snp_indel_vcf
         GATK_MERGE_VCFS(merge_vcf_ch)
 
-        RESISTANCE_ANALYSIS(GATK_MERGE_VCFS.out)
+        RESISTANCE_ANALYSIS(GATK_MERGE_VCFS.out, lofreq_vcf_ch)
 
     /*
         PHYLOGENY_ANALYSIS__INCCOMPLEX()

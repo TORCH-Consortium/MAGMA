@@ -1,4 +1,5 @@
 process TBPROFILER_COLLATE {
+    tag "${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     //FIXME This is only relevant for the PBS configuration and should be mentioned there after Nextflow v21.10 release
@@ -8,7 +9,8 @@ process TBPROFILER_COLLATE {
 
 
     input:
-    tuple val(joint_name), path("results/*")
+    val(joint_name)
+    path("results/*")
     path(resistanceDb)
 
     output:
@@ -20,7 +22,7 @@ process TBPROFILER_COLLATE {
     """
     ${params.tbprofiler_path} collate \\
         ${optionalDb} \\
-        -p ${joint_name}.XBS.resistance
+        -p ${joint_name}.${params.prefix}
     """
 
     stub:
