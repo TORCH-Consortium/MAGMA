@@ -2,6 +2,7 @@ include { PREPARE_COHORT_VCF } from "./subworkflows/prepare_cohort_vcf.nf"
 include { SNP_ANALYSIS } from "./subworkflows/snp_analysis.nf"
 include { INDEL_ANALYSIS } from "./subworkflows/indel_analysis.nf"
 include { GATK_MERGE_VCFS } from "../modules/gatk/merge_vcfs.nf" addParams ( params.GATK_MERGE_VCFS )
+include { RESISTANCE_ANALYSIS } from "./subworkflows/resistance_analysis.nf"
 
 workflow MERGE_WF {
     take:
@@ -20,10 +21,9 @@ workflow MERGE_WF {
         // merge_snp_indel_vcf
         GATK_MERGE_VCFS(merge_vcf_ch)
 
+        RESISTANCE_ANALYSIS(GATK_MERGE_VCFS.out)
+
     /*
-        RESISTANCE_ANALYSIS()
-
-
         PHYLOGENY_ANALYSIS__INCCOMPLEX()
         PHYLOGENY_ANALYSIS__EXCOMPLEX()
 
