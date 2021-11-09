@@ -12,9 +12,9 @@ workflow MERGE_WF {
 
         SNP_ANALYSIS(PREPARE_COHORT_VCF.out.cohort_vcf_and_index_ch)
 
-    /*
         INDEL_ANALYSIS_WF(PREPARE_COHORT_VCF.out.cohort_vcf_and_index_ch)
 
+    /*
         // merge_snp_indel_vcf
         GATK_MERGE_VCFS(SNP_ANALYSIS_WF.out.filteredVCF, INDEL_ANALYSIS_WF.out.filteredVCF)
 
