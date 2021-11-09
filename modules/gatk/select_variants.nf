@@ -1,6 +1,5 @@
 process GATK_SELECT_VARIANTS {
-    tag "type: ${variantType}"
-
+    tag "${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 

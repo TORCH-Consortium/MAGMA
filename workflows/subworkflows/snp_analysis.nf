@@ -1,6 +1,7 @@
 include { GATK_SELECT_VARIANTS as  GATK_SELECT_VARIANTS__SNP } from "../../modules/gatk/select_variants.nf" addParams ( params.GATK_SELECT_VARIANTS__SNP )
 include { GATK_VARIANT_RECALIBRATOR as GATK_VARIANT_RECALIBRATOR__SNP } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__SNP )
 include { GATK_APPLY_VQSR as GATK_APPLY_VQSR__SNP } from "../../modules/gatk/apply_vqsr.nf" addParams ( params.GATK_APPLY_VQSR__SNP )
+include { GATK_SELECT_VARIANTS__EXCLUSION as  GATK_SELECT_VARIANTS__EXCLUSION__SNP } from "../../modules/gatk/select_variants__exclusion.nf" addParams ( params.GATK_SELECT_VARIANTS__EXCLUSION__SNP )
 
 workflow SNP_ANALYSIS {
 
@@ -67,12 +68,14 @@ workflow SNP_ANALYSIS {
                             params.ref_fasta,
                             [params.ref_fasta_fai, params.ref_fasta_dict])
 
-/*
-        GATK_SELECT_VARIANTS__EXCLUSION__SNP('SNP', GATK_APPLY_VQSR__SNP.out, params.rrna_file)
+        GATK_SELECT_VARIANTS__EXCLUSION__SNP('SNP',
+                                            GATK_APPLY_VQSR__SNP.out,
+                                            params.rrna_list,
+                                            params.ref_fasta,
+                                            [params.ref_fasta_fai, params.ref_fasta_dict])
 
 
     emit:
-        GATK_SELECT_VARIANTS__EXCLUSION__SNP.out
+        snp_vcf_ch = GATK_SELECT_VARIANTS__EXCLUSION__SNP.out
 
-*/
 }

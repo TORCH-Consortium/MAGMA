@@ -9,7 +9,7 @@ process GATK_APPLY_VQSR {
     path("*")
 
     output:
-    path("*.filtered_${analysisMode}_inc-rRNA.vcf.gz")
+    tuple val(joint_name), path("*.filtered_${analysisMode}_inc-rRNA.vcf.gz.tbi"), path("*.filtered_${analysisMode}_inc-rRNA.vcf.gz")
 
     script:
 
@@ -28,6 +28,7 @@ process GATK_APPLY_VQSR {
 
     """
     touch ${joint_name}.filtered_${analysisMode}_inc-rRNA.vcf.gz
+    touch ${joint_name}.filtered_${analysisMode}_inc-rRNA.vcf.gz.tbi
     """
 }
 
