@@ -57,7 +57,9 @@ workflow SNP_ANALYSIS {
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 
-        vqsr_ch = GATK_SELECT_VARIANTS__SNP.out.variantsVcfTuple.join(GATK_VARIANT_RECALIBRATOR__SNP.out.recalVcfTuple)
+        vqsr_ch = GATK_SELECT_VARIANTS__SNP.out.variantsVcfTuple
+            .join(GATK_VARIANT_RECALIBRATOR__SNP.out.recalVcfTuple)
+            .join(GATK_VARIANT_RECALIBRATOR__SNP.out.tranchesFile)
 
         // merge_apply_vqsr_snp
         GATK_APPLY_VQSR__SNP('SNP',

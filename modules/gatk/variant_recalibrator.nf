@@ -14,7 +14,7 @@ process GATK_VARIANT_RECALIBRATOR {
 
     output:
     tuple val(joint_name), path("*.tbi"), path("*.recal.vcf.gz"), emit: recalVcfTuple
-    path("*.tranches")
+    tuple val(joint_name), path("*.tranches"), emit: tranchesFile
     path("*.R")
     path("*.model")
 

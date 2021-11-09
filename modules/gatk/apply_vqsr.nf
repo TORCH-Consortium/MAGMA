@@ -4,7 +4,7 @@ process GATK_APPLY_VQSR {
 
     input:
     val(analysisMode)
-    tuple val(joint_name), path(variantsVcfIndex), path(variantsVcf), path(recalVcfIndex), path(recalVcf)
+    tuple val(joint_name), path(variantsVcfIndex), path(variantsVcf), path(recalVcfIndex), path(recalVcf), path(tranches)
     path(reference)
     path("*")
 
@@ -17,7 +17,7 @@ process GATK_APPLY_VQSR {
     ${params.gatk_path} ApplyVQSR --java-options "-Xmx${task.memory.giga}G" \\
         -R ${reference} \\
         -V ${variantsVcf} \\
-        --tranches-file ${joint_name}.${analysisMode}.tranches \\
+        --tranches-file ${tranches} \\
         --recal-file ${recalVcf} \\
         ${params.arguments} \\
         -mode ${analysisMode} \\
