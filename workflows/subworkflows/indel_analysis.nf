@@ -14,7 +14,7 @@ workflow INDEL_ANALYSIS {
     main:
 
         // merge_select_indel
-        GATK_SELECT_VARIANTS__INDEL('INDEL', , cohort_vcf_and_index_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict] )
+        GATK_SELECT_VARIANTS__INDEL('INDEL', cohort_vcf_and_index_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict] )
 
         // merge_vqsr_indel
 
