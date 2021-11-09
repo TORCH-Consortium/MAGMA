@@ -11,7 +11,7 @@ process GATK_SELECT_VARIANTS {
     path("*")
 
     output:
-    tuple val(joint_name), path("*.raw_${variantType}.vcf.gz.tbi"), path("*.raw_${variantType}.vcf.gz")
+    tuple val(joint_name), path("*.raw_${variantType}.vcf.gz.tbi"), path("*.raw_${variantType}.vcf.gz"), emit: variantsVcfTuple
 
 
     script:

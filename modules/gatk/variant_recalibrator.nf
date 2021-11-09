@@ -13,7 +13,7 @@ process GATK_VARIANT_RECALIBRATOR {
     path("*")
 
     output:
-    path("*.recal.vcf.gz"), emit: recalVcf
+    tuple val(joint_name), path("*.tbi"), path("*.recal.vcf.gz"), emit: recalVcfTuple
     path("*.tranches")
     path("*.R")
     path("*.model")
