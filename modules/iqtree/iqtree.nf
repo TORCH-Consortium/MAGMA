@@ -29,6 +29,13 @@ process IQTREE {
     stub:
 
     """
+    touch joint.${prefix}.bionj
+    touch joint.${prefix}.ckp.gz
+    touch joint.${prefix}.iqtree
+    touch joint.${prefix}.log
+    touch joint.${prefix}.mldist
+    touch joint.${prefix}.model.gz
+    touch joint.${prefix}.treefil
     """
 
 }

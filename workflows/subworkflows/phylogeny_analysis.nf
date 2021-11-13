@@ -19,7 +19,7 @@ workflow PHYLOGENY_ANALYSIS {
 
 
         resources_files_ch = arg_files_ch
-            .filter {  it.getExtension()  == "gz" }
+            .filter {  it.getExtension()  == "gz" || it.getExtension()  == "list" }
             .ifEmpty([])
             // .view()
 
