@@ -2,20 +2,16 @@
 
 workflow PHYLOGENY_ANALYSIS {
 
-    // take:
-    //     prefix_ch
-        // arg_files_ch
-        // vcf_ch
+    take:
+        prefix_ch
+        arg_files_ch
+        vcf_ch
 
+    main:
 
         //----------
         // Including complex regions
         //----------
-
-
-        arg_files_ch = Channel.of([file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)])
-                            .ifEmpty([])
-                            .flatten()
 
 
         resources_files_ch = arg_files_ch
@@ -26,7 +22,6 @@ workflow PHYLOGENY_ANALYSIS {
 
         args_ch = resources_files_ch
             .reduce (" ") { a, b -> "$a -XL ${b.getName()} " }
-            .collect()
             .ifEmpty("")
             .view()
 

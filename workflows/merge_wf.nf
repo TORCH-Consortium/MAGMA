@@ -32,13 +32,12 @@ workflow MERGE_WF {
                                             .ifEmpty([])
                                             .flatten()
 
-        PHYLOGENY_ANALYSIS__INCCOMPLEX()
 
-        // prefix_ch = Channel.of('ExDR.IncComplex')
-        // PHYLOGENY_ANALYSIS__INCCOMPLEX(prefix_ch
-        //                            // inccomplex_exclude_interval_ref_ch,
-        //                            // SNP_ANALYSIS.out.snp_vcf_ch
-        //     )
+        inccomplex_prefix_ch = Channel.of('ExDR.IncComplex')
+
+        PHYLOGENY_ANALYSIS__INCCOMPLEX(inccomplex_prefix_ch,
+                                       inccomplex_exclude_interval_ref_ch,
+                                       SNP_ANALYSIS.out.snp_vcf_ch)
 
 
     /*
