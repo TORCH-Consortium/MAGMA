@@ -1,15 +1,15 @@
-
+include { CLUSTERPICKER } from "../../modules/clusterpicker/clusterpicker.nf" addParams ( params.CLUSTERPICKER )
 
 workflow CLUSTER_ANALYSIS {
 
     take:
-        incComplexFiles //tuple path(incComplexFasta), path(incComplexNewickTree)
-        exComplexFile //tuple path(exComplexFasta), path(exComplexNewickTree)
+        incComplex_ch //tuple path(incComplexFasta), path(incComplexNewickTree)
+        exComplex_ch //tuple path(exComplexFasta), path(exComplexNewickTree)
 
 
     main:
-        CLUSTER_PICKER(incComplexFiles, 5)
-        CLUSTER_PICKER(incComplexFiles, 12)
-        CLUSTER_PICKER(exComplexFiles, 5)
-        CLUSTER_PICKER(exComplexFiles, 12)
+        CLUSTERPICKER(incComplex_ch, 5)
+        // CLUSTERPICKER(incComplex_ch, 12)
+        // CLUSTERPICKER(exComplex_ch, 5)
+        // CLUSTERPICKER(exComplex_ch, 12)
 }

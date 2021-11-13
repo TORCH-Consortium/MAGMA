@@ -1,9 +1,9 @@
-process CLUSTER_PICKER {
+process CLUSTERPICKER {
     tag "snpCount - ${snpCount}"
-    publishdir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    tuple path(fasta), path(newickTree)
+    tuple val(joint_name), path(fasta), path(newickTree)
     val(snpCount)
 
     output:

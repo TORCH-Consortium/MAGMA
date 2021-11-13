@@ -22,8 +22,6 @@ process GATK_SELECT_VARIANTS {
     def excludeIntervalsArg = ( resourceFilesArg != "" ? resourceFilesArg : "" )
 
     """
-    echo "${resourceFilesArg}"
-
     ${params.gatk_path} SelectVariants --java-options "-Xmx${task.memory.giga}G" \\
         -R ${reference} \\
         -V ${vcf} \\

@@ -60,4 +60,8 @@ workflow PHYLOGENY_ANALYSIS {
         // merge_iqtree_inccomplex
         IQTREE(prefix_ch, SNPSITES.out)
 
+
+    emit:
+        snpsites_tree_tuple = SNPSITES.out.join(IQTREE.out.tree_tuple)
+
 }
