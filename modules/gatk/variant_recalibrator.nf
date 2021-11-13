@@ -1,5 +1,5 @@
 process GATK_VARIANT_RECALIBRATOR {
-    tag "analysisMode: ${analysisMode} ; ${joint_name}"
+    tag "${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 
@@ -13,8 +13,8 @@ process GATK_VARIANT_RECALIBRATOR {
     path("*")
 
     output:
-    path("*.recal.vcf.gz"), emit: recalVcf
-    path("*.tranches")
+    tuple val(joint_name), path("*.tbi"), path("*.recal.vcf.gz"), emit: recalVcfTuple
+    tuple val(joint_name), path("*.tranches"), emit: tranchesFile
     path("*.R")
     path("*.model")
 

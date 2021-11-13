@@ -3,18 +3,17 @@ process GATK_MERGE_VCFS {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    path(filteredSnpVcf)
-    path(filteredIndelVcf)
+    tuple val(joint_name), path(snpVcfIndex), path(snpVcf), path(indelVcfIndex), path(indelVcf)
 
     output:
-    path("*.filtered_SNP.RawIndels.vcf.gz")
+    tuple val(joint_name), path("*.filtered_SNP.RawIndels.vcf.gz.tbi"), path("*.filtered_SNP.RawIndels.vcf.gz")
 
     script:
 
     """
     ${params.gatk_path} MergeVcfs --java-options "-Xmx${task.memory.giga}G" \\
-        -I ${filteredSnpVcf} \\
-        -I ${fileteredIndelVcf} \\
+        -I ${snpVcf} \\
+        -I ${indelVcf} \\
         -O ${joint_name}.filtered_SNP.RawIndels.vcf.gz
     """
 

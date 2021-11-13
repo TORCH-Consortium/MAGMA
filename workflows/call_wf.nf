@@ -135,4 +135,5 @@ workflow CALL_WF {
     emit:
         cohort_stats_tsv = UTILS_COHORT_STATS.out
         gvcf_ch = GATK_HAPLOTYPE_CALLER.out.collect()
+        lofreq_vcf_ch = LOFREQ_CALL.out
 }

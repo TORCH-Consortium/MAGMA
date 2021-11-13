@@ -6,8 +6,7 @@ workflow MAP_WF {
         reads_ch
 
     main:
-        //TODO: Enable this after the testing is done.
-        // FASTQC(reads_ch)
+        FASTQC(reads_ch)
 
 
         //TODO: Can be refactored in next iteration to re-use the reads_ch channel

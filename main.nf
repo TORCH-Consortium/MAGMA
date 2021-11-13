@@ -86,7 +86,7 @@ workflow TEST {
         // .view()
 
 
-    MERGE_WF(selected_gvcfs_ch.collect())
+    MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
 
 }
 

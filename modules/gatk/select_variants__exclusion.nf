@@ -1,15 +1,17 @@
 process GATK_SELECT_VARIANTS__EXCLUSION {
-    tag "${analysisMode}"
-
+    tag "${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
     val(analysisMode)
-    path(filteredVcf)
+    tuple val(joint_name), path(filteredVcfIndex), path(filteredVcf)
     path(intervalFile)
+    path(reference)
+    path("*")
+
 
     output:
-    path("*.filtered_${analysisMode}_exc-rRNA.vcf.gz")
+    tuple val(joint_name), path("*.filtered_${analysisMode}_exc-rRNA.vcf.gz.tbi"), path("*.filtered_${analysisMode}_exc-rRNA.vcf.gz")
 
     script:
 
@@ -25,5 +27,6 @@ process GATK_SELECT_VARIANTS__EXCLUSION {
 
     """
     touch ${joint_name}.filtered_SNP_exc-rRNA.vcf.gz
+    touch ${joint_name}.filtered_SNP_exc-rRNA.vcf.gz.tbi
     """
 }
