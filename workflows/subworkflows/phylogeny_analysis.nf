@@ -1,9 +1,11 @@
+include { GATK_SELECT_VARIANTS } from "../../modules/gatk/select_variants.nf" addParams ( params.GATK_SELECT_VARIANTS__PHYLOGENY__SNP )
 
 workflow PHYLOGENY_ANALYSIS {
 
     take:
-    path(annotatedSnp)
-    path(annotatedSnp)
+    val(prefix)
+    tuple val(joint_name), path(vcfIndex), path(vcf)
+    path(rrna)
 
 
     //----------
@@ -11,7 +13,7 @@ workflow PHYLOGENY_ANALYSIS {
     //----------
 
 
-    arg_files_ch = Channel.of([file("Coll2018.vcf.gz")])
+    arg_files_ch = Channel.of([file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)])
         .ifEmpty([])
         .map { it -> it != [] ? [ "${it[0]} ${it[1].getName()}", it[1] ] : [] }
         .flatten()
@@ -30,9 +32,21 @@ workflow PHYLOGENY_ANALYSIS {
         .ifEmpty([])
         .view()
 
+    // $GATK SelectVariants \\
+    // -V $OUT_DIR/vcf/$JOINT_NAME/$JOINT_NAME.filtered_SNP_exc-rRNA.vcf.gz \\
+    // -XL $RESOURCE_PATH/Coll2018.vcf.gz
 
     // merge_phylogeny_prep_inccomplex
-    GATK_SELECT_VARIANTS('SNP')
+    // GATK_SELECT_VARIANTS('SNP',
+    //                      'ExDR.IncComplex',
+    //                      annotatedSnp,
+    //                      args_ch,
+    //                      resources_files_ch,
+    //                      resources_file_indexes_ch,
+    //                      reference
+    //                      [params.ref_fasta_fai, params.ref_fasta_dict])
+
+    /*
     GATK_VARIANTS_TO_TABLE
     SNP_SITES
     SNP_DISTS
@@ -68,7 +82,7 @@ workflow PHYLOGENY_ANALYSIS {
 
 
     // merge_phylogeny_prep_excomplex
-    GATK_SELECT_VARIANTS('INDEL')
+    GATK_SELECT_VARIANTS__INDEL('INDEL')
     GATK_VARIANTS_TO_TABLE
     SNP_SITES
     SNP_DISTS
@@ -76,6 +90,6 @@ workflow PHYLOGENY_ANALYSIS {
     // merge_iqtree_excomplex
     IQTREE
 
-
+*/
 
 }

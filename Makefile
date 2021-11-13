@@ -4,7 +4,7 @@ run_stub:
 	bash ./data/mock_data/generate_mock_files.sh && nextflow run main.nf -entry TEST -profile dev -stub-run -process.cpus 1 -process.memory 1.GB -resume
 
 run_dev:
-	nextflow run main.nf -profile standard,conda,dev -entry TEST  -resume -with-tower
+	nextflow run main.nf -profile standard,conda,dev -entry TEST  -resume
 
 run_test:
 	nextflow run main.nf -params-file params/standard.yml -entry test -resume
