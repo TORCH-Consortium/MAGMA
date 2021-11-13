@@ -13,11 +13,12 @@ process LOFREQ_CALL {
     script:
 
     """
-    ${params.lofreq_path} call \\
+    ${params.lofreq_path} call-parallel \\
         -f ${ref_fasta} \\
+        --pp-threads ${task.cpus} \\
         ${params.arguments} \\
         ${dindleBam} \\
-    > ${sampleName}.LoFreq.vcf
+        -o ${sampleName}.LoFreq.vcf
     """
 
     stub:
