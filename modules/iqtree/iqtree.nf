@@ -1,12 +1,20 @@
 process IQTREE {
     tag "${joint_name}"
-    publishdir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
+    val(prefix)
     tuple val(joint_name), path(fasta)
 
-    // output:
-    //FIXME
+    output:
+    tuple val(joint_name),
+        path("joint.${prefix}.bionj"),
+        path("joint.${prefix}.ckp.gz"),
+        path("joint.${prefix}.iqtree"),
+        path("joint.${prefix}.log"),
+        path("joint.${prefix}.mldist"),
+        path("joint.${prefix}.model.gz"),
+        path("joint.${prefix}.treefile")
 
     script:
 
