@@ -3,7 +3,7 @@ include { SNP_ANALYSIS } from "./subworkflows/snp_analysis.nf"
 include { INDEL_ANALYSIS } from "./subworkflows/indel_analysis.nf"
 include { GATK_MERGE_VCFS } from "../modules/gatk/merge_vcfs.nf" addParams ( params.GATK_MERGE_VCFS )
 include { RESISTANCE_ANALYSIS } from "./subworkflows/resistance_analysis.nf"
-include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS_INCCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
+include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__INCCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
 // include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS_EXCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
 
 
@@ -27,9 +27,19 @@ workflow MERGE_WF {
 
         RESISTANCE_ANALYSIS(GATK_MERGE_VCFS.out, lofreq_vcf_ch)
 
-        PHYLOGENY_ANALYSIS__INCCOMPLEX('ExDR.IncComplex',
-                                    SNP_ANALYSIS.out.snp_vcf_ch,
-                                    params.rrna)
+
+        inccomplex_exclude_interval_ref_ch = Channel.of([file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)])
+                                            .ifEmpty([])
+                                            .flatten()
+
+        PHYLOGENY_ANALYSIS__INCCOMPLEX()
+
+        // prefix_ch = Channel.of('ExDR.IncComplex')
+        // PHYLOGENY_ANALYSIS__INCCOMPLEX(prefix_ch
+        //                            // inccomplex_exclude_interval_ref_ch,
+        //                            // SNP_ANALYSIS.out.snp_vcf_ch
+        //     )
+
 
     /*
         PHYLOGENY_ANALYSIS__EXCOMPLEX()
