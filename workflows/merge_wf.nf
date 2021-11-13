@@ -5,7 +5,8 @@ include { GATK_MERGE_VCFS } from "../modules/gatk/merge_vcfs.nf" addParams ( par
 include { RESISTANCE_ANALYSIS } from "./subworkflows/resistance_analysis.nf"
 include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__INCCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
 include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__EXCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
-include { CLUSTER_ANALYSIS } from "./subworkflows/cluster_analysis.nf"
+include { CLUSTER_ANALYSIS as CLUSTER_ANALYSIS__INCCOMPLEX } from "./subworkflows/cluster_analysis.nf"
+include { CLUSTER_ANALYSIS as  CLUSTER_ANALYSIS__EXCOMPLEX } from "./subworkflows/cluster_analysis.nf"
 
 
 workflow MERGE_WF {
@@ -44,6 +45,8 @@ workflow MERGE_WF {
                                        inccomplex_exclude_interval_ref_ch,
                                        SNP_ANALYSIS.out.snp_vcf_ch)
 
+        CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snpsites_tree_tuple, inccomplex_prefix_ch)
+
         //----------
         // Excluding complex regions
         //----------
@@ -60,11 +63,6 @@ workflow MERGE_WF {
                                        excomplex_exclude_interval_ref_ch,
                                        SNP_ANALYSIS.out.snp_vcf_ch)
 
-        //----------
-        // Cluster analysis
-        //----------
-
-        CLUSTER_ANALYSIS(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snpsites_tree_tuple,
-                        PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple)
+        CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
 
 }

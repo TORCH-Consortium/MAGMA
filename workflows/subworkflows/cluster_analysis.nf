@@ -1,15 +1,15 @@
-include { CLUSTERPICKER } from "../../modules/clusterpicker/clusterpicker.nf" addParams ( params.CLUSTERPICKER )
+include { CLUSTERPICKER as CLUSTERPICKER__5SNP  } from "../../modules/clusterpicker/clusterpicker.nf" addParams ( params.CLUSTERPICKER )
+include { CLUSTERPICKER as CLUSTERPICKER__12SNP  } from "../../modules/clusterpicker/clusterpicker.nf" addParams ( params.CLUSTERPICKER )
 
 workflow CLUSTER_ANALYSIS {
 
     take:
-        incComplex_ch //tuple path(incComplexFasta), path(incComplexNewickTree)
-        exComplex_ch //tuple path(exComplexFasta), path(exComplexNewickTree)
+        cluster_files_ch
+        prefix
 
 
     main:
-        CLUSTERPICKER(incComplex_ch, 5)
-        // CLUSTERPICKER(incComplex_ch, 12)
-        // CLUSTERPICKER(exComplex_ch, 5)
-        // CLUSTERPICKER(exComplex_ch, 12)
+        CLUSTERPICKER__5SNP(cluster_files_ch, 5, prefix)
+        CLUSTERPICKER__12SNP(cluster_files_ch, 12, prefix)
+
 }
