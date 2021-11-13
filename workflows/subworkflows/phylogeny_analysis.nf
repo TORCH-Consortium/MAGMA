@@ -1,4 +1,5 @@
 include { GATK_SELECT_VARIANTS as GATK_SELECT_VARIANTS__PHYLOGENY } from "../../modules/gatk/select_variants.nf" addParams( params.GATK_SELECT_VARIANTS__PHYLOGENY )
+include { GATK_VARIANTS_TO_TABLE } from "../../modules/gatk/variants_to_table.nf" addParams( params.GATK_VARIANTS_TO_TABLE )
 
 workflow PHYLOGENY_ANALYSIS {
 
@@ -52,8 +53,9 @@ workflow PHYLOGENY_ANALYSIS {
                             params.ref_fasta,
                             [params.ref_fasta_fai, params.ref_fasta_dict])
 
+        GATK_VARIANTS_TO_TABLE(prefix_ch, GATK_SELECT_VARIANTS__PHYLOGENY.out)
+
         /*
-        GATK_VARIANTS_TO_TABLE
         SNP_SITES
         SNP_DISTS
 

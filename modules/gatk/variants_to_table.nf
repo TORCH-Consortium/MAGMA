@@ -5,36 +5,37 @@ process GATK_VARIANTS_TO_TABLE {
 
 
     input:
-    tuple val(joint_name), path(filteredSnpIncComplexVcfGz)
+    val(prefix)
+    tuple val(joint_name), path(vcfIndex), path(vcf)
 
     output:
-    path("*.95X.IncComplex.fa")
+    path("*.fa")
 
 
-//FIXME
     shell:
 
     '''
     !{params.gatk_path} VariantsToTable --java-options "-Xmx!{task.memory.giga}G" \\
-    -V !{filteredSnpIncComplexVcfGz} \\
-    -GF GT \\
-    -O /dev/stdout \\
-    | sed -e 's/^\t//g' \\
+        -V !{vcf} \\
+        !{params.arguments} \\
+        -O /dev/stdout \\
+    | sed -e 's/^\\t//g' \\
     | sed -e 's/*/-/g' \\
-    | sed -e 's/\./-/g' \\
-    | sed '2,${/^.*\(-.*\)\{'"!{params.median_coverage_cutoff}"',\}.*$/d}' \\
+    | sed -e 's/\\./-/g' \\
+    | sed '2,${/^.*\\(-.*\\)\\{'"!{params.median_coverage_cutoff}"',\\}.*$/d}' \\
     | !{params.datamash_path} transpose \\
     | sed -e 's/^/>/g' \\
-    | sed -e 's/-GT/\n/g' \\
-    | sed -e 's/\t//g' \\
-    > !{joint_name}.95X.IncComplex.fa
+    | sed -e 's/-GT/\\n/g' \\
+    | sed -e 's/\\t//g' \\
+    > !{joint_name}.!{prefix}.fa
+
 
     '''
 
     stub:
 
     """
-    touch ${joint_name}.95X.IncComplex.fa
+    touch ${joint_name}.${prefix}.fa
     """
 }
 
