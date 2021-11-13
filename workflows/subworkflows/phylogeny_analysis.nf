@@ -21,9 +21,16 @@ workflow PHYLOGENY_ANALYSIS {
 
 
         args_ch = resources_files_ch
-            .reduce (" ") { a, b -> "$a -XL ${b.getName()} " }
-            .ifEmpty("")
-            .view()
+        .reduce (" ") { a, b -> {
+                if (b.class == sun.nio.fs.UnixPath) {
+                    return "$a -XL ${b.getName()} "
+
+                } else {
+                    return ""
+                }
+            }
+        }
+            // .view()
 
 
         resources_file_indexes_ch = arg_files_ch

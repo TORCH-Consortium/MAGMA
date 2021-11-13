@@ -28,10 +28,9 @@ workflow MERGE_WF {
         RESISTANCE_ANALYSIS(GATK_MERGE_VCFS.out, lofreq_vcf_ch)
 
 
-        inccomplex_exclude_interval_ref_ch = Channel.of([file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)])
+    inccomplex_exclude_interval_ref_ch = Channel.of([file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)])
                                             .ifEmpty([])
                                             .flatten()
-
 
         inccomplex_prefix_ch = Channel.of('ExDR.IncComplex')
 
