@@ -11,7 +11,14 @@ workflow SNP_ANALYSIS {
     main:
 
         // merge_select_snp
-        GATK_SELECT_VARIANTS__SNP('SNP', cohort_vcf_and_index_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict] )
+        GATK_SELECT_VARIANTS__SNP('SNP',
+                                'raw',
+                                cohort_vcf_and_index_ch,
+                                "",
+                                [],
+                                [],
+                                params.ref_fasta,
+                                [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 
         // merge_vqsr_snp

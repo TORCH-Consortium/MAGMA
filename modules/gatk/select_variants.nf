@@ -5,7 +5,11 @@ process GATK_SELECT_VARIANTS {
 
     input:
     val(variantType)
-    tuple val(joint_name), path(annotatedVcfIndex), path(annotatedVcf)
+    val(prefix)
+    tuple val(joint_name), path(vcfIndex), path(vcf)
+    val(resourceFilesArg)
+    path(resourceFiles)
+    path(resourceFileIndexes)
     path(reference)
     path("*")
 
@@ -15,13 +19,16 @@ process GATK_SELECT_VARIANTS {
 
     script:
 
+    def excludeIntervalsArg = { resourceFilesArg != "" ? "-XL ${resourceFilesArg} " : "" }
+
     """
     ${params.gatk_path} SelectVariants --java-options "-Xmx${task.memory.giga}G" \\
         -R ${reference} \\
-        -V ${annotatedVcf} \\
+        -V ${vcf} \\
         --select-type-to-include ${variantType} \\
+        ${excludeIntervalsArg} \\
         ${params.arguments} \\
-        -O ${joint_name}.raw_${variantType}.vcf.gz
+        -O ${joint_name}.${prefix}_${variantType}.vcf.gz
     """
 
     stub:
@@ -29,10 +36,10 @@ process GATK_SELECT_VARIANTS {
     """
     echo "${params.gatk_path} SelectVariants -Xmx${task.memory.giga}G \\
         -R ${reference} \\
-        -V ${annotatedVcf} \\
+        -V ${vcf} \\
         --select-type-to-include ${variantType} \\
         ${finalResourceFilesArg} \\
         ${params.arguments} \\
-        -O ${joint_name}.raw_${variantType}.vcf.gz"
+        -O ${joint_name}.${prefix}_${variantType}.vcf.gz
     """
 }

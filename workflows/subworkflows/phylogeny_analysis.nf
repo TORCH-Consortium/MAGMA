@@ -1,6 +1,7 @@
-// include { GATK_SELECT_VARIANTS } from "../../modules/gatk/select_variants.nf" addParams ( params.GATK_SELECT_VARIANTS__PHYLOGENY__SNP )
+include { GATK_SELECT_VARIANTS as GATK_SELECT_VARIANTS__PHYLOGENY } from "../../modules/gatk/select_variants.nf" addParams( params.GATK_SELECT_VARIANTS__PHYLOGENY )
 
 workflow PHYLOGENY_ANALYSIS {
+
 
     take:
         prefix_ch
@@ -41,15 +42,15 @@ workflow PHYLOGENY_ANALYSIS {
 
 
 
-        // // merge_phylogeny_prep_inccomplex
-        // GATK_SELECT_VARIANTS('SNP',
-        //                     'ExDR.IncComplex',
-        //                     annotatedSnp,
-        //                     args_ch,
-        //                     resources_files_ch,
-        //                     resources_file_indexes_ch,
-        //                     reference
-        //                     [params.ref_fasta_fai, params.ref_fasta_dict])
+        // merge_phylogeny_prep_inccomplex
+        GATK_SELECT_VARIANTS__PHYLOGENY('SNP',
+                            prefix_ch,
+                            vcf_ch,
+                            args_ch,
+                            resources_files_ch,
+                            resources_file_indexes_ch,
+                            params.ref_fasta,
+                            [params.ref_fasta_fai, params.ref_fasta_dict])
 
         /*
         GATK_VARIANTS_TO_TABLE
