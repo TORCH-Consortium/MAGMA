@@ -6,7 +6,6 @@ process SNPSITES {
     val(prefix)
     tuple val(joint_name), path(alignmentFasta)
 
-
     output:
     tuple val(joint_name), path("*.variable.${prefix}.fa")
 

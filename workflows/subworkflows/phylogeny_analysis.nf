@@ -2,6 +2,7 @@ include { GATK_SELECT_VARIANTS as GATK_SELECT_VARIANTS__PHYLOGENY } from "../../
 include { GATK_VARIANTS_TO_TABLE } from "../../modules/gatk/variants_to_table.nf" addParams( params.GATK_VARIANTS_TO_TABLE )
 include { SNPSITES } from "../../modules/snpsites/snpsites.nf" addParams( params.SNPSITES )
 include { SNPDISTS } from "../../modules/snpdists/snpdists.nf" addParams( params.SNPDISTS )
+include { IQTREE } from "../../modules/iqtree/iqtree.nf" addParams( params.IQTREE )
 
 workflow PHYLOGENY_ANALYSIS {
 
@@ -60,11 +61,11 @@ workflow PHYLOGENY_ANALYSIS {
 
         SNPDISTS(prefix_ch, SNPSITES.out)
 
-        /*
         // merge_iqtree_inccomplex
-        IQTREE
+        IQTREE(prefix_ch, SNPSITES.out)
 
 
+        /*
         //----------
         // Excluding complex regions
         //----------

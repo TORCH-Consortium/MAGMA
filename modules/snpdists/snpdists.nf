@@ -7,7 +7,7 @@ process SNPDISTS {
     tuple val(joint_name), path(alignmentFasta)
 
     output:
-    tuple val(path), path("*.snp_dists.tsv")
+    tuple val(joint_name), path("*.snp_dists.tsv")
 
     script:
 
