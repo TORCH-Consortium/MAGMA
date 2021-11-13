@@ -2,3 +2,5 @@ Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
 EXIT-RIF,EC550A-330,1,35,data/test_data/M_16_F0425_EC550A-330_Myco-F5_Mycobacterium_S32_L005_R1_001.fastq.gz,data/test_data/M_16_F0425_EC550A-330_Myco-F5_Mycobacterium_S32_L005_R2_001.fastq.gz,1,1,1
 EXIT-RIF,FS015-12,1,68,data/test_data/M_16_F0458_FS015-12_Myco-F5_Mycobacterium_S65_L005_R1_001.fastq.gz,data/test_data/M_16_F0458_FS015-12_Myco-F5_Mycobacterium_S65_L005_R2_001.fastq.gz,1,1,1
 EXIT-RIF,FS021A-289,1,75,data/test_data/M_16_F0465_FS021A-289_Myco-F5_Mycobacterium_S72_L005_R1_001.fastq.gz,data/test_data/M_16_F0465_FS021A-289_Myco-F5_Mycobacterium_S72_L005_R2_001.fastq.gz,1,1,1
+EXIT-RIF,FS023-73,1,77,data/test_data/M_16_F0467_FS023-73_Myco-F5_Mycobacterium_S74_L005_R1_001.fastq.gz,data/test_data/M_16_F0467_FS023-73_Myco-F5_Mycobacterium_S74_L005_R2_001.fastq.gz,1,1,1
+EXIT-RIF,EC012B-270,1,196,data/test_data/M_16_F0586_EC012B-270_Myco_F-7_Mycobacterium_ACCACTGT_L008_R1_001.fastq.gz,data/test_data/M_16_F0586_EC012B-270_Myco_F-7_Mycobacterium_ACCACTGT_L008_R2_001.fastq.gz,1,1,1

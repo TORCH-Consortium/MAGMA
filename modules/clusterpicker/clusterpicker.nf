@@ -25,11 +25,11 @@ process CLUSTERPICKER {
     cp !{newickTree} !{newickTree.getBaseName()}.!{snpCount}SNPcluster.treefile
 
     # computes the genetic-distance argument
-    FRACTION1=$(echo !{snpCount}/$(cat !{fasta} | head -n 2 | tail -n 1| wc -c) | bc -l)
+    FRACTION=$(echo !{snpCount}/$(cat !{fasta} | head -n 2 | tail -n 1| wc -c) | bc -l)
 
     jvm_mem_opts="-Xmx!{task.memory.giga}G"
 
-    !{params.cluster_picker_path} \\
+    !{params.clusterpicker_path} \\
         !{fasta} \\
         !{newickTree} \\
         !{params.bootstrap_1} \\
