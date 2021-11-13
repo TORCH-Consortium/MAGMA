@@ -19,9 +19,11 @@ process GATK_SELECT_VARIANTS {
 
     script:
 
-    def excludeIntervalsArg = { resourceFilesArg != "" ? "-XL ${resourceFilesArg} " : "" }
+    def excludeIntervalsArg = ( resourceFilesArg != "" ? resourceFilesArg : "" )
 
     """
+    echo "${resourceFilesArg}"
+
     ${params.gatk_path} SelectVariants --java-options "-Xmx${task.memory.giga}G" \\
         -R ${reference} \\
         -V ${vcf} \\
@@ -41,5 +43,9 @@ process GATK_SELECT_VARIANTS {
         ${finalResourceFilesArg} \\
         ${params.arguments} \\
         -O ${joint_name}.${prefix}_${variantType}.vcf.gz
+
+
+    touch ${joint_name}.${prefix}_${variantType}.vcf.gz
+    touch ${joint_name}.${prefix}_${variantType}.vcf.gz.tbi
     """
 }

@@ -32,7 +32,7 @@ workflow MERGE_WF {
         // Including complex regions
         //----------
 
-        inccomplex_exclude_interval_ref_ch = Channel.of([file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)])
+    inccomplex_exclude_interval_ref_ch = Channel.of([file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)])
                                                 .ifEmpty([])
                                                 .flatten()
 
