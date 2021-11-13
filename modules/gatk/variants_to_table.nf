@@ -9,7 +9,7 @@ process GATK_VARIANTS_TO_TABLE {
     tuple val(joint_name), path(vcfIndex), path(vcf)
 
     output:
-    path("*.fa")
+    tuple val(joint_name), path("*.fa")
 
 
     shell:

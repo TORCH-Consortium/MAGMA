@@ -1,8 +1,9 @@
 include { GATK_SELECT_VARIANTS as GATK_SELECT_VARIANTS__PHYLOGENY } from "../../modules/gatk/select_variants.nf" addParams( params.GATK_SELECT_VARIANTS__PHYLOGENY )
 include { GATK_VARIANTS_TO_TABLE } from "../../modules/gatk/variants_to_table.nf" addParams( params.GATK_VARIANTS_TO_TABLE )
+include { SNPSITES } from "../../modules/snpsites/snpsites.nf" addParams( params.SNPSITES )
+include { SNPDISTS } from "../../modules/snpdists/snpdists.nf" addParams( params.SNPDISTS )
 
 workflow PHYLOGENY_ANALYSIS {
-
 
     take:
         prefix_ch
@@ -55,10 +56,11 @@ workflow PHYLOGENY_ANALYSIS {
 
         GATK_VARIANTS_TO_TABLE(prefix_ch, GATK_SELECT_VARIANTS__PHYLOGENY.out)
 
-        /*
-        SNP_SITES
-        SNP_DISTS
+        SNPSITES(prefix_ch, GATK_VARIANTS_TO_TABLE.out)
 
+        SNPDISTS(prefix_ch, SNPSITES.out)
+
+        /*
         // merge_iqtree_inccomplex
         IQTREE
 
