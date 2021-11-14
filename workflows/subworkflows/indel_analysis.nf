@@ -14,15 +14,17 @@ workflow INDEL_ANALYSIS {
     main:
 
         // merge_select_indel
-    GATK_SELECT_VARIANTS__INDEL('INDEL',
-                                'raw',
-                                cohort_vcf_and_index_ch,
-                                "",
-                                [],
-                                [],
-                                params.ref_fasta,
-                                [params.ref_fasta_fai, params.ref_fasta_dict] )
+        GATK_SELECT_VARIANTS__INDEL('INDEL',
+                                    'raw',
+                                    cohort_vcf_and_index_ch,
+                                    "",
+                                    [],
+                                    [],
+                                    params.ref_fasta,
+                                    [params.ref_fasta_fai, params.ref_fasta_dict] )
 
+    /*
+        //NOTE: This section isn't used as of now, XBS_merge#L189
         // merge_vqsr_indel
 
         arg_files_ch = Channel.of(["walker2015,known=true,training=true,truth=true,prior=15.0", file(params.walker2015_vcf), file(params.walker2015_vcf_tbi)],
@@ -75,11 +77,12 @@ workflow INDEL_ANALYSIS {
                             params.ref_fasta,
                             [params.ref_fasta_fai, params.ref_fasta_dict])
 
+    */
 
-        emit:
-            indel_vcf_ch = GATK_APPLY_VQSR__INDEL.out
+    emit:
+        //NOTE: This is supposed to be temporary output XBS_merge#L189 and should be replaced with the output of GATK_APPLY_VQSR__INDEL
+        indel_vcf_ch = GATK_SELECT_VARIANTS__INDEL.out.variantsVcfTuple
 
-            //NOTE: This is supposed to be temporary output XBS_merge#L189
-            // indel_vcf_ch = GATK_SELECT_VARIANTS.out
+        // indel_vcf_ch = GATK_APPLY_VQSR__INDEL.out.filteredVcfTuple
 
 }
