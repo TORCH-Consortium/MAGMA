@@ -7,14 +7,16 @@ process IQTREE {
     tuple val(joint_name), path(fasta)
 
     output:
-    tuple val(joint_name),
-        path("joint.${prefix}.bionj"),
-        path("joint.${prefix}.ckp.gz"),
-        path("joint.${prefix}.iqtree"),
-        path("joint.${prefix}.log"),
-        path("joint.${prefix}.mldist"),
-        path("joint.${prefix}.model.gz"),
-        path("joint.${prefix}.treefile")
+    tuple val(joint_name), path("joint.${prefix}.treefile"), emit: tree_tuple
+
+    path("joint.${prefix}.bionj")
+    path("joint.${prefix}.ckp.gz")
+    path("joint.${prefix}.iqtree")
+    path("joint.${prefix}.log")
+    path("joint.${prefix}.mldist")
+    path("joint.${prefix}.model.gz")
+    path("joint.${prefix}.treefile")
+
 
     script:
 

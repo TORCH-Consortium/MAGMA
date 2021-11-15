@@ -11,6 +11,7 @@ process LOFREQ_CALL__NTM {
     tuple val(sampleName), path("*.potential_NTM_fraction.txt")
 
     shell:
+    //TODO: Optimize the process
 
     '''
 
