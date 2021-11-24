@@ -68,7 +68,7 @@ workflow TEST {
 
     // collated_gvcfs_ch.view()
 
-    sample_stats_ch = Channel.fromPath("${projectDir}/resources/reference_set/xbs-nf.test.cohort.tsv")
+    sample_stats_ch = CALL_WF.out.cohort_stats_tsv
         .splitCsv(header: false, skip: 1, sep: '\t' )
         .map { row -> [
                 row.first(),           // SAMPLE
