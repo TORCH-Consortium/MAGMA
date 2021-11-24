@@ -98,32 +98,33 @@ workflow TEST {
 
 workflow {
 
-    QUANTTB_QUANT(reads_ch)
     MAP_WF(reads_ch)
-    CALL_WF(MAP_WF.out.sorted_reads, QUANTTB_QUANT.out)
 
-    collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
+    // QUANTTB_QUANT(reads_ch)
+    // CALL_WF(MAP_WF.out.sorted_reads, QUANTTB_QUANT.out)
 
-    // collated_gvcfs_ch.view()
+    // collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
 
-    sample_stats_ch = CALL_WF.out.cohort_stats_tsv
-        .splitCsv(header: false, skip: 1, sep: '\t' )
-        .map { row -> [
-                row.first(),           // SAMPLE
-                row.last().toInteger() // ALL_THRESHOLDS_MET
-         ]
-    }
-    .filter { it[1] == 1} // Filter out samples which meet all the thresholds
-    .map { [ it[0] ] }
-    // .view()
+    // // collated_gvcfs_ch.view()
 
-
-    selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
-        .flatten()
-        .filter { it.class  == sun.nio.fs.UnixPath }
-        // .view()
+    // sample_stats_ch = CALL_WF.out.cohort_stats_tsv
+    //     .splitCsv(header: false, skip: 1, sep: '\t' )
+    //     .map { row -> [
+    //             row.first(),           // SAMPLE
+    //             row.last().toInteger() // ALL_THRESHOLDS_MET
+    //      ]
+    // }
+    // .filter { it[1] == 1} // Filter out samples which meet all the thresholds
+    // .map { [ it[0] ] }
+    // // .view()
 
 
-    MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
+    // selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
+    //     .flatten()
+    //     .filter { it.class  == sun.nio.fs.UnixPath }
+    //     // .view()
+
+
+    // MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
 
 }
