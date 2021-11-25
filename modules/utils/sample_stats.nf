@@ -26,13 +26,13 @@ function rel_abundance_threshold_met () {
         if [ 1 -eq "$(echo "$i >= $1" | bc)" ]
         then
             IFS=' '
-            echo 0
-            return 0
+            echo 1 # Return 1 because the sample passed the stats
+            return 0 # set a zero exitcode for if branching (i.e. this function passed)
         fi
     done
     IFS=' '
-    echo 1
-    return 1
+    echo 0 # Return 0 because the sample did not pass the stats
+    return 1 # set a nonzero returncode to fail if statements
 }
 
 
@@ -45,13 +45,13 @@ function ntm_fraction_threshold_met () {
         if [ 1 -eq "$(echo "$i <= $1" | bc)" ]
         then
             IFS=' '
-            echo 0
-            return 0
+            echo 1 # Return 1 because the sample passed the stats
+            return 0 # set a zero exitcode for if branching (i.e. this function passed)
         fi
     done
     IFS=' '
-    echo 1
-    return 1
+    echo 0 # Return 0 because the sample did not pass the stats
+    return 1 # set a nonzero returncode to fail if statements
 }
 
 IFS=' '
@@ -67,7 +67,7 @@ IFS=' '
     WGS_METR=$(cat !{wgsMetrics} | grep "^4411532" | cut -f 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,20,22,27)
     NTM_FRACTION=$(cat !{ntmFraction})
 
-    if [COVERAGE -ge !{params.median_coverage_cutoff}]
+    if [ $COVERAGE -ge !{params.median_coverage_cutoff} ]
         then
             COVERAGE_THRESHOLD_MET=1
         else
@@ -83,7 +83,7 @@ IFS=' '
     fi
 
 
-    if [COVERAGE -ge !{params.median_coverage_cutoff}] && [ 1 -eq "$(echo "$BREADTH_OF_COVERAGE >= !{params.breadth_of_coverage_cutoff}" | bc)" ] && rel_abundance_threshold_met !{params.rel_abundance_cutoff} $REL_ABUNDANCE && ntm_fraction_threshold_met !{params.ntm_fraction_cutoff} $NTM_FRACTION;
+    if [ $COVERAGE -ge !{params.median_coverage_cutoff} ] && [ 1 -eq "$(echo "$BREADTH_OF_COVERAGE >= !{params.breadth_of_coverage_cutoff}" | bc)" ] && rel_abundance_threshold_met !{params.rel_abundance_cutoff} $REL_ABUNDANCE && ntm_fraction_threshold_met !{params.ntm_fraction_cutoff} $NTM_FRACTION;
         then
             ALL_THRESHOLDS_MET=1
         else
