@@ -1,4 +1,5 @@
 include { FASTQC } from '../modules/fastqc/fastqc.nf' addParams (params.FASTQC)
+include { MULTIQC } from '../modules/multiqc/multiqc.nf' addParams (params.MULTIQC)
 include { BWA_MEM } from '../modules/bwa/mem.nf' addParams (params.BWA_MEM)
 
 workflow MAP_WF {
@@ -7,8 +8,8 @@ workflow MAP_WF {
 
     main:
         FASTQC(reads_ch)
-        //TODO: Include the MultiQC
 
+        MULTIQC(FASTQC.out.flatten().collect())
 
         //TODO: Can be refactored in next iteration to re-use the reads_ch channel
         bew_mem_rg_ch = Channel.fromPath(params.input_samplesheet)

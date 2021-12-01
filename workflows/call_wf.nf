@@ -31,14 +31,27 @@ workflow CALL_WF {
 
     main:
 
+
+        normalize_libraries_ch = sorted_reads_ch
+                                        .map { it -> {
+                                                def splittedNameArray = it[0].split("\\.")
+                                                def identifier = splittedNameArray[0] + "."  + splittedNameArray[1]
+
+                                                return [identifier, it[1]]
+                                                }
+                                        }
+                                        .groupTuple()
+
+
+
         // call_merge
         //NOTE: The output of this seems to overwrite the output of XBS_map#L31
         //TODO: Confirm whether this is really necessary as the results are the same and we don't have multiple BAM files
         //See discussion here https://github.com/abhi18av/xbs-nf/discussions/26
-        // SAMTOOLS_MERGE(sorted_reads_ch)
+        SAMTOOLS_MERGE(normalize_libraries_ch)
 
         // call_mark_duplicates
-        GATK_MARK_DUPLICATES(sorted_reads_ch)
+        GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
 
     //FIXME: Uncomment after testing
         // if (params.dataset_is_not_contaminated) {
