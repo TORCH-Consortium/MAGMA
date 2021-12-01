@@ -27,6 +27,7 @@ process SAMTOOLS_MERGE {
         bams/* \\
         -@ ${task.cpus}"
 
+    touch ${sampleName}.sorted_reads.bam
     """
 
 }
