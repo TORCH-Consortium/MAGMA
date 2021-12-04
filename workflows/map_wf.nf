@@ -9,7 +9,8 @@ workflow MAP_WF {
     main:
         FASTQC(reads_ch)
 
-        MULTIQC(FASTQC.out.flatten().collect())
+        //TODO: Activate this later, once the renaming is refactored.
+        // MULTIQC(FASTQC.out.collect())
 
         //TODO: Can be refactored in next iteration to re-use the reads_ch channel
         bew_mem_rg_ch = Channel.fromPath(params.input_samplesheet)
