@@ -59,6 +59,7 @@ workflow INDEL_ANALYSIS {
 
         //FIXME XBS_merge#L169
         GATK_VARIANT_RECALIBRATOR__INDEL('INDEL',
+                                        " -an AS_QD -an DP -an AS_MQ ",
                                         GATK_SELECT_VARIANTS__INDEL.out,
                                         args_ch,
                                         resources_files_ch,

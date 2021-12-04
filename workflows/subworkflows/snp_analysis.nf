@@ -57,6 +57,7 @@ workflow SNP_ANALYSIS {
 
 
         GATK_VARIANT_RECALIBRATOR__SNP('SNP',
+                                   " -an AS_QD -an DP -an AS_MQ ",
                                     GATK_SELECT_VARIANTS__SNP.out,
                                     args_ch,
                                     resources_files_ch,
