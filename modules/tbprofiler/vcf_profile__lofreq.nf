@@ -23,6 +23,8 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
 
     stub:
     """
+    mkdir results
+    touch results/${sampleName}.results.json
     """
 
 }
