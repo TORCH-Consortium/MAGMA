@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 #!/bin/bash
 set -uex
 
@@ -15,7 +13,7 @@ for container_dir in $(find * -type d); do
   docker build -t $CONTAINER_NAME .
   CONTAINER_ID=$(docker run -d $CONTAINER_NAME)
   docker commit $CONTAINER_ID $CONTAINER_NAME
-  docker push quay.io/$DOCKER_NAMESPACE/$container_dir
+  docker push $DOCKER_NAMESPACE/$container_dir:$CONTAINER_TAG
   docker stop $CONTAINER_ID
   cd ..
 done

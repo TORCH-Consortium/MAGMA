@@ -1,9 +1,8 @@
-FROM continuumio/miniconda:4.10.3
+FROM mambaorg/micromamba
+MAINTAINER abhi18av@outlook.com
 
-MAINTAINER Abhinav Sharma <abhi18av@outlook.com>
-
-RUN apt-get update -y && apt-get install -y \
-    procps
-
-COPY conda.yml .
-RUN conda env update -n root -f conda.yml && conda clean -a
+RUN \
+   micromamba install -y -n base -c defaults -c bioconda -c conda-forge -c jemunro \
+    quanttb=1.01 \
+    bwa=0.7.17 \
+   && micromamba clean -a -y
