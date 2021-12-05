@@ -1,0 +1,11 @@
+name: gatk-r-datamash
+channels:
+  - defaults
+  - bioconda
+  - conda-forge
+dependencies:
+  - gatk4=4.1.8.1
+  - gatk4=4.2.0.0
+  - R=4.1
+  - r-ggplot2=3.3.5
+  - datamash=1.1.0
