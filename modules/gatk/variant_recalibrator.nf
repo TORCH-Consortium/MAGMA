@@ -18,6 +18,7 @@ process GATK_VARIANT_RECALIBRATOR {
     tuple val(joint_name), path("*.tranches"), emit: tranchesFile
     path("*.R")
     path("*.model")
+    path("*${analysisMode}.command.log"), emit: annotationsLog
 
     script:
 
@@ -35,6 +36,8 @@ process GATK_VARIANT_RECALIBRATOR {
         --rscript-file ${joint_name}.${analysisMode}.R \\
         --output ${joint_name}.${analysisMode}.recal.vcf.gz \\
         --output-model ${joint_name}.${analysisMode}.model
+
+    cp .command.log ${joint_name}.${analysisMode}.command.log
     """
 
     stub:
