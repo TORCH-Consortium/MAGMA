@@ -5,6 +5,7 @@ process GATK_VARIANT_RECALIBRATOR {
 
     input:
     val(analysisMode)
+    val(annotations)
     tuple val(joint_name), path(variantsIndex), path(variantsVcf)
     val(resourceFilesArg)
     path(resourceFiles)
@@ -17,6 +18,7 @@ process GATK_VARIANT_RECALIBRATOR {
     tuple val(joint_name), path("*.tranches"), emit: tranchesFile
     path("*.R")
     path("*.model")
+    path("*${analysisMode}.command.log"), emit: annotationsLog
 
     script:
 
@@ -27,12 +29,15 @@ process GATK_VARIANT_RECALIBRATOR {
         -R ${reference} \\
         -V ${variantsVcf} \\
         ${finalResourceFilesArg} \\
+        ${annotations} \\
         ${params.arguments} \\
         -mode ${analysisMode} \\
         --tranches-file ${joint_name}.${analysisMode}.tranches \\
         --rscript-file ${joint_name}.${analysisMode}.R \\
         --output ${joint_name}.${analysisMode}.recal.vcf.gz \\
         --output-model ${joint_name}.${analysisMode}.model
+
+    cp .command.log ${joint_name}.${analysisMode}.command.log
     """
 
     stub:

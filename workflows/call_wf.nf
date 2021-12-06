@@ -50,8 +50,10 @@ workflow CALL_WF {
         //See discussion here https://github.com/abhi18av/xbs-nf/discussions/26
         SAMTOOLS_MERGE(normalize_libraries_ch)
 
+        //FIXME: Reuse the output of samtools_merge after the naming issue is resolved.
         // call_mark_duplicates
-        GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
+        // GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
+        GATK_MARK_DUPLICATES(sorted_reads_ch)
 
     //FIXME: Uncomment after testing
         // if (params.dataset_is_not_contaminated) {
