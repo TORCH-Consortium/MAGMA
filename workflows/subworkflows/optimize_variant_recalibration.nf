@@ -7,25 +7,26 @@ include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN7;
 } from "../../modules/gatk/variant_recalibrator.nf"
 
 
-    //TODO: Perhaps better to place this in the util functions
-        def eliminateLeastInformativeAnnotation(logFile) {
-                logFile.eachLine {
-                        if (it.contains("VariantDataManager - Annotation order is")) {
-                            def chunkedString = it.split(":")
-                            def orderedAnnotationsArray = chunkedString[chunkedString.size() - 1]
-                            def orderedAnnotationsString = orderedAnnotationsArray.replace('[', ' ').replace(']', ' ')
+//TODO: Perhaps better to place this in the util functions
+def eliminateLeastInformativeAnnotation(logFile) {
+        logFile.eachLine {
+                if (it.contains("VariantDataManager - Annotation order is")) {
+                    def chunkedString = it.split(":")
+                    def orderedAnnotationsArray = chunkedString[chunkedString.size() - 1]
+                    def orderedAnnotationsString = orderedAnnotationsArray.replace('[', ' ').replace(']', ' ')
 
-                            log.info("Annotations before this optimization => ${orderedAnnotationsString}")
+                    // log.info("Annotations before this optimization => ${orderedAnnotationsString}")
 
-                            ArrayList ordAnnArrList = orderedAnnotationsString.split(",")
-                            def leastInformativeAnn = ordAnnArrList.remove(ordAnnArrList.size() - 1)
+                    ArrayList ordAnnArrList = orderedAnnotationsString.split(",")
+                    def leastInformativeAnn = ordAnnArrList.remove(ordAnnArrList.size() - 1)
 
-                            def reducedAnnotationsString = ordAnnArrList.toString().replace('[', ' ').replace(']', ' ')
-                            log.info("Annotations after eliminating the least informative annotation (${leastInformativeAnn}) => ${reducedAnnotationsString}")
-                            return  reducedAnnotationsString
-                        }
+                    //FIXME: Join the elements with -an to mark annotation
+                    def reducedAnnotationsString = ordAnnArrList.toString().replace('[', ' ').replace(']', ' ')
+                    // log.info("Annotations after eliminating the least informative annotation (${leastInformativeAnn}) => ${reducedAnnotationsString}")
+                    return  reducedAnnotationsString
                 }
         }
+}
 
 
 
@@ -53,10 +54,14 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 
-        ann6_ch = GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog
-                  .map { logfile ->  eliminateLeastInformativeAnnotation(logfile) }
+        // ann6_ch = GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog
+        // // .map { logfile ->  eliminateLeastInformativeAnnotation(logfile) }
+        // .map {it -> println("GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog TEXT ${it.text}")}
+        // .view()
 
 
+
+    /*
         GATK_VARIANT_RECALIBRATOR__ANN6(analysisType,
                                     ann6_ch,
                                     select_variants_vcftuple_ch,
@@ -126,12 +131,13 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     params.ref_fasta,
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
+    */
 
     emit:
 
         optimized_vqsr_ch = select_variants_vcftuple_ch
-                            .join(GATK_VARIANT_RECALIBRATOR__ANN2.out.recalVcfTuple)
-                            .join(GATK_VARIANT_RECALIBRATOR__ANN2.out.tranchesFile)
+                            .join(GATK_VARIANT_RECALIBRATOR__ANN7.out.recalVcfTuple)
+                            .join(GATK_VARIANT_RECALIBRATOR__ANN7.out.tranchesFile)
 
 
 }
