@@ -45,8 +45,9 @@ def extract_annotations(input_filename):
         annotations_order_string = list(filter(lambda a_line: a_line.find(annotations_order_marker) != -1, lines))[0]
         annotations_order_list = annotations_order_string.strip().split(":")[-1].replace('[','').replace(']','').split(',')
         print("Initial ordered annotations list: ", annotations_order_list)
-        eliminated_annotation_string = ','.join(annotations_order_list[:-1]).strip()
+        eliminated_annotation_string = '-an ' + ' -an '.join(annotations_order_list[:-1]).strip()
         print("Dropping : " + annotations_order_list[-1])
+        print("Final annotation string : ", eliminated_annotation_string)
 
     with open("reduced_ordered_annotations.txt", "w") as output:
         output.write(eliminated_annotation_string)

@@ -6,30 +6,13 @@ include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN7;
           GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN2
 } from "../../modules/gatk/variant_recalibrator.nf"
 
-
-//TODO: Perhaps better to place this in the util functions
-def eliminateLeastInformativeAnnotation(logFile) {
-        logFile.eachLine {
-                if (it.contains("VariantDataManager - Annotation order is")) {
-                    def chunkedString = it.split(":")
-                    def orderedAnnotationsArray = chunkedString[chunkedString.size() - 1]
-                    def orderedAnnotationsString = orderedAnnotationsArray.replace('[', ' ').replace(']', ' ')
-
-                    // log.info("Annotations before this optimization => ${orderedAnnotationsString}")
-
-                    ArrayList ordAnnArrList = orderedAnnotationsString.split(",")
-                    def leastInformativeAnn = ordAnnArrList.remove(ordAnnArrList.size() - 1)
-
-                    //FIXME: Join the elements with -an to mark annotation
-                    def reducedAnnotationsString = ordAnnArrList.toString().replace('[', ' ').replace(']', ' ')
-                    // log.info("Annotations after eliminating the least informative annotation (${leastInformativeAnn}) => ${reducedAnnotationsString}")
-                    return  reducedAnnotationsString
-                }
-        }
-}
-
-
-
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN7;
+          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN6;
+          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN5;
+          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN4;
+          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN3;
+          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN2
+} from "../../modules/utils/eliminate_annotation.nf"
 
 
 
@@ -54,14 +37,16 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 
-        // ann6_ch = GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog
-        // // .map { logfile ->  eliminateLeastInformativeAnnotation(logfile) }
-        // .map {it -> println("GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog TEXT ${it.text}")}
-        // .view()
+
+        UTILS_ELIMINATE_ANNOTATION__ANN7(
+            GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog
+        )
 
 
+        ann6_ch = UTILS_ELIMINATE_ANNOTATION__ANN7.out
+                    .map { it.text }
 
-    /*
+
         GATK_VARIANT_RECALIBRATOR__ANN6(analysisType,
                                     ann6_ch,
                                     select_variants_vcftuple_ch,
@@ -72,7 +57,7 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 
-
+    /*
         ann5_ch = GATK_VARIANT_RECALIBRATOR__ANN6.out.annotationsLog
                   .map { logfile ->  eliminateLeastInformativeAnnotation(logfile) }
 
