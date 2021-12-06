@@ -4,6 +4,7 @@ import os
 import sys
 import argparse
 
+
 #####################################################
 # Arg processing
 #####################################################
@@ -17,11 +18,11 @@ def validate_file(f):
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser(description="Extract and reshape the annotations for variant recalibration",
-                                     epilog="Example usage: reshape_annotations.py annotations.log")
+                                     epilog="Example usage: reduce_annotations.py -i annotations.log")
 
     parser.add_argument("-i",
                         "--input",
-                        dest="annotations_file",
+                        dest="input_annotations_file",
                         required=True,
                         type=validate_file,
                         help="input file",
@@ -35,13 +36,22 @@ def parse_args(args=None):
 # Extract annotations
 #####################################################
 
-def extract_annotations(filename):
+def extract_annotations(input_filename):
+
     annotations_order_marker = "VariantDataManager - Annotation order is"
-    with open(filename) as annotations_file:
-        lines = annotations_file.readlines()
+
+    with open(input_filename) as input_annotations_file:
+        lines = input_annotations_file.readlines()
         annotations_order_string = list(filter(lambda a_line: a_line.find(annotations_order_marker) != -1, lines))[0]
-        print(annotations_order_string.strip().split(":")[-1].replace())
-        return annotations_order_string
+        annotations_order_list = annotations_order_string.strip().split(":")[-1].replace('[','').replace(']','').split(',')
+        print("Initial ordered annotations list: ", annotations_order_list)
+        eliminated_annotation_string = ','.join(annotations_order_list[:-1]).strip()
+        print("Dropping : " + annotations_order_list[-1])
+
+    with open("reduced_ordered_annotations.txt", "w") as output:
+        output.write(eliminated_annotation_string)
+
+    return eliminated_annotation_string
 
 
 
@@ -53,7 +63,7 @@ def extract_annotations(filename):
 def main(args=None):
     args = parse_args(args)
 
-    extract_annotations(args.annotations_file)
+    extract_annotations(args.input_annotations_file)
 
 
 #####################################################
