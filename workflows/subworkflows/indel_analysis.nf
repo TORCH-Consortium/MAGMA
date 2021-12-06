@@ -2,6 +2,7 @@ include { GATK_SELECT_VARIANTS as  GATK_SELECT_VARIANTS__INDEL } from "../../mod
 include { GATK_VARIANT_RECALIBRATOR as GATK_VARIANT_RECALIBRATOR__INDEL  } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__INDEL  )
 include { GATK_APPLY_VQSR as GATK_APPLY_VQSR__INDEL  } from "../../modules/gatk/apply_vqsr.nf" addParams ( params.GATK_APPLY_VQSR__INDEL  )
 include { GATK_SELECT_VARIANTS__EXCLUSION as  GATK_SELECT_VARIANTS__EXCLUSION__INDEL  } from "../../modules/gatk/select_variants__exclusion.nf" addParams ( params.GATK_SELECT_VARIANTS__EXCLUSION__INDEL  )
+include { OPTIMIZE_VARIANT_RECALIBRATION } from "./optimize_variant_recalibration.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__INDEL )
 
 
 
@@ -58,19 +59,33 @@ workflow INDEL_ANALYSIS {
 
 
         //FIXME XBS_merge#L169
-        GATK_VARIANT_RECALIBRATOR__INDEL('INDEL',
-                                        " -an DP -an AS_QD -an AS_MQ ",
-                                        GATK_SELECT_VARIANTS__INDEL.out,
+        if(params.optimize_variant_recalibration) {
+
+            OPTIMIZE_VARIANT_RECALIBRATION('INDEL',
+                                        GATK_SELECT_VARIANTS__INDEL.out.variantsVcfTuple,
+                                        args_ch,
+                                        resources_files_ch,
+                                        resources_file_indexes_ch)
+
+            vqsr_ch = OPTIMIZE_VARIANT_RECALIBRATION.out.optimized_vqsr_ch
+
+        } else {
+
+            GATK_VARIANT_RECALIBRATOR__INDEL('INDEL',
+                                    " -an DP -an AS_QD -an AS_MQ ",
+                                        GATK_SELECT_VARIANTS__INDEL.out.variantsVcfTuple,
                                         args_ch,
                                         resources_files_ch,
                                         resources_file_indexes_ch,
                                         params.ref_fasta,
                                         [params.ref_fasta_fai, params.ref_fasta_dict] )
 
+            vqsr_ch = GATK_SELECT_VARIANTS__INDEL.out.variantsVcfTuple
+                .join(GATK_VARIANT_RECALIBRATOR__INDEL.out.recalVcfTuple)
+                .join(GATK_VARIANT_RECALIBRATOR__INDEL.out.tranchesFile)
 
-        vqsr_ch = GATK_SELECT_VARIANTS__INDEL.out.variantsVcfTuple
-            .join(GATK_VARIANT_RECALIBRATOR__INDEL.out.recalVcfTuple)
-            .join(GATK_VARIANT_RECALIBRATOR__INDEL.out.tranchesFile)
+        }
+
 
         // merge_apply_vqsr_snp
         GATK_APPLY_VQSR__INDEL('INDEL',
