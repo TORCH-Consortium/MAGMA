@@ -2,26 +2,59 @@
 
 import os
 import sys
-import json
-import logging
 import argparse
 
-logger = logging.getLogger()
+#####################################################
+# Arg processing
+#####################################################
+
+
+def validate_file(f):
+    if not os.path.exists(f):
+        raise argparse.ArgumentTypeError("\n\nERROR: The file {0} does not exist.".format(f))
+    return f
+
 
 def parse_args(args=None):
-    Description = "Extract and reshape the annotations for variant recalibration"
-    Epilog = "Example usage: reshape_annotations.py annotations.log"
+    parser = argparse.ArgumentParser(description="Extract and reshape the annotations for variant recalibration",
+                                     epilog="Example usage: reshape_annotations.py annotations.log")
 
-    parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
-    parser.add_argument("annotations_file", type=str, help="The path to the annotations file")
-    return parser.parse_args(args)
+    parser.add_argument("-i",
+                        "--input",
+                        dest="annotations_file",
+                        required=True,
+                        type=validate_file,
+                        help="input file",
+                        metavar="FILE")
+
+    args = parser.parse_args()
+    return args
+
+
+#####################################################
+# Extract annotations
+#####################################################
+
+def extract_annotations(filename):
+    annotations_order_marker = "VariantDataManager - Annotation order is"
+    with open(filename) as annotations_file:
+        lines = annotations_file.readlines()
+        annotations_order_string = list(filter(lambda a_line: a_line.find(annotations_order_marker) != -1, lines))[0]
+        print(annotations_order_string.strip().split(":")[-1].replace())
+        return annotations_order_string
+
+
+
+#####################################################
+# Main
+#####################################################
+
 
 def main(args=None):
     args = parse_args(args)
-    logging.basicConfig(level=args.log_level, format="[%(levelname)s] %(message)s")
 
+    extract_annotations(args.annotations_file)
 
-    logger.error(f"Annotations file '{annotations_file}' does not exist. Please check the path provided.")
 
 #####################################################
 #####################################################
