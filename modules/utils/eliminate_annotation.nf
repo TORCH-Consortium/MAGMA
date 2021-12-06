@@ -3,13 +3,16 @@ process UTILS_ELIMINATE_ANNOTATION {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
+        val(analysisType)
         path(annotationsFile)
 
     output:
-        path("reduced_ordered_annotations.txt")
+        path("*annotations.txt")
 
     script:
         """
-        reduce_annotations.py -i ${annotationsFile}
+        reduce_annotations.py \\
+            -i ${annotationsFile} \\
+            -o ${params.vcf_name}.${analysisType}.${task.process.tokenize('__')[-1]}.annotations.txt
         """
 }

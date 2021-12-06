@@ -28,6 +28,14 @@ def parse_args(args=None):
                         help="input file",
                         metavar="FILE")
 
+    parser.add_argument("-o",
+                        "--output",
+                        dest="output_annotations_file",
+                        required=True,
+                        help="output file",
+                        metavar="FILE")
+
+
     args = parser.parse_args()
     return args
 
@@ -36,7 +44,7 @@ def parse_args(args=None):
 # Extract annotations
 #####################################################
 
-def extract_annotations(input_filename):
+def extract_reduce_write_annotations(input_filename, output_filename):
 
     annotations_order_marker = "VariantDataManager - Annotation order is"
 
@@ -45,11 +53,12 @@ def extract_annotations(input_filename):
         annotations_order_string = list(filter(lambda a_line: a_line.find(annotations_order_marker) != -1, lines))[0]
         annotations_order_list = annotations_order_string.strip().split(":")[-1].replace('[','').replace(']','').split(',')
         print("Initial ordered annotations list: ", annotations_order_list)
+
         eliminated_annotation_string = '-an ' + ' -an '.join(annotations_order_list[:-1]).strip()
         print("Dropping : " + annotations_order_list[-1])
         print("Final annotation string : ", eliminated_annotation_string)
 
-    with open("reduced_ordered_annotations.txt", "w") as output:
+    with open(output_filename, "w") as output:
         output.write(eliminated_annotation_string)
 
     return eliminated_annotation_string
@@ -64,7 +73,7 @@ def extract_annotations(input_filename):
 def main(args=None):
     args = parse_args(args)
 
-    extract_annotations(args.input_annotations_file)
+    extract_reduce_write_annotations(args.input_annotations_file, args.output_annotations_file)
 
 
 #####################################################
