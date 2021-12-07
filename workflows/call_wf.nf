@@ -54,10 +54,13 @@ workflow CALL_WF {
 
         if (params.dataset_is_not_contaminated) {
             // call_base_recal
-            GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out.bam_tuple, params.dbsnp_vcf, params.ref_fasta)
+            GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out.bam_tuple,
+                                params.dbsnp_vcf,
+                                params.ref_fasta,
+                                [params.ref_fasta_fai, params.ref_fasta_dict, params.dbsnp_vcf_tbi ] )
 
             // call_apply_bqsr
-            GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta)
+            GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
 
 
             recalibrated_bam_ch = GATK_APPLY_BQSR.out

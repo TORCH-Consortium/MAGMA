@@ -7,6 +7,7 @@ process GATK_BASE_RECALIBRATOR {
     tuple val(sampleName), path(dedupedBam)
     path(dbsnp)
     path(ref_fasta)
+    path("*")
 
     output:
     tuple val(sampleName), path("*.recal_data.table"), path(dedupedBam)
