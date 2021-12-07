@@ -4,26 +4,34 @@ process GATK_INDEX_FEATURE_FILE {
 
 
     input:
-    tuple val(sampleName), path(structuralVariantsVcf)
+    tuple val(sampleName), path(vcf)
+    val(outputPrefix)
 
 
     output:
-    tuple val(sampleName), path("*.vcf.gz.tbi"), path(structuralVariantsVcf)
+    tuple val(sampleName), path("*.vcf.gz.tbi"), path(vcf)
 
 
     script:
 
+    def outputFileArg = ( outputPrefix != "" ? "-O ${sampleName}.${outputPrefix}.vcf.gz.tbi" : "" )
+
     """
     ${params.gatk_path} IndexFeatureFile --java-options "-Xmx${task.memory.giga}G" \\
-        -I ${structuralVariantsVcf} \\
-        -O ${sampleName}.potentialSV.vcf.gz.tbi
+        ${outputFileArg} \\
+        -I ${vcf}
     """
 
     stub:
 
+    def outputFileArg = ( outputPrefix != "" ? "-O ${sampleName}.${outputPrefix}.vcf.gz.tbi" : "" )
+
     """
-    touch ${sampleName}.potentialSV.idx.vcf.gz
-    touch ${sampleName}.potentialSV.idx.vcf.gz.tbi
+
+    echo ${outputFileArg}
+
+    touch ${sampleName}.${outputPrefix}.idx.vcf.gz
+    touch ${sampleName}.${outputPrefix}.idx.vcf.gz.tbi
 
     """
 }

@@ -12,7 +12,6 @@ workflow MAP_WF {
         //TODO: Activate this later, once the renaming is refactored.
         // MULTIQC(FASTQC.out.collect())
 
-        //TODO: Can be refactored in next iteration to re-use the reads_ch channel
         bew_mem_rg_ch = Channel.fromPath(params.input_samplesheet)
         .splitCsv(header: false, skip: 1)
         .map { row -> {
@@ -29,7 +28,6 @@ workflow MAP_WF {
 
               RG="@RG\\tID:${flowcell}.${lane}\\tSM:${study}.${sample}\\tPL:illumina\\tLB:lib${library}\\tPU:${flowcell}.${lane}.${index_sequence}"
 
-              //TODO: Confirm whether '.' can be replaced with '_'
               unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
 
               return tuple(unique_sample_id, RG)

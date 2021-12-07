@@ -44,32 +44,31 @@ workflow CALL_WF {
 
 
 
+        //TODO: I've disabled this till https://github.com/abhi18av/xbs-nf/issues/43 is resolved.
         // call_merge
-        //NOTE: The output of this seems to overwrite the output of XBS_map#L31
-        //TODO: Confirm whether this is really necessary as the results are the same and we don't have multiple BAM files
-        //See discussion here https://github.com/abhi18av/xbs-nf/discussions/26
-        SAMTOOLS_MERGE(normalize_libraries_ch)
+        // SAMTOOLS_MERGE(normalize_libraries_ch)
 
-        //FIXME: Reuse the output of samtools_merge after the naming issue is resolved.
         // call_mark_duplicates
         // GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
         GATK_MARK_DUPLICATES(sorted_reads_ch)
 
-    //FIXME: Uncomment after testing
-        // if (params.dataset_is_not_contaminated) {
-        //     // call_base_recal
-        //     GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out.bam_tuple, params.dbsnp_vcf, params.ref_fasta)
+        if (params.dataset_is_not_contaminated) {
+            // call_base_recal
+            GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out.bam_tuple,
+                                params.dbsnp_vcf,
+                                params.ref_fasta,
+                                [params.ref_fasta_fai, params.ref_fasta_dict, params.dbsnp_vcf_tbi ] )
 
-        //     // call_apply_bqsr
-        //     GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta)
+            // call_apply_bqsr
+            GATK_APPLY_BQSR(GATK_BASE_RECALIBRATOR.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
 
 
-        //     recalibrated_bam_ch = GATK_APPLY_BQSR.out
+            recalibrated_bam_ch = GATK_APPLY_BQSR.out
 
-        // } else {
+        } else {
 
             recalibrated_bam_ch = GATK_MARK_DUPLICATES.out.bam_tuple
-        // }
+        }
 
         SAMTOOLS_INDEX(recalibrated_bam_ch)
 
@@ -80,23 +79,26 @@ workflow CALL_WF {
 
 
         // call_haplotype_caller
-        GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
+        GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out,
+                          params.ref_fasta,
+                          [params.ref_fasta_fai, params.ref_fasta_dict])
 
-        //FIXME: Uncomment after testing
-        // if (params.compute_minor_variants) {
-        //     // call_haplotype_caller_minor_variants
-        //     GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
-        // }
+        if (params.compute_minor_variants) {
+            // call_haplotype_caller_minor_variants
+        GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out,
+                                              params.ref_fasta,
+                                              [params.ref_fasta_fai, params.ref_fasta_dict])
+        }
 
         //----------------------------------------------------------------------------------
         // Infer potential NTM contamination
         //----------------------------------------------------------------------------------
 
 
-        //FIXME: This doesn't seem to be working
         // call_ntm
-        LOFREQ_CALL__NTM(SAMTOOLS_INDEX.out, params.ref_fasta, [params.ref_fasta_fai])
-
+        LOFREQ_CALL__NTM(SAMTOOLS_INDEX.out,
+                         params.ref_fasta,
+                         [params.ref_fasta_fai])
 
         //----------------------------------------------------------------------------------
         // Infer minor variants with LoFreq
@@ -111,15 +113,15 @@ workflow CALL_WF {
         //----------------------------------------------------------------------------------
         // Infer structural variants
         //
-        //NOTE: This inference can not handle a contaminant and MTB allele on the same site, if so the site will be excluded.
+        //NOTE: This inference can not handle a contaminant and MTB allele on the same site.
+        //if so the site will be excluded.
         //----------------------------------------------------------------------------------
 
         // call_sv
-        //TODO: Should SV-calling be optional?
 
         DELLY_CALL(SAMTOOLS_INDEX.out, params.ref_fasta)
         BCFTOOLS_VIEW(DELLY_CALL.out)
-        GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out)
+        GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out, 'potentialSV')
 
         //Enable this once a proper file with DR genes has been made available
         // GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
