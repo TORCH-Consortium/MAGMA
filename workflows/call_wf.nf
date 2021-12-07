@@ -118,7 +118,7 @@ workflow CALL_WF {
 
         DELLY_CALL(SAMTOOLS_INDEX.out, params.ref_fasta)
         BCFTOOLS_VIEW(DELLY_CALL.out)
-        GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out)
+        GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out, 'potentialSV')
 
         //Enable this once a proper file with DR genes has been made available
         // GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
