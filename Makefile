@@ -12,7 +12,7 @@ run_devslurm:
 run_test:
 	nextflow run main.nf -params-file params/standard.yml -entry test -resume
 
-sync_server:
+sync:
 	bash _resources/sync.sh
 
 sync_devslurm:
