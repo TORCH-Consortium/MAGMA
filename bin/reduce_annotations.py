@@ -18,7 +18,7 @@ def validate_file(f):
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser(description="Extract and reshape the annotations for variant recalibration",
-                                     epilog="Example usage: reduce_annotations.py -i annotations.log")
+                                     epilog="Example usage: reduce_annotations.py -i annotations.log -o new.annotations.txt")
 
     parser.add_argument("-i",
                         "--input",

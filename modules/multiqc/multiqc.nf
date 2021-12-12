@@ -5,8 +5,7 @@ process MULTIQC {
     path("*")
 
     output:
-    path("multiqc_report.html")
-    // tuple path("multiqc_data"), path("multiqc_report.html")
+    tuple path("multiqc_data"), path("multiqc_report.html")
 
 
     script:

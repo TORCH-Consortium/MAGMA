@@ -25,32 +25,28 @@ include { UTILS_COHORT_STATS } from "../modules/utils/cohort_stats.nf" addParams
 
 workflow CALL_WF {
     take:
-        sorted_reads_ch
-        quanttb_results_ch
+        bam_sorted_reads_ch
 
 
     main:
 
 
-        normalize_libraries_ch = sorted_reads_ch
+        normalize_libraries_ch = bam_sorted_reads_ch
                                         .map { it -> {
                                                 def splittedNameArray = it[0].split("\\.")
                                                 def identifier = splittedNameArray[0] + "."  + splittedNameArray[1]
 
                                                 return [identifier, it[1]]
-                                                }
-                                        }
-                                        .groupTuple()
+            }
+        }
+        .groupTuple()
 
 
-
-        //TODO: I've disabled this till https://github.com/abhi18av/xbs-nf/issues/43 is resolved.
         // call_merge
-        // SAMTOOLS_MERGE(normalize_libraries_ch)
+        SAMTOOLS_MERGE(normalize_libraries_ch)
 
         // call_mark_duplicates
-        // GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
-        GATK_MARK_DUPLICATES(sorted_reads_ch)
+        GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
 
         if (params.dataset_is_not_contaminated) {
             // call_base_recal
@@ -123,7 +119,7 @@ workflow CALL_WF {
         BCFTOOLS_VIEW(DELLY_CALL.out)
         GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out, 'potentialSV')
 
-        //Enable this once a proper file with DR genes has been made available
+        //TODO: Enable this once a proper file with DR genes has been made available
         // GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
 
 
@@ -141,8 +137,8 @@ workflow CALL_WF {
         sample_stats_ch = (SAMTOOLS_STATS.out)
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
-            .join(quanttb_results_ch)
             .join(LOFREQ_CALL__NTM.out)
+            .view()
 
 
         UTILS_SAMPLE_STATS(sample_stats_ch)
