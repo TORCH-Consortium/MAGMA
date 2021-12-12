@@ -33,20 +33,22 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
                     lane            = row[7]
                     index_sequence  = row[8]
 
+            bam_rg_string ="@RG\\tID:${flowcell}.${lane}\\tSM:${study}.${sample}\\tPL:illumina\\tLB:lib${library}\\tPU:${flowcell}.${lane}.${index_sequence}"
+
             unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
 
             //Accomodate single/multi reads
             if (read1 && read2) {
 
-                return tuple(unique_sample_id, tuple(file(read1), file(read2)))
+                return tuple(unique_sample_id, bam_rg_string, tuple(file(read1), file(read2)))
 
             } else if (read1) {
 
-                return tuple(unique_sample_id, tuple(file(read1)))
+                return tuple(unique_sample_id, bam_rg_string, tuple(file(read1)))
 
             } else {
 
-                return tuple(unique_sample_id, tuple(file(read2)))
+                return tuple(unique_sample_id, bam_rg_string, tuple(file(read2)))
 
             }
         }
@@ -63,7 +65,8 @@ workflow TEST {
 
     QUALITY_CHECK_WF(reads_ch)
 
-    MAP_WF(QUALITY_CHECK.out)
+    //FIXME: The input channel now has an extra value bam_rg_string
+    // MAP_WF(QUALITY_CHECK_WF.out)
 
     //=========
     //=========

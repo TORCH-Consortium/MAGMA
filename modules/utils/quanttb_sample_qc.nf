@@ -5,10 +5,11 @@ process UTILS_QUANTTB_SAMPLE_QC {
     input:
         tuple val(sampleName), path(quanttbStats)
         val(relabundanceThreshold)
+        tuple val(sampleName), val(bamRgString), path(sampleReads)
 
     output:
-        tuple val(sampleName), path("*quanttb.qc.csv")
-
+        path("*quanttb.qc.csv") ,emit: quanttb_sample_qc_ch
+        tuple val(sampleName), val(bamRgString), path("*quanttb.qc.csv"), path(sampleReads) ,emit: qc_samplereads_tuple
 
     script:
         """
