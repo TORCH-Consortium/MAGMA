@@ -5,6 +5,7 @@ process GATK_APPLY_BQSR {
     input:
     tuple val(sampleName), path(recalibrationTable), path(dedupedBam)
     path(ref_fasta)
+    path("*")
 
     output:
     tuple val(sampleName), path("*.recal_reads.bam")

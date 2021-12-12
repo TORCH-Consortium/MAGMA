@@ -3,10 +3,10 @@ process FASTQC {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    tuple val(sampleName), path(sampleReads)
+    tuple val(sampleName), val(bamRgString), path(sampleReads)
 
     output:
-    tuple path('*.html'), path('*.zip')
+    path('*fastqc*')
 
 
     script:

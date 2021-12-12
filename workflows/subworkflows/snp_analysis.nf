@@ -2,6 +2,7 @@ include { GATK_SELECT_VARIANTS as  GATK_SELECT_VARIANTS__SNP } from "../../modul
 include { GATK_VARIANT_RECALIBRATOR as GATK_VARIANT_RECALIBRATOR__SNP } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__SNP )
 include { GATK_APPLY_VQSR as GATK_APPLY_VQSR__SNP } from "../../modules/gatk/apply_vqsr.nf" addParams ( params.GATK_APPLY_VQSR__SNP )
 include { GATK_SELECT_VARIANTS__EXCLUSION as  GATK_SELECT_VARIANTS__EXCLUSION__SNP } from "../../modules/gatk/select_variants__exclusion.nf" addParams ( params.GATK_SELECT_VARIANTS__EXCLUSION__SNP )
+include { OPTIMIZE_VARIANT_RECALIBRATION } from "./optimize_variant_recalibration.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__SNP )
 
 workflow SNP_ANALYSIS {
 
@@ -56,18 +57,33 @@ workflow SNP_ANALYSIS {
 
 
 
-        GATK_VARIANT_RECALIBRATOR__SNP('SNP',
-                                    GATK_SELECT_VARIANTS__SNP.out,
+    if(params.optimize_variant_recalibration) {
+
+        OPTIMIZE_VARIANT_RECALIBRATION('SNP',
+                                       GATK_SELECT_VARIANTS__SNP.out.variantsVcfTuple,
+                                       args_ch,
+                                       resources_files_ch,
+                                       resources_file_indexes_ch)
+
+        vqsr_ch = OPTIMIZE_VARIANT_RECALIBRATION.out.optimized_vqsr_ch
+
+    } else {
+
+         GATK_VARIANT_RECALIBRATOR__SNP('SNP',
+                                   " -an DP -an AS_QD -an AS_MQ ",
+                                    GATK_SELECT_VARIANTS__SNP.out.variantsVcfTuple,
                                     args_ch,
                                     resources_files_ch,
                                     resources_file_indexes_ch,
                                     params.ref_fasta,
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
-
-        vqsr_ch = GATK_SELECT_VARIANTS__SNP.out.variantsVcfTuple
+         vqsr_ch = GATK_SELECT_VARIANTS__SNP.out.variantsVcfTuple
             .join(GATK_VARIANT_RECALIBRATOR__SNP.out.recalVcfTuple)
             .join(GATK_VARIANT_RECALIBRATOR__SNP.out.tranchesFile)
+
+    }
+
 
         // merge_apply_vqsr_snp
         GATK_APPLY_VQSR__SNP('SNP',
