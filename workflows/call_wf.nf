@@ -29,7 +29,7 @@ workflow CALL_WF {
 
 
     main:
-        bam_sorted_reads_ch.view()
+
 
         normalize_libraries_ch = bam_sorted_reads_ch
                                         .map { it -> {
@@ -37,19 +37,16 @@ workflow CALL_WF {
                                                 def identifier = splittedNameArray[0] + "."  + splittedNameArray[1]
 
                                                 return [identifier, it[1]]
-                                                }
-                                        }
-                                        .groupTuple()
+            }
+        }
+        .groupTuple()
 
-/*
 
-        //TODO: I've disabled this till https://github.com/abhi18av/xbs-nf/issues/43 is resolved.
         // call_merge
         SAMTOOLS_MERGE(normalize_libraries_ch)
 
         // call_mark_duplicates
         GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
-        // GATK_MARK_DUPLICATES(bam_sorted_reads_ch)
 
         if (params.dataset_is_not_contaminated) {
             // call_base_recal
@@ -152,5 +149,4 @@ workflow CALL_WF {
         cohort_stats_tsv = UTILS_COHORT_STATS.out
         gvcf_ch = GATK_HAPLOTYPE_CALLER.out.collect()
         lofreq_vcf_ch = LOFREQ_CALL.out
-*/
 }

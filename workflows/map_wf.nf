@@ -25,6 +25,6 @@ workflow MAP_WF {
 
 
     emit:
-        sorted_reads = BWA_MEM.out.toList().collect()
+        sorted_reads = BWA_MEM.out
 
 }
