@@ -65,13 +65,9 @@ workflow TEST {
 
     QUALITY_CHECK_WF(reads_ch)
 
-    //FIXME: The input channel now has an extra value bam_rg_string
-    // MAP_WF(QUALITY_CHECK_WF.out)
+    MAP_WF(QUALITY_CHECK_WF.out)
 
-    //=========
-    //=========
-
-    // CALL_WF(MAP_WF.out.sorted_reads, QUANTTB_QUANT.out)
+    CALL_WF(MAP_WF.out.sorted_reads)
 
     // collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
 
