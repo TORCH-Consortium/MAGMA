@@ -141,7 +141,7 @@ workflow CALL_WF {
         sample_stats_ch = (SAMTOOLS_STATS.out)
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
-            .join(quanttb_results_ch)
+            // .join(quanttb_results_ch)
             .join(LOFREQ_CALL__NTM.out)
 
 
