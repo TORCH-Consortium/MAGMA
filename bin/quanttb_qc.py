@@ -85,7 +85,14 @@ def read_compute_write_qc_report(input_filename, output_filename, relabundance_t
             relabundance = float(row[' relabundance'])
             depth = float(row[' depth'])
 
+
+        print("Sample name: ", sample)
+        print("Derived sample name: ", derived_name)
+
         relabundance_threshold_met = 1 if (relabundance > relabundance_threshold) else 0
+
+        print("Relabundance threshold: ", relabundance_threshold)
+        print("Threshold met: ", relabundance_threshold_met)
 
         #NOTE: Expected output field names, this is then used in the nextflow layer.
         output_fieldnames = ['sample', 'refname', 'totscore', 'relabundance', 'relabundance_threshold_met', 'depth', 'derived_name']

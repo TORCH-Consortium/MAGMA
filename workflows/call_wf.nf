@@ -25,14 +25,13 @@ include { UTILS_COHORT_STATS } from "../modules/utils/cohort_stats.nf" addParams
 
 workflow CALL_WF {
     take:
-        sorted_reads_ch
-        quanttb_results_ch
+        bam_sorted_reads_ch
 
 
     main:
+        bam_sorted_reads_ch.view()
 
-
-        normalize_libraries_ch = sorted_reads_ch
+        normalize_libraries_ch = bam_sorted_reads_ch
                                         .map { it -> {
                                                 def splittedNameArray = it[0].split("\\.")
                                                 def identifier = splittedNameArray[0] + "."  + splittedNameArray[1]
@@ -42,15 +41,15 @@ workflow CALL_WF {
                                         }
                                         .groupTuple()
 
-
+/*
 
         //TODO: I've disabled this till https://github.com/abhi18av/xbs-nf/issues/43 is resolved.
         // call_merge
-        // SAMTOOLS_MERGE(normalize_libraries_ch)
+        SAMTOOLS_MERGE(normalize_libraries_ch)
 
         // call_mark_duplicates
-        // GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
-        GATK_MARK_DUPLICATES(sorted_reads_ch)
+        GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
+        // GATK_MARK_DUPLICATES(bam_sorted_reads_ch)
 
         if (params.dataset_is_not_contaminated) {
             // call_base_recal
@@ -153,4 +152,5 @@ workflow CALL_WF {
         cohort_stats_tsv = UTILS_COHORT_STATS.out
         gvcf_ch = GATK_HAPLOTYPE_CALLER.out.collect()
         lofreq_vcf_ch = LOFREQ_CALL.out
+*/
 }

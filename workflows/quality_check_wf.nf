@@ -22,26 +22,18 @@ workflow QUALITY_CHECK_WF {
         )
 
     emit:
-        approved_samples = UTILS_QUANTTB_SAMPLE_QC.out.qc_samplereads_tuple
-                            .filter {
-                                //TODO
-                                //find the location of the qc file in tuple
-                                //use file.text to read it's text and split on ","
-                                //see if the qc threshold test was passed
-                                // return true
+        approved_samples = UTILS_QUANTTB_COHORT_STATS.out
+        .splitCsv(header: false, skip: 1)
+        .map { row -> {
 
+                relabundance_threshold_met =	row[3]
+                derived_sample_name =	row[-1]
 
-                                //     if(relabundance_threshold_met == "1") {
-                                //         return tuple("${derived_sample_name}")
-                                //     }
-
-                            }
-                            .map {
-                                //TODO
-                                //reshape the channel shape here
-                                //drop the QC file
-                            }
-                            .collect()
-                            .view()
+                if(relabundance_threshold_met == "1") {
+                    return tuple("${derived_sample_name}")
+                }
+            }
+        }
+        .join(reads_ch)
 
 }
