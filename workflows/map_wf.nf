@@ -4,7 +4,7 @@ include { BWA_MEM } from '../modules/bwa/mem.nf' addParams (params.BWA_MEM)
 
 workflow MAP_WF {
     take:
-        approved_reads_ch
+        reads_ch
 
     main:
 
@@ -12,7 +12,7 @@ workflow MAP_WF {
 
         MULTIQC(FASTQC.out.collect())
 
-        BWA_MEM(reads_ch.join(bew_mem_rg_ch),
+        BWA_MEM(reads_ch,
                 params.ref_fasta,
                 [params.ref_fasta_dict,
                  params.ref_fasta_amb,
