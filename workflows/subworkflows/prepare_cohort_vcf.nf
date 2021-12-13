@@ -12,10 +12,10 @@ workflow PREPARE_COHORT_VCF {
 
     main:
 
-    gvcfs_string_ch = cohort_gvcfs_ch
-        .flatten()
-        .filter {  it.getExtension()  == "gz" }
-        .reduce { a, b -> "$a --variant $b " }
+        gvcfs_string_ch = cohort_gvcfs_ch
+            .flatten()
+            .filter {  it.getExtension()  == "gz" }
+            .reduce { a, b -> "$a --variant $b " }
 
 
         // merge_combine

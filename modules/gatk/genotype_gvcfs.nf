@@ -4,29 +4,29 @@ process GATK_GENOTYPE_GVCFS {
 
 
     input:
-    tuple val(joint_name), path(combinedVcfIndex), path(combinedVcf)
-    path(ref_fasta)
-    path("*")
+        tuple val(joint_name), path(combinedVcfIndex), path(combinedVcf)
+        path(ref_fasta)
+        path("*")
 
 
     output:
-    tuple val(joint_name), path("*.raw_variants.vcf.gz")
+        tuple val(joint_name), path("*.raw_variants.vcf.gz")
 
 
     script:
 
-    """
-    ${params.gatk_path} GenotypeGVCFs --java-options "-Xmx${task.memory.giga}G" \\
-        -R ${ref_fasta} \\
-        -V ${combinedVcf} \\
-        ${params.arguments} \\
-        -O ${joint_name}.raw_variants.vcf.gz
-    """
+        """
+        ${params.gatk_path} GenotypeGVCFs --java-options "-Xmx${task.memory.giga}G" \\
+            -R ${ref_fasta} \\
+            -V ${combinedVcf} \\
+            ${params.arguments} \\
+            -O ${joint_name}.raw_variants.vcf.gz
+        """
 
     stub:
 
-    """
-    touch ${joint_name}.raw_variants.vcf.gz
-    """
+        """
+        touch ${joint_name}.raw_variants.vcf.gz
+        """
 }
 
