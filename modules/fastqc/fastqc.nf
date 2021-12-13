@@ -3,28 +3,28 @@ process FASTQC {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    tuple val(sampleName), val(bamRgString), path(sampleReads)
+        tuple val(sampleName), val(bamRgString), path(sampleReads)
 
     output:
-    path('*fastqc*')
+        path('*fastqc*')
 
 
     script:
 
-    """
-    ${params.fastqc_path} \\
-        ${sampleReads} \\
-        -t ${task.cpus}
-    """
+        """
+        ${params.fastqc_path} \\
+            ${sampleReads} \\
+            -t ${task.cpus}
+        """
 
     stub:
-    """
-    echo "${params.fastqc_path} \\
-              ${sampleReads} \\
-              -t ${task.cpus}"
+        """
+        echo "${params.fastqc_path} \\
+                ${sampleReads} \\
+                -t ${task.cpus}"
 
-    touch ${sampleName}.html
+        touch ${sampleName}.html
 
-    touch ${sampleName}.zip
-    """
+        touch ${sampleName}.zip
+        """
 }

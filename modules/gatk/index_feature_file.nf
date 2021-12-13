@@ -4,34 +4,34 @@ process GATK_INDEX_FEATURE_FILE {
 
 
     input:
-    tuple val(sampleName), path(vcf)
-    val(outputPrefix)
+        tuple val(sampleName), path(vcf)
+        val(outputPrefix)
 
 
     output:
-    tuple val(sampleName), path("*.vcf.gz.tbi"), path(vcf)
+        tuple val(sampleName), path("*.vcf.gz.tbi"), path(vcf)
 
 
     script:
 
-    def outputFileArg = ( outputPrefix != "" ? "-O ${sampleName}.${outputPrefix}.vcf.gz.tbi" : "" )
+        def outputFileArg = ( outputPrefix != "" ? "-O ${sampleName}.${outputPrefix}.vcf.gz.tbi" : "" )
 
-    """
-    ${params.gatk_path} IndexFeatureFile --java-options "-Xmx${task.memory.giga}G" \\
-        ${outputFileArg} \\
-        -I ${vcf}
-    """
+        """
+        ${params.gatk_path} IndexFeatureFile --java-options "-Xmx${task.memory.giga}G" \\
+            ${outputFileArg} \\
+            -I ${vcf}
+        """
 
     stub:
 
-    def outputFileArg = ( outputPrefix != "" ? "-O ${sampleName}.${outputPrefix}.vcf.gz.tbi" : "" )
+        def outputFileArg = ( outputPrefix != "" ? "-O ${sampleName}.${outputPrefix}.vcf.gz.tbi" : "" )
 
-    """
+        """
 
-    echo ${outputFileArg}
+        echo ${outputFileArg}
 
-    touch ${sampleName}.${outputPrefix}.idx.vcf.gz
-    touch ${sampleName}.${outputPrefix}.idx.vcf.gz.tbi
+        touch ${sampleName}.${outputPrefix}.idx.vcf.gz
+        touch ${sampleName}.${outputPrefix}.idx.vcf.gz.tbi
 
-    """
+        """
 }

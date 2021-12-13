@@ -3,31 +3,31 @@ process SAMTOOLS_MERGE {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    tuple val(sampleName), path("bams/*")
+        tuple val(sampleName), path("bams/*")
 
     output:
-    tuple val(sampleName), path("*.sorted_reads.bam")
+        tuple val(sampleName), path("*.sorted_reads.bam")
 
     script:
 
-    """
-    ${params.samtools_path} merge \\
-        -f \\
-        ${sampleName}.sorted_reads.bam \\
-        bams/* \\
-        -@ ${task.cpus}
-    """
+        """
+        ${params.samtools_path} merge \\
+            -f \\
+            ${sampleName}.sorted_reads.bam \\
+            bams/* \\
+            -@ ${task.cpus}
+        """
 
     stub:
 
-    """
-    echo "samtools merge \\
-        -f \\
-        ${sampleName}.sorted_reads.bam \\
-        bams/* \\
-        -@ ${task.cpus}"
+        """
+        echo "samtools merge \\
+            -f \\
+            ${sampleName}.sorted_reads.bam \\
+            bams/* \\
+            -@ ${task.cpus}"
 
-    touch ${sampleName}.sorted_reads.bam
-    """
+        touch ${sampleName}.sorted_reads.bam
+        """
 
 }

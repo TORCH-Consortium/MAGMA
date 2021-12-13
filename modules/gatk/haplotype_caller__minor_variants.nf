@@ -4,34 +4,34 @@ process GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS {
 
 
     input:
-    tuple val(sampleName), path(bai), path(bam)
-    path(reference)
-    path("*")
+        tuple val(sampleName), path(bai), path(bam)
+        path(reference)
+        path("*")
 
     output:
-    tuple val(sampleName), path("*.g.vcf.gz.tbi"), path("*.AllSites.g.vcf.gz")
+        tuple val(sampleName), path("*.g.vcf.gz.tbi"), path("*.AllSites.g.vcf.gz")
 
 
     script:
 
-    """
-    ${params.gatk_path} HaplotypeCaller --java-options "-Xmx${task.memory.giga}G" \\
-        -R ${reference} \\
-        -I ${bam} \\
-        ${params.arguments} \\
-        -O  ${sampleName}.AllSites.g.vcf.gz
-    """
+        """
+        ${params.gatk_path} HaplotypeCaller --java-options "-Xmx${task.memory.giga}G" \\
+            -R ${reference} \\
+            -I ${bam} \\
+            ${params.arguments} \\
+            -O  ${sampleName}.AllSites.g.vcf.gz
+        """
 
     stub:
 
-    """
-    echo "gatk HaplotypeCaller -Xmx${task.memory.giga}G \\
-        -R ${reference} \\
-        -I ${bam} \\
-        ${params.arguments} \\
-        -O  ${sampleName}.AllSites.g.vcf.gz"
+        """
+        echo "gatk HaplotypeCaller -Xmx${task.memory.giga}G \\
+            -R ${reference} \\
+            -I ${bam} \\
+            ${params.arguments} \\
+            -O  ${sampleName}.AllSites.g.vcf.gz"
 
-    touch ${sampleName}.AllSites.g.vcf.gz
-    """
+        touch ${sampleName}.AllSites.g.vcf.gz
+        """
 }
 

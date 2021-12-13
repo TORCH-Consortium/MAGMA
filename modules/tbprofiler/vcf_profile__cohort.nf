@@ -3,25 +3,25 @@ process TBPROFILER_VCF_PROFILE__COHORT {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    tuple val(joint_name), path(mergedVcfIndex), path(mergedVcf)
-    path(resistanceDb)
+        tuple val(joint_name), path(mergedVcfIndex), path(mergedVcf)
+        path(resistanceDb)
 
     output:
-    path("results/*")
+        path("results/*")
 
 
     script:
-    def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
+        def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
 
-    """
-    ${params.tbprofiler_path} vcf_profile  \\
-        ${optionalDb} \\
-        ${mergedVcf}
+        """
+        ${params.tbprofiler_path} vcf_profile  \\
+            ${optionalDb} \\
+            ${mergedVcf}
 
-    """
+        """
 
     stub:
-    """
-    """
+        """
+        """
 
 }

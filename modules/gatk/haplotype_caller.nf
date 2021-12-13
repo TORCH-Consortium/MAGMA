@@ -4,37 +4,37 @@ process GATK_HAPLOTYPE_CALLER {
 
 
     input:
-    tuple val(sampleName), path(bai), path(bam)
-    path(ref_fasta)
-    path("*")
+        tuple val(sampleName), path(bai), path(bam)
+        path(ref_fasta)
+        path("*")
 
     output:
-    tuple val(sampleName), path("*.g.vcf.gz.tbi"), path("*.g.vcf.gz")
+        tuple val(sampleName), path("*.g.vcf.gz.tbi"), path("*.g.vcf.gz")
 
 
     script:
 
-    """
-    ${params.gatk_path} HaplotypeCaller --java-options "-Xmx${task.memory.giga}G" \\
-        -R ${ref_fasta} \\
-        -I ${bam} \\
-        -ERC GVCF \\
-        ${params.arguments} \\
-        -O ${sampleName}.g.vcf.gz
-    """
+        """
+        ${params.gatk_path} HaplotypeCaller --java-options "-Xmx${task.memory.giga}G" \\
+            -R ${ref_fasta} \\
+            -I ${bam} \\
+            -ERC GVCF \\
+            ${params.arguments} \\
+            -O ${sampleName}.g.vcf.gz
+        """
 
     stub:
 
-    """
-    echo "gatk HaplotypeCaller -Xmx${task.memory.giga}G \\
-        -R ${ref_fasta} \\
-        -I ${bam} \\
-        -ERC GVCF \\
-        ${params.arguments} \\
-        -O ${sampleName}.g.vcf.gz"
+        """
+        echo "gatk HaplotypeCaller -Xmx${task.memory.giga}G \\
+            -R ${ref_fasta} \\
+            -I ${bam} \\
+            -ERC GVCF \\
+            ${params.arguments} \\
+            -O ${sampleName}.g.vcf.gz"
 
-    touch ${sampleName}.g.vcf.gz
-    touch ${sampleName}.g.vcf.gz.tbi
-    """
+        touch ${sampleName}.g.vcf.gz
+        touch ${sampleName}.g.vcf.gz.tbi
+        """
 }
 

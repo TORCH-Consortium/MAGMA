@@ -2,22 +2,22 @@ process MULTIQC {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-    path("*")
+        path("*")
 
     output:
-    tuple path("multiqc_data"), path("multiqc_report.html")
+        tuple path("multiqc_data"), path("multiqc_report.html")
 
 
     script:
 
-    """
-    ${params.multiqc_path} .
-    """
+        """
+        ${params.multiqc_path} .
+        """
 
     stub:
-    """
-    mkdir multiqc_data
+        """
+        mkdir multiqc_data
 
-    touch multiqc_report.html
-    """
+        touch multiqc_report.html
+        """
 }

@@ -4,48 +4,48 @@ process GATK_VARIANT_RECALIBRATOR {
 
 
     input:
-    val(analysisMode)
-    val(annotations)
-    tuple val(joint_name), path(variantsIndex), path(variantsVcf)
-    val(resourceFilesArg)
-    path(resourceFiles)
-    path(resourceFileIndexes)
-    path(reference)
-    path("*")
+        val(analysisMode)
+        val(annotations)
+        tuple val(joint_name), path(variantsIndex), path(variantsVcf)
+        val(resourceFilesArg)
+        path(resourceFiles)
+        path(resourceFileIndexes)
+        path(reference)
+        path("*")
 
     output:
-    tuple val(joint_name), path("*.tbi"), path("*.recal.vcf.gz"), emit: recalVcfTuple
-    tuple val(joint_name), path("*.tranches"), emit: tranchesFile
-    path("*.R")
-    path("*.model")
-    path("*${analysisMode}.command.log"), emit: annotationsLog
+        tuple val(joint_name), path("*.tbi"), path("*.recal.vcf.gz"), emit: recalVcfTuple
+        tuple val(joint_name), path("*.tranches"), emit: tranchesFile
+        path("*.R")
+        path("*.model")
+        path("*${analysisMode}.command.log"), emit: annotationsLog
 
     script:
 
-    def finalResourceFilesArg =    (resourceFilesArg  ? "--resource:${resourceFilesArg}" : "")
+        def finalResourceFilesArg =    (resourceFilesArg  ? "--resource:${resourceFilesArg}" : "")
 
-    """
-    ${params.gatk_path} VariantRecalibrator --java-options "-Xmx${task.memory.giga}G" \\
-        -R ${reference} \\
-        -V ${variantsVcf} \\
-        ${finalResourceFilesArg} \\
-        ${annotations} \\
-        ${params.arguments} \\
-        -mode ${analysisMode} \\
-        --tranches-file ${joint_name}.${analysisMode}.tranches \\
-        --rscript-file ${joint_name}.${analysisMode}.R \\
-        --output ${joint_name}.${analysisMode}.recal.vcf.gz \\
-        --output-model ${joint_name}.${analysisMode}.model
+        """
+        ${params.gatk_path} VariantRecalibrator --java-options "-Xmx${task.memory.giga}G" \\
+            -R ${reference} \\
+            -V ${variantsVcf} \\
+            ${finalResourceFilesArg} \\
+            ${annotations} \\
+            ${params.arguments} \\
+            -mode ${analysisMode} \\
+            --tranches-file ${joint_name}.${analysisMode}.tranches \\
+            --rscript-file ${joint_name}.${analysisMode}.R \\
+            --output ${joint_name}.${analysisMode}.recal.vcf.gz \\
+            --output-model ${joint_name}.${analysisMode}.model
 
-    cp .command.log ${joint_name}.${analysisMode}.command.log
-    """
+        cp .command.log ${joint_name}.${analysisMode}.command.log
+        """
 
     stub:
 
-    """
-    touch ${joint_name}.${analysisMode}.tranches
-    touch ${joint_name}.${analysisMode}.R
-    touch ${joint_name}.${analysisMode}.recal.vcf.gz
-    touch ${joint_name}.${analysisMode}.mod
-    """
+        """
+        touch ${joint_name}.${analysisMode}.tranches
+        touch ${joint_name}.${analysisMode}.R
+        touch ${joint_name}.${analysisMode}.recal.vcf.gz
+        touch ${joint_name}.${analysisMode}.mod
+        """
 }
