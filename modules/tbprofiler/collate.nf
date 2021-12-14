@@ -11,7 +11,7 @@ process TBPROFILER_COLLATE {
         path("*.XBS.resistance*")
 
     script:
-        def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
+        def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
         """
         ${params.tbprofiler_path} collate \\

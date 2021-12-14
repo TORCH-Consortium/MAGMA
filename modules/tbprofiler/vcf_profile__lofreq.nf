@@ -12,7 +12,7 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
 
 
     script:
-        def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
+        def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
         """
 

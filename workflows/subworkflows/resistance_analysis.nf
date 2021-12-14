@@ -1,3 +1,4 @@
+include { TBPROFILER_LOAD_LIBRARY } from "../../modules/tbprofiler/load_library.nf"
 include { TBPROFILER_VCF_PROFILE__COHORT } from "../../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__COHORT)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__COHORT } from "../../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__COHORT)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
@@ -13,6 +14,10 @@ workflow RESISTANCE_ANALYSIS {
     main:
 
         def database = params.resistance_db ? params.resistance_db : []
+
+        if (!workflow.container) {
+            TBPROFILER_LOAD_LIBRARY(database)
+        }
 
         // merge_call_resistance
         TBPROFILER_VCF_PROFILE__COHORT(merged_vcf_ch, database)

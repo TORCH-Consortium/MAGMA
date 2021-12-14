@@ -11,7 +11,7 @@ process TBPROFILER_VCF_PROFILE__COHORT {
 
 
     script:
-        def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
+        def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
         """
         ${params.tbprofiler_path} vcf_profile  \\
