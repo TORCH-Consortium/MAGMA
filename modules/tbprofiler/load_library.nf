@@ -8,10 +8,10 @@ process TBPROFILER_LOAD_LIBRARY {
 
     script:
 
-        if (!workflow.container) {
+        if (!workflow.container && resistanceDb) {
 
             """
-            echo "Load the library here as no BioContainer based container is used"
+            echo "Load the library here as no BioContainer based container is used: NO"
 
             cd ${resistanceDb}
 
@@ -21,7 +21,7 @@ process TBPROFILER_LOAD_LIBRARY {
         } else {
 
             """
-            echo "Do NOT load the library here as the no BioContainer based container is used"
+            echo "Do NOT load the library here as BioContainer based container is used: YES"
             """
         }
 

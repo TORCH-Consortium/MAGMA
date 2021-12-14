@@ -11,7 +11,7 @@ process TBPROFILER_COLLATE {
         path("*.XBS.resistance*")
 
     script:
-        def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
+        def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
 
         def optionallyLoadLibraryForContainers = workflow.container ? "cd ${resistanceDb}; ${params.tbprofiler_path} load_library ${resistanceDb.name}; cd ../" : ""
 

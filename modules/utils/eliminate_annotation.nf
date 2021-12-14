@@ -1,5 +1,5 @@
 process UTILS_ELIMINATE_ANNOTATION {
-    tag "joint_name: ${params.vcf_name}"
+    tag "${params.vcf_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
