@@ -15,7 +15,8 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
         def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
 
         """
-        tb-profiler vcf_profile \\
+
+        ${params.tbprofiler_path} vcf_profile \\
             --lofreq_sample_name ${sampleName} \\
             ${optionalDb} \\
             ${lofreqVcf}
