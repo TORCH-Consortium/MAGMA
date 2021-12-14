@@ -13,7 +13,11 @@ process TBPROFILER_COLLATE {
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
+        def optionallyLoadLibraryForContainers = workflow.container ? "cd ${resistanceDb}; ${params.tbprofiler_path} load_library ${resistanceDb.name}; cd ../" : ""
+
         """
+        ${optionallyLoadLibraryForContainers}
+
         ${params.tbprofiler_path} collate \\
             ${optionalDb} \\
             -p ${joint_name}.${params.prefix}
