@@ -138,7 +138,7 @@ workflow CALL_WF {
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
             .join(LOFREQ_CALL__NTM.out)
-            .view()
+            // .view()
 
 
         UTILS_SAMPLE_STATS(sample_stats_ch)
