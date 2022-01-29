@@ -78,6 +78,8 @@ def read_compute_write_qc_report(input_filename, output_filename, relabundance_t
 
         input_quanttb_stats_orddict = csv.DictReader(input_quanttb_stats_file, delimiter=',')
 
+        relabundance_threshold_met = 0
+
         for row in input_quanttb_stats_orddict:
             sample = row['sample']
             refname = row[' refname']
@@ -86,13 +88,15 @@ def read_compute_write_qc_report(input_filename, output_filename, relabundance_t
             depth = float(row[' depth'])
 
 
-        print("Sample name: ", sample)
-        print("Derived sample name: ", derived_name)
+            print("Sample name: ", sample)
+            print("Derived sample name: ", derived_name)
 
-        relabundance_threshold_met = 1 if (relabundance > relabundance_threshold) else 0
+            print("Relabundance threshold: ", relabundance_threshold)
+            print("Threshold met: ", relabundance_threshold)
 
-        print("Relabundance threshold: ", relabundance_threshold)
-        print("Threshold met: ", relabundance_threshold_met)
+            if relabundance >= relabundance_threshold:
+                relabundance_threshold_met = 1
+                break # If we find a single fastq file with a relative abundance larger than the threshold, we can stop searching
 
         #NOTE: Expected output field names, this is then used in the nextflow layer.
         output_fieldnames = ['sample', 'refname', 'totscore', 'relabundance', 'relabundance_threshold_met', 'depth', 'derived_name']
@@ -102,8 +106,12 @@ def read_compute_write_qc_report(input_filename, output_filename, relabundance_t
 
             if write_header == "true":
                 writer.writerow(output_fieldnames)
-
-            writer.writerow([sample, totscore, relabundance, relabundance_threshold_met, depth, derived_name])
+            if relabundance_threshold_met == 1:
+                # If we found a fastq file with a strain that met the relativa abundance threshold, write some info to the summary file
+                writer.writerow([sample, totscore, relabundance, relabundance_threshold_met, depth, derived_name])
+            else:
+                # If the relative abundance threshold is not met, it does not matter which strain did not meet the threshold
+                writer.writerow(['NA', 'NA', 'NA', 0, 'NA', derived_name])
 
 
 #####################################################
