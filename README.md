@@ -35,7 +35,7 @@ You can optionally put your sample samplsheet in `xbs-nf/resources/reference_set
 - [ ] To run the pipeline, make sure you have `conda` installed. Moreover, if you don't already have `nextflow` installed, you can use the following commands to install it 
 
 ```shell
-conda create -n xbs-nf-env -c bioconda -c conda-forge nextflow openjdk=11
+conda create -n xbs-nf-env -c bioconda -c conda-forge nextflow mamba openjdk=11
 ```
 
 
