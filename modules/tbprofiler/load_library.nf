@@ -6,6 +6,7 @@ process TBPROFILER_LOAD_LIBRARY {
     output:
         path(resistanceDb)
 
+    //FIXME: Fix this logic!
     script:
 
         if (!workflow.container && resistanceDb) {
@@ -25,7 +26,7 @@ process TBPROFILER_LOAD_LIBRARY {
 
             """
             echo "A container ${workflow.container} is used: TRUE"
-            echo "resistanceDB status: ${resistanceDb}"
+            echo "resistanceDB status: ${resistanceDb.name}"
 
 
             echo "Do NOT load the library"
