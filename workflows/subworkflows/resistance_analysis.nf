@@ -25,6 +25,6 @@ workflow RESISTANCE_ANALYSIS {
         BGZIP(lofreq_vcf_ch)
         TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP.out, TBPROFILER_LOAD_LIBRARY.out)
         TBPROFILER_COLLATE__LOFREQ(params.vcf_name,
-                                   TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
-                                   TBPROFILER_LOAD_LIBRARY.out)
+                                  TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
+                                  TBPROFILER_LOAD_LIBRARY.out)
 }
