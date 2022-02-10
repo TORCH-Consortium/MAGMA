@@ -35,9 +35,9 @@ process GATK_VARIANT_RECALIBRATOR {
             --tranches-file ${joint_name}.${analysisMode}.tranches \\
             --rscript-file ${joint_name}.${analysisMode}.R \\
             --output ${joint_name}.${analysisMode}.recal.vcf.gz \\
-            --output-model ${joint_name}.${analysisMode}.model
+            --output-model ${joint_name}.${analysisMode}.model \\
+            2>${joint_name}.${analysisMode}.command.log
 
-        cp .command.log ${joint_name}.${analysisMode}.command.log
         """
 
     stub:
