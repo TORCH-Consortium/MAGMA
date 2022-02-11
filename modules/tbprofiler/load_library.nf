@@ -25,7 +25,7 @@ process TBPROFILER_LOAD_LIBRARY {
 
             """
             echo "A container ${workflow.container} is used: TRUE"
-            echo "resistanceDB status: ${resistanceDb}"
+            echo "resistanceDB status: ${resistanceDb.name}"
 
 
             echo "Do NOT load the library"
