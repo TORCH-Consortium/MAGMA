@@ -6,7 +6,6 @@ process TBPROFILER_LOAD_LIBRARY {
     output:
         path(resistanceDb)
 
-    //FIXME: Fix this logic!
     script:
 
         if (!workflow.container && resistanceDb) {
