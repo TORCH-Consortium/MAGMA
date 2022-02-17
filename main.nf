@@ -19,20 +19,20 @@ include { MERGE_WF } from './workflows/merge_wf.nf'
 //   0     1       2       3    4  5     6      7       8
 // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
 
-
 reads_ch = Channel.fromPath(params.input_samplesheet)
         .splitCsv(header: false, skip: 1)
         .map { row -> {
-                    study           = row[0]
+                    study           = row[0] ?: "XBS-NF"
                     sample          = row[1]
-                    library         = row[2]
-                    attempt         = row[3]
+                    library         = row[2] ?: 1
+                    attempt         = row[3] ?: 1
                     read1           = row[4]
                     read2           = row[5]
-                    flowcell        = row[6]
-                    lane            = row[7]
-                    index_sequence  = row[8]
+                    flowcell        = row[6] ?: 1
+                    lane            = row[7] ?: 1
+                    index_sequence  = row[8] ?: 1
 
+            //NOTE: Platform is hard-coded to illumina
             bam_rg_string ="@RG\\tID:${flowcell}.${lane}\\tSM:${study}.${sample}\\tPL:illumina\\tLB:lib${library}\\tPU:${flowcell}.${lane}.${index_sequence}"
 
             unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
@@ -63,35 +63,37 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
 
 workflow TEST {
 
-    QUALITY_CHECK_WF(reads_ch)
+    reads_ch.view()
 
-    MAP_WF(QUALITY_CHECK_WF.out)
+    // QUALITY_CHECK_WF(reads_ch)
 
-    CALL_WF(MAP_WF.out.sorted_reads)
+    // MAP_WF(QUALITY_CHECK_WF.out)
 
-    collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
+    // CALL_WF(MAP_WF.out.sorted_reads)
 
-    // collated_gvcfs_ch.view()
+    // collated_gvcfs_ch = CALL_WF.out.gvcf_ch.flatten().collate(3)
 
-    sample_stats_ch = CALL_WF.out.cohort_stats_tsv
-        .splitCsv(header: false, skip: 1, sep: '\t' )
-        .map { row -> [
-                row.first(),           // SAMPLE
-                row.last().toInteger() // ALL_THRESHOLDS_MET
-         ]
-    }
-    .filter { it[1] == 1} // Filter out samples which meet all the thresholds
-    .map { [ it[0] ] }
-    // .view()
+    // // collated_gvcfs_ch.view()
 
-
-    selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
-        .flatten()
-        .filter { it.class  == sun.nio.fs.UnixPath }
-        // .view()
+    // sample_stats_ch = CALL_WF.out.cohort_stats_tsv
+    //     .splitCsv(header: false, skip: 1, sep: '\t' )
+    //     .map { row -> [
+    //             row.first(),           // SAMPLE
+    //             row.last().toInteger() // ALL_THRESHOLDS_MET
+    //      ]
+    // }
+    // .filter { it[1] == 1} // Filter out samples which meet all the thresholds
+    // .map { [ it[0] ] }
+    // // .view()
 
 
-    MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
+    // selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
+    //     .flatten()
+    //     .filter { it.class  == sun.nio.fs.UnixPath }
+    //     // .view()
+
+
+    // MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
 
 }
 
