@@ -10,6 +10,8 @@ process GATK_APPLY_VQSR {
 
     output:
         tuple val(joint_name), path("*.filtered_${analysisMode}_inc-rRNA.vcf.gz.tbi"), path("*.filtered_${analysisMode}_inc-rRNA.vcf.gz"), emit: filteredVcfTuple
+        path("*tranches.pdf")
+        path("*.R.pdf")
 
     script:
 
