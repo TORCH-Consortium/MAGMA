@@ -92,7 +92,7 @@ workflow SNP_ANALYSIS {
                             [params.ref_fasta_fai, params.ref_fasta_dict])
 
         GATK_SELECT_VARIANTS__EXCLUSION__SNP('SNP',
-                                            GATK_APPLY_VQSR__SNP.out,
+                                            GATK_APPLY_VQSR__SNP.out.filteredVcfTuple,
                                             params.rrna_list,
                                             params.ref_fasta,
                                             [params.ref_fasta_fai, params.ref_fasta_dict])
