@@ -15,3 +15,5 @@ work/
 data/full_data
 results*
 *.nextflow*
+
+conda_envs/xbs-nf-env*
