@@ -8,7 +8,7 @@ DOCKER_NAMESPACE="rg.nl-ams.scw.cloud/xbs-nf-containers"
 for container_dir in $(find * -type d); do
   echo "Building $container_dir ..."
   cd $container_dir
-  CONTAINER_TAG=0.1.0
+  CONTAINER_TAG=0.2.0
   CONTAINER_NAME=$DOCKER_NAMESPACE/$container_dir:$CONTAINER_TAG
   echo "Container Name : $CONTAINER_NAME "
   docker build -t $CONTAINER_NAME .

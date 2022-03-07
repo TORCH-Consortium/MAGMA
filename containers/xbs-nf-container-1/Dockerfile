@@ -16,3 +16,7 @@ RUN \
 	bioconda::multiqc=1.11 \
 	bioconda::fastqc=0.11.8 \
    && micromamba clean -a -y
+
+
+RUN micromamba install -y -n base  conda-forge::procps-ng  \
+   && micromamba clean -a -y

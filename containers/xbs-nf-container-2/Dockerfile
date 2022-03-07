@@ -14,3 +14,6 @@ RUN \
      bioconda::snpeff=4.3.1t \
      bioconda::clusterpicker=1.2.3 \
    && micromamba clean -a -y
+
+RUN micromamba install -y -n base  conda-forge::procps-ng  \
+   && micromamba clean -a -y
