@@ -1,6 +1,6 @@
 process QUANTTB_QUANT {
     tag "${sampleName}"
-    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish, pattern: "output/*txt"
+    publishDir "${params.outdir}/quanttb/quant/" , mode: params.save_mode, enabled: params.should_publish, pattern: "output/*txt"
 
     input:
         tuple val(sampleName), val(bamRgString) ,path(sampleReads)
