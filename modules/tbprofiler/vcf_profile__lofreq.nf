@@ -1,7 +1,6 @@
 process TBPROFILER_VCF_PROFILE__LOFREQ {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
-    stageInMode 'copy'
 
     input:
         tuple val(sampleName), path(lofreqVcf)
