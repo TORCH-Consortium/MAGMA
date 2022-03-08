@@ -4,7 +4,7 @@ process TBPROFILER_LOAD_LIBRARY {
         path(resistanceDb)
 
     output:
-        path(resistanceDb)
+        path(resistanceDb), includeInputs: true
 
     script:
 
