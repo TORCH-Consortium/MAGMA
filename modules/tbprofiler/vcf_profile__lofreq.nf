@@ -14,7 +14,7 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
-        def optionallyLoadLibraryForContainers = workflow.container ? "cd ${resistanceDb}; ${params.tbprofiler_path} load_library ${resistanceDb.name}; cd ../" : ""
+        def optionallyLoadLibraryForContainers = resistanceDb ? "cd ${resistanceDb}; ${params.tbprofiler_path} load_library ${resistanceDb.name}; cd ../" : ""
 
         """
 
