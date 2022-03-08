@@ -19,6 +19,7 @@ process GATK_SELECT_VARIANTS__EXCLUSION {
         ${params.gatk_path} SelectVariants --java-options "-Xmx${task.memory.giga}G" \\
             -V ${filteredVcf} \\
             --exclude-intervals ${intervalFile} \\
+            ${params.arguments} \\
             -O ${joint_name}.filtered_${analysisMode}_exc-rRNA.vcf.gz
 
         """
