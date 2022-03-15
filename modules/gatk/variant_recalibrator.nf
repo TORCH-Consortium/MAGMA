@@ -18,6 +18,7 @@ process GATK_VARIANT_RECALIBRATOR {
         tuple val(joint_name), path("*.tranches"), emit: tranchesFile
         path("*.R")
         path("*.model")
+        path("*.pdf")
         path("*${analysisMode}.command.log"), emit: annotationsLog
 
     script:

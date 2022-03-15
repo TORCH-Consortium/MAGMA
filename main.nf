@@ -124,13 +124,13 @@ workflow {
     }
     .filter { it[1] == 1} // Filter out samples which meet all the thresholds
     .map { [ it[0] ] }
-    .view()
+    // .view()
     //FIXME remove the view
 
     selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
         .flatten()
         .filter { it.class  == sun.nio.fs.UnixPath }
-        .view()
+        // .view()
     //FIXME remove the view
 
 
