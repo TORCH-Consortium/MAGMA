@@ -13,7 +13,7 @@ workflow PREPARE_COHORT_VCF {
     main:
 
         //FIXME Remove this
-        cohort_gvcfs_ch.view()
+        // cohort_gvcfs_ch.view()
 
         gvcfs_string_ch = cohort_gvcfs_ch
             .flatten()
@@ -21,7 +21,7 @@ workflow PREPARE_COHORT_VCF {
             .reduce { a, b -> "$a --variant $b " }
 
         //FIXME Remove this
-        gvcfs_string_ch.view()
+        // gvcfs_string_ch.view()
 
         // merge_combine
         GATK_COMBINE_GVCFS(params.vcf_name, gvcfs_string_ch, cohort_gvcfs_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
