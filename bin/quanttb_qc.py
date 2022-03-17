@@ -108,10 +108,10 @@ def read_compute_write_qc_report(input_filename, output_filename, relabundance_t
                 writer.writerow(output_fieldnames)
             if relabundance_threshold_met == 1:
                 # If we found a fastq file with a strain that met the relativa abundance threshold, write some info to the summary file
-                writer.writerow([sample, totscore, relabundance, relabundance_threshold_met, depth, derived_name])
+                writer.writerow([sample, refname, totscore, relabundance, relabundance_threshold_met, depth, derived_name])
             else:
                 # If the relative abundance threshold is not met, it does not matter which strain did not meet the threshold
-                writer.writerow(['NA', 'NA', 'NA', 0, 'NA', derived_name])
+                writer.writerow(['NA', 'NA', 'NA', 'NA', 0, 'NA', derived_name])
 
 
 #####################################################
