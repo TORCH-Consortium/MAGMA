@@ -1,7 +1,7 @@
 name: xbs-nf-env-1
-#channels:
-#  - conda-forge
-#  - bioconda
+channels:
+  - conda-forge
+  - bioconda
 dependencies:
   - bioconda::gatk4=4.2.4.1 
   - conda-forge::R=4.1 
