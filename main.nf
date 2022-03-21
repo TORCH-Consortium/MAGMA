@@ -69,9 +69,6 @@ workflow {
 
         QUALITY_CHECK_WF(reads_ch)
 
-        //FIXME remove the view
-        QUALITY_CHECK_WF.out.view()
-
         MAP_WF(QUALITY_CHECK_WF.out)
 
         CALL_WF(MAP_WF.out.sorted_reads)
