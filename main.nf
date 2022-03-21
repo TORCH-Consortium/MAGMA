@@ -61,7 +61,7 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
 
 workflow {
 
-    if (params.only_qc_check_wf == true) {
+    if (params.only_qc_check_wf) {
 
         QUALITY_CHECK_WF(reads_ch)
 
