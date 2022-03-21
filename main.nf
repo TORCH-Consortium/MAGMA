@@ -63,9 +63,12 @@ workflow {
 
     if (params.only_qc_check_wf) {
 
+        log.info "$params.only_qc_check_wf: true"
         QUALITY_CHECK_WF(reads_ch)
 
     } else {
+
+        log.info "$params.only_qc_check_wf: false"
 
         QUALITY_CHECK_WF(reads_ch)
 
