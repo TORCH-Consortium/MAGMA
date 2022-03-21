@@ -70,7 +70,7 @@ workflow {
         QUALITY_CHECK_WF(reads_ch)
 
         //FIXME remove the view
-        QUALITY_CHECK_WF.view()
+        QUALITY_CHECK_WF.out.view()
 
         MAP_WF(QUALITY_CHECK_WF.out)
 
