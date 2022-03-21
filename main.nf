@@ -63,14 +63,14 @@ workflow {
 
     if (params.only_qc_check_wf) {
 
-        log.info "$params.only_qc_check_wf: true"
         QUALITY_CHECK_WF(reads_ch)
 
     } else {
 
-        log.info "$params.only_qc_check_wf: false"
-
         QUALITY_CHECK_WF(reads_ch)
+
+        //FIXME remove the view
+        QUALITY_CHECK_WF.view()
 
         MAP_WF(QUALITY_CHECK_WF.out)
 

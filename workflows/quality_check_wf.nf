@@ -32,7 +32,7 @@ workflow QUALITY_CHECK_WF {
         .splitCsv(header: false, skip: 1)
         .map { row -> {
 
-                relabundance_threshold_met =	row[3]
+                relabundance_threshold_met =	row[4]
                 derived_sample_name =	row[-1]
 
                 if(relabundance_threshold_met == "1") {
