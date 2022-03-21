@@ -24,7 +24,12 @@ workflow PREPARE_COHORT_VCF {
         // gvcfs_string_ch.view()
 
         // merge_combine
-        GATK_COMBINE_GVCFS(params.vcf_name, gvcfs_string_ch, cohort_gvcfs_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
+        GATK_COMBINE_GVCFS(params.vcf_name,
+                        gvcfs_string_ch,
+                        cohort_gvcfs_ch,
+                        params.ref_fasta,
+                        params.ref_exit_rif_gvcf,
+                        [params.ref_fasta_fai, params.ref_fasta_dict, params.ref_exit_rif_gvcf_tbi])
 
 
         // merge_genotype

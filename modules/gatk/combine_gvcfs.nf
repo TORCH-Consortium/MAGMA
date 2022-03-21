@@ -8,6 +8,7 @@ process GATK_COMBINE_GVCFS {
         val(gvcfs_string)
         path(gvcfs)
         path(ref_fasta)
+        path(ref_exit_rif_gvcf)
         path("*")
 
     output:
@@ -16,11 +17,14 @@ process GATK_COMBINE_GVCFS {
 
     script:
 
+        def optionalRefExitRifGvcf  = ref_exit_rif_gvcf ? " --variant ${ref_exit_rif_gvcf} " : ""
+
         """
         ${params.gatk_path} CombineGVCFs --java-options "-Xmx${task.memory.giga}G" \\
             -R ${ref_fasta} \\
             ${params.arguments} \\
             --variant ${gvcfs_string} \\
+            ${optionalRefExitRifGvcf} \\
             -O ${joint_name}.combined.vcf.gz
         """
 
