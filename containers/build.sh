@@ -5,6 +5,9 @@ set -uex
 
 DOCKER_NAMESPACE="rg.nl-ams.scw.cloud/xbs-nf-containers"
 
+cp ../conda_envs/xbs-nf-env-1.yml ./xbs-nf-container-1
+cp ../conda_envs/xbs-nf-env-2.yml ./xbs-nf-container-2
+
 for container_dir in $(find * -type d); do
   echo "Building $container_dir ..."
   cd $container_dir
