@@ -131,6 +131,9 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 
+    //TODO: Implement the comparison via tranches file from all of these annotation optimizations
+    //NOTE: We can run the other annotations process after the 7ANN process, in parallel. Deffered to a future time in interest of Engg. effort.
+
     emit:
 
         optimized_vqsr_ch = select_variants_vcftuple_ch
