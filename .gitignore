@@ -17,4 +17,4 @@ results*
 *.nextflow*
 
 conda_envs/xbs-nf-env*
-containers/**yml
+containers/**/*yml
