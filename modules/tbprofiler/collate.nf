@@ -13,7 +13,7 @@ process TBPROFILER_COLLATE {
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
 
-        def optionallyLoadLibraryForContainers = resistanceDb ? "cd ${resistanceDb}; ${params.tbprofiler_path} load_library ${resistanceDb.name}; cd ../" : ""
+        def optionallyLoadLibraryForContainers = (optionalDb != "") ? "cd ${resistanceDb}; ${params.tbprofiler_path} load_library ${resistanceDb.name}; cd ../" : ""
 
         """
         ${optionallyLoadLibraryForContainers}
