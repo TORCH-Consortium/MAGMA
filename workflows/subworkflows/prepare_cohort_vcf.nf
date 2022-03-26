@@ -13,7 +13,7 @@ workflow PREPARE_COHORT_VCF {
     main:
 
         //FIXME Remove this
-        // cohort_gvcfs_ch.view()
+        cohort_gvcfs_ch.view( it -> "cohort_gvcfs_ch : $it")
 
         gvcfs_string_ch = cohort_gvcfs_ch
             .flatten()
