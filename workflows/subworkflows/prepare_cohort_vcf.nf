@@ -32,6 +32,7 @@ workflow PREPARE_COHORT_VCF {
                         [params.ref_fasta_fai, params.ref_fasta_dict, params.ref_exit_rif_gvcf_tbi])
 
 
+    /*
         // merge_genotype
         GATK_GENOTYPE_GVCFS(GATK_COMBINE_GVCFS.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
 
@@ -40,7 +41,7 @@ workflow PREPARE_COHORT_VCF {
         BGZIP(SNPEFF.out)
         GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out, '')
 
-
     emit:
         cohort_vcf_and_index_ch = GATK_INDEX_FEATURE_FILE__COHORT.out
+    */
 }
