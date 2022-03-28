@@ -20,8 +20,8 @@ process GATK_VARIANTS_TO_TABLE {
             !{params.arguments} \\
             -O /dev/stdout \\
         | sed -e 's/^\\t//g' \\
-        | sed -e 's/*/-/g' \\
-        | sed -e 's/\\./-/g' \\
+        | sed -e '2~1 s/*/-/g' \\
+        | sed -e '2~1 s/\\./-/g' \\
         | sed '2,${/^.*\\(-.*\\)\\{'"!{params.median_coverage_cutoff}"',\\}.*$/d}' \\
         | !{params.datamash_path} transpose \\
         | sed -e 's/^/>/g' \\
