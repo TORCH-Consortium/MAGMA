@@ -90,7 +90,7 @@ workflow {
             .filter { it.class  == sun.nio.fs.UnixPath }
 
 
-        MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
+        // MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
 
     }
 
