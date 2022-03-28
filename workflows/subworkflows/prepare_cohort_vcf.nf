@@ -17,16 +17,13 @@ workflow PREPARE_COHORT_VCF {
             .filter {  it.getExtension()  == "gz" }
             .reduce { a, b -> "$a --variant $b " }
 
-        def optional_ref_exit_rif_gvcf = params.ref_exit_rif_gvcf ?: []
-        def optional_ref_exit_rif_gvcf_tbi = params.ref_exit_rif_gvcf_tbi ?: []
-
         // merge_combine
         GATK_COMBINE_GVCFS(params.vcf_name,
                         gvcfs_string_ch,
                         cohort_gvcfs_ch,
                         params.ref_fasta,
-                        optional_ref_exit_rif_gvcf,
-                        [params.ref_fasta_fai, params.ref_fasta_dict, optional_ref_exit_rif_gvcf_tbi])
+                        params.ref_exit_rif_gvcf,
+                        [params.ref_fasta_fai, params.ref_fasta_dict, params.ref_exit_rif_gvcf_tbi])
 
 
         // merge_genotype
