@@ -8,7 +8,7 @@ process GATK_COMBINE_GVCFS {
         val(gvcfs_string)
         path(gvcfs)
         path(ref_fasta)
-        file(ref_exit_rif_gvcf)
+        path(ref_exit_rif_gvcf)
         path("*")
 
     output:
