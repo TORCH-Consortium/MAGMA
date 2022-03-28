@@ -24,7 +24,7 @@ process IQTREE {
         """
         ${params.iqtree_path} \\
             -s ${fasta} \\
-            -T ${task.cpus} \\
+            -T AUTO \\
             ${params.arguments} \\
             --prefix ${joint_name}.${prefix}
         """

@@ -12,15 +12,16 @@ workflow RESISTANCE_ANALYSIS {
 
     main:
 
+        def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
         // merge_call_resistance
-        TBPROFILER_VCF_PROFILE__COHORT(merged_vcf_ch, params.resistance_db)
-        TBPROFILER_COLLATE__COHORT(params.vcf_name, TBPROFILER_VCF_PROFILE__COHORT.out, params.resistance_db)
+        TBPROFILER_VCF_PROFILE__COHORT(merged_vcf_ch, resistanceDb)
+        TBPROFILER_COLLATE__COHORT(params.vcf_name, TBPROFILER_VCF_PROFILE__COHORT.out, resistanceDb)
 
         // merge_call_resistance_lofreq
         BGZIP(lofreq_vcf_ch)
-        TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP.out, params.resistance_db)
+        TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP.out, resistanceDb)
         TBPROFILER_COLLATE__LOFREQ(params.vcf_name,
                                   TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
-                                  params.resistance_db)
+                                  resistanceDb)
 }
