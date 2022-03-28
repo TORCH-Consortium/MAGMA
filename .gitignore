@@ -18,3 +18,6 @@ results*
 
 conda_envs/xbs-nf-env*
 containers/**/*yml
+
+samplesheet.csv
+xbs-nf.sh
