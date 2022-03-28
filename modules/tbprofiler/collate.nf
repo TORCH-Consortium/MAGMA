@@ -8,7 +8,7 @@ process TBPROFILER_COLLATE {
         path(resistanceDb)
 
     output:
-        path("*.XBS.resistance*")
+        path("*${params.prefix}*")
 
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
@@ -25,7 +25,7 @@ process TBPROFILER_COLLATE {
 
     stub:
         """
-        touch ${joint_name}.XBS.resistance.txt
+        touch ${joint_name}.${params.prefix}.txt
         """
 }
 
