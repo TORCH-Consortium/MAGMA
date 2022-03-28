@@ -18,8 +18,6 @@ process GATK_COMBINE_GVCFS {
     script:
 
     def optionalRefExitRifGvcf  = ref_exit_rif_gvcf ? " --variant ${ref_exit_rif_gvcf} " : ""
-    println("GATK_COMBINE_GVCFS => $optionalRefExitRifGvcf")
-    log.info("GATK_COMBINE_GVCFS => $optionalRefExitRifGvcf")
 
         """
         ${params.gatk_path} CombineGVCFs --java-options "-Xmx${task.memory.giga}G" \\
