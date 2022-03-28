@@ -26,6 +26,8 @@ process GATK_COMBINE_GVCFS {
             --variant ${gvcfs_string} \\
             ${optionalRefExitRifGvcf} \\
             -O ${joint_name}.combined.vcf.gz
+
+            cp ${joint_name}.combined.vcf.gz .command.out
         """
 
     stub:
