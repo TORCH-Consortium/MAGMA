@@ -18,7 +18,6 @@ workflow MERGE_WF {
     main:
         PREPARE_COHORT_VCF(selected_gvcfs_ch)
 
-    /*
         SNP_ANALYSIS(PREPARE_COHORT_VCF.out.cohort_vcf_and_index_ch)
 
         INDEL_ANALYSIS(PREPARE_COHORT_VCF.out.cohort_vcf_and_index_ch)
@@ -30,7 +29,7 @@ workflow MERGE_WF {
 
         RESISTANCE_ANALYSIS(GATK_MERGE_VCFS.out, lofreq_vcf_ch)
 
-
+/*
         //----------
         // Including complex regions
         //----------
@@ -66,5 +65,5 @@ workflow MERGE_WF {
 
         CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
 
-    */
+*/
 }
