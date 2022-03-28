@@ -20,6 +20,7 @@ process GATK_HAPLOTYPE_CALLER {
             -I ${bam} \\
             -ERC GVCF \\
             ${params.arguments} \\
+            -bamout ${sampleName}.haplotype_caller.bam \\
             -O ${sampleName}.g.vcf.gz
         """
 
