@@ -19,6 +19,7 @@ process GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS {
             -R ${reference} \\
             -I ${bam} \\
             ${params.arguments} \\
+            -bamout ${sampleName}.haplotype_caller.bam \\
             -O  ${sampleName}.AllSites.g.vcf.gz
         """
 

@@ -12,19 +12,24 @@ workflow PREPARE_COHORT_VCF {
 
     main:
 
-        //FIXME Remove this
-        // cohort_gvcfs_ch.view()
-
         gvcfs_string_ch = cohort_gvcfs_ch
             .flatten()
             .filter {  it.getExtension()  == "gz" }
+            .map { it -> it.name }
             .reduce { a, b -> "$a --variant $b " }
 
-        //FIXME Remove this
-        // gvcfs_string_ch.view()
+
+        def refExitRifGvcf =  params.use_ref_exit_rif_gvcf ? "${projectDir}/resources/exit_rif/EXIT-RIF.g.vcf.gz" : "${projectDir}/resources/NONE.g.vcf.gz"
+
+        def refExitRifGvcfTbi =  "${refExitRifGvcf}.tbi"
 
         // merge_combine
-        GATK_COMBINE_GVCFS(params.vcf_name, gvcfs_string_ch, cohort_gvcfs_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
+        GATK_COMBINE_GVCFS(params.vcf_name,
+                        gvcfs_string_ch,
+                        cohort_gvcfs_ch,
+                        params.ref_fasta,
+                        refExitRifGvcf,
+                        [params.ref_fasta_fai, params.ref_fasta_dict, refExitRifGvcfTbi])
 
 
         // merge_genotype
@@ -34,7 +39,6 @@ workflow PREPARE_COHORT_VCF {
         SNPEFF(GATK_GENOTYPE_GVCFS.out, params.ref_fasta)
         BGZIP(SNPEFF.out)
         GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out, '')
-
 
     emit:
         cohort_vcf_and_index_ch = GATK_INDEX_FEATURE_FILE__COHORT.out

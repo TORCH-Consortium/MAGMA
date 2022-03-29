@@ -1,5 +1,3 @@
-include { FASTQC } from '../modules/fastqc/fastqc.nf' addParams (params.FASTQC)
-include { MULTIQC } from '../modules/multiqc/multiqc.nf' addParams (params.MULTIQC)
 include { BWA_MEM } from '../modules/bwa/mem.nf' addParams (params.BWA_MEM)
 
 workflow MAP_WF {
@@ -7,10 +5,6 @@ workflow MAP_WF {
         reads_ch
 
     main:
-
-        FASTQC(reads_ch)
-
-        MULTIQC(FASTQC.out.collect())
 
         BWA_MEM(reads_ch,
                 params.ref_fasta,

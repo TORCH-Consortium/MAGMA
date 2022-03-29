@@ -1,63 +1,30 @@
 # XBS-nf
 
-# Benefits of the Nextflow wrapper
+XBS-nf (compleX Bacterial Samples) is a pipeline for comprehensive genomic analyses of Mycobacterium tuberculosis with a focus on clinical decision making as well as research. 
+
+# Salient features of the implementation
 
 - Fine-grained control over resource allocation (CPU/Memory/Storage)
-- Reliance of bioconda and biocontainers for installing packages for reproducibility
-- Ease of use on a range of infrastructure (cloud/on-prem clusters/local machine)
+- Reliance of bioconda for installing packages for reproducibility
+- Ease of use on a range of infrastructure (cloud/on-prem HPC clusters/ servers (or local machines))
 - Resumability for failed processes
 - Centralized locations for specifying analysis parameters and hardware requirements
-    - XBS-nf parameters (`conf/global_parameters.config`)
+    - XBS-nf parameters (`default_parameters.config`)
     - Hardware requirements (`conf/standard.config`)
-    - Software requirements (`conf/docker.config` or `conf/conda.config`)
+    - Execution (software) requirements (`conf/docker.config` or `conf/conda.config`)
+- A GVCF reference dataset for ~600 samples
 
-# Quickstart for a server/laptop
+# Usage and Tutorial
 
-**NOTE**: The instructions for a cluster system like SLURM/PBS are slightly different!
+TODO: For the usage and tutorials please refer the XBS-nf website
 
-The simplest use case is to analyze a few genomes on a single machine environment. Almost all aspects are customizable but for the sake of brevity, a bare bones guide for any beginner user is as shown below
+# Citation
 
-- [ ] Clone the project 
-
-```shell
-git clone https://github.com/abhi18av/xbs-nf
-cd xbs-nf
-```
-
-- [ ] Move your genomes (`fastq.gz files`) to a specific folder. For example `xbs-nf/data/full_data` folder
-
-- [ ] Prepare a samplesheet using `xbs-nf/resources/reference_set/xbs-nf.test.csv` as a reference for the format.
-
-You can optionally put your sample samplsheet in `xbs-nf/resources/reference_set/` folder.
-
-- [ ] Update the `xbs-nf/conf/server.config` file to point to the reference sheet
-
-- [ ] To run the pipeline, make sure you have `conda` installed. Moreover, if you don't already have `nextflow` installed, you can use the following commands to install it 
-
-```shell
-conda create -n xbs-nf-env -c bioconda -c conda-forge nextflow mamba openjdk=11
-```
-
-
-You can confirm the setup by activating that environment and using the `nextflow info`  command
-
-```
-conda activate -n xbs-nf-env
-
-nextflow info 
-```
-
-- [ ] Then simply issue the following command on the command line 
-
-```
-nextflow run main.nf -profile conda,server
-```
-
+TODO: Update this section and add a citation.cff file 
 
 # Contributions
 
 Contributions are warmly accepted!
-
 
 # License
 

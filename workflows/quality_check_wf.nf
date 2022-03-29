@@ -1,3 +1,5 @@
+include { FASTQC } from '../modules/fastqc/fastqc.nf' addParams (params.FASTQC)
+include { MULTIQC } from '../modules/multiqc/multiqc.nf' addParams (params.MULTIQC)
 include { QUANTTB_QUANT } from '../modules/quanttb/quant.nf' addParams( params.QUANTTB_QUANT )
 include { UTILS_QUANTTB_SAMPLE_QC } from '../modules/utils/quanttb_sample_qc.nf' addParams( params.UTILS_QUANTTB_SAMPLE_QC )
 include { UTILS_QUANTTB_COHORT_STATS } from '../modules/utils/quanttb_cohort_stats.nf' addParams( params.UTILS_QUANTTB_COHORT_STATS )
@@ -9,6 +11,10 @@ workflow QUALITY_CHECK_WF {
         reads_ch
 
     main:
+
+        FASTQC(reads_ch)
+
+        MULTIQC(FASTQC.out.collect())
 
         QUANTTB_QUANT(reads_ch)
 
@@ -26,7 +32,7 @@ workflow QUALITY_CHECK_WF {
         .splitCsv(header: false, skip: 1)
         .map { row -> {
 
-                relabundance_threshold_met =	row[3]
+                relabundance_threshold_met =	row[4]
                 derived_sample_name =	row[-1]
 
                 if(relabundance_threshold_met == "1") {
