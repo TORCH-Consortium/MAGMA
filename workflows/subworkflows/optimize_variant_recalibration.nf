@@ -9,7 +9,8 @@ include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN7;
           UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN6;
           UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN5;
           UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN4;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN3
+          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN3;
+          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN2
 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION )
 
 
@@ -41,7 +42,7 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                         GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog)
 
 
-        ann6_ch = UTILS_ELIMINATE_ANNOTATION__ANN7.out
+        ann6_ch = UTILS_ELIMINATE_ANNOTATION__ANN7.out.reducedAnnotationsFile
                     .map { it.text }
 
 
@@ -60,7 +61,7 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                         GATK_VARIANT_RECALIBRATOR__ANN6.out.annotationsLog)
 
 
-        ann5_ch = UTILS_ELIMINATE_ANNOTATION__ANN6.out
+        ann5_ch = UTILS_ELIMINATE_ANNOTATION__ANN6.out.reducedAnnotationsFile
                     .map { it.text }
 
 
@@ -81,7 +82,7 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                         GATK_VARIANT_RECALIBRATOR__ANN5.out.annotationsLog)
 
 
-        ann4_ch = UTILS_ELIMINATE_ANNOTATION__ANN5.out
+        ann4_ch = UTILS_ELIMINATE_ANNOTATION__ANN5.out.reducedAnnotationsFile
                     .map { it.text }
 
 
@@ -99,7 +100,7 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
         UTILS_ELIMINATE_ANNOTATION__ANN4(analysisType,
                                         GATK_VARIANT_RECALIBRATOR__ANN4.out.annotationsLog)
 
-        ann3_ch = UTILS_ELIMINATE_ANNOTATION__ANN4.out
+        ann3_ch = UTILS_ELIMINATE_ANNOTATION__ANN4.out.reducedAnnotationsFile
                     .map { it.text }
 
 
@@ -118,7 +119,7 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
         UTILS_ELIMINATE_ANNOTATION__ANN3(analysisType,
                                         GATK_VARIANT_RECALIBRATOR__ANN3.out.annotationsLog)
 
-        ann2_ch = UTILS_ELIMINATE_ANNOTATION__ANN3.out
+        ann2_ch = UTILS_ELIMINATE_ANNOTATION__ANN3.out.reducedAnnotationsFile
                     .map { it.text }
 
         GATK_VARIANT_RECALIBRATOR__ANN2(analysisType,
@@ -130,9 +131,29 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     params.ref_fasta,
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
+//------------------------
 
-    //TODO: Implement the comparison via tranches file from all of these annotation optimizations
-    //NOTE: We can run the other annotations process after the 7ANN process, in parallel. Deffered to a future time in interest of Engg. effort.
+        UTILS_ELIMINATE_ANNOTATION__ANN2(analysisType,
+                                        GATK_VARIANT_RECALIBRATOR__ANN2.out.annotationsLog)
+
+
+
+//------------------------
+// NOTE: Choose the best set of annotations based on the highest minVQSLod score (closest to zero) for targetTruthSensitivity == 99.90
+//------------------------
+
+    //FIXME WIP
+    combined_tranches_data = UTILS_ELIMINATE_ANNOTATION__ANN7.out.annotationsTranchesFile
+                                .join(UTILS_ELIMINATE_ANNOTATION__ANN6.out.annotationsTranchesFile)
+                                .join(UTILS_ELIMINATE_ANNOTATION__ANN5.out.annotationsTranchesFile)
+                                .join(UTILS_ELIMINATE_ANNOTATION__ANN4.out.annotationsTranchesFile)
+                                .join(UTILS_ELIMINATE_ANNOTATION__ANN3.out.annotationsTranchesFile)
+                                .join(UTILS_ELIMINATE_ANNOTATION__ANN2.out.annotationsTranchesFile)
+
+
+//------------------------
+
+    //NOTE: We can run the other annotations process after the 7ANN process, in parallel. Deffered to a future in interest of Engg. effort.
 
     emit:
 
