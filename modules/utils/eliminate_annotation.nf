@@ -4,7 +4,7 @@ process UTILS_ELIMINATE_ANNOTATION {
 
     input:
         val(analysisType)
-        path(annotationsFile)
+        path(annotationsFile), emit: reducedAnnotationsFile
 
     output:
         path("*annotations.txt")
