@@ -98,7 +98,7 @@ def tranches_and_annotations(input_annotations_file, input_tranches_filename, ou
     with open(input_tranches_filename) as input_tranches_file:
         lines = input_tranches_file.readlines()
         minVQSLod_score = lines[-2].split(",")[5]
-        print("TRANCHES_ANALYSIS: minVQSLod score corresponding to targetTruthSensitivity: 99.90 is => ", minVQSLod_score)
+        print("TRANCHES_ANALYSIS: minVQSLod score (for initial ordered annotations list) corresponding to targetTruthSensitivity: 99.90 is => ", minVQSLod_score)
 
 
     with open(output_tranches_file, "w") as output:

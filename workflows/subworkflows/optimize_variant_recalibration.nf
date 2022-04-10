@@ -39,7 +39,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 //------------------------
 
         UTILS_ELIMINATE_ANNOTATION__ANN7(analysisType,
-                                        GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog)
+                                         GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog,
+                                         GATK_VARIANT_RECALIBRATOR__ANN7.out.tranchesFile )
 
 
         ann6_ch = UTILS_ELIMINATE_ANNOTATION__ANN7.out.reducedAnnotationsFile
@@ -58,7 +59,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 //------------------------
 
         UTILS_ELIMINATE_ANNOTATION__ANN6(analysisType,
-                                        GATK_VARIANT_RECALIBRATOR__ANN6.out.annotationsLog)
+                                         GATK_VARIANT_RECALIBRATOR__ANN6.out.annotationsLog,
+                                         GATK_VARIANT_RECALIBRATOR__ANN6.out.tranchesFile)
 
 
         ann5_ch = UTILS_ELIMINATE_ANNOTATION__ANN6.out.reducedAnnotationsFile
@@ -79,7 +81,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 //------------------------
 
         UTILS_ELIMINATE_ANNOTATION__ANN5(analysisType,
-                                        GATK_VARIANT_RECALIBRATOR__ANN5.out.annotationsLog)
+                                        GATK_VARIANT_RECALIBRATOR__ANN5.out.annotationsLog,
+                                        GATK_VARIANT_RECALIBRATOR__ANN5.out.tranchesFile)
 
 
         ann4_ch = UTILS_ELIMINATE_ANNOTATION__ANN5.out.reducedAnnotationsFile
@@ -98,7 +101,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 //------------------------
 
         UTILS_ELIMINATE_ANNOTATION__ANN4(analysisType,
-                                        GATK_VARIANT_RECALIBRATOR__ANN4.out.annotationsLog)
+                                        GATK_VARIANT_RECALIBRATOR__ANN4.out.annotationsLog,
+                                        GATK_VARIANT_RECALIBRATOR__ANN4.out.tranchesFile)
 
         ann3_ch = UTILS_ELIMINATE_ANNOTATION__ANN4.out.reducedAnnotationsFile
                     .map { it.text }
@@ -117,7 +121,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 
 
         UTILS_ELIMINATE_ANNOTATION__ANN3(analysisType,
-                                        GATK_VARIANT_RECALIBRATOR__ANN3.out.annotationsLog)
+                                        GATK_VARIANT_RECALIBRATOR__ANN3.out.annotationsLog,
+                                        GATK_VARIANT_RECALIBRATOR__ANN3.out.tranchesFile)
 
         ann2_ch = UTILS_ELIMINATE_ANNOTATION__ANN3.out.reducedAnnotationsFile
                     .map { it.text }
@@ -134,7 +139,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 //------------------------
 
         UTILS_ELIMINATE_ANNOTATION__ANN2(analysisType,
-                                        GATK_VARIANT_RECALIBRATOR__ANN2.out.annotationsLog)
+                                        GATK_VARIANT_RECALIBRATOR__ANN2.out.annotationsLog,
+                                        GATK_VARIANT_RECALIBRATOR__ANN2.out.tranchesFile)
 
 
 
