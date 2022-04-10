@@ -92,7 +92,7 @@ def tranches_and_annotations(input_annotations_file, input_tranches_filename, ou
         lines = input_annotations_file.readlines()
         annotations_order_string = list(filter(lambda a_line: a_line.find(annotations_order_marker) != -1, lines))[0]
         annotations_order_list = annotations_order_string.strip().split(":")[-1].replace('[','').replace(']','').split(',')
-        print("ANNOTATIONS_ANALYSIS: Ordered annotations list: ", annotations_order_list)
+        print("ANNOTATIONS_ANALYSIS: Initial ordered annotations list: ", annotations_order_list)
 
 
     with open(input_tranches_filename) as input_tranches_file:
