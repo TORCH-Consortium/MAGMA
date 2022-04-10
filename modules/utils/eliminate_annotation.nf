@@ -17,6 +17,6 @@ process UTILS_ELIMINATE_ANNOTATION {
             --input ${annotationsFile} \\
             --output ${params.vcf_name}.${analysisType}.${task.process.tokenize('__')[-1]}.annotations.txt
             --tranches ${tranchesFile} \\
-            --tranches-and-annotations ${params.vcf_name}.${analysisType}.${task.process.tokenize('__')[-1]}.annotations_tranches.txt
+            --output_tranches_and_annotations ${params.vcf_name}.${analysisType}.${task.process.tokenize('__')[-1]}.annotations_tranches.txt
         """
 }

@@ -45,7 +45,7 @@ def parse_args(args=None):
 
 
     parser.add_argument("-d",
-                        "--tranches-and-annotations",
+                        "--output_tranches_and_annotations",
                         dest="output_annotations_and_tranches_data",
                         required=True,
                         help="output annotations and tranches data",
