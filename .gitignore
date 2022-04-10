@@ -9,6 +9,9 @@ data/test_data/
 */**/*fastq.gz
 */**/*fasta
 */**/*gbk
+*/**/*dot
+*/**/*svg
+*/**/*mp4
 
 .idea
 work/
