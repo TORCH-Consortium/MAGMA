@@ -160,7 +160,7 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 //------------------------
 
     //NOTE: We can run the other annotations process after the first ANN_7 process, in parallel but this is deffered to a future in interest of Engg. effort.
-    //FIXME: The choice of VCF and TRACHES file depends on the output of optimized values
+    //FIXME: The choice of VCF and TRANCHES file depends on the output of optimized values
     emit:
         optimized_vqsr_ch = select_variants_vcftuple_ch
                             .join(GATK_VARIANT_RECALIBRATOR__ANN2.out.recalVcfTuple)
