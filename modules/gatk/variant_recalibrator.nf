@@ -39,6 +39,8 @@ process GATK_VARIANT_RECALIBRATOR {
             --output-model ${joint_name}.${analysisMode}.model \\
             2>${joint_name}.${analysisMode}.command.log
 
+        cp ${joint_name}.${analysisMode}.command.log .command.log
+
         """
 
     stub:

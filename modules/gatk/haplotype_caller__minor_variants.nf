@@ -9,7 +9,8 @@ process GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS {
         path("*")
 
     output:
-        tuple val(sampleName), path("*.g.vcf.gz.tbi"), path("*.AllSites.g.vcf.gz")
+        tuple val(sampleName), path("*.g.vcf.gz.tbi"), path("*.AllSites.g.vcf.gz"), emit: gvcf_ch
+        tuple val(sampleName), path("*bam")
 
 
     script:

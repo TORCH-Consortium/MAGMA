@@ -7,7 +7,7 @@ process UTILS_ELIMINATE_ANNOTATION {
         path(annotationsFile)
 
     output:
-        path("*annotations.txt")
+        path("*annotations.txt"), emit: reducedAnnotationsFile
 
     script:
         """
