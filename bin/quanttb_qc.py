@@ -111,7 +111,7 @@ def read_compute_write_qc_report(input_filename, output_filename, relabundance_t
                 writer.writerow([sample, refname, totscore, relabundance, relabundance_threshold_met, depth, derived_name])
             else:
                 # If the relative abundance threshold is not met, it does not matter which strain did not meet the threshold
-                writer.writerow([sample, 'NA', 'NA', 'NA', 0, 'NA', derived_name])
+                writer.writerow(['NA', 'NA', 'NA', 'NA', 0, 'NA', derived_name])
 
 
 #####################################################
