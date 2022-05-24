@@ -80,6 +80,7 @@ def read_compute_write_qc_report(input_filename, output_filename, relabundance_t
 
         relabundance_threshold_met = 0
 
+        max_relabundance = ['NA', 'NA', 'NA', 'NA', 0, 'NA', derived_name] # Initialize default values in cases where QUANTTB returns an empty file
         for row in input_quanttb_stats_orddict:
             sample = row['sample']
             refname = row[' refname']
@@ -87,16 +88,16 @@ def read_compute_write_qc_report(input_filename, output_filename, relabundance_t
             relabundance = float(row[' relabundance'])
             depth = float(row[' depth'])
 
+            if max_relabundance[3] == 'NA' or relabundance > max_relabundance[3]: # If there is no relabundance yet, or the current relabundance is higher than the current max, update the max_relabundance parameter
+                max_relabundance = [sample, refname, totscore, relabundance, 0, depth, derived_name]
 
-            print("Sample name: ", sample)
-            print("Derived sample name: ", derived_name)
+        if if max_relabundance != 'NA' and max_relabundance[3] >= relabundance_threshold:
+            max_relabundance[4] = 1
+        print("Sample name: ", max_relabundance[0])
+        print("Derived sample name: ", max_relabundance[6])
 
-            print("Relabundance threshold: ", relabundance_threshold)
-            print("Threshold met: ", relabundance_threshold)
-
-            if relabundance >= relabundance_threshold:
-                relabundance_threshold_met = 1
-                break # If we find a single fastq file with a relative abundance larger than the threshold, we can stop searching
+        print("Relabundance threshold: ", max_relabundance[3])
+        print("Threshold met: ", max_relabundance[4])
 
         #NOTE: Expected output field names, this is then used in the nextflow layer.
         output_fieldnames = ['sample', 'refname', 'totscore', 'relabundance', 'relabundance_threshold_met', 'depth', 'derived_name']
@@ -106,12 +107,7 @@ def read_compute_write_qc_report(input_filename, output_filename, relabundance_t
 
             if write_header == "true":
                 writer.writerow(output_fieldnames)
-            if relabundance_threshold_met == 1:
-                # If we found a fastq file with a strain that met the relativa abundance threshold, write some info to the summary file
-                writer.writerow([sample, refname, totscore, relabundance, relabundance_threshold_met, depth, derived_name])
-            else:
-                # If the relative abundance threshold is not met, it does not matter which strain did not meet the threshold
-                writer.writerow(['NA', 'NA', 'NA', 'NA', 0, 'NA', derived_name])
+            writer.writerow(max_relabundance)
 
 
 #####################################################
