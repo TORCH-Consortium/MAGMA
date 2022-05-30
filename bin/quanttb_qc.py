@@ -91,7 +91,7 @@ def read_compute_write_qc_report(input_filename, output_filename, relabundance_t
             if max_relabundance[3] == 'NA' or relabundance > max_relabundance[3]: # If there is no relabundance yet, or the current relabundance is higher than the current max, update the max_relabundance parameter
                 max_relabundance = [sample, refname, totscore, relabundance, 0, depth, derived_name]
 
-        if if max_relabundance != 'NA' and max_relabundance[3] >= relabundance_threshold:
+        if max_relabundance[3] != 'NA' and max_relabundance[3] >= relabundance_threshold:
             max_relabundance[4] = 1
         print("Sample name: ", max_relabundance[0])
         print("Derived sample name: ", max_relabundance[6])
