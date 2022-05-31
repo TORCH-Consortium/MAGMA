@@ -9,14 +9,14 @@ process IQTREE {
 
     output:
 
-        tuple val(joint_name), path("joint.${prefix}.treefile"), emit: tree_tuple
-        path("joint.${prefix}.bionj")
-        path("joint.${prefix}.ckp.gz")
-        path("joint.${prefix}.iqtree")
-        path("joint.${prefix}.log")
-        path("joint.${prefix}.mldist")
-        path("joint.${prefix}.model.gz")
-        path("joint.${prefix}.treefile")
+        tuple val(joint_name), path("${joint_name}.${prefix}.treefile"), emit: tree_tuple
+        path("${joint_name}.${prefix}.bionj")
+        path("${joint_name}.${prefix}.ckp.gz")
+        path("${joint_name}.${prefix}.iqtree")
+        path("${joint_name}.${prefix}.log")
+        path("${joint_name}.${prefix}.mldist")
+        path("${joint_name}.${prefix}.model.gz")
+        path("${joint_name}.${prefix}.treefile")
 
 
     script:
@@ -32,13 +32,13 @@ process IQTREE {
     stub:
 
         """
-        touch joint.${prefix}.bionj
-        touch joint.${prefix}.ckp.gz
-        touch joint.${prefix}.iqtree
-        touch joint.${prefix}.log
-        touch joint.${prefix}.mldist
-        touch joint.${prefix}.model.gz
-        touch joint.${prefix}.treefil
+        touch ${joint_name}.${prefix}.bionj
+        touch ${joint_name}.${prefix}.ckp.gz
+        touch ${joint_name}.${prefix}.iqtree
+        touch ${joint_name}.${prefix}.log
+        touch ${joint_name}.${prefix}.mldist
+        touch ${joint_name}.${prefix}.model.gz
+        touch ${joint_name}.${prefix}.treefil
         """
 
 }
