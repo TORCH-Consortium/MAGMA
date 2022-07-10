@@ -39,10 +39,10 @@ process CLUSTERPICKER {
             !{params.max_cluster_size} \\
             !{params.algorithm}
 
-        cp joint.!{prefix}_clusterPicks_log.txt joint.!{prefix}_!{snpCount}SNPclusterPicks_log.txt
-        cp joint.!{prefix}_clusterPicks.nwk joint.!{prefix}_!{snpCount}SNPclusterPicks.nwk
-        cp joint.!{prefix}_clusterPicks.nwk.figTree joint.!{prefix}_!{snpCount}SNPclusterPicks.nwk.figTree
-        cp joint.variable.!{prefix}.fa_joint.!{prefix}_clusterPicks.fas joint.variable.!{prefix}.fa_joint.!{prefix}_!{snpCount}SNPclusterPicks.fas
+        cp !{joint_name}.!{prefix}_clusterPicks_log.txt !{joint_name}.!{prefix}_!{snpCount}SNPclusterPicks_log.txt
+        cp !{joint_name}.!{prefix}_clusterPicks.nwk !{joint_name}.!{prefix}_!{snpCount}SNPclusterPicks.nwk
+        cp !{joint_name}.!{prefix}_clusterPicks.nwk.figTree !{joint_name}.!{prefix}_!{snpCount}SNPclusterPicks.nwk.figTree
+        cp !{joint_name}.variable.!{prefix}.fa_!{joint_name}.!{prefix}_clusterPicks.fas !{joint_name}.variable.!{prefix}.fa_!{joint_name}.!{prefix}_!{snpCount}SNPclusterPicks.fas
 
         '''
 

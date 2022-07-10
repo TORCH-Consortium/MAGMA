@@ -25,7 +25,7 @@ process GATK_VARIANTS_TO_TABLE {
         | sed '2,${/^.*\\(-.*\\)\\{'"!{params.median_coverage_cutoff}"',\\}.*$/d}' \\
         | !{params.datamash_path} transpose \\
         | sed -e 's/^/>/g' \\
-        | sed -e 's/-GT/\\n/g' \\
+        | sed -e 's/\\.GT/\\n/g' \\
         | sed -e 's/\\t//g' \\
         > !{joint_name}.!{prefix}.fa
 
