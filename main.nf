@@ -87,7 +87,7 @@ workflow {
         }
             .filter { it[1] == 1} // Filter out samples which meet all the thresholds
             .map { [ it[0] ] }
-            .view("\n\n XBS-NF-LOG sample_stats_ch : $selected_gvcfs_ch \n\n")
+            .view("\n\n XBS-NF-LOG sample_stats_ch : $sample_stats_ch \n\n")
 
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
