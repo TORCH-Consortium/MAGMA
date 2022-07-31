@@ -17,6 +17,7 @@ workflow PREPARE_COHORT_VCF {
             .filter {  it.getExtension()  == "gz" }
             .map { it -> it.name }
             .reduce { a, b -> "$a --variant $b " }
+            .view(it -> "PREPARE_COHORT_VCF gvcfs_string_ch: $gvcfs_string_ch")
 
 
         def refExitRifGvcf =  params.use_ref_exit_rif_gvcf ? "${projectDir}/resources/exit_rif/EXIT-RIF.g.vcf.gz" : "${projectDir}/resources/NONE.g.vcf.gz"
