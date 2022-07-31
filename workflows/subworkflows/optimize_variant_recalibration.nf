@@ -112,8 +112,7 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                     .map { it.text }
 
 
-        GATK_VARIANT_RECALIBRATOR__ANN3(params.vcf_name,
-                                        analysisType,
+        GATK_VARIANT_RECALIBRATOR__ANN3(analysisType,
                                         ann3_ch,
                                         select_variants_vcftuple_ch,
                                         args_ch,
