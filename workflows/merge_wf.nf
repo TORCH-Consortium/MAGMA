@@ -24,6 +24,8 @@ workflow MERGE_WF {
 
         merge_vcf_ch = (SNP_ANALYSIS.out.snp_vcf_ch).join(INDEL_ANALYSIS.out.indel_vcf_ch)
 
+        merge_vcf_ch.view( it -> "\n\n XBS-NF-LOG MERGE_WF merge_vcf_ch: $merge_vcf_ch \n\n")
+
         // merge_snp_indel_vcf
         GATK_MERGE_VCFS(merge_vcf_ch)
 
@@ -55,6 +57,9 @@ workflow MERGE_WF {
                                                        [file(params.excluded_loci_list)])
                                                 .ifEmpty([])
                                                 .flatten()
+
+
+        excomplex_exclude_interval_ref_ch.view( it -> "\n\n XBS-NF-LOG MERGE_WF excomplex_exclude_interval_ref_ch: $excomplex_exclude_interval_ref_ch \n\n")
 
         excomplex_prefix_ch = Channel.of('ExDR.ExComplex')
 

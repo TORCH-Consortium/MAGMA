@@ -40,6 +40,7 @@ workflow CALL_WF {
             }
         }
         .groupTuple()
+        .view( it -> "\n\n XBS-NF-LOG CALL_WF normalize_libraries_ch: $normalize_libraries_ch \n\n")
 
 
         // call_merge
@@ -65,6 +66,10 @@ workflow CALL_WF {
 
             recalibrated_bam_ch = GATK_MARK_DUPLICATES.out.bam_tuple
         }
+
+
+        recalibrated_bam_ch
+            .view( it -> "\n\n XBS-NF-LOG CALL_WF recalibrated_bam_ch: $recalibrated_bam_ch \n\n")
 
         SAMTOOLS_INDEX(recalibrated_bam_ch)
 
@@ -138,7 +143,7 @@ workflow CALL_WF {
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
             .join(LOFREQ_CALL__NTM.out)
-            // .view()
+            .view( it -> "\n\n XBS-NF-LOG CALL_WF sample_stats_ch: $sample_stats_ch \n\n")
 
 
         UTILS_SAMPLE_STATS(sample_stats_ch)
