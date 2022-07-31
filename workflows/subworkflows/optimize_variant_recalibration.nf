@@ -14,6 +14,8 @@ include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN7;
 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION )
 
 
+import { UTILS_SELECT_BEST_ANNOTATIONS } from "../../modules/utils/select_best_annotations.nf" addParams ( params.UTILS_SELECT_BEST_ANNOTATIONS )
+
 
 workflow OPTIMIZE_VARIANT_RECALIBRATION {
     take:
@@ -22,7 +24,6 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
         args_ch
         resources_files_ch
         resources_file_indexes_ch
-
 
     main:
 
@@ -38,7 +39,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 
 //------------------------
 
-        UTILS_ELIMINATE_ANNOTATION__ANN7(analysisType,
+        UTILS_ELIMINATE_ANNOTATION__ANN7(params.vcf_name,
+                                         analysisType,
                                          GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog,
                                          GATK_VARIANT_RECALIBRATOR__ANN7.out.tranchesFile )
 
@@ -58,7 +60,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 
 //------------------------
 
-        UTILS_ELIMINATE_ANNOTATION__ANN6(analysisType,
+        UTILS_ELIMINATE_ANNOTATION__ANN6(params.vcf_name,
+                                         analysisType,
                                          GATK_VARIANT_RECALIBRATOR__ANN6.out.annotationsLog,
                                          GATK_VARIANT_RECALIBRATOR__ANN6.out.tranchesFile)
 
@@ -80,7 +83,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 
 //------------------------
 
-        UTILS_ELIMINATE_ANNOTATION__ANN5(analysisType,
+        UTILS_ELIMINATE_ANNOTATION__ANN5(params.vcf_name,
+                                        analysisType,
                                         GATK_VARIANT_RECALIBRATOR__ANN5.out.annotationsLog,
                                         GATK_VARIANT_RECALIBRATOR__ANN5.out.tranchesFile)
 
@@ -100,7 +104,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 
 //------------------------
 
-        UTILS_ELIMINATE_ANNOTATION__ANN4(analysisType,
+        UTILS_ELIMINATE_ANNOTATION__ANN4(params.vcf_name,
+                                        analysisType,
                                         GATK_VARIANT_RECALIBRATOR__ANN4.out.annotationsLog,
                                         GATK_VARIANT_RECALIBRATOR__ANN4.out.tranchesFile)
 
@@ -108,19 +113,21 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                     .map { it.text }
 
 
-        GATK_VARIANT_RECALIBRATOR__ANN3(analysisType,
-                                    ann3_ch,
-                                    select_variants_vcftuple_ch,
-                                    args_ch,
-                                    resources_files_ch,
-                                    resources_file_indexes_ch,
-                                    params.ref_fasta,
-                                    [params.ref_fasta_fai, params.ref_fasta_dict] )
+        GATK_VARIANT_RECALIBRATOR__ANN3(params.vcf_name,
+                                        analysisType,
+                                        ann3_ch,
+                                        select_variants_vcftuple_ch,
+                                        args_ch,
+                                        resources_files_ch,
+                                        resources_file_indexes_ch,
+                                        params.ref_fasta,
+                                        [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 //------------------------
 
 
-        UTILS_ELIMINATE_ANNOTATION__ANN3(analysisType,
+        UTILS_ELIMINATE_ANNOTATION__ANN3(params.vcf_name,
+                                        analysisType,
                                         GATK_VARIANT_RECALIBRATOR__ANN3.out.annotationsLog,
                                         GATK_VARIANT_RECALIBRATOR__ANN3.out.tranchesFile)
 
@@ -138,7 +145,8 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 
 //------------------------
 
-        UTILS_ELIMINATE_ANNOTATION__ANN2(analysisType,
+        UTILS_ELIMINATE_ANNOTATION__ANN2(params.vcf_name,
+                                        analysisType,
                                         GATK_VARIANT_RECALIBRATOR__ANN2.out.annotationsLog,
                                         GATK_VARIANT_RECALIBRATOR__ANN2.out.tranchesFile)
 
@@ -148,23 +156,53 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
 // NOTE: Choose the best set of annotations based on the highest minVQSLod score (closest to zero) for targetTruthSensitivity == 99.90
 //------------------------
 
-    //FIXME WIP
-    combined_tranches_data = UTILS_ELIMINATE_ANNOTATION__ANN7.out.annotationsTranchesFile
+    recal_vcf_files_ch = GATK_VARIANT_RECALIBRATOR__ANN7.out.recalVcfTuple
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN6.out.recalVcfTuple)
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN5.out.recalVcfTuple)
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN4.out.recalVcfTuple)
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN3.out.recalVcfTuple)
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN2.out.recalVcfTuple)
+                        .flatten()
+                        .filter { it.class != String }
+                        .collect()
+
+    tranches_files_ch = GATK_VARIANT_RECALIBRATOR__ANN7.out.tranchesFile
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN6.out.tranchesFile)
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN5.out.tranchesFile)
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN4.out.tranchesFile)
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN3.out.tranchesFile)
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN2.out.tranchesFile)
+                        .flatten()
+                        .filter { it.class != String }
+                        .collect()
+
+
+    annotations_and_tranches_json_files_ch = UTILS_ELIMINATE_ANNOTATION__ANN7.out.annotationsTranchesFile
                                 .join(UTILS_ELIMINATE_ANNOTATION__ANN6.out.annotationsTranchesFile)
                                 .join(UTILS_ELIMINATE_ANNOTATION__ANN5.out.annotationsTranchesFile)
                                 .join(UTILS_ELIMINATE_ANNOTATION__ANN4.out.annotationsTranchesFile)
                                 .join(UTILS_ELIMINATE_ANNOTATION__ANN3.out.annotationsTranchesFile)
                                 .join(UTILS_ELIMINATE_ANNOTATION__ANN2.out.annotationsTranchesFile)
+                                .flatten()
+                                .filter { it.class != String }
+                                .collect()
+
+
 
 
 //------------------------
 
+    UTILS_SELECT_BEST_ANNOTATIONS(params.vcf_name,
+                                  annotations_and_tranches_json_files_ch,
+                                  recal_vcf_files_ch,
+                                  tranches_files_ch)
+
+
     //NOTE: We can run the other annotations process after the first ANN_7 process, in parallel but this is deffered to a future in interest of Engg. effort.
-    //FIXME: The choice of VCF and TRANCHES file depends on the output of optimized values
     emit:
         optimized_vqsr_ch = select_variants_vcftuple_ch
-                            .join(GATK_VARIANT_RECALIBRATOR__ANN2.out.recalVcfTuple)
-                            .join(GATK_VARIANT_RECALIBRATOR__ANN2.out.tranchesFile)
+                            .join(UTILS_SELECT_BEST_ANNOTATIONS.out.bestRecalVcfTuple)
+                            .join(UTILS_SELECT_BEST_ANNOTATIONS.out.bestTranchesFile)
 
 
 }

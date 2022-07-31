@@ -3,6 +3,8 @@
 import os
 import sys
 import argparse
+import re
+import json
 
 
 #####################################################
@@ -130,10 +132,6 @@ def tranches_and_annotations(
             .replace("]", "")
             .split(",")
         )
-        print(
-            "ANNOTATIONS_ANALYSIS: Initial ordered annotations list: ",
-            annotations_order_list,
-        )
 
     with open(input_tranches_filename) as input_tranches_file:
         lines = input_tranches_file.readlines()
@@ -146,11 +144,15 @@ def tranches_and_annotations(
     with open(output_tranches_file, "w") as output:
         annotations_order_joined_string = ",".join(annotations_order_list)
 
-        initial_annotations_and_tranches_string = "\n".join(
-            [minVQSLod_score, annotations_order_joined_string]
-        )
+        annotations_count = re.search(r"\w*ANN\d\w*", input_tranches_filename).group()
 
-        output.writelines(initial_annotations_and_tranches_string)
+        annotations_dict = {
+            "minVQSLod": minVQSLod_score,
+            "annotationsOrder": annotations_order_joined_string,
+            "annotationsCount": annotations_count,
+        }
+
+        json.dump(annotations_dict, output)
 
 
 #####################################################
