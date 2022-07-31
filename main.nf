@@ -87,12 +87,12 @@ workflow {
         }
             .filter { it[1] == 1} // Filter out samples which meet all the thresholds
             .map { [ it[0] ] }
-            .view(it -> "\n\n XBS-NF-LOG sample_stats_ch : $selected_gvcfs_ch \n\n")
+            .view("\n\n XBS-NF-LOG sample_stats_ch : $selected_gvcfs_ch \n\n")
 
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
             .filter { it.class  == sun.nio.fs.UnixPath }
-            .view(it -> "\n\n XBS-NF-LOG selected_gvcfs_ch : $selected_gvcfs_ch \n\n")
+            .view("\n\n XBS-NF-LOG selected_gvcfs_ch : $selected_gvcfs_ch \n\n")
 
 
         MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
