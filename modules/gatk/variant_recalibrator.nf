@@ -19,7 +19,7 @@ process GATK_VARIANT_RECALIBRATOR {
         path("*.R")
         path("*.model")
         path("*.pdf")
-        path("*${analysisMode}.command.log"), emit: annotationsLog
+        path("*${analysisMode}*.command.log"), emit: annotationsLog
 
     script:
 
@@ -41,10 +41,10 @@ process GATK_VARIANT_RECALIBRATOR {
             ${annotations} \\
             ${params.arguments} \\
             -mode ${analysisMode} \\
-            --tranches-file ${joint_name}.${analysisMode}.tranches \\
-            --rscript-file ${joint_name}.${analysisMode}.R \\
-            --output ${joint_name}.${analysisMode}.recal.vcf.gz \\
-            --output-model ${joint_name}.${analysisMode}.model \\
+            --tranches-file ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.tranches \\
+            --rscript-file ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.R \\
+            --output ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.recal.vcf.gz \\
+            --output-model ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.model \\
             2>${joint_name}.${analysisMode}${optionalAnnotationPrefix}.command.log
 
         cp ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.command.log .command.log
