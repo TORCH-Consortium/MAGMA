@@ -13,8 +13,7 @@ include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN7;
           UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN2
 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION )
 
-
-import { UTILS_SELECT_BEST_ANNOTATIONS } from "../../modules/utils/select_best_annotations.nf" addParams ( params.UTILS_SELECT_BEST_ANNOTATIONS )
+include { UTILS_SELECT_BEST_ANNOTATIONS } from "../../modules/utils/select_best_annotations.nf" addParams ( params.UTILS_SELECT_BEST_ANNOTATIONS )
 
 
 workflow OPTIMIZE_VARIANT_RECALIBRATION {
