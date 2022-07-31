@@ -25,6 +25,14 @@ process GATK_VARIANT_RECALIBRATOR {
 
         def finalResourceFilesArg =    (resourceFilesArg  ? "--resource:${resourceFilesArg}" : "")
 
+        def optionalAnnotationPrefix = ""
+
+        if (task.process.split("__").length == 1) {
+            optionalAnnotationPrefix = ""
+        } else {
+            optionalAnnotationPrefix = ".${task.process.split("__")[-1]}"
+        }
+
         """
         ${params.gatk_path} VariantRecalibrator --java-options "-Xmx${task.memory.giga}G" \\
             -R ${reference} \\
@@ -37,9 +45,9 @@ process GATK_VARIANT_RECALIBRATOR {
             --rscript-file ${joint_name}.${analysisMode}.R \\
             --output ${joint_name}.${analysisMode}.recal.vcf.gz \\
             --output-model ${joint_name}.${analysisMode}.model \\
-            2>${joint_name}.${analysisMode}.command.log
+            2>${joint_name}.${analysisMode}${optionalAnnotationPrefix}.command.log
 
-        cp ${joint_name}.${analysisMode}.command.log .command.log
+        cp ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.command.log .command.log
 
         """
 

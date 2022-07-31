@@ -4,7 +4,7 @@ process UTILS_ELIMINATE_ANNOTATION {
 
     input:
         val(analysisType)
-        path(annotationsFile)
+        path(annotationsLog)
         path(tranchesFile)
 
     output:
@@ -14,7 +14,7 @@ process UTILS_ELIMINATE_ANNOTATION {
     script:
         """
         reduce_annotations.py \\
-            --input ${annotationsFile} \\
+            --input ${annotationsLog} \\
             --output ${params.vcf_name}.${analysisType}.${task.process.tokenize('__')[-1]}.annotations.txt \\
             --tranches ${tranchesFile} \\
             --output_tranches_and_annotations ${params.vcf_name}.${analysisType}.${task.process.tokenize('__')[-1]}.annotations_tranches.txt
