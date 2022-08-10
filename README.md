@@ -89,7 +89,7 @@ $ conda env create -p xbs-nf-env-2 --file xbs-nf-env-2.yml
 
 ### Run the pipeline
 
-- Customize the pipeline and process level settings in the `default_params.config` file
+- Customize the pipeline and process level settings in the [default_params](./default_params.config] file
 
 - From inside the `xbs-nf` folder, invoke the pipeline
 
@@ -107,4 +107,4 @@ Contributions are warmly accepted!
 
 # License
 
-Please refer the (LICENSE)[./LICENSE] file.
+Please refer the [LICENSE](./LICENSE) file.
