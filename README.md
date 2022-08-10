@@ -20,6 +20,12 @@ For the usage and tutorials please refer the XBS-nf website
 
 ## Prerequisites
 
+### Git tooling
+
+- `git` and `git-lfs`
+
+> NOTE: Without the `git-lfs` tool the optional bundled wouldn't be downloaded correctly.
+
 ### Nextflow
 
 - `Java-11` or `Java-17` (preferred)
