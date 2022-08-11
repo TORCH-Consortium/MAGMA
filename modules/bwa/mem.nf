@@ -16,6 +16,7 @@ process BWA_MEM {
         """
         ${params.bwa_path} mem \\
             -M \\
+            ${params.arguments} \\
             -t ${task.cpus} \\
             -R "${bamRgString}"  \\
             ${reference} \\
