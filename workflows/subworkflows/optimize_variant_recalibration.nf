@@ -5,16 +5,14 @@ include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN4 } from "
 include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN3 } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN3 )
 include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN2 } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN2 )
 
-include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN7;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN6;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN5;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN4;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN3;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN2
-} from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN7 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN7 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN6 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN6 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN5 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN5 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN4 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN4 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN3 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN3 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN2 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN2 )
 
 include { UTILS_SELECT_BEST_ANNOTATIONS } from "../../modules/utils/select_best_annotations.nf" addParams ( params.UTILS_SELECT_BEST_ANNOTATIONS )
-
 
 workflow OPTIMIZE_VARIANT_RECALIBRATION {
     take:
@@ -36,13 +34,14 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 
+        elim_ann7_ch = GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN7.out.tranchesFile)
+
+
+        UTILS_ELIMINATE_ANNOTATION__ANN7(analysisType, elim_ann7_ch)
+
+
 //------------------------
-
-        UTILS_ELIMINATE_ANNOTATION__ANN7(params.vcf_name,
-                                         analysisType,
-                                         GATK_VARIANT_RECALIBRATOR__ANN7.out.annotationsLog,
-                                         GATK_VARIANT_RECALIBRATOR__ANN7.out.tranchesFile )
-
 
         ann6_ch = UTILS_ELIMINATE_ANNOTATION__ANN7.out.reducedAnnotationsFile
                     .map { it.text }
@@ -57,13 +56,15 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     params.ref_fasta,
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
+
+        elim_ann6_ch = GATK_VARIANT_RECALIBRATOR__ANN6.out.annotationsLog
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN6.out.tranchesFile)
+
+
+        UTILS_ELIMINATE_ANNOTATION__ANN6(analysisType, elim_ann6_ch)
+
+
 //------------------------
-
-        UTILS_ELIMINATE_ANNOTATION__ANN6(params.vcf_name,
-                                         analysisType,
-                                         GATK_VARIANT_RECALIBRATOR__ANN6.out.annotationsLog,
-                                         GATK_VARIANT_RECALIBRATOR__ANN6.out.tranchesFile)
-
 
         ann5_ch = UTILS_ELIMINATE_ANNOTATION__ANN6.out.reducedAnnotationsFile
                     .map { it.text }
@@ -79,14 +80,15 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 
+        elim_ann5_ch = GATK_VARIANT_RECALIBRATOR__ANN5.out.annotationsLog
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN5.out.tranchesFile)
+
+
+        UTILS_ELIMINATE_ANNOTATION__ANN5(analysisType, elim_ann5_ch)
+
+
 
 //------------------------
-
-        UTILS_ELIMINATE_ANNOTATION__ANN5(params.vcf_name,
-                                        analysisType,
-                                        GATK_VARIANT_RECALIBRATOR__ANN5.out.annotationsLog,
-                                        GATK_VARIANT_RECALIBRATOR__ANN5.out.tranchesFile)
-
 
         ann4_ch = UTILS_ELIMINATE_ANNOTATION__ANN5.out.reducedAnnotationsFile
                     .map { it.text }
@@ -101,12 +103,13 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     params.ref_fasta,
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
-//------------------------
+        elim_ann4_ch = GATK_VARIANT_RECALIBRATOR__ANN4.out.annotationsLog
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN4.out.tranchesFile)
 
-        UTILS_ELIMINATE_ANNOTATION__ANN4(params.vcf_name,
-                                        analysisType,
-                                        GATK_VARIANT_RECALIBRATOR__ANN4.out.annotationsLog,
-                                        GATK_VARIANT_RECALIBRATOR__ANN4.out.tranchesFile)
+
+        UTILS_ELIMINATE_ANNOTATION__ANN4(analysisType, elim_ann4_ch)
+
+//------------------------
 
         ann3_ch = UTILS_ELIMINATE_ANNOTATION__ANN4.out.reducedAnnotationsFile
                     .map { it.text }
@@ -121,13 +124,14 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                         params.ref_fasta,
                                         [params.ref_fasta_fai, params.ref_fasta_dict] )
 
+        elim_ann3_ch = GATK_VARIANT_RECALIBRATOR__ANN3.out.annotationsLog
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN3.out.tranchesFile)
+
+
+        UTILS_ELIMINATE_ANNOTATION__ANN3(analysisType, elim_ann3_ch)
+
+
 //------------------------
-
-
-        UTILS_ELIMINATE_ANNOTATION__ANN3(params.vcf_name,
-                                        analysisType,
-                                        GATK_VARIANT_RECALIBRATOR__ANN3.out.annotationsLog,
-                                        GATK_VARIANT_RECALIBRATOR__ANN3.out.tranchesFile)
 
         ann2_ch = UTILS_ELIMINATE_ANNOTATION__ANN3.out.reducedAnnotationsFile
                     .map { it.text }
@@ -141,13 +145,11 @@ workflow OPTIMIZE_VARIANT_RECALIBRATION {
                                     params.ref_fasta,
                                     [params.ref_fasta_fai, params.ref_fasta_dict] )
 
-//------------------------
+        elim_ann2_ch = GATK_VARIANT_RECALIBRATOR__ANN2.out.annotationsLog
+                        .join(GATK_VARIANT_RECALIBRATOR__ANN2.out.tranchesFile)
 
-        UTILS_ELIMINATE_ANNOTATION__ANN2(params.vcf_name,
-                                        analysisType,
-                                        GATK_VARIANT_RECALIBRATOR__ANN2.out.annotationsLog,
-                                        GATK_VARIANT_RECALIBRATOR__ANN2.out.tranchesFile)
 
+        UTILS_ELIMINATE_ANNOTATION__ANN2(analysisType, elim_ann2_ch)
 
 
 //------------------------

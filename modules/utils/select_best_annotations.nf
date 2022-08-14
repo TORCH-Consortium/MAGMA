@@ -13,6 +13,7 @@ process UTILS_SELECT_BEST_ANNOTATIONS {
     output:
         tuple val(joint_name), path("best_annotation_files/*.tbi"), path("best_annotation_files/*.recal.vcf.gz"), emit: bestRecalVcfTuple
         tuple val(joint_name), path("best_annotation_files/*.tranches"), emit: bestTranchesFile
+        path("all_annotations_data.json")
 
 
     script:
@@ -21,6 +22,7 @@ process UTILS_SELECT_BEST_ANNOTATIONS {
 
         select_best_annotations.py \\
             --input_directory annotations_and_tranches_json_files \\
-            --output_directory best_annotation_files
+            --output_directory best_annotation_files \\
+            --output_json_file_name all_annotations_data.json
         """
 }

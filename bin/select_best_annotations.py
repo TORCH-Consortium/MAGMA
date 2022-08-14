@@ -22,8 +22,8 @@ def validate_path(f):
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser(
-        description="Extract and reshape the annotations for variant recalibration",
-        epilog="Example usage: reduce_annotations.py -i annotations.log -o new.annotations.txt",
+        description="Select the best set of annotations based on the minimal minVQSLod score",
+        epilog="Example usage: select_best_annotations.py --input_directory annotations_and_tranches_json_files --output_directory best_annotation_files --output_json_file_name all_annotations_data.json",
     )
 
     parser.add_argument(
@@ -46,6 +46,15 @@ def parse_args(args=None):
         metavar="FOLDER",
     )
 
+    parser.add_argument(
+        "-j",
+        "--output_json_file_name",
+        dest="output_json_file_name",
+        required=True,
+        help="output directory",
+        metavar="FOLDER",
+    )
+
     args = parser.parse_args()
     return args
 
@@ -58,8 +67,6 @@ def parse_args(args=None):
 def move_files(annotations_dict, output_directory):
 
     best_annotations_count = annotations_dict["annotationsCount"]
-
-    print(os.listdir())
 
     p = Path(".")
     grep_pattern = "*" + best_annotations_count + "*"
@@ -99,7 +106,7 @@ def collect_annotations_data(base_folder, list_of_files):
     return annotations_dict_list
 
 
-def find_best_annotations(input_folder):
+def find_best_annotations(input_folder, json_file_name):
 
     # NOTE: Explore the use of path.iterdir
     list_of_annotations_files = os.listdir(input_folder)
@@ -108,13 +115,18 @@ def find_best_annotations(input_folder):
         input_folder, list_of_annotations_files
     )
 
-    # print(all_annotations_dict_list)
+    print("ALL ANNOTATIONS DATA: ", all_annotations_dict_list)
+
+    with open(json_file_name, "w") as fp:
+        json.dump(all_annotations_dict_list, fp, indent=4)
 
     tentative_best_annotations = all_annotations_dict_list[0]
     tentative_max_minvqslod_score = float(tentative_best_annotations["minVQSLod"])
 
     for annotations_dict in all_annotations_dict_list[1:]:
+
         candidate_minvqslod = float(annotations_dict["minVQSLod"])
+
         tentative_max_minvqslod_score = max(
             tentative_max_minvqslod_score, candidate_minvqslod
         )
@@ -137,7 +149,9 @@ def find_best_annotations(input_folder):
 def main(args=None):
     args = parse_args(args)
 
-    best_annotations_dict = find_best_annotations(args.input_folder_with_json_files)
+    best_annotations_dict = find_best_annotations(
+        args.input_folder_with_json_files, args.output_json_file_name
+    )
 
     print("BEST ANNOTATIONS: ", best_annotations_dict)
 
