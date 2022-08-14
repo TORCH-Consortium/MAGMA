@@ -19,7 +19,7 @@ process GATK_VARIANT_RECALIBRATOR {
         path("*.R")
         path("*.model")
         path("*.pdf")
-        path("*${analysisMode}*.command.log"), emit: annotationsLog
+        tuple val(joint_name), path("*${analysisMode}*.command.log"), emit: annotationsLog
 
     script:
 

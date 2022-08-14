@@ -3,10 +3,8 @@ process UTILS_ELIMINATE_ANNOTATION {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        val(joint_name)
         val(analysisType)
-        path(annotationsLog)
-        path(tranchesFile)
+        tuple val(joint_name), path(annotationsLog), path(tranchesFile)
 
     output:
         path("*annotations.txt"), emit: reducedAnnotationsFile
