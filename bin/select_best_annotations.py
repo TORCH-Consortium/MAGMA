@@ -23,7 +23,7 @@ def validate_path(f):
 def parse_args(args=None):
     parser = argparse.ArgumentParser(
         description="Select the best set of annotations based on the minimal minVQSLod score",
-        epilog="Example usage: select_best_annotations.py --input_directory annotations_and_tranches_json_files --output_directory best_annotation_files",
+        epilog="Example usage: select_best_annotations.py --input_directory annotations_and_tranches_json_files --output_directory best_annotation_files --output_json_file_name all_annotations_data.json",
     )
 
     parser.add_argument(
@@ -40,6 +40,16 @@ def parse_args(args=None):
         "-o",
         "--output_directory",
         dest="output_folder_with_best_annotations",
+        required=True,
+        type=validate_path,
+        help="output directory",
+        metavar="FOLDER",
+    )
+
+    parser.add_argument(
+        "-j",
+        "--output_json_file_name",
+        dest="output_json_file_name",
         required=True,
         type=validate_path,
         help="output directory",
@@ -97,7 +107,7 @@ def collect_annotations_data(base_folder, list_of_files):
     return annotations_dict_list
 
 
-def find_best_annotations(input_folder):
+def find_best_annotations(input_folder, json_file_name):
 
     # NOTE: Explore the use of path.iterdir
     list_of_annotations_files = os.listdir(input_folder)
@@ -107,6 +117,9 @@ def find_best_annotations(input_folder):
     )
 
     print("ALL ANNOTATIONS DATA: ", all_annotations_dict_list)
+
+    with open(json_file_name, "w") as fp:
+        json.dump(all_annotations_dict_list, fp, indent=4)
 
     tentative_best_annotations = all_annotations_dict_list[0]
     tentative_max_minvqslod_score = float(tentative_best_annotations["minVQSLod"])
@@ -137,7 +150,9 @@ def find_best_annotations(input_folder):
 def main(args=None):
     args = parse_args(args)
 
-    best_annotations_dict = find_best_annotations(args.input_folder_with_json_files)
+    best_annotations_dict = find_best_annotations(
+        args.input_folder_with_json_files, args.output_json_file_name
+    )
 
     print("BEST ANNOTATIONS: ", best_annotations_dict)
 
