@@ -137,6 +137,7 @@ workflow TEST {
 
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
+            .filter { it  -> ( it.class == sun.nio.fs.UnixPath ) }
             // .filter { it  -> {
             //         return ((it.class == sun.nio.fs.UnixPath ) || )
             //     }}
