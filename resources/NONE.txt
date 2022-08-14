@@ -1,0 +1,3 @@
+DO NOT DELETE!
+
+This file is being used to provide a valid path (especially in cloud context) for cases when a resource file isn't needed.
