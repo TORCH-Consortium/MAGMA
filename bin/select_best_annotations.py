@@ -51,7 +51,6 @@ def parse_args(args=None):
         "--output_json_file_name",
         dest="output_json_file_name",
         required=True,
-        type=validate_path,
         help="output directory",
         metavar="FOLDER",
     )
