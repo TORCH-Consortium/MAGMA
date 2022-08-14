@@ -11,7 +11,7 @@ process TBPROFILER_VCF_PROFILE__COHORT {
 
 
     script:
-        def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
+        def optionalDb  = ( ref_exit_rif_gvcf.simpleName != "NONE") ? "--db ${resistanceDb.name}" : ""
 
         def optionallyLoadLibraryForContainers = (optionalDb != "") ? "cd ${resistanceDb}; ${params.tbprofiler_path} load_library ${resistanceDb.name}; cd ../" : ""
 
