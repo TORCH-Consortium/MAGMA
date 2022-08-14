@@ -22,8 +22,8 @@ def validate_path(f):
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser(
-        description="Extract and reshape the annotations for variant recalibration",
-        epilog="Example usage: reduce_annotations.py -i annotations.log -o new.annotations.txt",
+        description="Select the best set of annotations based on the minimal minVQSLod score",
+        epilog="Example usage: select_best_annotations.py --input_directory annotations_and_tranches_json_files --output_directory best_annotation_files",
     )
 
     parser.add_argument(
@@ -58,8 +58,6 @@ def parse_args(args=None):
 def move_files(annotations_dict, output_directory):
 
     best_annotations_count = annotations_dict["annotationsCount"]
-
-    print(os.listdir())
 
     p = Path(".")
     grep_pattern = "*" + best_annotations_count + "*"
@@ -108,13 +106,15 @@ def find_best_annotations(input_folder):
         input_folder, list_of_annotations_files
     )
 
-    # print(all_annotations_dict_list)
+    print("ALL ANNOTATIONS DATA: ", all_annotations_dict_list)
 
     tentative_best_annotations = all_annotations_dict_list[0]
     tentative_max_minvqslod_score = float(tentative_best_annotations["minVQSLod"])
 
     for annotations_dict in all_annotations_dict_list[1:]:
+
         candidate_minvqslod = float(annotations_dict["minVQSLod"])
+
         tentative_max_minvqslod_score = max(
             tentative_max_minvqslod_score, candidate_minvqslod
         )
