@@ -5,15 +5,12 @@ include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN4 } from "
 include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN3 } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN3 )
 include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN2 } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN2 )
 
-include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN7;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN6;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN5;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN4;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN3;
-          UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN2
-} from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION )
-
-include { UTILS_SELECT_BEST_ANNOTATIONS } from "../../modules/utils/select_best_annotations.nf" addParams ( params.UTILS_SELECT_BEST_ANNOTATIONS )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN7 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN7 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN6 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN6 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN5 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN5 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN4 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN4 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN3 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN3 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN2 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN2 )
 
 
 workflow OPTIMIZE_VARIANT_RECALIBRATION {

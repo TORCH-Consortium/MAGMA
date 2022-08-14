@@ -2,7 +2,6 @@ include { SAMTOOLS_MERGE } from "../modules/samtools/merge.nf" addParams ( param
 include { GATK_MARK_DUPLICATES } from "../modules/gatk/mark_duplicates.nf" addParams ( params.GATK_MARK_DUPLICATES )
 include { GATK_BASE_RECALIBRATOR } from "../modules/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR )
 include { GATK_APPLY_BQSR } from "../modules/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR )
-include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
 include { GATK_HAPLOTYPE_CALLER } from "../modules/gatk/haplotype_caller.nf" addParams ( params.GATK_HAPLOTYPE_CALLER )
 include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/gatk/haplotype_caller__minor_variants.nf" addParams ( params.GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS )
 include { LOFREQ_CALL__NTM } from "../modules/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
