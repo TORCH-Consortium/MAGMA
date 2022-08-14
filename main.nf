@@ -91,7 +91,7 @@ workflow {
 
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
-            .view{"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
+            .view{"\n\n XBS-NF-LOG selected_gvcfs_ch : $it => $it.class \n\n"}
             // .filter { it.class  == sun.nio.fs.UnixPath }
             // .view{"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
 
