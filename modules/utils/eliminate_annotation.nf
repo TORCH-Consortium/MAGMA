@@ -1,5 +1,5 @@
 process UTILS_ELIMINATE_ANNOTATION {
-    tag "${params.vcf_name}"
+    tag "${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
@@ -19,8 +19,8 @@ process UTILS_ELIMINATE_ANNOTATION {
         """
         reduce_annotations.py \\
             --input ${annotationsLog} \\
-            --output ${params.vcf_name}.${analysisType}.${annotationPrefix}.annotations.txt \\
+            --output ${joint_name}.${analysisType}.${annotationPrefix}.annotations.txt \\
             --tranches ${tranchesFile} \\
-            --output_tranches_and_annotations ${params.vcf_name}.${analysisType}.${annotationPrefix}.annotations_tranches.txt
+            --output_tranches_and_annotations ${joint_name}.${analysisType}.${annotationPrefix}.annotations_tranches.txt
         """
 }
