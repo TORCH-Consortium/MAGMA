@@ -91,7 +91,9 @@ workflow {
 
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
-            .filter { it -> (it.class  == sun.nio.fs.UnixPath) || (it.class = nextflow.cloud.azure.nio.AzPath) }
+            .filter { it -> {
+                 (it.class  == sun.nio.fs.UnixPath) || (it.class == nextflow.cloud.azure.nio.AzPath)
+                }}
             .view{"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
             // .view{"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
 
