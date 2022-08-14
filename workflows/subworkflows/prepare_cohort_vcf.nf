@@ -20,9 +20,9 @@ workflow PREPARE_COHORT_VCF {
             // .view(it -> "PREPARE_COHORT_VCF gvcfs_string_ch: $it")
 
 
-        def refExitRifGvcf =  params.use_ref_exit_rif_gvcf ? params.ref_exit_rif_gvcf : []
+        def refExitRifGvcf =  params.use_ref_exit_rif_gvcf ? params.ref_exit_rif_gvcf : "NONE"
 
-        def refExitRifGvcfTbi = params.use_ref_exit_rif_gvcf ? "${refExitRifGvcf}.tbi" : []
+        def refExitRifGvcfTbi = params.use_ref_exit_rif_gvcf ? "${refExitRifGvcf}.tbi" : "NONE"
 
         // merge_combine
         GATK_COMBINE_GVCFS(params.vcf_name,
