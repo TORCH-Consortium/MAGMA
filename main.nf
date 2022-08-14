@@ -92,7 +92,7 @@ workflow {
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
             .filter { it.class  != String }
-            .view{"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
+            // .view{"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
 
 
         MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
