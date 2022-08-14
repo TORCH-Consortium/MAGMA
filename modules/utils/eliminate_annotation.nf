@@ -21,6 +21,6 @@ process UTILS_ELIMINATE_ANNOTATION {
             --input ${annotationsLog} \\
             --output ${joint_name}.${analysisType}.${annotationPrefix}.annotations.txt \\
             --tranches ${tranchesFile} \\
-            --output_tranches_and_annotations ${joint_name}.${analysisType}.${annotationPrefix}.annotations_tranches.txt
+            --output_tranches_and_annotations ${joint_name}.${analysisType}.${annotationPrefix}.annotations_tranches.json
         """
 }
