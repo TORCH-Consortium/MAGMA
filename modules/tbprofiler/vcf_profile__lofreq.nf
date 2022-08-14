@@ -12,7 +12,7 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
 
 
     script:
-        def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
+        def optionalDb  = ( resistanceDb.simpleName != "NONE") ? "--db ${resistanceDb.name}" : ""
 
         def optionallyLoadLibraryForContainers = (optionalDb != "") ? "cd ${resistanceDb}; ${params.tbprofiler_path} load_library ${resistanceDb.name}; cd ../" : ""
 
