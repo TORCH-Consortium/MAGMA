@@ -12,7 +12,7 @@ workflow RESISTANCE_ANALYSIS {
 
     main:
 
-        def resistanceDb =  params.use_who_resistance_db ?  params.resistance_db : "${projectDir}/resources/NONE.txt"
+        def resistanceDb =  params.use_who_resistance_db ?  params.resistance_db : "${projectDir}/resources/DUMMY/NONE.txt"
 
 
         // merge_call_resistance
