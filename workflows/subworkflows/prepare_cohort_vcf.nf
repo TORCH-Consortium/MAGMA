@@ -20,7 +20,7 @@ workflow PREPARE_COHORT_VCF {
             // .view(it -> "PREPARE_COHORT_VCF gvcfs_string_ch: $it")
 
 
-        def refExitRifGvcf =  params.use_ref_exit_rif_gvcf ? "${projectDir}/resources/exit_rif/EXIT-RIF.g.vcf.gz" : []
+        def refExitRifGvcf =  params.use_ref_exit_rif_gvcf ? params.ref_exit_rif_gvcf : []
 
         def refExitRifGvcfTbi = params.use_ref_exit_rif_gvcf ? "${refExitRifGvcf}.tbi" : []
 

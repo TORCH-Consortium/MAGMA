@@ -12,7 +12,7 @@ workflow RESISTANCE_ANALYSIS {
 
     main:
 
-        def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
+        def resistanceDb =  params.use_who_resistance_db ?  params.resistance_db : []
 
         // merge_call_resistance
         TBPROFILER_VCF_PROFILE__COHORT(merged_vcf_ch, resistanceDb)
