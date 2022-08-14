@@ -11,7 +11,7 @@ process TBPROFILER_COLLATE {
         path("*${params.prefix}*")
 
     script:
-        def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
+        def optionalDb  = ( resistanceDb.simpleName != "NONE") ? "--db ${resistanceDb}" : ""
 
         def optionallyLoadLibraryForContainers = (optionalDb != "") ? "cd ${resistanceDb}; ${params.tbprofiler_path} load_library ${resistanceDb.name}; cd ../" : ""
 
