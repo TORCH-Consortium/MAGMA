@@ -99,6 +99,7 @@ workflow SNP_ANALYSIS {
 
 
     emit:
-        snp_vcf_ch = GATK_SELECT_VARIANTS__EXCLUSION__SNP.out
+        snp_exc_vcf_ch = GATK_SELECT_VARIANTS__EXCLUSION__SNP.out
+        snp_inc_vcf_ch = GATK_APPLY_VQSR__SNP.out.filteredVcfTuple
 
 }
