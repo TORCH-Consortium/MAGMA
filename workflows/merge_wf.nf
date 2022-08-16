@@ -24,7 +24,7 @@ workflow MERGE_WF {
         INDEL_ANALYSIS(PREPARE_COHORT_VCF.out.cohort_vcf_and_index_ch)
 
         // merge_exc_vcf_ch = (SNP_ANALYSIS.out.snp_exc_vcf_ch).join(INDEL_ANALYSIS.out.indel_vcf_ch)
-        merge_inc_vcf_ch = (SNP_ANALYSIS.out.snp_exc_vcf_ch).join(INDEL_ANALYSIS.out.indel_vcf_ch)
+        merge_inc_vcf_ch = (SNP_ANALYSIS.out.snp_inc_vcf_ch).join(INDEL_ANALYSIS.out.indel_vcf_ch)
 
         // merge_snp_indel_vcf
         GATK_MERGE_VCFS__INC(merge_inc_vcf_ch)
@@ -45,7 +45,7 @@ workflow MERGE_WF {
 
         PHYLOGENY_ANALYSIS__INCCOMPLEX(inccomplex_prefix_ch,
                                        inccomplex_exclude_interval_ref_ch,
-                                       SNP_ANALYSIS.out.snp_inc_vcf_ch)
+                                       SNP_ANALYSIS.out.snp_exc_vcf_ch)
 
         CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snpsites_tree_tuple, inccomplex_prefix_ch)
 
