@@ -29,17 +29,17 @@ workflow QUALITY_CHECK_WF {
 
     emit:
         approved_samples = UTILS_QUANTTB_COHORT_STATS.out
-        .splitCsv(header: false, skip: 1)
-        .map { row -> {
+                            .splitCsv(header: false, skip: 1)
+                            .map { row -> {
 
-                relabundance_threshold_met =	row[4]
-                derived_sample_name =	row[-1]
+                                    relabundance_threshold_met =	row[4]
+                                    derived_sample_name =	row[-1]
 
-                if(relabundance_threshold_met == "1") {
-                    return tuple("${derived_sample_name}")
-                }
-            }
-        }
-        .join(reads_ch)
+                                    if(relabundance_threshold_met == "1") {
+                                        return tuple("${derived_sample_name}")
+                                    }
+                                }
+                            }
+                            .join(reads_ch)
 
 }

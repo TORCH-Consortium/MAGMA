@@ -2,11 +2,11 @@ include { SAMTOOLS_MERGE } from "../modules/samtools/merge.nf" addParams ( param
 include { GATK_MARK_DUPLICATES } from "../modules/gatk/mark_duplicates.nf" addParams ( params.GATK_MARK_DUPLICATES )
 include { GATK_BASE_RECALIBRATOR } from "../modules/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR )
 include { GATK_APPLY_BQSR } from "../modules/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR )
-include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
 include { GATK_HAPLOTYPE_CALLER } from "../modules/gatk/haplotype_caller.nf" addParams ( params.GATK_HAPLOTYPE_CALLER )
 include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/gatk/haplotype_caller__minor_variants.nf" addParams ( params.GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS )
 include { LOFREQ_CALL__NTM } from "../modules/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
 include { LOFREQ_INDELQUAL } from "../modules/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
+include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
 include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
 include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
 include { LOFREQ_FILTER } from "../modules/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
@@ -40,6 +40,7 @@ workflow CALL_WF {
             }
         }
         .groupTuple()
+        // .view( it -> "\n\n XBS-NF-LOG CALL_WF normalize_libraries_ch: $it \n\n")
 
 
         // call_merge
@@ -65,6 +66,10 @@ workflow CALL_WF {
 
             recalibrated_bam_ch = GATK_MARK_DUPLICATES.out.bam_tuple
         }
+
+
+        // recalibrated_bam_ch
+        //     .view( it -> "\n\n XBS-NF-LOG CALL_WF recalibrated_bam_ch: $it \n\n")
 
         SAMTOOLS_INDEX(recalibrated_bam_ch)
 
@@ -138,7 +143,7 @@ workflow CALL_WF {
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
             .join(LOFREQ_CALL__NTM.out)
-            // .view()
+            // .view( it -> "\n\n XBS-NF-LOG CALL_WF sample_stats_ch: $it \n\n")
 
 
         UTILS_SAMPLE_STATS(sample_stats_ch)

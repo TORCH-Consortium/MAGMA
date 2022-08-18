@@ -1,18 +1,24 @@
 process UTILS_ELIMINATE_ANNOTATION {
-    tag "${params.vcf_name}"
+    tag "${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
         val(analysisType)
-        path(annotationsFile)
+        tuple val(joint_name), path(annotationsLog), path(tranchesFile)
 
     output:
         path("*annotations.txt"), emit: reducedAnnotationsFile
+        tuple val(joint_name), path("*annotations_tranches.json"), emit: annotationsTranchesFile
 
     script:
+
+        def annotationPrefix = "${task.process.split("__")[-1]}"
+
         """
         reduce_annotations.py \\
-            -i ${annotationsFile} \\
-            -o ${params.vcf_name}.${analysisType}.${task.process.tokenize('__')[-1]}.annotations.txt
+            --input ${annotationsLog} \\
+            --output ${joint_name}.${analysisType}.${annotationPrefix}.annotations.txt \\
+            --tranches ${tranchesFile} \\
+            --output_tranches_and_annotations ${joint_name}.${analysisType}.${annotationPrefix}.annotations_tranches.json
         """
 }

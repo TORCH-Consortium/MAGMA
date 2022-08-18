@@ -19,11 +19,19 @@ process GATK_VARIANT_RECALIBRATOR {
         path("*.R")
         path("*.model")
         path("*.pdf")
-        path("*${analysisMode}.command.log"), emit: annotationsLog
+        tuple val(joint_name), path("*${analysisMode}*.command.log"), emit: annotationsLog
 
     script:
 
         def finalResourceFilesArg =    (resourceFilesArg  ? "--resource:${resourceFilesArg}" : "")
+
+        def optionalAnnotationPrefix = ""
+
+        if (task.process.split("__").length == 1) {
+            optionalAnnotationPrefix = ""
+        } else {
+            optionalAnnotationPrefix = ".${task.process.split("__")[-1]}"
+        }
 
         """
         ${params.gatk_path} VariantRecalibrator --java-options "-Xmx${task.memory.giga}G" \\
@@ -33,13 +41,13 @@ process GATK_VARIANT_RECALIBRATOR {
             ${annotations} \\
             ${params.arguments} \\
             -mode ${analysisMode} \\
-            --tranches-file ${joint_name}.${analysisMode}.tranches \\
-            --rscript-file ${joint_name}.${analysisMode}.R \\
-            --output ${joint_name}.${analysisMode}.recal.vcf.gz \\
-            --output-model ${joint_name}.${analysisMode}.model \\
-            2>${joint_name}.${analysisMode}.command.log
+            --tranches-file ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.tranches \\
+            --rscript-file ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.R \\
+            --output ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.recal.vcf.gz \\
+            --output-model ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.model \\
+            2>${joint_name}.${analysisMode}${optionalAnnotationPrefix}.command.log
 
-        cp ${joint_name}.${analysisMode}.command.log .command.log
+        cp ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.command.log .command.log
 
         """
 
