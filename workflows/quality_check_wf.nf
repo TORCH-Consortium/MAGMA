@@ -1,5 +1,4 @@
 include { FASTQC } from '../modules/fastqc/fastqc.nf' addParams (params.FASTQC)
-include { MULTIQC } from '../modules/multiqc/multiqc.nf' addParams (params.MULTIQC)
 include { QUANTTB_QUANT } from '../modules/quanttb/quant.nf' addParams( params.QUANTTB_QUANT )
 include { UTILS_QUANTTB_SAMPLE_QC } from '../modules/utils/quanttb_sample_qc.nf' addParams( params.UTILS_QUANTTB_SAMPLE_QC )
 include { UTILS_QUANTTB_COHORT_STATS } from '../modules/utils/quanttb_cohort_stats.nf' addParams( params.UTILS_QUANTTB_COHORT_STATS )
@@ -14,8 +13,6 @@ workflow QUALITY_CHECK_WF {
 
         FASTQC(reads_ch)
 
-        MULTIQC(FASTQC.out.collect())
-
         QUANTTB_QUANT(reads_ch)
 
         UTILS_QUANTTB_SAMPLE_QC(QUANTTB_QUANT.out.quanttb_report_tuple,
@@ -28,7 +25,7 @@ workflow QUALITY_CHECK_WF {
         )
 
     emit:
-        approved_samples = UTILS_QUANTTB_COHORT_STATS.out
+        approved_samples_ch = UTILS_QUANTTB_COHORT_STATS.out
                             .splitCsv(header: false, skip: 1)
                             .map { row -> {
 
@@ -41,5 +38,22 @@ workflow QUALITY_CHECK_WF {
                                 }
                             }
                             .join(reads_ch)
+
+
+        failed_samples_ch = UTILS_QUANTTB_COHORT_STATS.out
+                            .splitCsv(header: false, skip: 1)
+                            .map { row -> {
+
+                                    relabundance_threshold_met =	row[4]
+                                    derived_sample_name =	row[-1]
+
+                                    if(relabundance_threshold_met != "1") {
+                                        return tuple("${derived_sample_name}")
+                                    }
+                                }
+                            }
+                            .join(reads_ch)
+
+        reports_fastqc_ch =  FASTQC.out.collect()
 
 }

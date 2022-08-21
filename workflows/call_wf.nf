@@ -84,11 +84,11 @@ workflow CALL_WF {
                           params.ref_fasta,
                           [params.ref_fasta_fai, params.ref_fasta_dict])
 
+        // call_haplotype_caller_minor_variants
         if (params.compute_minor_variants) {
-            // call_haplotype_caller_minor_variants
-        GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out,
-                                              params.ref_fasta,
-                                              [params.ref_fasta_fai, params.ref_fasta_dict])
+            GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out,
+                                                params.ref_fasta,
+                                                [params.ref_fasta_fai, params.ref_fasta_dict])
         }
 
         //----------------------------------------------------------------------------------
@@ -119,7 +119,6 @@ workflow CALL_WF {
         //----------------------------------------------------------------------------------
 
         // call_sv
-
         DELLY_CALL(SAMTOOLS_INDEX.out, params.ref_fasta)
         BCFTOOLS_VIEW(DELLY_CALL.out)
         GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out, 'potentialSV')
@@ -143,7 +142,7 @@ workflow CALL_WF {
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
             .join(LOFREQ_CALL__NTM.out)
-            // .view( it -> "\n\n XBS-NF-LOG CALL_WF sample_stats_ch: $it \n\n")
+            // .view{ it -> "\n\n XBS-NF-LOG CALL_WF sample_stats_ch: $it \n\n"}
 
 
         UTILS_SAMPLE_STATS(sample_stats_ch)
