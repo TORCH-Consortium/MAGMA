@@ -6,6 +6,7 @@ nextflow.enable.dsl = 2
 //================================================================================
 
 include { CALL_WF } from './workflows/call_wf.nf'
+include { CONTAMINATED_SAMPLE_STATS_WF } from '.workflows/contaminated_sample_stats_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
