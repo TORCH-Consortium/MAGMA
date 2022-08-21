@@ -7,7 +7,7 @@ include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/gatk/haplotyp
 include { LOFREQ_CALL__NTM } from "../modules/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
 include { LOFREQ_INDELQUAL } from "../modules/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
 include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
+include { SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index__lofreq.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
 include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
 include { LOFREQ_FILTER } from "../modules/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
 include { DELLY_CALL } from "../modules/delly/call.nf" addParams ( params.DELLY_CALL )
@@ -40,7 +40,7 @@ workflow CALL_WF {
             }
         }
         .groupTuple()
-        // .view( it -> "\n\n XBS-NF-LOG CALL_WF normalize_libraries_ch: $it \n\n")
+        // .view{ it -> "\n\n XBS-NF-LOG CALL_WF normalize_libraries_ch: $it \n\n"}
 
 
         // call_merge

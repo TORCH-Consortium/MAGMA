@@ -40,7 +40,7 @@ workflow QUALITY_CHECK_WF {
                             .join(reads_ch)
 
 
-        failed_samples_ch = UTILS_QUANTTB_COHORT_STATS.out
+        rejected_samples_ch = UTILS_QUANTTB_COHORT_STATS.out
                             .splitCsv(header: false, skip: 1)
                             .map { row -> {
 

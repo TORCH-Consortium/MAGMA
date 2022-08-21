@@ -70,9 +70,13 @@ workflow {
 
         QUALITY_CHECK_WF(reads_ch)
 
-        MAP_WF(QUALITY_CHECK_WF.out.approved_samples_ch)
+        MAP_WF( QUALITY_CHECK_WF.out.approved_samples_ch,
+                QUALITY_CHECK_WF.out.rejected_samples_ch )
 
-        CALL_WF(MAP_WF.out.sorted_reads)
+        CONTAMINATED_SAMPLE_STATS_WF(MAP_WF.out.rejected_sorted_reads_ch)
+
+        /*
+        CALL_WF(MAP_WF.out.approved_sorted_reads_ch)
 
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
             .flatten()
@@ -98,6 +102,7 @@ workflow {
 
         MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
 
+        */
         REPORTS_WF(reports_fastqc_ch)
     }
 
