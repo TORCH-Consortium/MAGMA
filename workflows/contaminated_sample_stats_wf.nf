@@ -28,8 +28,8 @@ workflow CONTAMINATED_SAMPLE_STATS_WF {
             .join( GATK_COLLECT_WGS_METRICS.out )
             .join( GATK_FLAG_STAT.out )
 
-
-        UTILS_SAMPLE_STATS( sample_stats_ch )
-        UTILS_COHORT_STATS( UTILS_SAMPLE_STATS.out.collect() )
+        //TODO: If these stats are needed, only then implement the following processes to accommodate the missing NTM stats
+        // UTILS_SAMPLE_STATS( sample_stats_ch )
+        // UTILS_COHORT_STATS( UTILS_SAMPLE_STATS.out.collect() )
 
 }
