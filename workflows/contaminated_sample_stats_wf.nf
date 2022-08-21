@@ -24,7 +24,6 @@ workflow CONTAMINATED_SAMPLE_STATS_WF {
         GATK_FLAG_STAT(recalibrated_bam_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
 
 
-    /*
         sample_stats_ch = ( SAMTOOLS_STATS.out )
             .join( GATK_COLLECT_WGS_METRICS.out )
             .join( GATK_FLAG_STAT.out )
@@ -33,5 +32,4 @@ workflow CONTAMINATED_SAMPLE_STATS_WF {
         UTILS_SAMPLE_STATS( sample_stats_ch )
         UTILS_COHORT_STATS( UTILS_SAMPLE_STATS.out.collect() )
 
-    */
 }
