@@ -76,7 +76,7 @@ workflow {
 
         CONTAMINATED_SAMPLE_STATS_WF(MAP_WF.out.rejected_sorted_reads_ch)
 
-        /*
+
         CALL_WF(MAP_WF.out.approved_sorted_reads_ch)
 
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
@@ -103,7 +103,7 @@ workflow {
 
         MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
 
-        */
+
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch)
     }
 
