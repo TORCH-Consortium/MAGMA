@@ -24,7 +24,7 @@ workflow PHYLOGENY_ANALYSIS {
                     }
                 }
             }
-            // .view()
+            // .view( it -> "\n\n XBS-NF-LOG PHYLOGENY_ANALYSIS args_ch: $args_ch \n\n")
 
 
         resources_files_ch = arg_files_ch
