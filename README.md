@@ -96,6 +96,11 @@ $ conda env create -p xbs-nf-env-2 --file xbs-nf-env-2.yml
 ```sh
 $ nextflow run main.nf -profile conda
 ```
+- use the ```-resume``` flag to continue from previously generated output files, rather than starting from scratch.
+
+```sh
+$ nextflow run main.nf -profile conda -resume
+```
 
 <!-- # Citation -->
 
