@@ -125,7 +125,7 @@ workflow CALL_WF {
         GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out, 'potentialSV')
 
         //TODO: Enable this once a proper file with DR genes has been made available
-        // GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
+        GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
 
 
         //----------------------------------------------------------------------------------
