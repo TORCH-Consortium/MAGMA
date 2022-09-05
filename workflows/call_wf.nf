@@ -18,6 +18,7 @@ include { GATK_COLLECT_WGS_METRICS } from "../modules/gatk/collect_wgs_metrics.n
 include { GATK_FLAG_STAT } from "../modules/gatk/flag_stat.nf" addParams ( params.GATK_FLAG_STAT )
 include { UTILS_SAMPLE_STATS } from "../modules/utils/sample_stats.nf" addParams ( params.UTILS_SAMPLE_STATS )
 include { UTILS_COHORT_STATS } from "../modules/utils/cohort_stats.nf" addParams ( params.UTILS_COHORT_STATS )
+include { GATK_SELECT_VARIANTS__INCLUSION } from "../modules/gatk/select_variants__intervals.nf" addParams ( params.GATK_SELECT_VARIANTS__INCLUSION )
 
 
 
@@ -123,9 +124,7 @@ workflow CALL_WF {
         DELLY_CALL(SAMTOOLS_INDEX.out, params.ref_fasta)
         BCFTOOLS_VIEW(DELLY_CALL.out)
         GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out, 'potentialSV')
-
-        //TODO: Enable this once a proper file with DR genes has been made available
-        GATK_SELECT_VARIANTS__INTERVALS(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
+        GATK_SELECT_VARIANTS__INCLUSION(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
 
 
         //----------------------------------------------------------------------------------
