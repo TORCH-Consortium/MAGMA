@@ -9,8 +9,8 @@ process GATK_SELECT_VARIANTS__INCLUSION {
         path(intervalsFile)
 
     output:
-        path("*.filtered_${analysisMode}_exc-rRNA.vcf.gz")
-
+        path("${sampleName}.potentialSV.DRgenes.vcf.gz")
+        
     script:
 
         """
