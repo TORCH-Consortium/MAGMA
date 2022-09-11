@@ -20,6 +20,10 @@ workflow MULTIPLE_INFECTIONS_WF {
 
         SAMTOOLS_INDEX(recalibrated_bam_ch)
 
+        LOFREQ_CALL__NTM(SAMTOOLS_INDEX.out,
+                         params.ref_fasta,
+                         [params.ref_fasta_fai])
+
         SAMTOOLS_STATS(recalibrated_bam_ch, params.ref_fasta)
         GATK_COLLECT_WGS_METRICS(recalibrated_bam_ch, params.ref_fasta)
         GATK_FLAG_STAT(recalibrated_bam_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
@@ -28,7 +32,7 @@ workflow MULTIPLE_INFECTIONS_WF {
         sample_stats_ch = ( SAMTOOLS_STATS.out )
             .join( GATK_COLLECT_WGS_METRICS.out )
             .join( GATK_FLAG_STAT.out )
-            .join(LOFREQ_CALL__NTM.out)
+            .join( LOFREQ_CALL__NTM.out )
 
         UTILS_SAMPLE_STATS( sample_stats_ch )
         UTILS_COHORT_STATS( UTILS_SAMPLE_STATS.out.collect() )
