@@ -3,11 +3,12 @@ include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( param
 include { SAMTOOLS_STATS } from "../modules/samtools/stats.nf" addParams ( params.SAMTOOLS_STATS__REJECTED )
 include { GATK_COLLECT_WGS_METRICS } from "../modules/gatk/collect_wgs_metrics.nf" addParams ( params.GATK_COLLECT_WGS_METRICS__REJECTED )
 include { GATK_FLAG_STAT } from "../modules/gatk/flag_stat.nf" addParams ( params.GATK_FLAG_STAT__REJECTED )
+include { LOFREQ_CALL__NTM } from "../modules/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM__REJECTED )
 include { UTILS_SAMPLE_STATS } from "../modules/utils/sample_stats.nf" addParams ( params.UTILS_SAMPLE_STATS__REJECTED )
 include { UTILS_COHORT_STATS } from "../modules/utils/cohort_stats.nf" addParams ( params.UTILS_COHORT_STATS__REJECTED )
 
 
-workflow CONTAMINATED_SAMPLE_STATS_WF {
+workflow MULTIPLE_INFECTIONS_WF {
     take:
         rejected_sorted_reads_ch
 
@@ -27,9 +28,9 @@ workflow CONTAMINATED_SAMPLE_STATS_WF {
         sample_stats_ch = ( SAMTOOLS_STATS.out )
             .join( GATK_COLLECT_WGS_METRICS.out )
             .join( GATK_FLAG_STAT.out )
+            .join(LOFREQ_CALL__NTM.out)
 
-        //TODO: If these stats are needed, only then implement the following processes to accommodate the missing NTM stats
-        // UTILS_SAMPLE_STATS( sample_stats_ch )
-        // UTILS_COHORT_STATS( UTILS_SAMPLE_STATS.out.collect() )
+        UTILS_SAMPLE_STATS( sample_stats_ch )
+        UTILS_COHORT_STATS( UTILS_SAMPLE_STATS.out.collect() )
 
 }

@@ -6,7 +6,7 @@ nextflow.enable.dsl = 2
 //================================================================================
 
 include { CALL_WF } from './workflows/call_wf.nf'
-include { CONTAMINATED_SAMPLE_STATS_WF } from './workflows/contaminated_sample_stats_wf.nf'
+include { MULTIPLE_INFECTIONS_WF } from './workflows/multiple_infections_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
@@ -24,15 +24,15 @@ include { REPORTS_WF } from './workflows/reports_wf.nf'
 reads_ch = Channel.fromPath(params.input_samplesheet)
         .splitCsv(header: false, skip: 1)
         .map { row -> {
-                    study           = row[0] ?: "XBS-NF"
+                    study           = row[0]
                     sample          = row[1]
-                    library         = row[2] ?: 1
-                    attempt         = row[3] ?: 1
+                    library         = row[2]
+                    attempt         = row[3]
                     read1           = row[4]
                     read2           = row[5]
-                    flowcell        = row[6] ?: 1
-                    lane            = row[7] ?: 1
-                    index_sequence  = row[8] ?: 1
+                    flowcell        = row[6]
+                    lane            = row[7]
+                    index_sequence  = row[8]
 
             //NOTE: Platform is hard-coded to illumina
             bam_rg_string ="@RG\\tID:${flowcell}.${lane}\\tSM:${study}.${sample}\\tPL:illumina\\tLB:lib${library}\\tPU:${flowcell}.${lane}.${index_sequence}"
@@ -74,7 +74,7 @@ workflow {
         MAP_WF( QUALITY_CHECK_WF.out.approved_samples_ch,
                 QUALITY_CHECK_WF.out.rejected_samples_ch )
 
-        CONTAMINATED_SAMPLE_STATS_WF(MAP_WF.out.rejected_sorted_reads_ch)
+        MULTIPLE_INFECTIONS_WF(MAP_WF.out.rejected_sorted_reads_ch)
 
 
         CALL_WF(MAP_WF.out.approved_sorted_reads_ch)
