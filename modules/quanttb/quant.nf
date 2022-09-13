@@ -14,6 +14,7 @@ process QUANTTB_QUANT {
         """
         sleep 10
         ${params.quanttb_path} quant -f ${sampleReads} -o ${sampleName}.quant.txt -k
+        sleep 10
         """
 
     stub:
