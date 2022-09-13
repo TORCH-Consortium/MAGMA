@@ -72,7 +72,7 @@ workflow INDEL_ANALYSIS {
         } else {
 
             GATK_VARIANT_RECALIBRATOR__INDEL('INDEL',
-                                    " -an DP -an AS_QD -an AS_MQ ",
+                                    " -an DP -an AS_MQ ",
                                         GATK_SELECT_VARIANTS__INDEL.out.variantsVcfTuple,
                                         args_ch,
                                         resources_files_ch,
