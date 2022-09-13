@@ -70,7 +70,7 @@ workflow SNP_ANALYSIS {
         } else {
 
             GATK_VARIANT_RECALIBRATOR__SNP('SNP',
-                                    " -an DP -an AS_QD -an AS_MQ ",
+                                    " -an DP -an AS_MQ ",
                                         GATK_SELECT_VARIANTS__SNP.out.variantsVcfTuple,
                                         args_ch,
                                         resources_files_ch,
