@@ -12,6 +12,7 @@ process QUANTTB_QUANT {
     script:
 
         """
+        sleep 10
         ${params.quanttb_path} quant -f ${sampleReads} -o ${sampleName}.quant.txt -k
         """
 
