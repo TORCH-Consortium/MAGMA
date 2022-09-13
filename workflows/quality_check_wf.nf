@@ -47,7 +47,7 @@ workflow QUALITY_CHECK_WF {
                                     relabundance_threshold_met =	row[4]
                                     derived_sample_name =	row[-1]
 
-                                    if(relabundance_threshold_met != "1") {
+                                    if(relabundance_threshold_met != "0") {
                                         return tuple("${derived_sample_name}")
                                     }
                                 }
