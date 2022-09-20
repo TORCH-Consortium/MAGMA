@@ -38,7 +38,7 @@ workflow QUALITY_CHECK_WF {
                                 }
                             }
                             .join(reads_ch)
-                            .view { it -> "@@@ approved_smples_ch: $it @@@ } 
+                            .view { it -> "@@@ approved_smples_ch: $it @@@" } 
 
 
 
@@ -55,7 +55,7 @@ workflow QUALITY_CHECK_WF {
                                 }
                             }
                             .join(reads_ch)
-                            .view { it -> "@@@ rejected_smples_ch: $it @@@ } 
+                            .view { it -> "@@@ rejected_smples_ch: $it @@@" } 
 
 
         reports_fastqc_ch =  FASTQC.out.collect()
