@@ -29,8 +29,8 @@ workflow QUALITY_CHECK_WF {
                             .splitCsv(header: false, skip: 1)
                             .map { row -> {
 
-                                    relabundance_threshold_met =	row[4]
-                                    derived_sample_name =	row[-1]
+                                    def relabundance_threshold_met =	row[4]
+                                    def derived_sample_name =	row[-1]
 
                                     if(relabundance_threshold_met == "1") {
                                         return tuple("${derived_sample_name}")
@@ -38,14 +38,16 @@ workflow QUALITY_CHECK_WF {
                                 }
                             }
                             .join(reads_ch)
+                            .view { it -> "@@@ approved_smples_ch: $it @@@ } 
+
 
 
         rejected_samples_ch = UTILS_QUANTTB_COHORT_STATS.out
                             .splitCsv(header: false, skip: 1)
                             .map { row -> {
 
-                                    relabundance_threshold_met =	row[4]
-                                    derived_sample_name =	row[-1]
+                                    def relabundance_threshold_met =	row[4]
+                                    def derived_sample_name =	row[-1]
 
                                     if(relabundance_threshold_met == "0") {
                                         return tuple("${derived_sample_name}")
@@ -53,6 +55,8 @@ workflow QUALITY_CHECK_WF {
                                 }
                             }
                             .join(reads_ch)
+                            .view { it -> "@@@ rejected_smples_ch: $it @@@ } 
+
 
         reports_fastqc_ch =  FASTQC.out.collect()
 
