@@ -8,10 +8,8 @@ process UTILS_QUANTTB_COHORT_STATS {
     output:
         path("*tsv")
 
-    shell:
-        '''
-        echo -e "SAMPLE\tREFNAME\tTOTSCORE\tRELABUNDANCE\tRELABUNDANCE_THRESHOLD_MET\tDEPTH\tDERIVED_NAME" > !{params.vcf_name}.quanttb_cohort_stats.tsv
-
-        cat *csv >> !{params.vcf_name}.quanttb_cohort_stats.tsv
-        '''
+    script:
+        """
+        quanttb_filter.py *csv
+        """
 }
