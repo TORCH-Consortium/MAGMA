@@ -38,7 +38,8 @@ workflow QUALITY_CHECK_WF {
                                 }
                             }
                             .join(reads_ch)
-                            .view { it -> "@@@ approved_smples_ch: $it @@@" } 
+                            .collectFile(newLine: true, sort: false, storeDir: params.outdir , name: "approved_samples.csv")
+
 
 
 
