@@ -8,8 +8,6 @@ process UTILS_COHORT_STATS {
     output:
         path("*.cohort_stats.tsv")
 
-//TODO: Add filtering to the process and generate two files - approved_samples and rejected_samples
-
 
     shell:
         '''

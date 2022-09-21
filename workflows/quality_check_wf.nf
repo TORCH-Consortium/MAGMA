@@ -25,39 +25,9 @@ workflow QUALITY_CHECK_WF {
         )
 
     emit:
-        approved_samples_ch = UTILS_QUANTTB_COHORT_STATS.out
-                            .splitCsv(header: false, skip: 1)
-                            .map { row -> {
+        approved_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.approved_samples
 
-                                    def relabundance_threshold_met =	row[4]
-                                    def derived_sample_name =	row[-1]
-
-                                    if(relabundance_threshold_met == "1") {
-                                        return tuple("${derived_sample_name}")
-                                    }
-                                }
-                            }
-                            .join(reads_ch)
-                            .collectFile(newLine: true, sort: false, storeDir: params.outdir , name: "approved_samples.csv")
-
-
-
-
-        rejected_samples_ch = UTILS_QUANTTB_COHORT_STATS.out
-                            .splitCsv(header: false, skip: 1)
-                            .map { row -> {
-
-                                    def relabundance_threshold_met =	row[4]
-                                    def derived_sample_name =	row[-1]
-
-                                    if(relabundance_threshold_met == "0") {
-                                        return tuple("${derived_sample_name}")
-                                    }
-                                }
-                            }
-                            .join(reads_ch)
-                            .view { it -> "@@@ rejected_smples_ch: $it @@@" } 
-
+        rejected_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.rejected_samples
 
         reports_fastqc_ch =  FASTQC.out.collect()
 
