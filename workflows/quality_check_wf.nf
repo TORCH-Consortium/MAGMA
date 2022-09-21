@@ -32,7 +32,6 @@ workflow QUALITY_CHECK_WF {
                                                                     return tuple("${derived_sample_name}")
                                                                 }
                                                             }
-                                                        }
                                                         .join(reads_ch)
 
         rejected_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.rejected_samples_tsv
@@ -42,7 +41,6 @@ workflow QUALITY_CHECK_WF {
                                                                     return tuple("${derived_sample_name}")
                                                                 }
                                                             }
-                                                        }
                                                         .join(reads_ch)
 
 
