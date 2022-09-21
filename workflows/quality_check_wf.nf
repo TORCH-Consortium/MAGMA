@@ -27,11 +27,22 @@ workflow QUALITY_CHECK_WF {
     emit:
         approved_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.approved_samples_tsv
                                                         .splitCsv(header: false, skip: 1, sep: '\t')
+                                                        .map { row -> {
+                                                                    def derived_sample_name =	row[-1]
+                                                                    return tuple("${derived_sample_name}")
+                                                                }
+                                                            }
+                                                        }
                                                         .join(reads_ch)
-
 
         rejected_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.rejected_samples_tsv
                                                         .splitCsv(header: false, skip: 1, sep: '\t')
+                                                        .map { row -> {
+                                                                    def derived_sample_name =	row[-1]
+                                                                    return tuple("${derived_sample_name}")
+                                                                }
+                                                            }
+                                                        }
                                                         .join(reads_ch)
 
 
