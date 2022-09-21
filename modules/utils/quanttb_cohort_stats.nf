@@ -6,8 +6,8 @@ process UTILS_QUANTTB_COHORT_STATS {
         path("*")
 
     output:
-        path("approved_samples.quanttb_cohort_stats.tsv"), emit: approved_samples
-        path("rejected_samples.quanttb_cohort_stats.tsv"), emit: rejected_samples
+        path("approved_samples.quanttb_cohort_stats.tsv"), emit: approved_samples_tsv
+        path("rejected_samples.quanttb_cohort_stats.tsv"), emit: rejected_samples_tsv
 
     script:
         """

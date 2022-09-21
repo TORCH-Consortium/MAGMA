@@ -25,9 +25,15 @@ workflow QUALITY_CHECK_WF {
         )
 
     emit:
-        approved_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.approved_samples
+        approved_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.approved_samples_tsv
+                                                        .splitCsv(header: false, skip: 1, sep: '\t')
+                                                        .join(reads_ch)
 
-        rejected_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.rejected_samples
+
+        rejected_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.rejected_samples_tsv
+                                                        .splitCsv(header: false, skip: 1, sep: '\t')
+                                                        .join(reads_ch)
+
 
         reports_fastqc_ch =  FASTQC.out.collect()
 
