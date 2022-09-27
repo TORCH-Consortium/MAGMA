@@ -7,7 +7,7 @@ include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/gatk/haplotyp
 include { LOFREQ_CALL__NTM } from "../modules/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
 include { LOFREQ_INDELQUAL } from "../modules/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
 include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
+include { SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index__lofreq.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
 include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
 include { LOFREQ_FILTER } from "../modules/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
 include { DELLY_CALL } from "../modules/delly/call.nf" addParams ( params.DELLY_CALL )
@@ -41,7 +41,7 @@ workflow CALL_WF {
             }
         }
         .groupTuple()
-        // .view( it -> "\n\n XBS-NF-LOG CALL_WF normalize_libraries_ch: $it \n\n")
+        // .view{ it -> "\n\n XBS-NF-LOG CALL_WF normalize_libraries_ch: $it \n\n"}
 
 
         // call_merge
@@ -85,11 +85,11 @@ workflow CALL_WF {
                           params.ref_fasta,
                           [params.ref_fasta_fai, params.ref_fasta_dict])
 
+        // call_haplotype_caller_minor_variants
         if (params.compute_minor_variants) {
-            // call_haplotype_caller_minor_variants
-        GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out,
-                                              params.ref_fasta,
-                                              [params.ref_fasta_fai, params.ref_fasta_dict])
+            GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out,
+                                                params.ref_fasta,
+                                                [params.ref_fasta_fai, params.ref_fasta_dict])
         }
 
         //----------------------------------------------------------------------------------
@@ -120,7 +120,6 @@ workflow CALL_WF {
         //----------------------------------------------------------------------------------
 
         // call_sv
-
         DELLY_CALL(SAMTOOLS_INDEX.out, params.ref_fasta)
         BCFTOOLS_VIEW(DELLY_CALL.out)
         GATK_INDEX_FEATURE_FILE(BCFTOOLS_VIEW.out, 'potentialSV')
@@ -142,7 +141,7 @@ workflow CALL_WF {
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
             .join(LOFREQ_CALL__NTM.out)
-            // .view( it -> "\n\n XBS-NF-LOG CALL_WF sample_stats_ch: $it \n\n")
+            // .view{ it -> "\n\n XBS-NF-LOG CALL_WF sample_stats_ch: $it \n\n"}
 
 
         UTILS_SAMPLE_STATS(sample_stats_ch)
