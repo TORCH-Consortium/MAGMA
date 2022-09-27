@@ -6,12 +6,11 @@ process UTILS_QUANTTB_COHORT_STATS {
         path("*")
 
     output:
-        path("*tsv")
+        path("approved_samples.quanttb_cohort_stats.tsv"), emit: approved_samples_tsv
+        path("rejected_samples.quanttb_cohort_stats.tsv"), emit: rejected_samples_tsv
 
-    shell:
-        '''
-        echo -e "SAMPLE\tREFNAME\tTOTSCORE\tRELABUNDANCE\tRELABUNDANCE_THRESHOLD_MET\tDEPTH\tDERIVED_NAME" > !{params.vcf_name}.quanttb_cohort_stats.tsv
-
-        cat *csv >> !{params.vcf_name}.quanttb_cohort_stats.tsv
-        '''
+    script:
+        """
+        quanttb_filter.py *csv
+        """
 }
