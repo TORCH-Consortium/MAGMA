@@ -14,11 +14,7 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
-        def optionallyLoadLibraryForContainers = (optionalDb != "") ? "cd ${resistanceDb}; ${params.tbprofiler_path} load_library ${resistanceDb.name}; cd ../" : ""
-
         """
-
-        ${optionallyLoadLibraryForContainers}
 
         ${params.tbprofiler_path} vcf_profile \\
             --lofreq_sample_name ${sampleName} \\
