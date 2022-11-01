@@ -6,4 +6,6 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER magma-env-2.yml /tmp/magma-env-2.yml
 RUN micromamba install -y -f /tmp/magma-env-2.yml -n base
 
 RUN micromamba install -y -n base conda-forge::procps-ng  \
-   && micromamba clean -a -y
+  && micromamba clean -a -y
+
+#TODO: Bundle the WHO database for tb-profiler
