@@ -151,4 +151,5 @@ workflow CALL_WF {
         cohort_stats_tsv = UTILS_COHORT_STATS.out
         gvcf_ch = GATK_HAPLOTYPE_CALLER.out.gvcf_ch.collect()
         lofreq_vcf_ch = LOFREQ_CALL.out
+        recalibrated_bam_ch // FIXME: This would be the input for QUALITY_CHECK_WF
 }

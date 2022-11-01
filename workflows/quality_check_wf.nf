@@ -13,16 +13,19 @@ workflow QUALITY_CHECK_WF {
 
         FASTQC(reads_ch)
 
-        QUANTTB_QUANT(reads_ch)
+        //TODO: Add FASTQ validator
 
-        UTILS_QUANTTB_SAMPLE_QC(QUANTTB_QUANT.out.quanttb_report_tuple,
-                                params.rel_abundance_cutoff,
-                                QUANTTB_QUANT.out.samplereads_tuple)
+        //FIXME: Accommodate Lennert's script 
+        //QUANTTB_QUANT(reads_ch)
+
+        /* UTILS_QUANTTB_SAMPLE_QC(QUANTTB_QUANT.out.quanttb_report_tuple, */
+        /*                         params.rel_abundance_cutoff, */
+        /*                         QUANTTB_QUANT.out.samplereads_tuple) */
 
 
-        UTILS_QUANTTB_COHORT_STATS(
-            UTILS_QUANTTB_SAMPLE_QC.out.quanttb_sample_qc_ch.collect()
-        )
+        /* UTILS_QUANTTB_COHORT_STATS( */
+        /*     UTILS_QUANTTB_SAMPLE_QC.out.quanttb_sample_qc_ch.collect() */
+        /* ) */
 
     emit:
         approved_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.approved_samples_tsv
@@ -33,16 +36,6 @@ workflow QUALITY_CHECK_WF {
                                                                 }
                                                             }
                                                         .join(reads_ch)
-
-        rejected_samples_ch = UTILS_QUANTTB_COHORT_STATS.out.rejected_samples_tsv
-                                                        .splitCsv(header: false, skip: 1, sep: '\t')
-                                                        .map { row -> {
-                                                                    def derived_sample_name =	row[-1]
-                                                                    return tuple("${derived_sample_name}")
-                                                                }
-                                                            }
-                                                        .join(reads_ch)
-
 
         reports_fastqc_ch =  FASTQC.out.collect()
 

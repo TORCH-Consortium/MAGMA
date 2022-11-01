@@ -6,7 +6,6 @@ nextflow.enable.dsl = 2
 //================================================================================
 
 include { CALL_WF } from './workflows/call_wf.nf'
-include { MULTIPLE_INFECTIONS_WF } from './workflows/multiple_infections_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
@@ -63,21 +62,13 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
 
 workflow {
 
-    if (params.only_qc_check_wf) {
+        //TODO: Needs to happen after mapping workflow
+        QUALITY_CHECK_WF(MAP_WF.out.FIXME)
 
-        QUALITY_CHECK_WF(reads_ch)
-
-    } else {
-
-        QUALITY_CHECK_WF(reads_ch)
-
-        MAP_WF( QUALITY_CHECK_WF.out.approved_samples_ch,
-                QUALITY_CHECK_WF.out.rejected_samples_ch )
-
-        MULTIPLE_INFECTIONS_WF(MAP_WF.out.rejected_sorted_reads_ch)
-
+        MAP_WF( QUALITY_CHECK_WF.out.approved_samples_ch)
 
         CALL_WF(MAP_WF.out.approved_sorted_reads_ch)
+
 
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
             .flatten()
