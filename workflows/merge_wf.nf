@@ -1,13 +1,13 @@
-include { PREPARE_COHORT_VCF } from "./subworkflows/prepare_cohort_vcf.nf"
-include { SNP_ANALYSIS } from "./subworkflows/snp_analysis.nf"
-include { INDEL_ANALYSIS } from "./subworkflows/indel_analysis.nf"
+include { PREPARE_COHORT_VCF } from "../subworkflows/prepare_cohort_vcf.nf"
+include { SNP_ANALYSIS } from "../subworkflows/snp_analysis.nf"
+include { INDEL_ANALYSIS } from "../subworkflows/indel_analysis.nf"
 include { GATK_MERGE_VCFS as GATK_MERGE_VCFS__INC } from "../modules/gatk/merge_vcfs.nf" addParams ( params.GATK_MERGE_VCFS )
 include { GATK_MERGE_VCFS as GATK_MERGE_VCFS__EXC } from "../modules/gatk/merge_vcfs.nf"  addParams ( params.GATK_MERGE_VCFS )
-include { RESISTANCE_ANALYSIS } from "./subworkflows/resistance_analysis.nf"
-include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__INCCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
-include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__EXCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
-include { CLUSTER_ANALYSIS as CLUSTER_ANALYSIS__INCCOMPLEX } from "./subworkflows/cluster_analysis.nf"
-include { CLUSTER_ANALYSIS as  CLUSTER_ANALYSIS__EXCOMPLEX } from "./subworkflows/cluster_analysis.nf"
+include { RESISTANCE_ANALYSIS } from "../subworkflows/resistance_analysis.nf"
+include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__INCCOMPLEX } from "../subworkflows/phylogeny_analysis.nf"
+include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__EXCOMPLEX } from "../subworkflows/phylogeny_analysis.nf"
+include { CLUSTER_ANALYSIS as CLUSTER_ANALYSIS__INCCOMPLEX } from "../subworkflows/cluster_analysis.nf"
+include { CLUSTER_ANALYSIS as  CLUSTER_ANALYSIS__EXCOMPLEX } from "../subworkflows/cluster_analysis.nf"
 
 
 workflow MERGE_WF {
