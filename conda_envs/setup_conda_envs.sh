@@ -19,6 +19,6 @@ $condaBinary activate "./xbs-nf-env-1"
 cp -r ../resources/resistance_db_who ./
 cd resistance_db_who
 tb-profiler load_library resistance_db_who
-rm -rf resistance_db_who ./
+rm -rf resistance_db_who
 cd ..
 $condaBinary deactivate
