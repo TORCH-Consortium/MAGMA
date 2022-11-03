@@ -11,14 +11,20 @@ $condaBinary env create -p xbs-nf-env-1 --file xbs-nf-env-1.yml
 
 $condaBinary env create -p xbs-nf-env-2 --file xbs-nf-env-2.yml
 
-#NOTE: Activate conda env with tb-profiler
+#NOTE: Activate conda env with tb-profiler and setup the WHO database within the xbs-nf-env-1
 eval "$(conda shell.bash hook)"
 $condaBinary activate "./xbs-nf-env-1"
 
-#NOTE: Setup the WHO database
+# make a local copy and cd inside it
 cp -r ../resources/resistance_db_who ./
 cd resistance_db_who
+
+# load the database within tb-profiler
 tb-profiler load_library resistance_db_who
-rm -rf resistance_db_who
+
+# remove the local copy of the database
 cd ..
+rm -rf resistance_db_who
+
+# deactivate the xbs-nf-env-1 env
 $condaBinary deactivate
