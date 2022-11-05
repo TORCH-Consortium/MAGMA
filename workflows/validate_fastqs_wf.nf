@@ -16,7 +16,8 @@ workflow VALIDATE_FASTQS_WF {
     emit:
 
         passed_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.passed_fastqs
-                                                        .splitCsv(header: false, skip: 1, sep: '\t')
+                                                        .splitCsv(header: false, sep: '\t')
+                                                        .map { row -> { row[0] } }
                                                         .join(reads_ch)
 
 

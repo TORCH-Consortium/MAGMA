@@ -17,7 +17,6 @@ process UTILS_FASTQ_COHORT_VALIDATION {
             cat *check.passed* > !{params.vcf_name}.fastqs.passed.tsv
         else
             echo "No samples passed!"
-            exit 1
         fi
 
 
