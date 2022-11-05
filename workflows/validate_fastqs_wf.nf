@@ -7,7 +7,7 @@ workflow VALIDATE_FASTQS_WF {
 
     main:
 
-        //FIXME: Add the samplesheet validator process for sample_sheet_validation.py script
+        //FIXME: Add the samplesheet validator process for samplesheet_validation.py script
 
         FASTQ_VALIDATOR(reads_ch)
 
