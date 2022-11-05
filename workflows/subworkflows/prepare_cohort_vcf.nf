@@ -20,7 +20,8 @@ workflow PREPARE_COHORT_VCF {
             // .view(it -> "PREPARE_COHORT_VCF gvcfs_string_ch: $it")
 
 
-        def refExitRifGvcf =  params.use_ref_exit_rif_gvcf ? "${projectDir}/resources/exit_rif/EXIT-RIF.g.vcf.gz" : "${projectDir}/resources/NONE.g.vcf.gz"
+        //FIXME Refactor to use `[]` otherwise, it fails on cloud
+        def refExitRifGvcf =  params.use_ref_exit_rif_gvcf ? params.ref_exit_rif_gvcf : "${projectDir}/resources/NONE.g.vcf.gz"
 
         def refExitRifGvcfTbi =  "${refExitRifGvcf}.tbi"
 
