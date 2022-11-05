@@ -66,16 +66,11 @@ workflow {
 
     if (params.only_validate_fastqs) {
 
-        //FIXME: Add this to main workflow as well
-
-        validated_reads_ch = VALIDATE_FASTQS_WF(reads_ch)
-
-        validated_reads_ch.view()
+        VALIDATE_FASTQS_WF(reads_ch)
 
     } else {
 
-        //FIXME: Use only the validated reads
-        /* validated_reads_ch  */
+        validated_reads_ch = VALIDATE_FASTQS_WF(reads_ch)
 
         QUALITY_CHECK_WF(reads_ch)
 
