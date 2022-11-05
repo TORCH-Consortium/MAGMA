@@ -1,12 +1,19 @@
-
+# Replace these values to reflect your samplesheet and file-paths
+#
 # Samplesheets
 
-samplesheet: "${projectDir}/resources/seqera_nf_tower_data/manifest-6samples.txt"
+input_samplesheet: "/home/xbs-nf-runs/data/EarlyMGIT.10samples.slurm.csv"
 
 # Main output dir
 
-outdir: "${projectDir}/results"
+outdir :  "/home/xbs-nf-results-earlymgit10samples"
 
-# Reference files
+# Location for manually created conda-envs
 
-fasta: "${projectDir}/references/Homo_sapiens_assembly38.fasta"
+conda_envs_location :  "/home/cust100107_vol1/biosharpou/xbs-nf-runs/xbs-nf/conda_envs"
+
+# Some binary options
+optimize_variant_recalibration :  false
+compute_minor_variants :  true
+dataset_is_not_contaminated :  true
+only_validate_fastqs :  false

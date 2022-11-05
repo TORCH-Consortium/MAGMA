@@ -67,6 +67,8 @@ workflow {
     if (params.only_validate_fastqs) {
 
         //FIXME: Add this to main workflow as well
+
+
         VALIDATE_FASTQS_WF(reads_ch)
 
     } else {
