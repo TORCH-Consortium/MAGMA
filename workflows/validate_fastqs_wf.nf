@@ -15,6 +15,6 @@ workflow VALIDATE_FASTQS_WF {
 
     emit:
 
-        passed_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.passed_fastqs
+        passed_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.passed_fastqs
 
 }
