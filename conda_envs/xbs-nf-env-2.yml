@@ -12,5 +12,4 @@ dependencies:
   - bioconda::bcftools=1.9 
   - bioconda::snpeff=4.3.1t 
   - bioconda::clusterpicker=1.2.3
-  - bioconda::fastq_utils=0.25.1
 
