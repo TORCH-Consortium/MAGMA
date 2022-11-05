@@ -7,6 +7,7 @@ process FASTQ_VALIDATOR {
 
     output:
         tuple val(sampleName), path("*.check.*tsv") 
+        path("*.check.*tsv"), emit: check_result
 
     shell:
        

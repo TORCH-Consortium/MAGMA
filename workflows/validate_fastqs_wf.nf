@@ -11,7 +11,7 @@ workflow VALIDATE_FASTQS_WF {
 
         FASTQ_VALIDATOR(reads_ch)
 
-        UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.collect() )
+        UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.check_result.collect() )
 
     emit:
 
