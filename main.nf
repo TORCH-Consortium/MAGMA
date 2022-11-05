@@ -6,6 +6,7 @@ nextflow.enable.dsl = 2
 //================================================================================
 
 include { CALL_WF } from './workflows/call_wf.nf'
+include { FASTQ_VALIDATOR } from './modules/fastq_utils/validator.nf'
 include { MULTIPLE_INFECTIONS_WF } from './workflows/multiple_infections_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
@@ -63,9 +64,9 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
 
 workflow {
 
-    if (params.only_qc_check_wf) {
+    if (params.only_validate_fastqs) {
 
-        QUALITY_CHECK_WF(reads_ch)
+        FASTQ_VALIDATOR(reads_ch)
 
     } else {
 
