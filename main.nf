@@ -6,7 +6,7 @@ nextflow.enable.dsl = 2
 //================================================================================
 
 include { CALL_WF } from './workflows/call_wf.nf'
-include { FASTQ_VALIDATOR } from './modules/fastq_utils/validator.nf'
+include { VALIDATE_FASTQS_WF } from './workflows/validate_fastqs_wf.nf'
 include { MULTIPLE_INFECTIONS_WF } from './workflows/multiple_infections_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
@@ -66,7 +66,8 @@ workflow {
 
     if (params.only_validate_fastqs) {
 
-        FASTQ_VALIDATOR(reads_ch)
+        //FIXME: Add this to main workflow as well
+        VALIDATE_FASTQS_WF(reads_ch)
 
     } else {
 

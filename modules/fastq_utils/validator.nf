@@ -1,23 +1,38 @@
 process FASTQ_VALIDATOR {
     tag "${sampleName}"
-    /* publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish */
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        tuple val(sampleName), path(reads)
+        tuple val(sampleName), val(bamRgString), path(sampleReads)
 
-    /* output: */
-    /*     tuple val(sampleName), path("*.potentialSV.vcf.gz") */
+    output:
+        tuple val(sampleName), path("*.check.tsv") 
 
-    script:
+    shell:
+       
+        '''
+        !{params.fastq_validator_path} !{sampleReads} \\
+            2>!{sampleName}.command.log || true
+
+        cp !{sampleName}.command.log .command.log
+
+
+        TEMP=$(tail -n 1 !{sampleName}.command.log)
+
+        if [ "$(echo "$TEMP")" == "OK" ]; then
+            VALIDATED=1
+        else
+            VALIDATED=0
+        fi
+
+        echo -e "!{sampleName}\t!{bamRgString}\t${VALIDATED}" > !{sampleName}.check.tsv
+
+        '''
+
+    stub: 
 
         """
-        ${params.fastq_validator_path} reads[0] reads[1] 
-        """
-
-    /* stub: */
-
-    /*     """ */
-    /*     touch ${sampleName}.potentialSV.vcf.gz */
-    /*     """ */
+        touch ${sampleName}.check.tsv 
+        """ 
 
 }
