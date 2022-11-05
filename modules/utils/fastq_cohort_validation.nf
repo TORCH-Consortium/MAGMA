@@ -7,13 +7,24 @@ process UTILS_FASTQ_COHORT_VALIDATION {
 
     output:
         path("*.check.passed.tsv"), emit: passed_fastqs
-        path("*.check.failed.tsv"), emit: failed_fastqs
+        path("*.check.failed.tsv")
 
     shell:
        
         '''
-        cat *passed* > !{params.vcf_name}.fastqs.passed.tsv
-        cat *failed* > !{params.vcf_name}.fastqs.failed.tsv
+
+        if ls *passed* 1> .null 2>&1; then
+            cat *check.passed* > !{params.vcf_name}.fastqs.passed.tsv
+        else
+            echo "No samples passed!"
+            exit 1
+        fi
+
+
+
+        if ls *failed* 1> .null 2>&1; then
+            cat *check.failed* > !{params.vcf_name}.fastqs.failed.tsv
+        fi
         '''
 
     stub: 
