@@ -6,6 +6,7 @@ nextflow.enable.dsl = 2
 //================================================================================
 
 include { CALL_WF } from './workflows/call_wf.nf'
+include { VALIDATE_FASTQS_WF } from './workflows/validate_fastqs_wf.nf'
 include { MULTIPLE_INFECTIONS_WF } from './workflows/multiple_infections_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
@@ -63,13 +64,15 @@ reads_ch = Channel.fromPath(params.input_samplesheet)
 
 workflow {
 
-    if (params.only_qc_check_wf) {
+    if (params.only_validate_fastqs) {
 
-        QUALITY_CHECK_WF(reads_ch)
+        VALIDATE_FASTQS_WF(reads_ch)
 
     } else {
 
-        QUALITY_CHECK_WF(reads_ch)
+        validated_reads_ch = VALIDATE_FASTQS_WF(reads_ch)
+
+        QUALITY_CHECK_WF(validated_reads_ch)
 
         MAP_WF( QUALITY_CHECK_WF.out.approved_samples_ch,
                 QUALITY_CHECK_WF.out.rejected_samples_ch )
