@@ -14,3 +14,4 @@ dependencies:
   - bioconda::tb-profiler=4.1.1 
   - bioconda::multiqc=1.11 
   - bioconda::fastqc=0.11.8
+  - bioconda::fastq_utils=0.25.1
