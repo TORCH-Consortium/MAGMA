@@ -68,7 +68,9 @@ workflow {
 
         //FIXME: Add this to main workflow as well
 
-        VALIDATE_FASTQS_WF(reads_ch)
+        validated_reads_ch = VALIDATE_FASTQS_WF(reads_ch)
+
+        validated_reads_ch.view()
 
     } else {
 
