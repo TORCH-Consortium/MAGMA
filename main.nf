@@ -72,7 +72,7 @@ workflow {
 
         validated_reads_ch = VALIDATE_FASTQS_WF(reads_ch)
 
-        QUALITY_CHECK_WF(reads_ch)
+        QUALITY_CHECK_WF(validated_reads_ch)
 
         MAP_WF( QUALITY_CHECK_WF.out.approved_samples_ch,
                 QUALITY_CHECK_WF.out.rejected_samples_ch )
