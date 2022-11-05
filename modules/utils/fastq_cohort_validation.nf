@@ -7,7 +7,7 @@ process UTILS_FASTQ_COHORT_VALIDATION {
 
     output:
         path("*.fastqs.passed.tsv"), emit: passed_fastqs
-        path("*.fastqs.failed.tsv")
+        path("*.fastqs.failed.tsv"), optional: true
 
     shell:
        
