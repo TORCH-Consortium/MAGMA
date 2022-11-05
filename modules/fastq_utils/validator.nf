@@ -25,7 +25,7 @@ process FASTQ_VALIDATOR {
             VALIDATED=0
         fi
 
-        echo -e "!{sampleName}\t!{bamRgString}\t${VALIDATED}" > !{sampleName}.check.tsv
+        echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.tsv
 
         '''
 
