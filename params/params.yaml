@@ -10,7 +10,7 @@ outdir :  "/home/xbs-nf-results-earlymgit10samples"
 
 # Location for manually created conda-envs
 
-conda_envs_location :  "/home/cust100107_vol1/biosharpou/xbs-nf-runs/xbs-nf/conda_envs"
+conda_envs_location :  "/home/xbs-nf-conda_envs"
 
 # Some binary options
 optimize_variant_recalibration :  false
