@@ -10,4 +10,8 @@ workflow VALIDATE_FASTQS_WF {
 
         FASTQ_VALIDATOR(reads_ch)
 
+    emit:
+
+        validate_reads_ch = reads_ch
+
 }

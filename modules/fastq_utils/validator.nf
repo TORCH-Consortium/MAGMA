@@ -6,7 +6,7 @@ process FASTQ_VALIDATOR {
         tuple val(sampleName), val(bamRgString), path(sampleReads)
 
     output:
-        tuple val(sampleName), path("*.check.tsv") 
+        tuple val(sampleName), path("*.check.*tsv") 
 
     shell:
        
@@ -25,7 +25,7 @@ process FASTQ_VALIDATOR {
             VALIDATED=0
         fi
 
-        echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.tsv
+        echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${VALIDATED}.tsv
 
         '''
 

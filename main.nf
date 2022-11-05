@@ -68,10 +68,12 @@ workflow {
 
         //FIXME: Add this to main workflow as well
 
-
         VALIDATE_FASTQS_WF(reads_ch)
 
     } else {
+
+        //FIXME: Use only the validated reads
+        /* validated_reads_ch  */
 
         QUALITY_CHECK_WF(reads_ch)
 
