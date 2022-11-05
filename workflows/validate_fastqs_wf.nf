@@ -1,4 +1,5 @@
 include { FASTQ_VALIDATOR } from '../modules/fastq_utils/validator.nf' addParams ( params.FASTQ_VALIDATOR  )
+include { UTILS_FASTQ_COHORT_VALIDATION } from '../modules/utils/fastq_cohort_validation.nf' addParams ( params.UTILS_FASTQ_COHORT_VALIDATION  )
 
 workflow VALIDATE_FASTQS_WF {
     take:
@@ -10,8 +11,10 @@ workflow VALIDATE_FASTQS_WF {
 
         FASTQ_VALIDATOR(reads_ch)
 
+        UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.collect() )
+
     emit:
 
-        validate_reads_ch = reads_ch
+        passed_fastqs_ch = utils_fastq_cohort_validation.passed_fastqs
 
 }
