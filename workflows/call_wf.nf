@@ -162,6 +162,5 @@ workflow CALL_WF {
     emit:
         cohort_stats_tsv = UTILS_COHORT_STATS.out
         gvcf_ch = GATK_HAPLOTYPE_CALLER.out.gvcf_ch.collect()
-        lofreq_vcf_ch = LOFREQ_CALL.out //FIXME: Restructure the overall flow to accommodate the output of GATK_INDEX_FEATURE_FILE__LOFREQ
-        lofreq_index_feature_files_ch = GATK_INDEX_FEATURE_FILE__LOFREQ.out
+        reformatted_lofreq_vcf_ch = GATK_INDEX_FEATURE_FILE__LOFREQ.out.collect()
 }

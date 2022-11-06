@@ -8,7 +8,7 @@ include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../../modules/tbprofiler/vcf_pr
 workflow RESISTANCE_ANALYSIS {
     take:
         merged_vcf_ch
-        lofreq_vcf_ch
+        reformatted_lofreq_vcf_ch
 
     main:
 
@@ -18,10 +18,12 @@ workflow RESISTANCE_ANALYSIS {
         TBPROFILER_VCF_PROFILE__COHORT(merged_vcf_ch, resistanceDb)
         TBPROFILER_COLLATE__COHORT(params.vcf_name, TBPROFILER_VCF_PROFILE__COHORT.out, resistanceDb)
 
+        reformatted_lofreq_vcf_ch.view{ it -> "INFO: reformatted_lofreq_vcf_ch: $it" }
+
         // merge_call_resistance_lofreq
-        BGZIP(lofreq_vcf_ch)
-        TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP.out, resistanceDb)
-        TBPROFILER_COLLATE__LOFREQ(params.vcf_name,
-                                  TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
-                                  resistanceDb)
+        /* BGZIP(lofreq_vcf_ch) */
+        /* TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP.out, resistanceDb) */
+        /* TBPROFILER_COLLATE__LOFREQ(params.vcf_name, */
+        /*                           TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(), */
+        /*                           resistanceDb) */
 }

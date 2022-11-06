@@ -13,7 +13,7 @@ include { CLUSTER_ANALYSIS as  CLUSTER_ANALYSIS__EXCOMPLEX } from "./subworkflow
 workflow MERGE_WF {
     take:
         selected_gvcfs_ch
-        lofreq_vcf_ch
+        reformatted_lofreq_vcf_ch
 
 
     main:
@@ -26,12 +26,12 @@ workflow MERGE_WF {
         // merge_exc_vcf_ch = (SNP_ANALYSIS.out.snp_exc_vcf_ch).join(INDEL_ANALYSIS.out.indel_vcf_ch)
         merge_inc_vcf_ch = (SNP_ANALYSIS.out.snp_inc_vcf_ch).join(INDEL_ANALYSIS.out.indel_vcf_ch)
 
-        // merge_vcf_ch.view( it -> "\n\n XBS-NF-LOG MERGE_WF merge_vcf_ch: $it \n\n")
+        // merge_vcf_ch.view{ it -> "\n\n XBS-NF-LOG MERGE_WF merge_vcf_ch: $it \n\n"}
 
         // merge_snp_indel_vcf
         GATK_MERGE_VCFS__INC(merge_inc_vcf_ch)
 
-        RESISTANCE_ANALYSIS(GATK_MERGE_VCFS__INC.out, lofreq_vcf_ch)
+        RESISTANCE_ANALYSIS(GATK_MERGE_VCFS__INC.out, reformatted_lofreq_vcf_ch)
 
 
         //----------
@@ -62,7 +62,7 @@ workflow MERGE_WF {
                                                 .flatten()
 
 
-        // excomplex_exclude_interval_ref_ch.view( it -> "\n\n XBS-NF-LOG MERGE_WF excomplex_exclude_interval_ref_ch: $it \n\n")
+        // excomplex_exclude_interval_ref_ch.view{ it -> "\n\n XBS-NF-LOG MERGE_WF excomplex_exclude_interval_ref_ch: $it \n\n"}
 
         excomplex_prefix_ch = Channel.of('ExDR.ExComplex')
 
