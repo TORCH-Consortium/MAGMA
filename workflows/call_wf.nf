@@ -134,7 +134,7 @@ workflow CALL_WF {
         DELLY_CALL(SAMTOOLS_INDEX.out, params.ref_fasta)
         BCFTOOLS_VIEW(DELLY_CALL.out)
         GATK_INDEX_FEATURE_FILE__SV(BCFTOOLS_VIEW.out, 'potentialSV')
-        GATK_SELECT_VARIANTS__INCLUSION(GATK_INDEX_FEATURE_FILE.out, params.drgenes_list)
+        GATK_SELECT_VARIANTS__INCLUSION(GATK_INDEX_FEATURE_FILE__SV.out, params.drgenes_list)
 
 
         //----------------------------------------------------------------------------------
