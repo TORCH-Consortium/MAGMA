@@ -1,4 +1,4 @@
-include { BGZIP as BGZIP__LOFREQ } from "../../modules/bgzip/bgzip.nf" addParams( params.BGZIP__LOFREQ )
+include { BGZIP as BGZIP__LOFREQ } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__LOFREQ )
 include { SAMTOOLS_MERGE } from "../modules/samtools/merge.nf" addParams ( params.SAMTOOLS_MERGE )
 include { GATK_MARK_DUPLICATES } from "../modules/gatk/mark_duplicates.nf" addParams ( params.GATK_MARK_DUPLICATES )
 include { GATK_BASE_RECALIBRATOR } from "../modules/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR )
