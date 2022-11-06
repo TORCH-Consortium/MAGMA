@@ -30,4 +30,5 @@ if not fail:
     print('No errors found')
     exit(0)
 else:
+    print('Validation checks failed')
     exit(1)
