@@ -38,7 +38,8 @@ workflow PREPARE_COHORT_VCF {
                         cohort_gvcfs_ch,
                         params.ref_fasta,
                         refExitRifGvcf,
-                        [params.ref_fasta_fai, params.ref_fasta_dict, refExitRifGvcfTbi])
+                        refExitRifGvcfTbi,
+                        [params.ref_fasta_fai, params.ref_fasta_dict])
 
 
         // merge_genotype

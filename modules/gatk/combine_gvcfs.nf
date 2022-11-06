@@ -9,6 +9,7 @@ process GATK_COMBINE_GVCFS {
         path(gvcfs)
         path(ref_fasta)
         path(ref_exit_rif_gvcf)
+        path(ref_exit_rif_gvcf_tbi)
         path("*")
 
     output:
