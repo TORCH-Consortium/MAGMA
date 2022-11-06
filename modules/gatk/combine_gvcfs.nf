@@ -9,7 +9,7 @@ process GATK_COMBINE_GVCFS {
         path(gvcfs)
         path(ref_fasta)
         path(ref_exit_rif_gvcf)
-        path(ref_exit_rif_gvcf_tbi)
+        path(ref_exit_rif_gvcf_tbi) //NOTE: The optional refExitRifGvcfTbi had to be provided as a separate input since it was causing comparison error when staged via  path("*")
         path("*")
 
     output:
