@@ -121,7 +121,7 @@ workflow CALL_WF {
 
         BGZIP__LOFREQ(UTILS_REFORMAT_LOFREQ)
 
-        GATK_INDEX_FEATURE_FILE__LOFREQ(BGZIP_LOFREQ.out, 'LoFreq.Reformat')
+        GATK_INDEX_FEATURE_FILE__LOFREQ(BGZIP__LOFREQ.out, 'LoFreq.Reformat')
 
         //----------------------------------------------------------------------------------
         // Infer structural variants
