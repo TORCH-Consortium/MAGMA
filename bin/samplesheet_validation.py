@@ -27,8 +27,8 @@ for idx, row in ss.iterrows():
         fail = True
 
 if not fail:
-    print('No errors found')
+    print('Samplesheet validation checks passed')
     exit(0)
 else:
-    print('Validation checks failed')
+    print('Samplesheet validation checks failed')
     exit(1)
