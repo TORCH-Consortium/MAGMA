@@ -11,9 +11,9 @@ process UTILS_REFORMAT_LOFREQ {
     script:
        
         """
-        reformat_lofreq.py --lofreq_vcf_file ${lofreqVcf} \\
-            --lofreq_sample_name ${sampleName} \\
-            --output ${sampleName}.LoFreq.Reformat.vcf
+        reformat_lofreq.py ${lofreqVcf} \\
+            ${sampleName} \\
+            ${sampleName}.LoFreq.Reformat.vcf
         """
 
     stub: 
