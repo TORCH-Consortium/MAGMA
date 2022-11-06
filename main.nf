@@ -55,7 +55,7 @@ workflow {
             // .view("\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n")
 
 
-        MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
+        MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.reformatted_lofreq_vcf_ch)
 
 
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch)
