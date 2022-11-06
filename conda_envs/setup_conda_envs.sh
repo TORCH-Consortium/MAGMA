@@ -3,22 +3,28 @@
 set -e
 
 # NOTE: Please replace `conda` with `mamba` if it is installed for faster installs.
-condaBinary="conda" # OR mamba
+resolverCondaBinary="conda" # pick either conda OR mamba
 
 # NOTE: By default, the conda environments are expected by the `conda_local` profile to be created within `magma/conda_envs` directory
 
-$condaBinary env create -p magma-env-1 --file magma-env-1.yml
+$resolverCondaBinary env create -p magma-nf-env-1 --file xbs-nf-env-1.yml 
 
-$condaBinary env create -p magma-env-2 --file magma-env-2.yml
+$resolverCondaBinary env create -p magma-nf-env-2 --file xbs-nf-env-2.yml
 
-#NOTE: Activate conda env with tb-profiler
+echo "INFO: Activate conda env with tb-profiler and setup the WHO database within the xbs-nf-env-1"
 eval "$(conda shell.bash hook)"
-$condaBinary activate "./magma-env-1"
+conda activate "./xbs-nf-env-1"
 
-#NOTE: Setup the WHO database
+echo "INFO: Make a local copy and cd inside it"
 cp -r ../resources/resistance_db_who ./
 cd resistance_db_who
+
+echo "INFO: Load the database within tb-profiler"
 tb-profiler load_library resistance_db_who
-rm -rf resistance_db_who ./
+
+echo "INFO: Remove the local copy of the database"
 cd ..
-$condaBinary deactivate
+rm -rf resistance_db_who
+
+echo "INFO: Deactivate the xbs-nf-env-1 env"
+conda deactivate
