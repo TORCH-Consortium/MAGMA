@@ -12,50 +12,6 @@ include { MERGE_WF } from './workflows/merge_wf.nf'
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
 include { REPORTS_WF } from './workflows/reports_wf.nf'
 
-//================================================================================
-// Prepare channels
-//================================================================================
-
-
-//NOTE: Expected structure of input CSV samplesheet
-//   0     1       2       3    4  5     6      7       8
-// Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
-
-reads_ch = Channel.fromPath(params.input_samplesheet)
-        .splitCsv(header: false, skip: 1)
-        .map { row -> {
-                    study           = row[0]
-                    sample          = row[1]
-                    library         = row[2]
-                    attempt         = row[3]
-                    read1           = row[4]
-                    read2           = row[5]
-                    flowcell        = row[6]
-                    lane            = row[7]
-                    index_sequence  = row[8]
-
-            //NOTE: Platform is hard-coded to illumina
-            bam_rg_string ="@RG\\tID:${flowcell}.${lane}\\tSM:${study}.${sample}\\tPL:illumina\\tLB:lib${library}\\tPU:${flowcell}.${lane}.${index_sequence}"
-
-            unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
-
-            //Accomodate single/multi reads
-            if (read1 && read2) {
-
-                return tuple(unique_sample_id, bam_rg_string, tuple(file(read1), file(read2)))
-
-            } else if (read1) {
-
-                return tuple(unique_sample_id, bam_rg_string, tuple(file(read1)))
-
-            } else {
-
-                return tuple(unique_sample_id, bam_rg_string, tuple(file(read2)))
-
-            }
-        }
-    }
-
 
 //================================================================================
 // Main workflow
@@ -65,18 +21,17 @@ workflow {
 
     if (params.only_validate_fastqs) {
 
-        VALIDATE_FASTQS_WF(reads_ch)
+        VALIDATE_FASTQS_WF(params.input_samplesheet)
 
     } else {
 
-        validated_reads_ch = VALIDATE_FASTQS_WF(reads_ch)
+        validated_reads_ch = VALIDATE_FASTQS_WF(params.input_samplesheet)
 
         QUALITY_CHECK_WF(validated_reads_ch)
 
         MAP_WF( QUALITY_CHECK_WF.out.approved_samples_ch,
                 QUALITY_CHECK_WF.out.rejected_samples_ch )
 
-        MAP_WF( QUALITY_CHECK_WF.out.approved_samples_ch)
 
         CALL_WF(MAP_WF.out.approved_sorted_reads_ch)
 
