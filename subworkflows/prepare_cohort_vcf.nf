@@ -20,10 +20,17 @@ workflow PREPARE_COHORT_VCF {
             // .view(it -> "PREPARE_COHORT_VCF gvcfs_string_ch: $it")
 
 
-        //FIXME Refactor to use `[]` otherwise, it fails on cloud
-        def refExitRifGvcf =  params.use_ref_exit_rif_gvcf ? params.ref_exit_rif_gvcf : "${projectDir}/resources/NONE.g.vcf.gz"
+        if (params.use_ref_exit_rif_gvcf) {
+            refExitRifGvcf = file(params.ref_exit_rif_gvcf, checkIfExists: true)
+        } else {
+            refExitRifGvcf = []
+        }
 
-        def refExitRifGvcfTbi =  "${refExitRifGvcf}.tbi"
+        if (params.use_ref_exit_rif_gvcf) {
+            refExitRifGvcfTbi = file(params.ref_exit_rif_gvcf_tbi, checkIfExists: true)
+        } else {
+            refExitRifGvcfTbi = []
+        }
 
         // merge_combine
         GATK_COMBINE_GVCFS(params.vcf_name,
@@ -31,7 +38,8 @@ workflow PREPARE_COHORT_VCF {
                         cohort_gvcfs_ch,
                         params.ref_fasta,
                         refExitRifGvcf,
-                        [params.ref_fasta_fai, params.ref_fasta_dict, refExitRifGvcfTbi])
+                        refExitRifGvcfTbi,
+                        [params.ref_fasta_fai, params.ref_fasta_dict])
 
 
         // merge_genotype

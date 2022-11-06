@@ -9,6 +9,7 @@ process GATK_COMBINE_GVCFS {
         path(gvcfs)
         path(ref_fasta)
         path(ref_exit_rif_gvcf)
+        path(ref_exit_rif_gvcf_tbi) //NOTE: The optional refExitRifGvcfTbi had to be provided as a separate input since it was causing comparison error when staged via  path("*")
         path("*")
 
     output:
@@ -17,7 +18,7 @@ process GATK_COMBINE_GVCFS {
 
     script:
 
-        def optionalRefExitRifGvcf  = ( ref_exit_rif_gvcf.simpleName != "NONE") ? " --variant ${ref_exit_rif_gvcf} " : ""
+        def optionalRefExitRifGvcf  = ( params.use_ref_exit_rif_gvcf ) ? " --variant ${ref_exit_rif_gvcf} " : ""
 
         """
         ${params.gatk_path} CombineGVCFs --java-options "-Xmx${task.memory.giga}G" \\
