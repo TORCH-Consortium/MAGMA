@@ -31,7 +31,6 @@ workflow CALL_WF {
 
     main:
 
-
         normalize_libraries_ch = bam_sorted_reads_ch
                                         .map { it -> {
                                                 def splittedNameArray = it[0].split("\\.")

@@ -7,7 +7,6 @@ nextflow.enable.dsl = 2
 
 include { CALL_WF } from './workflows/call_wf.nf'
 include { VALIDATE_FASTQS_WF } from './workflows/validate_fastqs_wf.nf'
-include { MULTIPLE_INFECTIONS_WF } from './workflows/multiple_infections_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
@@ -26,16 +25,13 @@ workflow {
 
     } else {
 
-        validated_reads_ch = VALIDATE_FASTQS_WF(params.input_samplesheet)
+        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
 
-        QUALITY_CHECK_WF(validated_reads_ch)
+        QUALITY_CHECK_WF( validated_reads_ch )
 
-        MAP_WF( QUALITY_CHECK_WF.out.approved_samples_ch,
-                QUALITY_CHECK_WF.out.rejected_samples_ch )
+        MAP_WF( validated_reads_ch )
 
-        MULTIPLE_INFECTIONS_WF(MAP_WF.out.rejected_sorted_reads_ch)
-
-        CALL_WF(MAP_WF.out.approved_sorted_reads_ch)
+        CALL_WF( MAP_WF.out.sorted_reads_ch )
 
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
             .flatten()
