@@ -11,7 +11,7 @@ process BGZIP {
     script:
 
         """
-        ${params.bgzip_path} ${annotatedVcf}
+        ${params.bgzip_path} ${params.arguments} ${annotatedVcf}
         """
 
     stub:

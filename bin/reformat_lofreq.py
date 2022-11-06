@@ -32,7 +32,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Analyse resistance output from XBS Pipeline')
     parser.add_argument('lofreq_vcf_file', metavar='lofreq_vcf_file', type=str, help='The input lofreq vcf file')
     parser.add_argument('lofreq_sample_name', metavar='lofreq_sample_name', type=str, help='The sample name')
-    parser.add_argument('outfile', metavar='literature_db', type=str, help='TThe name of the output VCF file')
+    parser.add_argument('outfile', metavar='outfile', type=str, help='The name of the output VCF file')
 
     args = vars(parser.parse_args())
 
