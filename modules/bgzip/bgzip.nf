@@ -1,12 +1,12 @@
 process BGZIP {
-    tag "${joint_name}"
+    tag "${name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        tuple val(joint_name), path(annotatedVcf)
+        tuple val(name), path(annotatedVcf)
 
     output:
-        tuple val(joint_name), path("*.gz")
+        tuple val(name), path("*.gz")
 
     script:
 
@@ -17,7 +17,7 @@ process BGZIP {
     stub:
 
         """
-        touch ${joint_name}.annotated.vcf.gz
+        touch ${name}.annotated.vcf.gz
         """
 
 }
