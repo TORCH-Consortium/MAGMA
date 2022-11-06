@@ -1,13 +1,53 @@
 include { FASTQ_VALIDATOR } from '../modules/fastq_utils/validator.nf' addParams ( params.FASTQ_VALIDATOR  )
 include { UTILS_FASTQ_COHORT_VALIDATION } from '../modules/utils/fastq_cohort_validation.nf' addParams ( params.UTILS_FASTQ_COHORT_VALIDATION  )
+include { SAMPLESHEET_VALIDATION } from '../modules/utils/samplesheet_validation.nf' 
 
 workflow VALIDATE_FASTQS_WF {
     take:
-         reads_ch
+         samplesheet
 
     main:
+        SAMPLESHEET_VALIDATION(samplesheet)
 
-        //FIXME: Add the samplesheet validator process for samplesheet_validation.py script
+        //NOTE: Expected structure of input CSV samplesheet
+        //   0     1       2       3    4  5     6      7       8
+        // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
+
+        reads_ch = SAMPLESHEET_VALIDATION.out
+                    .splitCsv(header: false, skip: 1)
+                    .map { row -> {
+                                study           = row[0]
+                                sample          = row[1]
+                                library         = row[2]
+                                attempt         = row[3]
+                                read1           = row[4]
+                                read2           = row[5]
+                                flowcell        = row[6]
+                                lane            = row[7]
+                                index_sequence  = row[8]
+
+                    //NOTE: Platform is hard-coded to illumina
+                    bam_rg_string ="@RG\\tID:${flowcell}.${lane}\\tSM:${study}.${sample}\\tPL:illumina\\tLB:lib${library}\\tPU:${flowcell}.${lane}.${index_sequence}"
+
+                    unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
+
+                    //Accomodate single/multi reads
+                    if (read1 && read2) {
+
+                        return tuple(unique_sample_id, bam_rg_string, tuple(file(read1), file(read2)))
+
+                    } else if (read1) {
+
+                        return tuple(unique_sample_id, bam_rg_string, tuple(file(read1)))
+
+                    } else {
+
+                        return tuple(unique_sample_id, bam_rg_string, tuple(file(read2)))
+
+                    }
+                }
+            }
+
 
         FASTQ_VALIDATOR(reads_ch)
 
