@@ -6,6 +6,7 @@ dependencies:
   - bioconda::gatk4=4.2.6.1 
   - conda-forge::R=4.1 
   - conda-forge::r-ggplot2=3.3.5 
+  - conda-forge::pandas=1.5.1
   - bioconda::datamash=1.1.0 
   - bioconda::delly=0.8.7 
   - bioconda::lofreq=2.1.5 
