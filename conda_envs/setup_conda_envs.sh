@@ -9,7 +9,7 @@ resolverCondaBinary="conda" # pick either conda OR mamba
 
 $resolverCondaBinary env create -p xbs-nf-env-1 --file xbs-nf-env-1.yml 
 
-#$resolverCondaBinary env create -p xbs-nf-env-2 --file xbs-nf-env-2.yml
+$resolverCondaBinary env create -p xbs-nf-env-2 --file xbs-nf-env-2.yml
 
 echo "INFO: Activate conda env with tb-profiler and setup the WHO database within the xbs-nf-env-1"
 eval "$(conda shell.bash hook)"
