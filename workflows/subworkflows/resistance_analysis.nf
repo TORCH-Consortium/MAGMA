@@ -18,9 +18,8 @@ workflow RESISTANCE_ANALYSIS {
         TBPROFILER_VCF_PROFILE__COHORT(merged_vcf_ch, resistanceDb)
         TBPROFILER_COLLATE__COHORT(params.vcf_name, TBPROFILER_VCF_PROFILE__COHORT.out, resistanceDb)
 
-        reformatted_lofreq_vcf_ch.view{ it -> "INFO: reformatted_lofreq_vcf_ch: $it" }
-
         // merge_call_resistance_lofreq
+        // NOTE: Moved to the MINOR_COHORT_VARIANT_WF
         /* BGZIP(lofreq_vcf_ch) */
         /* TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP.out, resistanceDb) */
         /* TBPROFILER_COLLATE__LOFREQ(params.vcf_name, */

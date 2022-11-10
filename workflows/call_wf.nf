@@ -163,4 +163,5 @@ workflow CALL_WF {
         cohort_stats_tsv = UTILS_COHORT_STATS.out
         gvcf_ch = GATK_HAPLOTYPE_CALLER.out.gvcf_ch.collect()
         reformatted_lofreq_vcf_ch = GATK_INDEX_FEATURE_FILE__LOFREQ.out.collect()
+        bgzip_ch = BGZIP__LOFREQ.out.collect() 
 }

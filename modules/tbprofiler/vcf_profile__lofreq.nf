@@ -14,12 +14,11 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
+//FIXME
         """
-
         ${params.tbprofiler_path} vcf_profile \\
-            --lofreq_sample_name ${sampleName} \\
             ${optionalDb} \\
-            ${lofreqVcf}
+            ${mergedLofreqVcf}
         """
 
     stub:
