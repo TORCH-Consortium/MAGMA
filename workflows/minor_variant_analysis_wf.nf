@@ -11,13 +11,15 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
         //Filter out only the VCF files from the channel
-        vcfs_filenames_ch = reformatted_lofreq_vcfs_tuple_ch
-                                .view {"\n\n XBS-NF-LOG vcfs_filenames_ch : $it.extension \n\n"}
-                                /* .filter { it.class  == sun.nio.fs.UnixPath } */
+        vcfs_string_ch = reformatted_lofreq_vcfs_tuple_ch
+                                .filter { it.extension  == "gz" }
+                                .map { it -> it.name }
+                                .reduce { a, b -> "$a $b " }
+                                /* .view {"\n\n XBS-NF-LOG vcfs_filenames_ch : $it \n\n"} */
+
+        BCFTOOLS_MERGE(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
 
 /*
-        BCFTOOLS_MERGE
-
         // merge_call_resistance_lofreq
         BGZIP(lofreq_vcf_ch) 
 

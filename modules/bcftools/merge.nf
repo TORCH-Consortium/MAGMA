@@ -3,6 +3,7 @@ process BCFTOOLS_MERGE {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
+        val(vcfs_string_ch)
         path("*")
 
     output:
@@ -11,7 +12,7 @@ process BCFTOOLS_MERGE {
     script:
 
         """
-        bcftools merge -o ${sampleName}.LoFreq.vcf.gz
+        bcftools merge -o ${sampleName}.LoFreq.vcf.gz ${vcfs_string_ch}
         """
 
     stub:
