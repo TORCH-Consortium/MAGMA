@@ -12,7 +12,7 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
 
         //Filter out only the VCF files from the channel
         vcfs_filenames_ch = reformatted_lofreq_vcfs_tuple_ch
-                                .view("\n\n XBS-NF-LOG vcfs_filenames_ch : $it \n\n")
+                                .view {"\n\n XBS-NF-LOG vcfs_filenames_ch : $it \n\n"}
                                 /* .filter { it.class  == sun.nio.fs.UnixPath } */
 
 /*
