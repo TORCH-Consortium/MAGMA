@@ -21,7 +21,7 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
         BCFTOOLS_MERGE(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
 
         // merge_call_resistance_lofreq
-        BGZIP__MINOR_VARIANTS(BCFTOOLS_MERGE.out) 
+        BGZIP(BCFTOOLS_MERGE.out) 
 
 /*
         //TBPROFILER minor variants
