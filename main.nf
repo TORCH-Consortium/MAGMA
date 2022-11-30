@@ -9,6 +9,7 @@ include { CALL_WF } from './workflows/call_wf.nf'
 include { VALIDATE_FASTQS_WF } from './workflows/validate_fastqs_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
+include { MINOR_VARIANT_ANALYSIS_WF } from './workflows/minor_variant_analysis_wf.nf'
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
 include { REPORTS_WF } from './workflows/reports_wf.nf'
 
