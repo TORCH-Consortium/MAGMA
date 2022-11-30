@@ -1,20 +1,19 @@
 process TBPROFILER_VCF_PROFILE__LOFREQ {
-    tag "${sampleName}"
+    tag "${params.vcf_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        tuple val(sampleName), path(lofreqVcf)
+        tuple val(name), path(mergedLofreqVcf)
         path(resistanceDb)
 
     output:
-        tuple val(sampleName), path("results/*")
+        tuple val(name), path("results/*")
         path("results/*"), emit: resistance_json
 
 
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
-//FIXME
         """
         ${params.tbprofiler_path} vcf_profile \\
             ${optionalDb} \\
