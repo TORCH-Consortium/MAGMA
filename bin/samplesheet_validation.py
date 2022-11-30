@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(description='Run the XBS Pipeline')
 parser.add_argument('input_file', metavar='input_file', type=str, help='The input sample file')
 args = vars(parser.parse_args())
 
-name_re = re.compile('^[a-zA-Z0-9\-]*$')
+name_re = re.compile('^[a-zA-Z0-9\-\_]*$')
 ss = pd.read_csv(args['input_file'])
 
 fail = False
