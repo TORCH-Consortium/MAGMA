@@ -1,4 +1,5 @@
 include { BCFTOOLS_MERGE } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE )
+include { BGZIP } from "../../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
 
 
 workflow MINOR_VARIANT_ANALYSIS_WF {
@@ -19,12 +20,10 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
 
         BCFTOOLS_MERGE(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
 
-/*
         // merge_call_resistance_lofreq
-        BGZIP(lofreq_vcf_ch) 
+        BGZIP__MINOR_VARIANTS(BCFTOOLS_MERGE.out) 
 
-        BGZIP_COHORT_FILE
-
+/*
         //TBPROFILER minor variants
         TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP_COHORT_FILE.out, resistanceDb)
 

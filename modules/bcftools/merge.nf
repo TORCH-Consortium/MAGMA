@@ -7,18 +7,18 @@ process BCFTOOLS_MERGE {
         path("*")
 
     output:
-        path("*.LoFreq.vcf.gz")
+        tuple val(params.vcf_name), path("*.LoFreq.vcf")
 
     script:
 
         """
-        bcftools merge -o ${params.joint_name}.LoFreq.vcf.gz ${vcfs_string_ch}
+        bcftools merge -o ${params.vcf_name}.LoFreq.vcf ${vcfs_string_ch}
         """
 
     stub:
 
         """
-        touch ${params.joint_name}.LoFreq.vcf.gz
+        touch ${params.vcf_name}.LoFreq.vcf
         """
 
 }
