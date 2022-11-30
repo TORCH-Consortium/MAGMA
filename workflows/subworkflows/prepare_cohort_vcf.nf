@@ -51,5 +51,5 @@ workflow PREPARE_COHORT_VCF {
         GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out, '')
 
     emit:
-        cohort_vcf_and_index_ch = GATK_INDEX_FEATURE_FILE__COHORT.out
+        cohort_vcf_and_index_ch = GATK_INDEX_FEATURE_FILE__COHORT.out.sample_vcf_tuple
 }

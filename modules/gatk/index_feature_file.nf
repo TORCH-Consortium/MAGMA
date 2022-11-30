@@ -9,7 +9,7 @@ process GATK_INDEX_FEATURE_FILE {
 
 
     output:
-        tuple val(sampleName), path("*.vcf.gz.tbi"), path(vcf)
+        tuple val(sampleName), path("*.vcf.gz.tbi"), path(vcf), emit: sample_vcf_tuple
         tuple path("*.vcf.gz.tbi"), path(vcf), emit: vcf_tuple
 
 
