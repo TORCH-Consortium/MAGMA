@@ -12,13 +12,13 @@ process BCFTOOLS_MERGE {
     script:
 
         """
-        bcftools merge -o ${sampleName}.LoFreq.vcf.gz ${vcfs_string_ch}
+        bcftools merge -o ${params.joint_name}.LoFreq.vcf.gz ${vcfs_string_ch}
         """
 
     stub:
 
         """
-        touch ${sampleName}.LoFreq.vcf.gz
+        touch ${params.joint_name}.LoFreq.vcf.gz
         """
 
 }
