@@ -10,8 +10,8 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
 
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
-        //Filter out only the VCF files from the channel
         vcfs_string_ch = reformatted_lofreq_vcfs_tuple_ch
+                                .flatten()
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
                                 .reduce { a, b -> "$a $b " }
