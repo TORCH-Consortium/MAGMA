@@ -34,8 +34,9 @@ workflow {
         CALL_WF( MAP_WF.out.sorted_reads_ch )
 
         //FIXME
-        MINOR_VARIANT_ANALYSIS_WF (CALL_WF.FIXME)
+        MINOR_VARIANT_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
+/*
         //FIXME Take the results of MINOR_VARIANT_ANALYSIS_WF analysis for the samples which are approved 
         //and combine with existing filtering process.
         //Combine the results with those of cohort stats and then do the filtering
@@ -66,6 +67,7 @@ workflow {
 
 
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch)
+        */
     }
 
 }

@@ -3,21 +3,21 @@ process BCFTOOLS_MERGE {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        tuple val(sampleName), path(bcf)
+        path("*")
 
     output:
-        tuple val(sampleName), path("*.FIXME")
+        path("*.LoFreq.vcf.gz")
 
     script:
 
         """
-
+        bcftools merge -o ${sampleName}.LoFreq.vcf.gz
         """
 
     stub:
 
         """
-        touch ${sampleName}.potentialSV.vcf.gz
+        touch ${sampleName}.LoFreq.vcf.gz
         """
 
 }
