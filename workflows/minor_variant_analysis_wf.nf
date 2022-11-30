@@ -1,5 +1,5 @@
 include { BCFTOOLS_MERGE } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE )
-include { BGZIP } from "../../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
+include { BGZIP } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
 
 
 workflow MINOR_VARIANT_ANALYSIS_WF {
