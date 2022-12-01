@@ -11,6 +11,7 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
 
     main:
 
+//FIXME save the string to an intermediate file
         vcfs_string_ch = reformatted_lofreq_vcfs_tuple_ch
                                 .flatten()
                                 .filter { it.extension  == "gz" }

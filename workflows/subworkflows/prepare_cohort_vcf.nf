@@ -11,7 +11,7 @@ workflow PREPARE_COHORT_VCF {
 
 
     main:
-
+//FIXME save the string to an intermediate file
         gvcfs_string_ch = cohort_gvcfs_ch
             .flatten()
             .filter {  it.getExtension()  == "gz" }

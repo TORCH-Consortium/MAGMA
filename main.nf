@@ -34,7 +34,6 @@ workflow {
 
         CALL_WF( MAP_WF.out.sorted_reads_ch )
 
-        //FIXME
         MINOR_VARIANT_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
 /*
