@@ -2,6 +2,7 @@ include { BCFTOOLS_MERGE } from "../modules/bcftools/merge.nf" addParams ( param
 include { BGZIP } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
 include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../modules/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__LOFREQ)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
+include { UTILS_MULTIPLE_INFECTION_FILTER } from "../modules/utils/multiple_infection_filter.nf" 
 
 workflow MINOR_VARIANT_ANALYSIS_WF {
 
@@ -23,7 +24,6 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
         // merge_call_resistance_lofreq
         BGZIP(BCFTOOLS_MERGE.out) 
 
-
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
         //TBPROFILER minor variants
@@ -34,12 +34,9 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
                                   TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
                                   resistanceDb)
 
-/*
-        //TBPROFILER major variants
-        UTILS_MULTIPLE_INFECTION_FILTER
+        UTILS_MULTIPLE_INFECTION_FILTER(TBPROFILER_COLLATE__LOFREQ.out)
 
-    emit:
-        UTILS_MULTIPLE_INFECTION_FILTER
+    /* emit: */
+    /*     UTILS_MULTIPLE_INFECTION_FILTER */
 
-*/
 }
