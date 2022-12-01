@@ -11,7 +11,6 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
 
     main:
 
-
         vcfs_string_ch = reformatted_lofreq_vcfs_tuple_ch
                                 .flatten()
                                 .filter { it.extension  == "gz" }
@@ -34,9 +33,10 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
                                   TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
                                   resistanceDb)
 
-        UTILS_MULTIPLE_INFECTION_FILTER(TBPROFILER_COLLATE__LOFREQ.out)
+        UTILS_MULTIPLE_INFECTION_FILTER(TBPROFILER_COLLATE__LOFREQ.out.per_sample_results)
 
-    /* emit: */
-    /*     UTILS_MULTIPLE_INFECTION_FILTER */
+     emit: 
+         approved_samples_ch = UTILS_MULTIPLE_INFECTION_FILTER.out.approved_samples_ch
+         rejected_samples_ch = UTILS_MULTIPLE_INFECTION_FILTER.out.rejected_samples_ch
 
 }

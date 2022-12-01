@@ -8,7 +8,8 @@ process TBPROFILER_COLLATE {
         path(resistanceDb)
 
     output:
-        path("*${params.prefix}*")
+        path("*${params.prefix}*"), emit: cohort_results
+        path("results"), emit: per_sample_results
 
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
