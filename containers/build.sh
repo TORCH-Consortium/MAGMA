@@ -10,7 +10,7 @@ cp -r ../resources/resistance_db_who ./xbs-nf-container-1
 
 cp ../conda_envs/xbs-nf-env-2.yml ./xbs-nf-container-2
 
-for container_dir in $(find * -type d); do
+for container_dir in $(find * -maxdepth 0 -type d); do
   echo "Building $container_dir ..."
   cd $container_dir
   CONTAINER_TAG=quanttb
