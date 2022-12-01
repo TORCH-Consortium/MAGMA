@@ -5,6 +5,7 @@ tmp/
 data/mock_data/
 data/test_data/
 
+containers/xbs-nf-container-1/resistance_db_who
 
 */**/*fastq.gz
 */**/*fasta
