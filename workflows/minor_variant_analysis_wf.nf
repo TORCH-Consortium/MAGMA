@@ -1,6 +1,7 @@
 include { BCFTOOLS_MERGE } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE )
 include { BGZIP } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
 include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../modules/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__LOFREQ)
+include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
 
 workflow MINOR_VARIANT_ANALYSIS_WF {
 
@@ -28,12 +29,12 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
         //TBPROFILER minor variants
         TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP.out, resistanceDb)
 
-/*
         //TBPROFILER major variants
         TBPROFILER_COLLATE__LOFREQ(params.vcf_name,
                                   TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
                                   resistanceDb)
 
+/*
         //TBPROFILER major variants
         UTILS_MULTIPLE_INFECTION_FILTER
 

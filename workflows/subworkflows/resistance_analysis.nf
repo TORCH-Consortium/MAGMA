@@ -1,9 +1,5 @@
 include { TBPROFILER_VCF_PROFILE__COHORT } from "../../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__COHORT)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__COHORT } from "../../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__COHORT)
-include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
-include { BGZIP } from "../../modules/bgzip/bgzip.nf" addParams (params.BGZIP)
-include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../../modules/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__LOFREQ)
-
 
 workflow RESISTANCE_ANALYSIS {
     take:
