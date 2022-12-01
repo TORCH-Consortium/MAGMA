@@ -1,9 +1,8 @@
-FROM mambaorg/micromamba
+FROM mambaorg/micromamba:0.25.1 AS base
 MAINTAINER abhi18av@outlook.com
 
 COPY --chown=$MAMBA_USER:$MAMBA_USER xbs-nf-env-2.yml /tmp/xbs-nf-env-2.yml
 
 RUN micromamba install -y -f /tmp/xbs-nf-env-2.yml -n base
 
-RUN micromamba install -y -n base conda-forge::procps-ng  \
-   && micromamba clean -a -y
+RUN micromamba install -y -n base conda-forge::procps-ng  && micromamba clean -a -y
