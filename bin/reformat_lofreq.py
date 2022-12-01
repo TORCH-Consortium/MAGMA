@@ -29,6 +29,7 @@ def read_vcf(filename):
 def write_vcf(filename, df, header):
     with open(filename, 'w') as vcf:
         vcf.write(header)
+        vcf.write(header_formats)
         df.to_csv(vcf, sep='\t', index=False)
 
 if __name__ == '__main__':
