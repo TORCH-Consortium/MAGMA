@@ -71,7 +71,7 @@ workflow {
 
 
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch)
-        */
+*/
     }
 
 }

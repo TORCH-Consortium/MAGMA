@@ -5,7 +5,6 @@ import argparse
 
 import pandas as pd
 
-#NOTE: As of now we are not using these, but could be used in future.
 header_formats = """##FORMAT=<ID=AD,Number=R,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed">
 ##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth (reads with MQ=255 or with bad mates are filtered)">
 ##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
