@@ -37,6 +37,10 @@ workflow {
         MINOR_VARIANT_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
 
+        //---------------------------------------------------------------------------------
+        // Filter the approved samples
+        //---------------------------------------------------------------------------------
+
         //FIXME Take the results of MINOR_VARIANT_ANALYSIS_WF analysis for the samples which are approved 
         //and combine with existing filtering process.
         //Combine the results with those of cohort stats and then do the filtering
@@ -47,7 +51,7 @@ workflow {
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
             .flatten()
             .collate(3)
-            .view {"\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"}
+            /* .view {"\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"} */
 
         sample_stats_ch = CALL_WF.out.cohort_stats_tsv
             .splitCsv(header: false, skip: 1, sep: '\t' )
@@ -58,13 +62,15 @@ workflow {
         }
             .filter { it[1] == 1} // Filter out samples which meet all the thresholds
             .map { [ it[0] ] }
-            .view {"\n\n XBS-NF-LOG sample_stats_ch : $it \n\n"}
+            /* .view {"\n\n XBS-NF-LOG sample_stats_ch : $it \n\n"} */
 
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
             .filter { it.class  == sun.nio.fs.UnixPath }
             .view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
 
+
+        //---------------------------------------------------------------------------------
 
 /*
         MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.reformatted_lofreq_vcf_ch)
