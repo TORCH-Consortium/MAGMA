@@ -46,6 +46,8 @@ workflow {
         //Combine the results with those of cohort stats and then do the filtering
 
         MINOR_VARIANT_ANALYSIS_WF.out.approved_samples_ch
+            .splitCsv(header: false, skip: 1, sep: '\t' )
+            .map { row -> [ row.first() ] }
             .view {"\n\n XBS-NF-LOG MINOR VARIANTs approved_samples_ch : $it \n\n"}
 
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
