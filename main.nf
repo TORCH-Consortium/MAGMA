@@ -72,6 +72,7 @@ workflow {
 
         approved_samples_ch
             .join(sample_stats_ch)
+            .collect()
             .collectFile(name: "$params.outdir/approved_samples_ch.txt")
             /* .view {"\n\n XBS-NF-LOG approved_samples_ch and selected_gvcfs_ch join : $it \n\n"} */
 
