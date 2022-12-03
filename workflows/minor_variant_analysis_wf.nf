@@ -16,7 +16,6 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
                                 .flatten()
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
-                                .toSortedList()
                                 .reduce { a, b -> "$a $b " }
                                 /* .view {"\n\n XBS-NF-LOG vcfs_filenames_ch : $it \n\n"} */
 
