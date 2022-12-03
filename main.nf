@@ -56,7 +56,7 @@ workflow {
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
                                 .flatten()
                                 .collate(3)
-                                //.view {"\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"}
+                                .view {"\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"}
                                 //.collectFile(name: "$params.outdir/collated_gvcfs_ch.txt")
 
 
@@ -75,11 +75,12 @@ workflow {
                                 .map { [ it[0] ] }
                                 .view {"\n\n XBS-NF-LOG approved_call_wf_samples_ch : $it \n\n"}
 
-        // approved_call_wf_samples_ch.collect().collectFile(name: "$params.outdir/approved_call_wf_samples_ch.txt") 
+        approved_call_wf_samples_ch.collect().view {"\n\n XBS-NF-LOG approved_call_wf_samples_ch.collect() : $it \n\n"}
 
         //NOTE: Join the approved samples from MINOR_VARIANT_ANALYSIS_WF and CALL_WF
         fully_approved_samples_ch = approved_samples_minor_variants_ch
                                         .join(approved_call_wf_samples_ch)
+                                        .map { [ it[0] ] }
                                         .view {"\n\n XBS-NF-LOG fully_approved_samples_ch : $it \n\n"}
                                         //.collect() 
                                         //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
@@ -90,9 +91,8 @@ workflow {
                                 .flatten()
                                 .filter { it.class  == sun.nio.fs.UnixPath }
                                 .collect()
+                                .view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"} 
                                 //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
-
-        selected_gvcfs_ch.view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"} 
 
         //---------------------------------------------------------------------------------
 
