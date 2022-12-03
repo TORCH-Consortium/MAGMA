@@ -1,6 +1,6 @@
 
 process GATK_SELECT_VARIANTS__INCLUSION {
-    tag "${analysisMode}"
+    tag "${sampleName}"
 
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
