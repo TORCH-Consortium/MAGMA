@@ -14,6 +14,7 @@ workflow PREPARE_COHORT_VCF {
 //FIXME save the string to an intermediate file
         gvcfs_string_ch = cohort_gvcfs_ch
             .flatten()
+            .dump(tag:'gvcfs_string_ch')
             .filter {  it.getExtension()  == "gz" }
             .map { it -> it.name }
             .reduce { a, b -> "$a --variant $b " }
