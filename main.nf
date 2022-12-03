@@ -68,7 +68,7 @@ workflow {
                                 .map { [ it[0] ] }
                                 //.view {"\n\n XBS-NF-LOG sample_stats_ch : $it \n\n"}
 
-        sample_stats_ch.collectFile(name: "$params.outdir/sample_stats_ch.txt")
+        /* sample_stats_ch.collectFile(name: "$params.outdir/sample_stats_ch.txt") */
 
         /* approved_samples_ch */
         /*     .join(sample_stats_ch) */
