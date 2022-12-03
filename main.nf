@@ -67,8 +67,8 @@ workflow {
                             }
                                 .filter { it[1] == 1} // Filter out samples which meet all the thresholds
                                 .map { [ it[0] ] }
-                                /* .collectFile(name: "$params.outdir/sample_stats_ch") */
                                 /* .view {"\n\n XBS-NF-LOG sample_stats_ch : $it \n\n"} */
+                                /* .collectFile(name: "$params.outdir/sample_stats_ch") */
 
 
         approved_samples_ch
