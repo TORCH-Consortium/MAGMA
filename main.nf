@@ -69,20 +69,18 @@ workflow {
                                 .map { row -> [
                                         row.first(),           // SAMPLE
                                         row.last().toInteger() // ALL_THRESHOLDS_MET
-                                ]
-                            }
+                                        ]
+                                    }
                                 .filter { it[1] == 1} // Filter out samples which meet all the thresholds
                                 .map { [ it[0] ] }
-                                .view {"\n\n XBS-NF-LOG approved_call_wf_samples_ch : $it \n\n"}
 
         approved_call_wf_samples_ch.collect().view {"\n\n XBS-NF-LOG approved_call_wf_samples_ch.collect() : $it \n\n"}
 
         //NOTE: Join the approved samples from MINOR_VARIANT_ANALYSIS_WF and CALL_WF
         fully_approved_samples_ch = approved_samples_minor_variants_ch
                                         .join(approved_call_wf_samples_ch)
-                                        .map { [ it[0] ] }
+                                        .map { [ it ] }
                                         .view {"\n\n XBS-NF-LOG fully_approved_samples_ch : $it \n\n"}
-                                        //.collect() 
                                         //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
 
 
