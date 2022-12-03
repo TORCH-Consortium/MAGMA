@@ -87,10 +87,9 @@ workflow {
                                 .join(fully_approved_samples_ch)
                                 .flatten()
                                 .filter { it.class  == sun.nio.fs.UnixPath }
-                                .view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"} 
                                 //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
 
-        //selected_gvcfs_ch.collect().collectFile(name: "$params.outdir/selected_gvcfs_ch.txt")
+        selected_gvcfs_ch.collect().view {"\n\n XBS-NF-LOG selected_gvcfs_ch.collect() : $it \n\n"} 
 
         //---------------------------------------------------------------------------------
 
