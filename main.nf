@@ -70,21 +70,21 @@ workflow {
 
         sample_stats_ch.collectFile(name: "$params.outdir/sample_stats_ch.txt")
 
-        approved_samples_ch
-            .join(sample_stats_ch)
-            .collect()
-            .collectFile(name: "$params.outdir/approved_samples_ch.txt")
-            //.view {"\n\n XBS-NF-LOG approved_samples_ch and selected_gvcfs_ch join : $it \n\n"}
+        /* approved_samples_ch */
+        /*     .join(sample_stats_ch) */
+        /*     .collect() */
+        /*     .collectFile(name: "$params.outdir/approved_samples_ch.txt") */
+        /*     //.view {"\n\n XBS-NF-LOG approved_samples_ch and selected_gvcfs_ch join : $it \n\n"} */
 
 
-        selected_gvcfs_ch = collated_gvcfs_ch
-                                .join(sample_stats_ch)
-                                .flatten()
-                                .filter { it.class  == sun.nio.fs.UnixPath }
-                                //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
-                                //.view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
+        /* selected_gvcfs_ch = collated_gvcfs_ch */
+        /*                         .join(sample_stats_ch) */
+        /*                         .flatten() */
+        /*                         .filter { it.class  == sun.nio.fs.UnixPath } */
+        /*                         //.collectFile(name: "$params.outdir/selected_gvcfs_ch") */
+        /*                         //.view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"} */
 
-        selected_gvcfs_ch.collectFile(name: "$params.outdir/selected_gvcfs_ch.txt")
+        /* selected_gvcfs_ch.collectFile(name: "$params.outdir/selected_gvcfs_ch.txt") */
 
         //---------------------------------------------------------------------------------
 
