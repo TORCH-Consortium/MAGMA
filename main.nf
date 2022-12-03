@@ -50,7 +50,7 @@ workflow {
                                 .splitCsv(header: false, skip: 1, sep: '\t' )
                                 .map { row -> [ row.first() ] }
                                 .collect()
-                                //.view {"\n\n XBS-NF-LOG approved_samples_minor_variants_ch : $it \n\n"}
+                                .view {"\n\n XBS-NF-LOG approved_samples_minor_variants_ch : $it \n\n"}
 
         //NOTE: Divide the output of gvch_ch into the [sampleName, gvcf, gvcf.tbi] format
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
@@ -60,6 +60,8 @@ workflow {
                                 //.collectFile(name: "$params.outdir/collated_gvcfs_ch.txt")
 
 
+
+        //FIXME: Refactor this to emit two different files and use only the approved samples
         //NOTE: Use the stats file for the entire cohort (from CALL_WF)
         // and filter out the samples which pass all thresholds
         approved_call_wf_samples_ch = CALL_WF.out.cohort_stats_tsv
@@ -87,14 +89,15 @@ workflow {
                                 .join(fully_approved_samples_ch)
                                 .flatten()
                                 .filter { it.class  == sun.nio.fs.UnixPath }
+                                .collect()
                                 //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
 
-        selected_gvcfs_ch.collect().view {"\n\n XBS-NF-LOG selected_gvcfs_ch.collect() : $it \n\n"} 
+        selected_gvcfs_ch.view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"} 
 
         //---------------------------------------------------------------------------------
 
 /*
-        MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.reformatted_lofreq_vcf_ch)
+        MERGE_WF(selected_gvcfs_ch, CALL_WF.out.reformatted_lofreq_vcf_ch)
 
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch)
 */
