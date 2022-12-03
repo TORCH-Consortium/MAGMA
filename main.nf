@@ -80,7 +80,6 @@ workflow {
         fully_approved_samples_ch = approved_samples_minor_variants_ch
                                         .join(approved_call_wf_samples_ch)
                                         .flatten()
-                                        .map { [[it]] }
                                         .dump(tag:'fully_approved_samples_ch')
                                         .view {"\n\n XBS-NF-LOG fully_approved_samples_ch : $it \n\n"}
                                         //.collect()
