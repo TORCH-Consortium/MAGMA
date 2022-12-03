@@ -55,7 +55,7 @@ workflow {
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
                                 .flatten()
                                 .collate(3)
-                                .collectFile(name: "$params.outdir/collated_gvcfs_ch")
+                                /* .collectFile(name: "$params.outdir/collated_gvcfs_ch") */
                                 /* .view {"\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"} */
 
         sample_stats_ch = CALL_WF.out.cohort_stats_tsv
@@ -67,21 +67,21 @@ workflow {
                             }
                                 .filter { it[1] == 1} // Filter out samples which meet all the thresholds
                                 .map { [ it[0] ] }
-                                .collectFile(name: "$params.outdir/sample_stats_ch")
+                                /* .collectFile(name: "$params.outdir/sample_stats_ch") */
                                 /* .view {"\n\n XBS-NF-LOG sample_stats_ch : $it \n\n"} */
 
 
         approved_samples_ch
             .join(sample_stats_ch)
-            .collectFile(name: "$params.outdir/approved_samples_ch")
-            /* .view {"\n\n XBS-NF-LOG approved_samples_ch and selected_gvcfs_ch join : $it \n\n"} */
+            .view {"\n\n XBS-NF-LOG approved_samples_ch and selected_gvcfs_ch join : $it \n\n"}
+            /* .collectFile(name: "$params.outdir/approved_samples_ch") */
 
 
         selected_gvcfs_ch = collated_gvcfs_ch
                                 .join(sample_stats_ch)
                                 .flatten()
                                 .filter { it.class  == sun.nio.fs.UnixPath }
-                                .collectFile(name: "$params.outdir/selected_gvcfs_ch")
+                                /* .collectFile(name: "$params.outdir/selected_gvcfs_ch") */
                                 /* .view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"} */
 
 
