@@ -52,7 +52,7 @@ workflow {
                                 .collect()
                                 .view {"\n\n XBS-NF-LOG approved_samples_minor_variants_ch : $it \n\n"}
 
-        //NOTE: Divide the output of gvch_ch into the [sampleName, gvcf, gvcf.tbi] format
+        //NOTE: Reshape the flattened output of gvch_ch into the tuples of [sampleName, gvcf, gvcf.tbi]
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
                                 .flatten()
                                 .collate(3)
@@ -79,7 +79,8 @@ workflow {
         //NOTE: Join the approved samples from MINOR_VARIANT_ANALYSIS_WF and CALL_WF
         fully_approved_samples_ch = approved_samples_minor_variants_ch
                                         .join(approved_call_wf_samples_ch)
-                                        .map { [ it ] }
+                                        .collate(1)
+                                        .collect()
                                         .view {"\n\n XBS-NF-LOG fully_approved_samples_ch : $it \n\n"}
                                         //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
 
