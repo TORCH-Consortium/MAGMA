@@ -39,10 +39,6 @@ workflow {
 
         //---------------------------------------------------------------------------------
         // Filter the approved samples
-
-        //FIXME Take the results of MINOR_VARIANT_ANALYSIS_WF analysis for the samples which are approved 
-        //and combine with existing filtering process.
-        //Combine the results with those of cohort stats and then do the filtering
         //---------------------------------------------------------------------------------
 
         //NOTE: Read the approved_samples tsv file and isolate the names of the approved samples
