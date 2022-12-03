@@ -86,6 +86,7 @@ workflow {
                                         //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
 
 
+        //NOTE: Join the fully approved samples with the gvcf channel to select files for MERGE_WF
         selected_gvcfs_ch = collated_gvcfs_ch
                                 .join(fully_approved_samples_ch)
                                 .flatten()
