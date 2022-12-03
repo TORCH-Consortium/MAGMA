@@ -14,9 +14,9 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
 //FIXME save the string to an intermediate file
         vcfs_string_ch = reformatted_lofreq_vcfs_tuple_ch
                                 .flatten()
-                                .toSortedList()
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
+                                .toSortedList()
                                 .reduce { a, b -> "$a $b " }
                                 /* .view {"\n\n XBS-NF-LOG vcfs_filenames_ch : $it \n\n"} */
 
