@@ -78,7 +78,7 @@ workflow {
         //NOTE: Join the approved samples from MINOR_VARIANT_ANALYSIS_WF and CALL_WF
         fully_approved_samples_ch = approved_samples_ch
                                         .join(sample_stats_ch)
-                                        .collect()
+                                        /* .collect() */
                                         /* .collectFile(name: "$params.outdir/approved_samples_ch.txt") */
                                         //.view {"\n\n XBS-NF-LOG approved_samples_ch and selected_gvcfs_ch join : $it \n\n"}
 
