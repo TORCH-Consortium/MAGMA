@@ -45,31 +45,44 @@ workflow {
         //and combine with existing filtering process.
         //Combine the results with those of cohort stats and then do the filtering
 
-        MINOR_VARIANT_ANALYSIS_WF.out.approved_samples_ch
-            .splitCsv(header: false, skip: 1, sep: '\t' )
-            .map { row -> [ row.first() ] }
-            .view {"\n\n XBS-NF-LOG MINOR VARIANTs approved_samples_ch : $it \n\n"}
+        approved_samples_ch = MINOR_VARIANT_ANALYSIS_WF.out.approved_samples_ch
+                                .splitCsv(header: false, skip: 1, sep: '\t' )
+                                .map { row -> [ row.first() ] }
+                                .collect()
+                                .collectFile(name: "$params.outdir/approved_samples_ch")
+                                /* .view {"\n\n XBS-NF-LOG MINOR VARIANTs approved_samples_ch : $it \n\n"} */
 
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
-            .flatten()
-            .collate(3)
-            /* .view {"\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"} */
+                                .flatten()
+                                .collate(3)
+                                .collectFile(name: "$params.outdir/collated_gvcfs_ch")
+                                /* .view {"\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"} */
 
         sample_stats_ch = CALL_WF.out.cohort_stats_tsv
-            .splitCsv(header: false, skip: 1, sep: '\t' )
-            .map { row -> [
-                    row.first(),           // SAMPLE
-                    row.last().toInteger() // ALL_THRESHOLDS_MET
-            ]
-        }
-            .filter { it[1] == 1} // Filter out samples which meet all the thresholds
-            .map { [ it[0] ] }
-            /* .view {"\n\n XBS-NF-LOG sample_stats_ch : $it \n\n"} */
+                                .splitCsv(header: false, skip: 1, sep: '\t' )
+                                .map { row -> [
+                                        row.first(),           // SAMPLE
+                                        row.last().toInteger() // ALL_THRESHOLDS_MET
+                                ]
+                            }
+                                .filter { it[1] == 1} // Filter out samples which meet all the thresholds
+                                .map { [ it[0] ] }
+                                .collectFile(name: "$params.outdir/sample_stats_ch")
+                                /* .view {"\n\n XBS-NF-LOG sample_stats_ch : $it \n\n"} */
 
-        selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
-            .flatten()
-            .filter { it.class  == sun.nio.fs.UnixPath }
-            .view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
+
+        approved_samples_ch
+            .join(sample_stats_ch)
+            .collectFile(name: "$params.outdir/approved_samples_ch")
+            /* .view {"\n\n XBS-NF-LOG approved_samples_ch and selected_gvcfs_ch join : $it \n\n"} */
+
+
+        selected_gvcfs_ch = collated_gvcfs_ch
+                                .join(sample_stats_ch)
+                                .flatten()
+                                .filter { it.class  == sun.nio.fs.UnixPath }
+                                .collectFile(name: "$params.outdir/selected_gvcfs_ch")
+                                /* .view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"} */
 
 
         //---------------------------------------------------------------------------------
