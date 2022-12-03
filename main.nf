@@ -79,9 +79,10 @@ workflow {
         //NOTE: Join the approved samples from MINOR_VARIANT_ANALYSIS_WF and CALL_WF
         fully_approved_samples_ch = approved_samples_minor_variants_ch
                                         .join(approved_call_wf_samples_ch)
+                                        .dump(tag:'fully_approved_samples_ch')
                                         .collate(1)
-                                        .collect()
                                         .view {"\n\n XBS-NF-LOG fully_approved_samples_ch : $it \n\n"}
+                                        //.collect()
                                         //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
 
 
