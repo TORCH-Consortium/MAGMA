@@ -17,13 +17,13 @@ ss = pd.read_csv(args['input_file'])
 fail = False
 for idx, row in ss.iterrows():
     if not name_re.match(row['Study']):
-        print('Row {}: {}, {}  Illegal character in study id'.format(idx, row['Study'], row['Sample']))
+        print('Row {}: {}  Illegal character in study id'.format(idx, row['Study']))
         fail = True
     if not name_re.match(row['Sample']):
-        print('Row {}: {}, {} - Illegal character in sample id'.format(idx, row['Study'], row['Sample']))
+        print('Row {}: {} - Illegal character in sample id'.format(idx, row['Sample']))
         fail = True
     if row['R1'] == row['R2']:
-        print('Row {}: {}, {} - Same fastq file specified twice'.format(idx, row['Study'], row['Sample']))
+        print('Row {}: {}, {} - Same fastq file specified twice'.format(idx, row['R1'], row['R2']))
         fail = True
 
 if not fail:
