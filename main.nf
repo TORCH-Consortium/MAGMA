@@ -55,8 +55,8 @@ workflow {
 
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
-            .filter { (it.class.name  == sun.nio.fs.UnixPath) || it.contains("az://")  ||  it.contains("s3://") }
-            // .view{"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
+            .view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
+            /* .filter { (it.class.name  == sun.nio.fs.UnixPath) || it.contains("az://")  ||  it.contains("s3://") } */
 
 
         MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
