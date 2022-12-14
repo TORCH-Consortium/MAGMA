@@ -40,7 +40,7 @@ workflow {
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
             .flatten()
             .collate(3)
-            // .view {it -> "\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"}
+            .dump(tag:'XBS-NF-LOG collated_gvcfs_ch : ', pretty: true)
 
         sample_stats_ch = CALL_WF.out.cohort_stats_tsv
             .splitCsv(header: false, skip: 1, sep: '\t' )
@@ -51,13 +51,16 @@ workflow {
         }
             .filter { it[1] == 1} // Filter out samples which meet all the thresholds
             .map { [ it[0] ] }
-            // .view("\n\n XBS-NF-LOG sample_stats_ch : $it \n\n")
+            .dump(tag:'XBS-NF-LOG sample_stats_ch : ', pretty: true)
 
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
-            .view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}
-            /* .filter { (it.class.name  == sun.nio.fs.UnixPath) || it.contains("az://")  ||  it.contains("s3://") } */
+            .filter { (it.class.name  == sun.nio.fs.UnixPath) || it.contains("az://")  ||  it.contains("s3://") }
+            .dump(tag:'XBS-NF-LOG selected_gvcfs_ch.flatten().filter() : ', pretty: true)
 
+        selected_gvcfs_ch
+            .collect()
+            .view {"\n\n XBS-NF-LOG selected_gvcfs_ch.collect() : $it \n\n"}
 
         MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
 
