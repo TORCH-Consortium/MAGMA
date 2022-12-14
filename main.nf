@@ -64,7 +64,7 @@ workflow {
                 .collect()
             .dump(tag:'XBS-NF-LOG selected_gvcfs_ch.flatten().filter().collect() : ', pretty: true)
 
-        /* MERGE_WF(selected_gvcfs_ch, CALL_WF.out.lofreq_vcf_ch) */
+        MERGE_WF(selected_gvcfs_ch, CALL_WF.out.lofreq_vcf_ch)
 
 
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch)

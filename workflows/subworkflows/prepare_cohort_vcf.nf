@@ -14,10 +14,10 @@ workflow PREPARE_COHORT_VCF {
 
         gvcfs_string_ch = cohort_gvcfs_ch
             .flatten()
-            .filter {  it.getExtension()  == "gz" }
-            .map { it -> it.name }
+            .filter {  file(it).getExtension()  == "gz" }
+            .map { it -> file(it).name }
             .reduce { a, b -> "$a --variant $b " }
-            // .view(it -> "PREPARE_COHORT_VCF gvcfs_string_ch: $it")
+            .dump(tag: "PREPARE_COHORT_VCF gvcfs_string_ch:")
 
 
         if (params.use_ref_exit_rif_gvcf) {
