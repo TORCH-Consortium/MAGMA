@@ -55,14 +55,16 @@ workflow {
 
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
-            .filter { (it.class.name  == sun.nio.fs.UnixPath) || it.contains("az://")  ||  it.contains("s3://") || it.contains("gs://")  }
-            /* .dump(tag:'XBS-NF-LOG selected_gvcfs_ch.flatten().filter() : ', pretty: true) */
-
-        selected_gvcfs_ch
-            .collect()
+            .filter { it -> { 
+                            (it.class.name  == sun.nio.fs.UnixPath) 
+                            || (it.class.name == "nextflow.cloud.azure.nio.AzPath") 
+                            || (it.class.name == "com.upplication.s3fs.S3Path") 
+                            || (it.class.name == "com.google.cloud.storage.contrib.nio.CloudStoragePath") 
+                    } }
+                .collect()
             .dump(tag:'XBS-NF-LOG selected_gvcfs_ch.flatten().filter().collect() : ', pretty: true)
 
-        MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
+        /* MERGE_WF(selected_gvcfs_ch, CALL_WF.out.lofreq_vcf_ch) */
 
 
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch)
