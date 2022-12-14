@@ -40,7 +40,7 @@ workflow {
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
             .flatten()
             .collate(3)
-            // .view(it -> "\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n")
+            // .view {it -> "\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"}
 
         sample_stats_ch = CALL_WF.out.cohort_stats_tsv
             .splitCsv(header: false, skip: 1, sep: '\t' )
