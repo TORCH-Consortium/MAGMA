@@ -17,7 +17,7 @@ workflow PREPARE_COHORT_VCF {
             .filter {  file(it).getExtension()  == "gz" }
             .map { it -> file(it).name }
             .reduce { a, b -> "$a --variant $b " }
-            .dump(tag: "PREPARE_COHORT_VCF gvcfs_string_ch:")
+            .dump(tag: "PREPARE_COHORT_VCF gvcfs_string_ch:", pretty: true)
 
 
         if (params.use_ref_exit_rif_gvcf) {
