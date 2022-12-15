@@ -31,14 +31,14 @@ workflow SNP_ANALYSIS {
             .ifEmpty([])
             .map { it -> it != [] ? [ "${it[0]} ${it[1].getName()}", it[1], it[2] ] : [] }
             .flatten()
-            // .view()
+            .dump(tag:"SNP_ANALYSIS arg_files_ch : ", pretty:true)
 
 
         args_ch = arg_files_ch
             .filter { it.class == org.codehaus.groovy.runtime.GStringImpl }
             .reduce { a, b -> "$a --resource:$b " }
             .ifEmpty("")
-            // .view()
+            .dump(tag:"SNP_ANALYSIS args_ch : ", pretty:true)
 
 
         resources_files_ch = arg_files_ch
@@ -46,14 +46,14 @@ workflow SNP_ANALYSIS {
             .filter {  it.getExtension()  == "gz" }
             .collect()
             .ifEmpty([])
-            // .view()
+            .dump(tag:"SNP_ANALYSIS resources_files_ch : ", pretty:true)
 
         resources_file_indexes_ch = arg_files_ch
             .filter { it.class != org.codehaus.groovy.runtime.GStringImpl }
             .filter {  it.getExtension()  == "tbi" }
             .collect()
             .ifEmpty([])
-            // .view()
+            .dump(tag:"SNP_ANALYSIS resources_file_indexes_ch : ", pretty:true)
 
 
 

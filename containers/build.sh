@@ -13,7 +13,7 @@ cp ../conda_envs/xbs-nf-env-2.yml ./xbs-nf-container-2
 for container_dir in $(find * -maxdepth 0 -type d); do
   echo "Building $container_dir ..."
   cd $container_dir
-  CONTAINER_TAG=quanttb
+  CONTAINER_TAG=cloud
   CONTAINER_NAME=$DOCKER_NAMESPACE/$container_dir:$CONTAINER_TAG
   echo "Container Name : $CONTAINER_NAME "
   docker build -t $CONTAINER_NAME .

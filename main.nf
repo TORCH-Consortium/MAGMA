@@ -40,7 +40,7 @@ workflow {
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
             .flatten()
             .collate(3)
-            // .view(it -> "\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n")
+            .dump(tag:'MAIN collated_gvcfs_ch : ', pretty: true)
 
         sample_stats_ch = CALL_WF.out.cohort_stats_tsv
             .splitCsv(header: false, skip: 1, sep: '\t' )
@@ -51,15 +51,20 @@ workflow {
         }
             .filter { it[1] == 1} // Filter out samples which meet all the thresholds
             .map { [ it[0] ] }
-            // .view("\n\n XBS-NF-LOG sample_stats_ch : $it \n\n")
+            .dump(tag:'MAIN sample_stats_ch : ', pretty: true)
 
         selected_gvcfs_ch = collated_gvcfs_ch.join(sample_stats_ch)
             .flatten()
-            .filter { it.class  == sun.nio.fs.UnixPath }
-            // .view("\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n")
+            .filter { it -> { 
+                            (it.class.name  == sun.nio.fs.UnixPath) 
+                            || (it.class.name == "nextflow.cloud.azure.nio.AzPath") 
+                            || (it.class.name == "com.upplication.s3fs.S3Path") 
+                            || (it.class.name == "com.google.cloud.storage.contrib.nio.CloudStoragePath") 
+                    } }
+                .collect()
+            .dump(tag:'MAIN selected_gvcfs_ch.flatten().filter().collect() : ', pretty: true)
 
-
-        MERGE_WF(selected_gvcfs_ch.collect(), CALL_WF.out.lofreq_vcf_ch)
+        MERGE_WF(selected_gvcfs_ch, CALL_WF.out.lofreq_vcf_ch)
 
 
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch)
