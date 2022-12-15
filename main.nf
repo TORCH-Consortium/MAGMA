@@ -46,14 +46,14 @@ workflow {
                                 .splitCsv(header: false, skip: 1, sep: '\t' )
                                 .map { row -> [ row.first() ] }
                                 .collect()
-                                .dump(tag:'approved_samples_minor_variants_ch')
+                                .dump(tag:'MAIN: approved_samples_minor_variants_ch', pretty: true)
                                 /* .view {"\n\n XBS-NF-LOG approved_samples_minor_variants_ch : $it \n\n"} */
 
         //NOTE: Reshape the flattened output of gvch_ch into the tuples of [sampleName, gvcf, gvcf.tbi]
         collated_gvcfs_ch = CALL_WF.out.gvcf_ch
                                 .flatten()
                                 .collate(3)
-                                .dump(tag:'collated_gvcfs_ch')
+                                .dump(tag:'MAIN: collated_gvcfs_ch', pretty: true)
                                 /* .view {"\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"} */
                                 //.collectFile(name: "$params.outdir/collated_gvcfs_ch.txt")
 
@@ -71,17 +71,18 @@ workflow {
                                     }
                                 .filter { it[1] == 1} // Filter out samples which meet all the thresholds
                                 .map { [ it[0] ] }
+                                .dump(tag:'MAIN approved_call_wf_samples_ch', pretty: true)
 
-        approved_call_wf_samples_ch
-                .collect()
-                .dump(tag:'approved_call_wf_samples_ch.collect()')
-                /* .view {"\n\n XBS-NF-LOG approved_call_wf_samples_ch.collect() : $it \n\n"} */
+        /* approved_call_wf_samples_ch */
+        /*         .collect() */
+        /*         .dump(tag:'approved_call_wf_samples_ch.collect()') */
+        /*         /* .view {"\n\n XBS-NF-LOG approved_call_wf_samples_ch.collect() : $it \n\n"} */ */
 
         //NOTE: Join the approved samples from MINOR_VARIANT_ANALYSIS_WF and CALL_WF
         fully_approved_samples_ch = approved_samples_minor_variants_ch
                                         .join(approved_call_wf_samples_ch)
                                         .flatten()
-                                        .dump(tag:'fully_approved_samples_ch')
+                                        .dump(tag:'MAIN fully_approved_samples_ch', pretty: true)
                                         /* .view {"\n\n XBS-NF-LOG fully_approved_samples_ch : $it \n\n"} */
                                         //.collect()
                                         //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
@@ -91,9 +92,14 @@ workflow {
         selected_gvcfs_ch = collated_gvcfs_ch
                                 .join(fully_approved_samples_ch)
                                 .flatten()
-                                .filter { it.class  == sun.nio.fs.UnixPath }
+                                .filter { it -> { 
+                                                    (it.class.name  == sun.nio.fs.UnixPath) 
+                                                    || (it.class.name == "nextflow.cloud.azure.nio.AzPath") 
+                                                    || (it.class.name == "com.upplication.s3fs.S3Path") 
+                                                    || (it.class.name == "com.google.cloud.storage.contrib.nio.CloudStoragePath") 
+                                            } }
                                 .collect()
-                                .dump(tag:'selected_gvcfs_ch')
+                                .dump(tag:'MAIN selected_gvcfs_ch', pretty: true)
                                 /* .view {"\n\n XBS-NF-LOG selected_gvcfs_ch : $it \n\n"}  */
                                 //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
 
