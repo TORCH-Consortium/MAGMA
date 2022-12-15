@@ -76,7 +76,7 @@ workflow {
         /* approved_call_wf_samples_ch */
         /*         .collect() */
         /*         .dump(tag:'approved_call_wf_samples_ch.collect()') */
-        /*         /* .view {"\n\n XBS-NF-LOG approved_call_wf_samples_ch.collect() : $it \n\n"} */ */
+        /*         .view {"\n\n XBS-NF-LOG approved_call_wf_samples_ch.collect() : $it \n\n"} */ 
 
         //NOTE: Join the approved samples from MINOR_VARIANT_ANALYSIS_WF and CALL_WF
         fully_approved_samples_ch = approved_samples_minor_variants_ch
