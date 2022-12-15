@@ -60,7 +60,7 @@ if __name__ == '__main__':
                 samples[keys[1]]['lofreq'] = json.load(json_file)
 
     samples_df = pd.DataFrame(list(samples), columns=['full_sample'])
-    samples_df[['patient', 'sample']] = samples_df['full_sample'].apply(lambda sample: extract_patient_and_sample(sample))
+    #samples_df[['patient', 'sample']] = samples_df['full_sample'].apply(lambda sample: extract_patient_and_sample(sample))
     samples_df = samples_df.set_index('full_sample').sort_index()
 
     for patient, sample in tqdm(samples_df.iterrows(), total=samples_df.shape[0]):
