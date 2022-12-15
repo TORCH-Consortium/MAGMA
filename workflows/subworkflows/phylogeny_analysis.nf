@@ -24,21 +24,21 @@ workflow PHYLOGENY_ANALYSIS {
                     }
                 }
             }
-            // .view( it -> "\n\n XBS-NF-LOG PHYLOGENY_ANALYSIS args_ch: $args_ch \n\n")
+            .dump(tag: "PHYLOGENY_ANALYSIS args_ch: ", pretty: true)
 
 
         resources_files_ch = arg_files_ch
             .filter {  (it.getExtension()  == "gz") || (it.getExtension()  == "list") }
             .collect()
             .ifEmpty([])
-            // .view()
+            .dump(tag: "PHYLOGENY_ANALYSIS resources_files_ch: ", pretty: true)
 
 
         resources_file_indexes_ch = arg_files_ch
             .filter {  it.getExtension()  == "tbi" }
             .collect()
             .ifEmpty([])
-            // .view()
+            .dump(tag: "PHYLOGENY_ANALYSIS resources_file_indexes_ch: ", pretty: true)
 
 
         // merge_phylogeny_prep_inccomplex
