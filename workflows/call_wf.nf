@@ -69,7 +69,7 @@ workflow CALL_WF {
         }
 
 
-        recalibrated_bam_ch.dump(tag: "CALL_WF recalibrated_bam_ch: ", pretty:true)
+        //recalibrated_bam_ch.dump(tag: "CALL_WF recalibrated_bam_ch: ", pretty:true)
 
         SAMTOOLS_INDEX(recalibrated_bam_ch)
 
