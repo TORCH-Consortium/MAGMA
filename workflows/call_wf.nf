@@ -42,7 +42,7 @@ workflow CALL_WF {
             }
         }
         .groupTuple()
-        // .view{ it -> "\n\n XBS-NF-LOG CALL_WF normalize_libraries_ch: $it \n\n"}
+        .dump(tag: "CALL_WF normalize_libraries_ch : ", pretty: true)
 
 
         // call_merge
@@ -70,8 +70,7 @@ workflow CALL_WF {
         }
 
 
-        // recalibrated_bam_ch
-        //     .view( it -> "\n\n XBS-NF-LOG CALL_WF recalibrated_bam_ch: $it \n\n")
+        //recalibrated_bam_ch.dump(tag: "CALL_WF recalibrated_bam_ch: ", pretty:true)
 
         SAMTOOLS_INDEX(recalibrated_bam_ch)
 
@@ -152,7 +151,7 @@ workflow CALL_WF {
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
             .join(LOFREQ_CALL__NTM.out)
-            // .view{ it -> "\n\n XBS-NF-LOG CALL_WF sample_stats_ch: $it \n\n"}
+            .dump(tag: "CALL_WF sample_stats_ch : ", pretty: true)
 
 
         UTILS_SAMPLE_STATS(sample_stats_ch)

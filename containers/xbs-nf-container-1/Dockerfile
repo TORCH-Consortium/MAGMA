@@ -1,5 +1,4 @@
 FROM mambaorg/micromamba:0.25.1 AS base
-MAINTAINER abhi18av@outlook.com
 
 #NOTE: The conda env file has been copied via the build script
 COPY --chown=$MAMBA_USER:$MAMBA_USER xbs-nf-env-1.yml /tmp/xbs-nf-env-1.yml
