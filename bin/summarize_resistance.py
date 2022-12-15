@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 drugs = set(['amikacin', 'bedaquiline', 'capreomycin', 'clofazimine', 'cycloserine', 'delamanid', 'ethambutol', 'ethionamide', 'imipenem', 'isoniazid', 'isoniazid_high_dose', 'kanamycin','levofloxacin', 'linezolid', 'meropenem', 'moxifloxacin', 'moxifloxacin_high_dose', 'para_aminosalicylic_acid', 'pretomanid', 'prothionamide', 'pyrazinamide', 'rifabutin', 'rifampicin', 'rifampicin_high_dose', 'streptomycin', 'terizidone'])
-drugs = set(['amikacin', 'bedaquiline', 'capreomycin', 'clofazimine', 'delamanid', 'ethambutol', 'ethionamide', 'isoniazid', 'isoniazid_high_dose', 'kanamycin', 'levofloxacin', 'linezolid', 'moxifloxacin', 'prothionamide', 'pyrazinamide', 'rifampicin', 'streptomycin'])
+#drugs = set(['amikacin', 'bedaquiline', 'capreomycin', 'clofazimine', 'delamanid', 'ethambutol', 'ethionamide', 'isoniazid', 'isoniazid_high_dose', 'kanamycin', 'levofloxacin', 'linezolid', 'moxifloxacin', 'prothionamide', 'pyrazinamide', 'rifampicin', 'streptomycin'])
 class_map = {
     0: 'R',
     1: 'U',
