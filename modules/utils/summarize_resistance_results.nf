@@ -11,10 +11,7 @@ process UTILS_SUMMARIZE_RESISTANCE_RESULTS {
     script:
        
         """
-        summarize_resistance.py \\ 
-            minor_variants \\
-            major_variants \\
-            resistance_summaries
+        summarize_resistance.py minor_variants major_variants resistance_summaries
         """
 
     stub: 
