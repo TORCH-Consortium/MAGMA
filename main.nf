@@ -88,12 +88,12 @@ workflow {
                                         //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
 
 
-        //NOTE: Join the fully approved samples with the gvcf channel to select files for MERGE_WF
+        //NOTE: Join the fully approved samples with the gvcf channel 
         selected_gvcfs_ch = collated_gvcfs_ch.join(fully_approved_samples_ch)
                                         .flatten()
                                         .dump(tag:'MAIN selected_gvcfs_ch', pretty: true)
 
-        //NOTE: Join the fully approved samples with the gvcf channel to select files for MERGE_WF
+        //NOTE: Filter only file type values and send to MERGE_WF
         filtered_selected_gvcfs_ch = selected_gvcfs_ch
                                         .filter { it -> { 
                                                             (it.class.name  == "sun.nio.fs.UnixPath") 
