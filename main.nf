@@ -107,7 +107,10 @@ workflow {
 
         MERGE_WF(selected_gvcfs_ch, CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
-        REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch)
+        REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch,
+                   MINOR_VARIANT_ANALYSIS_WF.out.minor_variants_results_ch,
+                   MAJOR_VARIANT_ANALYSIS_WF.out.major_variants_results_ch)
+
     }
 
 }

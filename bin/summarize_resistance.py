@@ -37,8 +37,8 @@ def add_var_to_df(df, pt_id, drug, var, freq):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Analyse resistance output from XBS Pipeline')
-    parser.add_argument('major_res_var_dir', metavar='major_res_var_dir', type=str, help='The direcotry containing the major variants TBProfiler output files')
-    parser.add_argument('minor_res_var_dir', metavar='minor_res_var_dir', type=str, help='The direcotry containing the minor variants TBProfiler output files')
+    parser.add_argument('major_res_var_dir', metavar='major_res_var_dir', type=str, help='The directory containing the major variants TBProfiler output files')
+    parser.add_argument('minor_res_var_dir', metavar='minor_res_var_dir', type=str, help='The directory containing the minor variants TBProfiler output files')
     parser.add_argument('summary_output_dir', metavar='summary_output_dir', type=str, help='The directory where the resulting excel sheets should be placed')
     args = vars(parser.parse_args())
 
