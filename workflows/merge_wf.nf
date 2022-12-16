@@ -74,6 +74,7 @@ workflow MERGE_WF {
         CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
 
 
+    emit:
         major_variants_results_ch =  MAJOR_VARIANT_ANALYSIS.out.major_variants_results_ch
 
 
