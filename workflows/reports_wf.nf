@@ -13,8 +13,8 @@ workflow REPORTS_WF {
         MULTIQC(reports_fastqc_ch)
 
         UTILS_SUMMARIZE_RESISTANCE_RESULTS(
-            MINOR_VARIANT_ANALYSIS_WF.out.minor_variants_results_ch,
-            MAJOR_VARIANT_ANALYSIS_WF.out.major_variants_results_ch
+            minor_variants_results_ch,
+            major_variants_results_ch
         )
 
 }
