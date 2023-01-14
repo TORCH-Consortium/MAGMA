@@ -92,7 +92,9 @@ workflow MERGE_WF {
 
        //---------------------------------------------------------------------------------
 
-        UTILS_MERGE_COHORT_STATS()
+        UTILS_MERGE_COHORT_STATS( approved_samples_ch,
+                                  rejected_samples_ch,
+                                  cohort_stats_tsv )
 
        //---------------------------------------------------------------------------------
 

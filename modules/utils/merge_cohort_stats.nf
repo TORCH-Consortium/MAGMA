@@ -11,7 +11,6 @@ process UTILS_MERGE_COHORT_STATS {
         path("*merged_cohort_stats.tsv")
 
 
-    //NOTE: Can use pandas to merge the CSV files and recompute the ALL_THRESHOLDS_MET field
     shell:
         """
         generate_merged_cohort_stats.py \\
