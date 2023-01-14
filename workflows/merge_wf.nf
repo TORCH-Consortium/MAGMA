@@ -98,7 +98,7 @@ workflow MERGE_WF {
 
        //---------------------------------------------------------------------------------
 
-        PREPARE_COHORT_VCF(selected_gvcfs_ch)
+        PREPARE_COHORT_VCF( filtered_selected_gvcfs_ch )
 
         SNP_ANALYSIS(PREPARE_COHORT_VCF.out.cohort_vcf_and_index_ch)
 
