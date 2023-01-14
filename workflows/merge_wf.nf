@@ -111,7 +111,7 @@ workflow MERGE_WF {
         // merge_snp_indel_vcf
         GATK_MERGE_VCFS__INC(merge_inc_vcf_ch)
 
-        MAJOR_VARIANT_ANALYSIS(GATK_MERGE_VCFS__INC.out, reformatted_lofreq_vcf_ch)
+        MAJOR_VARIANT_ANALYSIS(GATK_MERGE_VCFS__INC.out, reformatted_lofreq_vcfs_tuple_ch)
 
 
         //----------
