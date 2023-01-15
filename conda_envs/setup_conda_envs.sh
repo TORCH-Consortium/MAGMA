@@ -22,7 +22,7 @@ cd resistance_db_who
 echo "INFO: Load the database within tb-profiler"
 tb-profiler load_library resistance_db_who
 
-echo "INFO: Remove the local copy of the database"
+echo "INFO: Remove the local copy of the database folder"
 cd ..
 rm -rf resistance_db_who
 

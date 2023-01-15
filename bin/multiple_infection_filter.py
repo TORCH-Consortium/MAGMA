@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import json
 import csv
@@ -30,6 +32,7 @@ if __name__ == '__main__':
     with open('approved_samples.relabundance.tsv', 'w') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter='\t', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csvwriter.writerows(accepted)
+
     with open('rejected_samples.relabundance.tsv', 'w') as csvfile:
         csvwriter = csv.writer(csvfile, delimiter='\t', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csvwriter.writerows(rejected)

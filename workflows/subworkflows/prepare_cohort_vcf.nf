@@ -11,7 +11,7 @@ workflow PREPARE_COHORT_VCF {
 
 
     main:
-
+        //FIXME save the string to an intermediate file
         gvcfs_string_ch = cohort_gvcfs_ch
             .flatten()
             .filter {  file(it).getExtension()  == "gz" }
@@ -51,5 +51,5 @@ workflow PREPARE_COHORT_VCF {
         GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out, '')
 
     emit:
-        cohort_vcf_and_index_ch = GATK_INDEX_FEATURE_FILE__COHORT.out
+        cohort_vcf_and_index_ch = GATK_INDEX_FEATURE_FILE__COHORT.out.sample_vcf_tuple
 }

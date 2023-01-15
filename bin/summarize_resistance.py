@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import json
 import os
 import re
@@ -35,7 +37,8 @@ def add_var_to_df(df, pt_id, drug, var, freq):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Analyse resistance output from XBS Pipeline')
-    parser.add_argument('resistance_dir', metavar='resistance_dir', type=str, help='The direcotry containing the major and minor variants TBProfiler output files')
+    parser.add_argument('major_res_var_dir', metavar='major_res_var_dir', type=str, help='The directory containing the major variants TBProfiler output files')
+    parser.add_argument('minor_res_var_dir', metavar='minor_res_var_dir', type=str, help='The directory containing the minor variants TBProfiler output files')
     parser.add_argument('summary_output_dir', metavar='summary_output_dir', type=str, help='The directory where the resulting excel sheets should be placed')
     args = vars(parser.parse_args())
 
@@ -44,19 +47,19 @@ if __name__ == '__main__':
         os.makedirs(summary_dir)
 
     samples = {}
-    for file_name in os.listdir(os.path.join(args['resistance_dir'], 'major_variants/results')):
+    for file_name in os.listdir(os.path.join(args['major_res_var_dir'], 'results')):
         keys = file_name.split('.')
         samples[keys[1]] = {}
-        with open(os.path.join(os.path.join(args['resistance_dir'], 'major_variants/results', file_name))) as json_file:
+        with open(os.path.join(os.path.join(args['major_res_var_dir'], 'results', file_name))) as json_file:
             samples[keys[1]]['xbs'] = json.load(json_file)
 
-    if os.path.exists(os.path.join(os.path.join(args['resistance_dir'], 'minor_variants/results'))):
-        for file_name in os.listdir(os.path.join(os.path.join(args['resistance_dir'], 'minor_variants/results'))):
+    if os.path.exists(os.path.join(os.path.join(args['minor_res_var_dir'], 'results'))):
+        for file_name in os.listdir(os.path.join(os.path.join(args['minor_res_var_dir'], 'results'))):
             keys = file_name.split('.')
             if keys[1] not in samples:
                 continue
                 #samples[keys[1]] = {}
-            with open(os.path.join(os.path.join(os.path.join(args['resistance_dir'], 'minor_variants/results', file_name)))) as json_file:
+            with open(os.path.join(os.path.join(os.path.join(args['minor_res_var_dir'], 'results', file_name)))) as json_file:
                 samples[keys[1]]['lofreq'] = json.load(json_file)
 
     samples_df = pd.DataFrame(list(samples), columns=['full_sample'])
