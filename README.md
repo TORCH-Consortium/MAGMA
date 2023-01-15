@@ -17,9 +17,9 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 > **Note**
 > Downloading the reference EXIT_RIF GVCF files from FIXME
 
-# Usage and Tutorial
+# Tutorials and Presentations
 
-For the usage and tutorials please refer the [docs](./docs) folder.
+For the tutorials(./docs/tutorials.md) and [presentations](./docs/presentations.md) please refer the [docs](./docs) folder.
 
 ## Prerequisites
 
