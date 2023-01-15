@@ -1,7 +1,25 @@
+## Conda based execution
 
-> **NOTE**: The conda environments are expected by the `conda_local` profile of the pipeline, to be created within `MAGMA/conda_envs` directory
+You can run the MAGMA pipeline using the Conda based package manager to install all the prerequisite softwares.
 
-- Clone the pipeline locally and `cd` into it
+The `conda` environments are expected by the `conda_local` profile of the pipeline, to be created within `MAGMA/conda_envs` directory
+
+> **NOTE**
+> If you do have access to Singularity or Podman, then owing to their compatibility with Docker, you can still use the MAGMA Docker containers mentioned [docker.config](../conf/docker.config).
+
+
+You can use the `conda` based setup for the pipeline for running MAGMA 
+- On a local linux machine (e.g. your laptop or university server)
+- On an HPC cluster in case you don't have access to container systems like Singularity, Podman or Docker
+
+
+### Steps to setup the pipeline locally
+
+> **NOTE**
+> These steps are only necessary if you don't have access to any container system, then therefore you'd need to install all softwares using the `conda` package manager.
+
+
+1. Copy the environment files from [conda_envs](../conda_envs) folder locally
 
 ```sh
 $ git clone https://github.com/TORCH-Consortium/MAGMA
@@ -10,7 +28,12 @@ $ cd MAGMA
 
 ```
 
-- `cd` in the `conda_envs` folder and execute the following commands
+2. After `cd` in the `conda_envs` folder and execute the following commands to create the env 
+ 
+> **TIP**
+> 1. For faster installation process, please download [mamba](https://github.com/mamba-org/mamba) tool and replace `conda` with `mamba` in the above commands.
+> 2. The path `-p` should be customized as per you setup
+
 
 ```sh
 $ conda env create -p magma-env-1 --file magma-env-1.yml
@@ -18,21 +41,20 @@ $ conda env create -p magma-env-1 --file magma-env-1.yml
 $ conda env create -p magma-env-2 --file magma-env-2.yml
 ```
 
-> TIP: For faster installation process, please download [mamba](https://github.com/mamba-org/mamba) tool and replace `conda` with `mamba` in the above commands.
 
 ### Run the pipeline
 
-- Customize the pipeline and process level settings in the [default_params](./default_params.config) file
+1. Customize the pipeline and process level settings in the [default_params](../default_params.config) file
 
-- From inside the `magma` folder, invoke the pipeline
+2. From inside the `MAGMA` folder, invoke the pipeline
 
 ```sh
-$ nextflow run main.nf -profile conda
+$ nextflow run main.nf -profile conda_local
 ```
-- use the ```-resume``` flag to continue from previously generated output files, rather than starting from scratch.
+3. Use the `-resume` flag to continue from previously generated output files, rather than starting from scratch.
 
 ```sh
-$ nextflow run main.nf -profile conda -resume
+$ nextflow run main.nf -profile conda_local -resume
 ```
 
 
