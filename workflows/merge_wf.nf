@@ -43,7 +43,6 @@ workflow MERGE_WF {
 
 
 
-        //FIXME: Refactor this to emit two different files and use only the approved samples
         //NOTE: Use the stats file for the entire cohort (from CALL_WF)
         // and filter out the samples which pass all thresholds
         approved_call_wf_samples_ch = cohort_stats_tsv
