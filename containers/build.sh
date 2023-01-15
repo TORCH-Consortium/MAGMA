@@ -13,7 +13,7 @@ cp ../conda_envs/magma-env-2.yml ./magma-container-2
 for container_dir in $(find * -maxdepth 0 -type d); do
   echo "Building $container_dir ..."
   cd $container_dir
-  CONTAINER_TAG=0.9.10
+  CONTAINER_TAG=1.0.0
   CONTAINER_NAME=$DOCKER_NAMESPACE/$container_dir:$CONTAINER_TAG
   echo "Container Name : $CONTAINER_NAME "
   docker build -t $CONTAINER_NAME .
