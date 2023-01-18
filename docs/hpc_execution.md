@@ -1,3 +1,8 @@
+## HPC based execution
+
+You can run the MAGMA pipeline on your HPC cluster and install the prerequisite softwares using either 
+- `conda`
+- Container system like `docker`
 
 - `custom.config` => Ideally should only contain hardware level configurations
 

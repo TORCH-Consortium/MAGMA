@@ -1,12 +1,19 @@
-NOTE: Since we want to test more from the user-perspective, I've started to use the `-params-file` to capture pipeline parameters and the `-c` for a custom config file that anyone could rely upon.
+## Conda based execution
+
+You can run the MAGMA pipeline using the Conda based package manager to install all the prerequisite softwares.
+
+The `conda` environments are expected by the `conda_local` profile of the pipeline, to be created within `MAGMA/conda_envs` directory
+
+> **NOTE**
+> If you do have access to Singularity or Podman, then owing to their compatibility with Docker, you can still use the MAGMA Docker containers mentioned [docker.config](../conf/docker.config).
 
 
 Here's the command which should be used 
 
 ```console
 nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
-		 -name experiment-analysis-1 \
-		 -params-file params.yml \
+		 -name experiment-1 \
+		 -params-file experiment-1.yml \
 		 -profile conda_local \
 		 -c custom.config \
 		 -r v1.0.0 
@@ -18,7 +25,7 @@ You could use `-r` option of Nextflow for working with any specific version/bran
 
 And here are the contents of the following files
 
-- `experiment-name.yml` => You could name it as per your convenience etc
+- `experiment-1.yml` => You could name it as per your convenience. Here's a sample params yaml file
 
 ```yaml
 input_samplesheet: "/full/path/to/samplesheet.csv"
@@ -29,13 +36,12 @@ dataset_is_not_contaminated :  true
 conda_envs_location :  "/home/magma-runs/magma/conda_envs"
 ```
 
-- `custom.config` => Ideally this file should only contain hardware level configurations
+- `custom.config` => Ideally this file should only contain hardware level configurations such as 
 
 ```nextflow
 
 process {
     errorStrategy = { task.attempt < 3 ? 'retry' : 'ignore' }
-
 
     time = '1h'
     cpus = 8

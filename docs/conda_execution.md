@@ -51,10 +51,8 @@ $ conda env create -p magma-env-2 --file magma-env-2.yml
 ```sh
 $ nextflow run main.nf -profile conda_local
 ```
-3. Use the `-resume` flag to continue from previously generated output files, rather than starting from scratch.
+3. Use the `-resume` flag to continue from previously generated output files, rather than restarting the entire analysis.
 
 ```sh
 $ nextflow run main.nf -profile conda_local -resume
 ```
-
-
