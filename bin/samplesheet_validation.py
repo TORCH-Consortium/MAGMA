@@ -7,7 +7,7 @@ import pandas as pd
 
 from sys import exit
 
-parser = argparse.ArgumentParser(description='Run the XBS Pipeline')
+parser = argparse.ArgumentParser(description='Run the MAGMA pipeline samplesheet validation')
 parser.add_argument('input_file', metavar='input_file', type=str, help='The input sample file')
 args = vars(parser.parse_args())
 

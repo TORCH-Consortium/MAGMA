@@ -31,14 +31,12 @@ workflow MERGE_WF {
                                 .map { row -> [ row.first() ] }
                                 .collect()
                                 .dump(tag:'MERGE_WF: approved_samples_minor_variants_ch', pretty: true)
-                                /* .view {"\n\n XBS-NF-LOG approved_samples_minor_variants_ch : $it \n\n"} */
 
         //NOTE: Reshape the flattened output of gvch_ch into the tuples of [sampleName, gvcf, gvcf.tbi]
         collated_gvcfs_ch = gvcf_ch
                                 .flatten()
                                 .collate(3)
                                 .dump(tag:'MERGE_WF: collated_gvcfs_ch', pretty: true)
-                                /* .view {"\n\n XBS-NF-LOG collated_gvcfs_ch : $it \n\n"} */
                                 //.collectFile(name: "$params.outdir/collated_gvcfs_ch.txt")
 
 
@@ -59,14 +57,12 @@ workflow MERGE_WF {
         /* approved_call_wf_samples_ch */
         /*         .collect() */
         /*         .dump(tag:'approved_call_wf_samples_ch.collect()') */
-        /*         .view {"\n\n XBS-NF-LOG approved_call_wf_samples_ch.collect() : $it \n\n"} */ 
 
         //NOTE: Join the approved samples from MINOR_VARIANT_ANALYSIS_WF and CALL_WF
         fully_approved_samples_ch = approved_samples_minor_variants_ch
                                         .join(approved_call_wf_samples_ch)
                                         .flatten()
                                         .dump(tag:'MERGE_WF: fully_approved_samples_ch', pretty: true)
-                                        /* .view {"\n\n XBS-NF-LOG fully_approved_samples_ch : $it \n\n"} */
                                         //.collect()
                                         //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
 
@@ -124,7 +120,7 @@ workflow MERGE_WF {
         inccomplex_prefix_ch = Channel.of('ExDR.IncComplex')
 
         //NOTE: Both phylogenies should be excluding DR and excluding rRNA, then it is again filtered in two datasets one including complex regions and one excluding complex regions.
-        //Ergo PHYLOGENY_...__INCCOMPLEX should take snp_exc_vcf_ch. Refer https://github.com/TORCH-Consortium/xbs-nf/pull/114#discussion_r947732253
+        //Ergo PHYLOGENY_...__INCCOMPLEX should take snp_exc_vcf_ch. Refer https://github.com/TORCH-Consortium/MAGMA/pull/114#discussion_r947732253
         PHYLOGENY_ANALYSIS__INCCOMPLEX(inccomplex_prefix_ch,
                                        inccomplex_exclude_interval_ref_ch,
                                        SNP_ANALYSIS.out.snp_exc_vcf_ch)
@@ -142,7 +138,7 @@ workflow MERGE_WF {
                                                 .dump(tag:'MERGE_WF: excomplex_exclude_interval_ref_ch', pretty: true)
 
 
-        // excomplex_exclude_interval_ref_ch.view{ it -> "\n\n XBS-NF-LOG MERGE_WF excomplex_exclude_interval_ref_ch: $it \n\n"}
+        // excomplex_exclude_interval_ref_ch.view{ it -> "\n\n MAGMA-LOG MERGE_WF excomplex_exclude_interval_ref_ch: $it \n\n"}
 
         excomplex_prefix_ch = Channel.of('ExDR.ExComplex')
 
