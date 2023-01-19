@@ -36,7 +36,7 @@ def add_var_to_df(df, pt_id, drug, var, freq):
             df.loc[pt_id, drug] += ' & {} ({:.0%})'.format(var_repr, freq)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Analyse resistance output from XBS Pipeline')
+    parser = argparse.ArgumentParser(description='Analyse resistance output from magma Pipeline')
     parser.add_argument('major_res_var_dir', metavar='major_res_var_dir', type=str, help='The directory containing the major variants TBProfiler output files')
     parser.add_argument('minor_res_var_dir', metavar='minor_res_var_dir', type=str, help='The directory containing the minor variants TBProfiler output files')
     parser.add_argument('summary_output_dir', metavar='summary_output_dir', type=str, help='The directory where the resulting excel sheets should be placed')
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         keys = file_name.split('.')
         samples[keys[1]] = {}
         with open(os.path.join(os.path.join(args['major_res_var_dir'], 'results', file_name))) as json_file:
-            samples[keys[1]]['xbs'] = json.load(json_file)
+            samples[keys[1]]['magma'] = json.load(json_file)
 
     if os.path.exists(os.path.join(os.path.join(args['minor_res_var_dir'], 'results'))):
         for file_name in os.listdir(os.path.join(os.path.join(args['minor_res_var_dir'], 'results'))):
@@ -69,26 +69,26 @@ if __name__ == '__main__':
     for patient, sample in tqdm(samples_df.iterrows(), total=samples_df.shape[0]):
         sample_res = samples[patient]
 
-        pt_df_xbs = pd.DataFrame(columns=['Drug', 'Variant', 'Interpretation', 'Source'] + ['Conclusion {}'.format(patient)] + list([patient])).set_index(['Drug', 'Variant'])
+        pt_df_magma = pd.DataFrame(columns=['Drug', 'Variant', 'Interpretation', 'Source'] + ['Conclusion {}'.format(patient)] + list([patient])).set_index(['Drug', 'Variant'])
         pt_df_lof = pd.DataFrame(columns=['Drug', 'Variant', 'Interpretation', 'Source'] + ['Conclusion {}'.format(patient)] + list([patient])).set_index(['Drug', 'Variant'])
 
         """
-        Add the DR variants from the XBS analysis to the xbs variant dataframe.
-        Do this after adding the lofreq dr variants to show the XBS variant frequencies.
+        Add the DR variants from the magma analysis to the magma variant dataframe.
+        Do this after adding the lofreq dr variants to show the magma variant frequencies.
         """
-        for var in sample_res['xbs']['dr_variants']:
+        for var in sample_res['magma']['dr_variants']:
             gene = var['gene']
             if gene == '.':
                 gene = var['locus_tag']
             var_repr = '{}_{}'.format(gene, var['change'])
             for drug in var['drugs']:
                 drug = drug['drug'].lower().replace(' ', '_')
-                pt_df_xbs.loc[(drug, var_repr), (patient, 'Interpretation', 'Source')] = ['{:.0%}'.format(var['freq']), 0, 'WHO Catalogue']
+                pt_df_magma.loc[(drug, var_repr), (patient, 'Interpretation', 'Source')] = ['{:.0%}'.format(var['freq']), 0, 'WHO Catalogue']
 
         """
-        Add the other variants from the XBS analysis to the xbs variant dataframe.
+        Add the other variants from the magma analysis to the magma variant dataframe.
         """
-        for var in sample_res['xbs']['other_variants']:
+        for var in sample_res['magma']['other_variants']:
             gene = var['gene']
             if gene == '.':
                 gene = var['locus_tag']
@@ -96,19 +96,19 @@ if __name__ == '__main__':
             # Add all the other variants as unknown classification and overwrite their classification later if necessary
             for drug in var['gene_associated_drugs']:
                 drug = drug.lower().replace(' ', '_')
-                pt_df_xbs.loc[(drug, var_repr), (patient, 'Interpretation', 'Source')] = ['{:.0%}'.format(var['freq']), 1, 'Tier 1 or 2 gene']
+                pt_df_magma.loc[(drug, var_repr), (patient, 'Interpretation', 'Source')] = ['{:.0%}'.format(var['freq']), 1, 'Tier 1 or 2 gene']
             # Overwrite the variant classification for drugs which have a WHO sens classification last as to overrule all other classifications
             if 'annotation' in var:
                 for annotation in var['annotation']:
                     if annotation['type'] == 'resistance_association_confidence' and (int(annotation['confidence']) == 4 or int(annotation['confidence']) == 5):
-                        pt_df_xbs.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), (patient, 'Interpretation', 'Source')] = ['{:.0%}'.format(var['freq']), 2, 'WHO Catalogue']
+                        pt_df_magma.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), (patient, 'Interpretation', 'Source')] = ['{:.0%}'.format(var['freq']), 2, 'WHO Catalogue']
                     elif annotation['type'] == 'resistance_association_confidence' and (int(annotation['confidence']) == 3):
-                        pt_df_xbs.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), (patient, 'Interpretation', 'Source')] = ['{:.0%}'.format(var['freq']), 1, 'WHO Catalogue']
+                        pt_df_magma.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), (patient, 'Interpretation', 'Source')] = ['{:.0%}'.format(var['freq']), 1, 'WHO Catalogue']
                     else:
                         display(annotation)
 
         """
-        Add the DR variants from the lofreq analysis to the xbs variant dataframe.
+        Add the DR variants from the lofreq analysis to the magma variant dataframe.
         """
         if 'lofreq' in sample_res:
             for var in sample_res['lofreq']['dr_variants']:
@@ -143,10 +143,10 @@ if __name__ == '__main__':
                         else:
                             display(annotation)
 
-        # Remove all variants in the XBS summary from the lofreq summary
-        pt_df_lof = pt_df_lof.drop([i for i in pt_df_xbs.index if i in pt_df_lof.index])
-        for drug in list(drugs - set([i[0] for i in pt_df_xbs.index.values])):
-            pt_df_xbs.loc[(drug, 'No variants found'), ('Interpretation')] = 2
+        # Remove all variants in the magma summary from the lofreq summary
+        pt_df_lof = pt_df_lof.drop([i for i in pt_df_magma.index if i in pt_df_lof.index])
+        for drug in list(drugs - set([i[0] for i in pt_df_magma.index.values])):
+            pt_df_magma.loc[(drug, 'No variants found'), ('Interpretation')] = 2
         for drug in list(drugs - set([i[0] for i in pt_df_lof.index.values])):
             pt_df_lof.loc[(drug, 'No variants found'), ('Interpretation')] = 2
         
@@ -155,16 +155,16 @@ if __name__ == '__main__':
         Calculate the conclusion for all samples
         """
         for _, sample in samples_df.loc[[patient]].iterrows():
-            work_df = pt_df_xbs[pd.notna(pt_df_xbs[patient])]
-            for drug in pt_df_xbs.index.levels[0]:
+            work_df = pt_df_magma[pd.notna(pt_df_magma[patient])]
+            for drug in pt_df_magma.index.levels[0]:
                 if drug not in set([i[0] for i in work_df.index.values]):
-                    pt_df_xbs.loc[drug, 'Conclusion {}'.format(patient)] = 2
+                    pt_df_magma.loc[drug, 'Conclusion {}'.format(patient)] = 2
                 elif 0 in work_df.loc[drug, 'Interpretation'].value_counts():
-                    pt_df_xbs.loc[drug, 'Conclusion {}'.format(patient)] = 0
+                    pt_df_magma.loc[drug, 'Conclusion {}'.format(patient)] = 0
                 elif 1 in work_df.loc[drug, 'Interpretation'].value_counts():
-                    pt_df_xbs.loc[drug, 'Conclusion {}'.format(patient)] = 1
+                    pt_df_magma.loc[drug, 'Conclusion {}'.format(patient)] = 1
                 else:
-                    pt_df_xbs.loc[drug, 'Conclusion {}'.format(patient)] = 2
+                    pt_df_magma.loc[drug, 'Conclusion {}'.format(patient)] = 2
         for _, sample in samples_df.loc[[patient]].iterrows():
             work_df = pt_df_lof[pd.notna(pt_df_lof[patient])]
             for drug in pt_df_lof.index.levels[0]:
@@ -178,9 +178,9 @@ if __name__ == '__main__':
                     pt_df_lof.loc[drug, 'Conclusion {}'.format(patient)] = 2
 
         x2 = pt_df_lof.copy(deep=True)
-        pt_df_xbs = pt_df_xbs.reset_index().sort_values(['Conclusion {}'.format(patient)] + ['Drug', 'Interpretation', 'Variant'])
-        for column in [i for i in pt_df_xbs if 'Conclusion' in i or 'Interpretation' == i]:
-            pt_df_xbs[column] = pt_df_xbs[column].apply(lambda c: class_map[c])
+        pt_df_magma = pt_df_magma.reset_index().sort_values(['Conclusion {}'.format(patient)] + ['Drug', 'Interpretation', 'Variant'])
+        for column in [i for i in pt_df_magma if 'Conclusion' in i or 'Interpretation' == i]:
+            pt_df_magma[column] = pt_df_magma[column].apply(lambda c: class_map[c])
         pt_df_lof = pt_df_lof.reset_index().sort_values(['Conclusion {}'.format(patient)] + ['Drug', 'Interpretation', 'Variant'])
         for column in [i for i in pt_df_lof if 'Conclusion' in i or 'Interpretation' == i]:
             pt_df_lof[column] = pt_df_lof[column].apply(lambda c: class_map[c])
@@ -188,7 +188,7 @@ if __name__ == '__main__':
         """
         Write both sheets to excel with formatting"""
         with pd.ExcelWriter(os.path.join(summary_dir, '{}.xlsx'.format(patient)), engine='xlsxwriter') as writer:
-            pt_df_xbs.set_index(['Drug'] + ['Conclusion {}'.format(patient)] + ['Variant']).to_excel(writer, sheet_name=major_variants_sheet_name)
+            pt_df_magma.set_index(['Drug'] + ['Conclusion {}'.format(patient)] + ['Variant']).to_excel(writer, sheet_name=major_variants_sheet_name)
             pt_df_lof.set_index(['Drug'] + ['Conclusion {}'.format(patient)] + ['Variant']).to_excel(writer, sheet_name=minor_variants_sheet_name)
             #unclassified.reset_index().sort_values(by=['Conclusion', 'Drug', 'Interpretation', 'Variant']).set_index(['Drug', 'Conclusion', 'Variant']).to_excel(writer, sheet_name='Unclassified Variants')
 
@@ -200,10 +200,10 @@ if __name__ == '__main__':
 
             # Add formatting to Variants sheet
             for i in range(samples_df.loc[[patient]].shape[0]):
-                writer.sheets[major_variants_sheet_name].conditional_format('{}1:{}{}'.format(alphabet[1+i], alphabet[1+i], pt_df_xbs.shape[0]+1),  cond_res)
-                writer.sheets[major_variants_sheet_name].conditional_format('{}1:{}{}'.format(alphabet[1+i], alphabet[1+i], pt_df_xbs.shape[0]+1),  cond_sens)
-            writer.sheets[major_variants_sheet_name].conditional_format('{}1:{}{}'.format(alphabet[2+samples_df.loc[[patient]].shape[0]], alphabet[2+samples_df.loc[[patient]].shape[0]], pt_df_xbs.shape[0]+1),  cond_res)
-            writer.sheets[major_variants_sheet_name].conditional_format('{}1:{}{}'.format(alphabet[2+samples_df.loc[[patient]].shape[0]], alphabet[2+samples_df.loc[[patient]].shape[0]], pt_df_xbs.shape[0]+1),  cond_sens)
+                writer.sheets[major_variants_sheet_name].conditional_format('{}1:{}{}'.format(alphabet[1+i], alphabet[1+i], pt_df_magma.shape[0]+1),  cond_res)
+                writer.sheets[major_variants_sheet_name].conditional_format('{}1:{}{}'.format(alphabet[1+i], alphabet[1+i], pt_df_magma.shape[0]+1),  cond_sens)
+            writer.sheets[major_variants_sheet_name].conditional_format('{}1:{}{}'.format(alphabet[2+samples_df.loc[[patient]].shape[0]], alphabet[2+samples_df.loc[[patient]].shape[0]], pt_df_magma.shape[0]+1),  cond_res)
+            writer.sheets[major_variants_sheet_name].conditional_format('{}1:{}{}'.format(alphabet[2+samples_df.loc[[patient]].shape[0]], alphabet[2+samples_df.loc[[patient]].shape[0]], pt_df_magma.shape[0]+1),  cond_sens)
 
             # Add formatting to Lofreq variants sheet
             for i in range(samples_df.loc[[patient]].shape[0]):

@@ -32,7 +32,7 @@ def write_vcf(filename, df, header):
         df.to_csv(vcf, sep='\t', index=False)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Analyse resistance output from XBS Pipeline')
+    parser = argparse.ArgumentParser(description='Analyse resistance output from the MAGMA pipeline')
     parser.add_argument('lofreq_vcf_file', metavar='lofreq_vcf_file', type=str, help='The input lofreq vcf file')
     parser.add_argument('lofreq_sample_name', metavar='lofreq_sample_name', type=str, help='The sample name')
     parser.add_argument('outfile', metavar='outfile', type=str, help='The name of the output VCF file')

@@ -1,5 +1,6 @@
 process GATK_HAPLOTYPE_CALLER {
     tag "$sampleName"
+    label 'cpu_medium_memory_medium'
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 

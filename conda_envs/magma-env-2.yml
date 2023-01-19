@@ -1,4 +1,4 @@
-name: xbs-nf-env-2
+name: magma-env-2
 channels:
   - conda-forge
   - bioconda

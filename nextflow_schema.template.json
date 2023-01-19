@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
     "$id": "",
-    "title": "XBS-nf pipeline parameters",
+    "title": "MAGMA pipeline parameters",
     "description": "",
     "type": "object",
     "definitions": {

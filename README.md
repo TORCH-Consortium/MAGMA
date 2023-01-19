@@ -1,6 +1,6 @@
-# XBS-nf
+# MAGMA
 
-XBS-nf (compleX Bacterial Samples) is a pipeline for comprehensive genomic analyses of Mycobacterium tuberculosis with a focus on clinical decision making as well as research.
+MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipeline for comprehensive genomic analyses of Mycobacterium tuberculosis with a focus on clinical decision making as well as research.
 
 # Salient features of the implementation
 
@@ -9,25 +9,23 @@ XBS-nf (compleX Bacterial Samples) is a pipeline for comprehensive genomic analy
 - Ease of use on a range of infrastructure (cloud/on-prem HPC clusters/ servers (or local machines))
 - Resumability for failed processes
 - Centralized locations for specifying analysis parameters and hardware requirements
-  - XBS-nf parameters (`default_parameters.config`)
+  - MAGMA parameters (`default_parameters.config`)
   - Hardware requirements (`conf/standard.config`)
   - Execution (software) requirements (`conf/docker.config` or `conf/conda.config`)
-- A GVCF reference dataset for ~600 samples
+- An (optional) GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
 
-# Usage and Tutorial
+> **Note**
+> Downloading the reference EXIT_RIF GVCF files from FIXME
 
-For the usage and tutorials please refer the XBS-nf website
+# Tutorials and Presentations
+
+For the tutorials(./docs/tutorials.md) and [presentations](./docs/presentations.md) please refer the [docs](./docs) folder.
 
 ## Prerequisites
 
-### Git tooling
-
-- `git` and `git-lfs`
-
-> NOTE: Without the `git-lfs` tool the optional bundled wouldn't be downloaded correctly.
-
 ### Nextflow
 
+- `git` : The version control in the pipeline.
 - `Java-11` or `Java-17` (preferred)
 
 **NOTE**: The `java` version should NOT be an `internal jdk` release! You can check the release via `java -version`
@@ -44,7 +42,7 @@ $ curl -s https://get.nextflow.io | bash
 $ chmod +x nextflow
 ```
 
-- Add `nextflow` to your `path` (perhaps `/usr/local/bin/`)
+- Add `nextflow` to your `path` (for example `/usr/local/bin/`)
 
 ```sh
 $ mv nextflow /usr/local/bin
@@ -64,47 +62,17 @@ $ nextflow info
 
 ```
 
-### Local Conda environments for XBS-nf
 
-> **NOTE**: The conda environments are expected by the `conda_local` profile to be created within `xbs-nf/conda_envs` directory
+### Running MAGMA on different environments
 
-- Clone the pipeline locally and `cd` into it
+1. Local Conda environments for MAGMA
+2. Docker based execution for MAGMA
+3. HPC based execution for MAGMA
+4. Cloud batch (AWS/Google/Azure) based execution for MAGMA
 
-```sh
-$ git clone https://github.com/TORCH-Consortium/xbs-nf
+# Citation 
 
-$ cd xbs-nf
-
-```
-
-- `cd` in the `conda_envs` folder and execute the following commands
-
-```sh
-$ conda env create -p xbs-nf-env-1 --file xbs-nf-env-1.yml
-
-$ conda env create -p xbs-nf-env-2 --file xbs-nf-env-2.yml
-```
-
-> TIP: For faster installation process, please download [mamba](https://github.com/mamba-org/mamba) tool and replace `conda` with `mamba` in the above commands.
-
-### Run the pipeline
-
-- Customize the pipeline and process level settings in the [default_params](./default_params.config) file
-
-- From inside the `xbs-nf` folder, invoke the pipeline
-
-```sh
-$ nextflow run main.nf -profile conda
-```
-- use the ```-resume``` flag to continue from previously generated output files, rather than starting from scratch.
-
-```sh
-$ nextflow run main.nf -profile conda -resume
-```
-
-<!-- # Citation -->
-
-<!-- TODO: Update this section and add a citation.cff file -->
+TODO: Update this section and add a citation.cff file 
 
 # Contributions
 
@@ -112,4 +80,4 @@ Contributions are warmly accepted!
 
 # License
 
-Please refer the [LICENSE](./LICENSE) file.
+Please refer the [GPL 3.0 LICENSE](./LICENSE) file.

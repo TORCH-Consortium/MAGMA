@@ -3,15 +3,15 @@
 #
 # Samplesheets
 
-input_samplesheet: "/home/xbs-nf-runs/data/EarlyMGIT.10samples.slurm.csv"
+input_samplesheet: "/home/magma-runs/data/EarlyMGIT.10samples.slurm.csv"
 
 # Main output dir
 
-outdir :  "/home/xbs-nf-results-earlymgit10samples"
+outdir :  "/home/magma-results-earlymgit10samples"
 
 # Location for manually created conda-envs
 
-conda_envs_location :  "/home/xbs-nf-conda_envs"
+conda_envs_location :  "/home/magma-conda_envs"
 
 # Some boolean options
 optimize_variant_recalibration :  false

@@ -7,7 +7,7 @@ data/test_data/
 
 resources/exit_rif/
 
-containers/xbs-nf-container-1/resistance_db_who
+containers/magma-container-1/resistance_db_who
 
 */**/*fastq.gz
 */**/*fasta
@@ -22,9 +22,9 @@ data/full_data
 results*
 *.nextflow*
 
-conda_envs/xbs-nf-env*
+conda_envs/magma-env*
 containers/**/*yml
 
 samplesheet.csv
-xbs-nf.sh
+magma.sh
 .Rproj.user

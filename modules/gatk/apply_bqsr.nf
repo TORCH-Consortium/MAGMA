@@ -1,5 +1,6 @@
 process GATK_APPLY_BQSR {
     tag "$sampleName"
+    label 'cpu_low_memory_low'
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
