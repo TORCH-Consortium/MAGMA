@@ -1,0 +1,17 @@
+variant,drug,classification
+rpoB_p.Leu430Pro,rifabutin,2.0
+rpoB_p.Gln432Lys,rifabutin,0.0
+rpoB_p.Asp435Val,rifabutin,2.0
+rpoB_p.Asp435Tyr,rifabutin,2.0
+rpoB_p.Asp435Ser,rifabutin,2.0
+rpoB_p.Asp435Phe,rifabutin,2.0
+rpoB_p.Ser441Leu,rifabutin,2.0
+rpoB_p.His445Asn,rifabutin,2.0
+rpoB_p.His445Arg,rifabutin,0.0
+rpoB_p.His445Leu,rifabutin,2.0
+rpoB_p.His445Asp,rifabutin,0.0
+rpoB_p.His445Gly,rifabutin,2.0
+rpoB_p.His445Tyr,rifabutin,0.0
+rpoB_p.Ser450Trp,rifabutin,0.0
+rpoB_p.Ser450Leu,rifabutin,0.0
+rpoB_p.Leu452Pro,rifabutin,2.0
