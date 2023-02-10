@@ -8,12 +8,12 @@ process UTILS_SUMMARIZE_RESISTANCE_RESULTS {
         path(lit_forced_csv) 
 
     output:
-        path("resistance_summaries")
+        path("smartt_resistance_summaries")
 
     script:
        
         """
-        summarize_resistance.py xbs_output_dir smartt lit.csv lit_forced.csv resistance_summaries
+        summarize_resistance.py xbs_output_dir smartt lit.csv lit_forced.csv smartt_resistance_summaries
         """
 
     stub: 
