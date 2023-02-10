@@ -14,7 +14,9 @@ workflow REPORTS_WF {
 
         UTILS_SUMMARIZE_RESISTANCE_RESULTS(
             minor_variants_results_ch,
-            major_variants_results_ch
+            major_variants_results_ch,
+            file("$projectDir/resources/lit.csv"),
+            file("$projectDir/resources/lit_forced.csv")
         )
 
 }
