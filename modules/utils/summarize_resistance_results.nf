@@ -2,8 +2,8 @@ process UTILS_SUMMARIZE_RESISTANCE_RESULTS {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        path("minor_variants/*")
-        path("major_variants/*")
+        path("xbs_output_dir/smartt/analyses/minor_variants/*")
+        path("xbs_output_dir/smartt/analyses/major_variants/*")
         path(lit_csv) 
         path(lit_forced_csv) 
 
@@ -13,7 +13,7 @@ process UTILS_SUMMARIZE_RESISTANCE_RESULTS {
     script:
        
         """
-        summarize_resistance.py  
+        summarize_resistance.py xbs_output_dir smartt lit.csv lit_forced.csv resistance_summaries
         """
 
     stub: 

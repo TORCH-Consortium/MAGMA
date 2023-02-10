@@ -5,6 +5,9 @@ import os
 import re
 import argparse
 
+import warnings
+warnings.filterwarnings("ignore")
+
 import pandas as pd
 
 from tqdm import tqdm
