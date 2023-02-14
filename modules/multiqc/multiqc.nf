@@ -1,6 +1,6 @@
 process MULTIQC {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
-    label 'cpu_low_memory_low'
+    label 'cpu_medium_memory_medium'
 
     input:
         path("*")
