@@ -72,6 +72,10 @@ $ nextflow info
 
 # Citation 
 
+The MAGMA pipeline paper has been submitted.
+
+The XBS variant calling core was published here: https://doi.org/10.1099%2Fmgen.0.000689
+
 TODO: Update this section and add a citation.cff file 
 
 # Contributions
