@@ -1,6 +1,6 @@
 process GATK_BASE_RECALIBRATOR {
     tag "$sampleName"
-    label 'cpu_low_memory_low'
+    label 'cpu_2_memory_2'
 
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
