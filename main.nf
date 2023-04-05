@@ -36,6 +36,18 @@ workflow {
 
         MINOR_VARIANT_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
+        //TODO: Structural variant analysis https://github.com/TORCH-Consortium/MAGMA/issues/146
+
+        STRUCTURAL_VARIANTS_ANALYSIS_WF(
+
+            //NOTE: would be run across all samples 
+            take:
+                SAMTOOLS_INDEX.out 
+
+            main:
+                TBPROFILER_BAM ("tb-profiler profile -a /path/to/bam -p test" )
+
+        )
         MERGE_WF( CALL_WF.out.gvcf_ch,
                   CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch, 
                   CALL_WF.out.cohort_stats_tsv,
