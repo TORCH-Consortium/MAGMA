@@ -26,6 +26,10 @@ workflow {
 
     } else {
 
+    if (params.only_until_mapping_wf) {
+
+
+
         validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
 
         QUALITY_CHECK_WF( validated_reads_ch )
@@ -36,6 +40,9 @@ workflow {
 
         MINOR_VARIANT_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
+//FIXME
+//--cohort_data  --only_merge_wf
+//}
         MERGE_WF( CALL_WF.out.gvcf_ch,
                   CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch, 
                   CALL_WF.out.cohort_stats_tsv,
