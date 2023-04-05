@@ -4,7 +4,7 @@ include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../modules/tbprofiler/vcf_profi
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
 include { UTILS_MULTIPLE_INFECTION_FILTER } from "../modules/utils/multiple_infection_filter.nf" addParams (params.UTILS_MULTIPLE_INFECTION_FILTER)
 
-workflow MINOR_VARIANT_ANALYSIS_WF {
+workflow MINOR_VARIANTS_ANALYSIS_WF {
 
     take:
         reformatted_lofreq_vcfs_tuple_ch

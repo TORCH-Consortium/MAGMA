@@ -5,9 +5,9 @@ import pandas as pd
 
     
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Summarize the CALL_WF and MINOR_VARIANT_ANALYSIS_WF analysis results')
-    parser.add_argument('--relabundance_approved_tsv', default="approved_samples.relabundance.tsv", metavar='relabundance_approved_tsv', type=str, help='File enlisting the approved samples from MINOR_VARIANT_ANALYSIS_WF')
-    parser.add_argument('--relabundance_rejected_tsv', default="rejected_samples.relabundance.tsv", metavar='relabundance_rejected_tsv', type=str, help='File enlisting the rejected samples from MINOR_VARIANT_ANALYSIS_WF')
+    parser = argparse.ArgumentParser(description='Summarize the CALL_WF and MINOR_VARIANTS_ANALYSIS_WF analysis results')
+    parser.add_argument('--relabundance_approved_tsv', default="approved_samples.relabundance.tsv", metavar='relabundance_approved_tsv', type=str, help='File enlisting the approved samples from MINOR_VARIANTS_ANALYSIS_WF')
+    parser.add_argument('--relabundance_rejected_tsv', default="rejected_samples.relabundance.tsv", metavar='relabundance_rejected_tsv', type=str, help='File enlisting the rejected samples from MINOR_VARIANTS_ANALYSIS_WF')
     parser.add_argument('--call_wf_cohort_stats_tsv', default="joint.cohort_stats.tsv", metavar='call_wf_cohort_stats_tsv', type=str, help='File enlisting the cohort results of CALL_WF')
     parser.add_argument('--output_file', default="joint.merged_cohort_stats.tsv", metavar='output_file', type=str, help='Name of the output file merged cohort statistics')
     args = vars(parser.parse_args())
