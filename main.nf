@@ -61,6 +61,10 @@ workflow {
 
         MINOR_VARIANT_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
+        UTILS_MERGE_COHORT_STATS ( MINOR_VARIANT_ANALYSIS_WF.out.approved_samples_ch,
+                                   MINOR_VARIANT_ANALYSIS_WF.out.rejected_samples_ch,
+                                   CALL_WF.out.cohort_stats_tsv )
+
         MERGE_WF( CALL_WF.out.gvcf_ch,
                   CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch, 
                   CALL_WF.out.cohort_stats_tsv,
