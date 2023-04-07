@@ -41,7 +41,6 @@ workflow {
                                    MINOR_VARIANT_ANALYSIS_WF.out.rejected_samples_ch,
                                    CALL_WF.out.cohort_stats_tsv )
 
-    } 
 
     //FIXME IMPLEMENT ANOTHER LOGIC FOR --only_merge_analysis
     /* else if { */
