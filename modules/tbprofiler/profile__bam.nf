@@ -1,7 +1,7 @@
 process TBPROFILER_PROFILE__BAM {
     tag "${sampleName}"
-    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish, , pattern: "vcf/*vcf.gz", saveAs: { f -> f.tokenize("/").last()}
-    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish, , pattern: "vcf/*bcf", saveAs: { f -> f.tokenize("/").last()}
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish, pattern: "vcf/*vcf.gz", saveAs: { f -> f.tokenize("/").last()}
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish, pattern: "vcf/*bcf", saveAs: { f -> f.tokenize("/").last()}
 
 
     input:
