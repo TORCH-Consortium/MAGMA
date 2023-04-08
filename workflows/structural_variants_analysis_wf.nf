@@ -8,9 +8,10 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
     main:
 
         
-        bams_ch = samtools_bams_ch.flatten().collate(3)
-         
-        bams_ch.dump(tag:"STRUCTURAL_VARIANTS_ANALYSIS_WF")
+        bams_ch = samtools_bams_ch
+                        .flatten()
+                        .collate(3)
+                        .dump(tag:"STRUCTURAL_VARIANTS_ANALYSIS_WF")
 
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 

@@ -1,5 +1,5 @@
 process TBPROFILER_PROFILE__BAM {
-    tag "${joint_name}"
+    tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
