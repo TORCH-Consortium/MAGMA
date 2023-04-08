@@ -7,7 +7,7 @@ process TBPROFILER_PROFILE__BAM {
         path(resistanceDb)
 
     output:
-        path("results/vcf/*"), emit: per_sample_results
+        tuple val(sampleName), path("results/*"), path("vcf/*"), emit: per_sample_results
 
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
