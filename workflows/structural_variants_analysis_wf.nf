@@ -8,7 +8,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
     main:
 
         
-        bams_ch = samtools_bams_ch.collate(3)
+        bams_ch = samtools_bams_ch.flatten().collate(3)
          
         bams_ch.dump(tag:"STRUCTURAL_VARIANTS_ANALYSIS_WF")
 
