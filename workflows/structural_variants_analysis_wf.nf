@@ -7,9 +7,13 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
     main:
 
-        def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
-        samtools_bams_ch.dump(tag:"STRUCTURAL_VARIANTS_ANALYSIS_WF")
+        
+        bams_ch = samtools_bams_ch.collate(3)
+         
+        bams_ch.dump(tag:"STRUCTURAL_VARIANTS_ANALYSIS_WF")
 
-        TBPROFILER_PROFILE__BAM(samtools_bams_ch, resistanceDb)
+        def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
+
+        TBPROFILER_PROFILE__BAM(bams_ch, resistanceDb)
 
 }
