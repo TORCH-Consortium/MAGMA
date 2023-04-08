@@ -163,4 +163,5 @@ workflow CALL_WF {
         gvcf_ch = GATK_HAPLOTYPE_CALLER.out.gvcf_ch.collect()
         reformatted_lofreq_vcfs_tuple_ch = GATK_INDEX_FEATURE_FILE__LOFREQ.out.vcf_tuple.collect(sort:true)
         bgzip_ch = BGZIP__LOFREQ.out.collect() 
+        samtools_bam_ch = SAMTOOLS_INDEX.out.collect() 
 }

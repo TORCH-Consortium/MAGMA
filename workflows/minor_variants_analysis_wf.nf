@@ -26,10 +26,8 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
 
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
-        //TBPROFILER minor variants
         TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP.out, resistanceDb)
 
-        //TBPROFILER major variants
         TBPROFILER_COLLATE__LOFREQ(params.vcf_name,
                                   TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
                                   resistanceDb)

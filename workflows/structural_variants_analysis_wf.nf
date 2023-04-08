@@ -1,4 +1,4 @@
-include { TBPROFILER_PROFILE as TBPROFILER_PROFILER__BAM } from "../modules/tbprofiler/profile.nf" addParams (params.TBPROFILER_PROFILE)
+include { TBPROFILER_PROFILE as TBPROFILER_PROFILER__BAM } from "../modules/tbprofiler/profile.nf" addParams (params.TBPROFILER_PROFILER__BAM)
 
 workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 

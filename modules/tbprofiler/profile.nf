@@ -3,27 +3,26 @@ process TBPROFILER_PROFILE {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        val(joint_name)
-        path("results/*")
+        tuple val(sampleName), path("*.bai"), path(bam)
         path(resistanceDb)
 
-    output:
-        path("*${params.prefix}*"), emit: cohort_results
-        path("results"), emit: per_sample_results
+    /* output: */
+    /*     path("*${params.prefix}*"), emit: cohort_results */
+    /*     path("results"), emit: per_sample_results */
 
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
 
         """
-
-        ${params.tbprofiler_path} collate \\
+        ${params.tbprofiler_path} profile \\
+            -a ${bam} \\
             ${optionalDb} \\
-            -p ${joint_name}.${params.prefix}
+            -p ${sampleName}
         """
 
     stub:
         """
-        touch ${joint_name}.${params.prefix}.txt
+        touch ${sampleName}.txt
         """
 }
 
