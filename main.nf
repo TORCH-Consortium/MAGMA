@@ -36,10 +36,12 @@ workflow {
 
         CALL_WF( MAP_WF.out.sorted_reads_ch )
 
-        MINOR_VARIANT_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
+        MINOR_VARIANTS_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
-        UTILS_MERGE_COHORT_STATS ( MINOR_VARIANT_ANALYSIS_WF.out.approved_samples_ch,
-                                   MINOR_VARIANT_ANALYSIS_WF.out.rejected_samples_ch,
+        STRUCTURAL_VARIANTS_ANALYSIS_WF ( CALL_WF.out.samtools_bam_ch )
+
+        UTILS_MERGE_COHORT_STATS ( MINOR_VARIANTS_ANALYSIS_WF.out.approved_samples_ch,
+                                   MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch,
                                    CALL_WF.out.cohort_stats_tsv )
 
 
@@ -62,8 +64,8 @@ workflow {
 
         STRUCTURAL_VARIANTS_ANALYSIS_WF ( CALL_WF.out.samtools_bam_ch )
 
-        UTILS_MERGE_COHORT_STATS ( MINOR_VARIANT_ANALYSIS_WF.out.approved_samples_ch,
-                                   MINOR_VARIANT_ANALYSIS_WF.out.rejected_samples_ch,
+        UTILS_MERGE_COHORT_STATS ( MINOR_VARIANTS_ANALYSIS_WF.out.approved_samples_ch,
+                                   MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch,
                                    CALL_WF.out.cohort_stats_tsv )
 
         MERGE_WF( CALL_WF.out.gvcf_ch,
