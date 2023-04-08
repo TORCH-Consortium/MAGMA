@@ -1,4 +1,4 @@
-include { TBPROFILER_PROFILER__BAM } from "../modules/tbprofiler/profile__bam.nf" addParams (params.TBPROFILER_PROFILER__BAM)
+include { TBPROFILER_PROFILE__BAM } from "../modules/tbprofiler/profile__bam.nf" addParams (params.TBPROFILER_PROFILE__BAM)
 
 workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
@@ -10,6 +10,6 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
         samtools_bams_ch.dump(tag:"STRUCTURAL_VARIANTS_ANALYSIS_WF")
 
-        TBPROFILER_PROFILER__BAM(samtools_bams_ch, resistanceDb)
+        TBPROFILER_PROFILE__BAM(samtools_bams_ch, resistanceDb)
 
 }
