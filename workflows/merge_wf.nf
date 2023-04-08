@@ -8,7 +8,6 @@ include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__INCCOMPLEX } from "./subwork
 include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__EXCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
 include { CLUSTER_ANALYSIS as CLUSTER_ANALYSIS__INCCOMPLEX } from "./subworkflows/cluster_analysis.nf"
 include { CLUSTER_ANALYSIS as  CLUSTER_ANALYSIS__EXCOMPLEX } from "./subworkflows/cluster_analysis.nf"
-include { UTILS_MERGE_COHORT_STATS } from "../modules/utils/merge_cohort_stats.nf" addParams ( params.UTILS_MERGE_COHORT_STATS )
 
 
 workflow MERGE_WF {
@@ -84,12 +83,6 @@ workflow MERGE_WF {
                                         .dump(tag:'MERGE_WF: filtered_selected_gvcfs_ch', pretty: true)
                                         //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
 
-
-       //---------------------------------------------------------------------------------
-
-        UTILS_MERGE_COHORT_STATS( approved_samples_ch,
-                                  rejected_samples_ch,
-                                  cohort_stats_tsv )
 
        //---------------------------------------------------------------------------------
 
