@@ -11,7 +11,7 @@ process UTILS_MERGE_COHORT_STATS {
         path("*merged_cohort_stats.tsv")
 
 
-    shell:
+    script:
         """
         generate_merged_cohort_stats.py \\
             --relabundance_approved_tsv ${approved_samples_tsv} \\
