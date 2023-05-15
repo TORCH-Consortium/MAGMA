@@ -21,8 +21,11 @@ def read_vcf(filename):
                 break
             else:
                 header += line
-        df = pd.read_csv(vcf, header=None, sep='\t')
-    df.columns = line[:-1].split('\t')
+        try:
+            df = pd.read_csv(vcf, header=None, sep='\t')
+            df.columns = line[:-1].split('\t')
+        except pd.errors.EmptyDataError as e:
+            df = pd.DataFrame(columns=line[:-1].split('\t'))
     return df, header
 
 def write_vcf(filename, df, header):
