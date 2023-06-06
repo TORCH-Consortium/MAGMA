@@ -28,7 +28,7 @@ For the tutorials(./docs/tutorials.md) and [presentations](./docs/presentations.
 - `git` : The version control in the pipeline.
 - `Java-11` or `Java-17` (preferred)
 
-> **Warning**
+> :warning: **Check `java` version!**:
 The `java` version should NOT be an `internal jdk` release! You can check the release via `java -version`
 
 - Download Nextflow
@@ -62,6 +62,8 @@ $ nextflow info
   Encoding: UTF-8 (UTF-8)
 
 ```
+
+> :heavy_check_mark: **With this you're all set with Nextflow. Next stop, conda or docker - pick one!**: <br>
 
 ## Customizing pipeline parameters for your dataset
 
