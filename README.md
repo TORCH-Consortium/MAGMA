@@ -17,7 +17,7 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 > **Note**
 Downloading the reference EXIT_RIF GVCF files from FIXME
 
-# Tutorials and Presentations
+## Tutorials and Presentations
 
 For the tutorials(./docs/tutorials.md) and [presentations](./docs/presentations.md) please refer the [docs](./docs) folder.
 
@@ -63,7 +63,7 @@ $ nextflow info
 
 ```
 
-### Customizing pipeline parameters for your dataset
+## Customizing pipeline parameters for your dataset
 
 The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a `yml` file as shown below
 
@@ -92,7 +92,7 @@ nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
 
 ```
 
-### Running MAGMA using conda
+## Running MAGMA using conda
 
 You can run the pipeline using Conda, Mamba or Micromamba package managers to install all the prerequisite softwares from popular repositories such as bioconda and conda-forge.
 
@@ -126,7 +126,7 @@ Once the environments are created, you can make use of the pipeline parameter `c
 > **Note**
 You can find out the location of conda environments using `conda env list`. [Here's](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) a useful cheatsheet for conda operations.
 
-### Running MAGMA using docker
+## Running MAGMA using docker
 
 We provide [two docker containers](https://github.com/orgs/TORCH-Consortium/packages?repo_name=MAGMA) with the pipeline so that you could just download and run the pipeline with them. There is **NO** need to create any docker containers, just download and enable the `docker` profile.
 
@@ -146,7 +146,7 @@ nextflow run 'https://github.com/torch-consortium/magma' \
 You could use `-r` option of Nextflow for working with any specific version/branch of the pipeline.
 
 
-### Customizing the pipeline configuration for your infrastructure
+## Customizing the pipeline configuration for your infrastructure
 
 There might be cases when you need to customize the default configuration such as `cpus` and `memory` etc. For these cases, it is recommended you refer Nextflow configuration docs as well as the [default_params.config](./default_params.config) file.
 
@@ -180,7 +180,7 @@ nextflow run 'https://github.com/torch-consortium/magma' \
 		 -params-file my_parameters_2.yml
 ```
 
-### Running MAGMA on HPC and cloud executors
+## Running MAGMA on HPC and cloud executors
 
 1. HPC based execution for MAGMA, please refer [this doc](./docs/hpc_execution.md).
 2. Cloud batch (AWS/Google/Azure) based execution for MAGMA, please refer [this doc](./docs/cloud_batch_execution.md)
