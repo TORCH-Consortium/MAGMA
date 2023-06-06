@@ -1,58 +1,33 @@
 ## Conda based execution
 
-You can run the MAGMA pipeline using the Conda based package manager to install all the prerequisite softwares.
-
-The `conda` environments are expected by the `conda_local` profile of the pipeline, to be created within `MAGMA/conda_envs` directory
-
-> **NOTE**
-> If you do have access to Singularity or Podman, then owing to their compatibility with Docker, you can still use the MAGMA Docker containers mentioned [docker.config](../conf/docker.config).
-
+You can run the MAGMA pipeline using the Conda or (Micro)mamba package manager to install all the prerequisite softwares from popular repositories such as bioconda and conda-forge.
 
 You can use the `conda` based setup for the pipeline for running MAGMA 
-- On a local linux machine (e.g. your laptop or university server)
-- On an HPC cluster in case you don't have access to container systems like Singularity, Podman or Docker
+- On a local linux machine(e.g. your laptop or a university server)
+- On an HPC cluster (e.g. SLURM, PBS) in case you don't have access to container systems like Singularity, Podman or Docker 
 
 
-### Steps to setup the pipeline locally
+All the requisite softwares have been provided as a `conda` recipe (i.e. `yml` files) 
+- [magma-env-1.yml](./conda_envs/magma-env-1.yml)
+- [magma-env-2.yml](./conda_envs/magma-env-2.yml)
 
-> **NOTE**
-> These steps are only necessary if you don't have access to any container system, then therefore you'd need to install all softwares using the `conda` package manager.
+These files can be downloaded using the following commands
 
-
-1. Copy the environment files from [conda_envs](../conda_envs) folder locally
-
-```sh
-$ git clone https://github.com/TORCH-Consortium/MAGMA
-
-$ cd MAGMA
+```console
+wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-env-2.yml
+wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-env-1.yml
 
 ```
 
-2. After `cd` in the `conda_envs` folder and execute the following commands to create the env 
- 
-> **TIP**
-> 1. For faster installation process, please download [mamba](https://github.com/mamba-org/mamba) tool and replace `conda` with `mamba` in the above commands.
-> 2. The path `-p` should be customized as per you setup
+The `conda` environments are expected by the `conda_local` profile of the pipeline, it is recommended that it should be created **prior** to the use of the pipeline, using the following commands. Note that if you have `mamba` (or `micromamba`) available you can rely upon those as well.
 
 
 ```sh
-$ conda env create -p magma-env-1 --file magma-env-1.yml
+$ conda env create -n magma-env-1 --file magma-env-1.yml
 
-$ conda env create -p magma-env-2 --file magma-env-2.yml
+$ conda env create -n magma-env-2 --file magma-env-2.yml
 ```
 
+Once the environments are created, you can make use of the `conda_envs_location` parameter to inform the pipeline of the names and location of the conda envs.
 
-### Run the pipeline
-
-1. Customize the pipeline and process level settings in the [default_params](../default_params.config) file
-
-2. From inside the `MAGMA` folder, invoke the pipeline
-
-```sh
-$ nextflow run main.nf -profile conda_local
-```
-3. Use the `-resume` flag to continue from previously generated output files, rather than restarting the entire analysis.
-
-```sh
-$ nextflow run main.nf -profile conda_local -resume
-```
+TIP: You can find out the location of conda environments using `conda env list`. [Here's](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) a useful cheatsheet for conda operations.

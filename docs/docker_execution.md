@@ -1,4 +1,12 @@
 ## Conda based execution
+> **NOTE**
+> If you do have access to Singularity or Podman, then owing to their native compatibility with Docker, you can still use the MAGMA Docker containers mentioned [docker.config](./conf/docker.config).
+
+
+> **NOTE**
+> If you do have access to Singularity or Podman, then owing to their native compatibility with Docker, you can still use the MAGMA Docker containers mentioned [docker.config](./conf/docker.config).
+
+
 
 You can run the MAGMA pipeline using the Conda based package manager to install all the prerequisite softwares.
 

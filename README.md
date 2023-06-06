@@ -62,13 +62,37 @@ $ nextflow info
 
 ```
 
+### Customizing pipeline parameters for your dataset
 
-### Running MAGMA on different environments
+The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a `yml` file as shown below
 
-1. Local Conda environments for MAGMA
-2. Docker based execution for MAGMA
-3. HPC based execution for MAGMA
-4. Cloud batch (AWS/Google/Azure) based execution for MAGMA
+
+```yml
+
+# Sample contents of my_parameters_1.yml file
+
+input_samplesheet: /path/to/your_samplesheet.csv
+only_validate_fastqs: true
+conda_envs_location: /path/to/both/conda_envs
+```
+
+Which could be provided to the pipeline using `-params-file` parameter as shown below
+
+```console
+nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
+		 -profile conda_local \ 
+		 -params-file  my_parameters_1.yml
+
+```
+
+### Running MAGMA using conda
+
+### Running MAGMA using docker
+
+### Running MAGMA on HPC and cloud executors
+
+1. HPC based execution for MAGMA
+2. Cloud batch (AWS/Google/Azure) based execution for MAGMA
 
 # Citation 
 
