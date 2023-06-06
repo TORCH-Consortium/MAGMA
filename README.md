@@ -177,7 +177,7 @@ You can then include this configuration as part of the pipeline invocation comma
 nextflow run 'https://github.com/torch-consortium/magma' \
 		 -profile docker \
 		 -r v1.0.1 \
-         -c custom.config \
+                 -c custom.config \
 		 -params-file my_parameters_2.yml
 ```
 
