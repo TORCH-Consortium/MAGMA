@@ -55,10 +55,10 @@ $ mv nextflow /usr/local/bin
 ```console
 $ nextflow info
 
-  Version: 22.04.5 build 5708
-  Created: 15-07-2022 16:09 UTC (18:09 SAST)
-  System: Mac OS X 10.15.6
-  Runtime: Groovy 3.0.10 on OpenJDK 64-Bit Server VM 11.0.9.1+1-LTS
+  Version: 23.04.1 build 5866
+  Created: 15-04-2023 06:51 UTC (08:51 SAST)
+  System: Mac OS X 12.6.5
+  Runtime: Groovy 3.0.16 on OpenJDK 64-Bit Server VM 17.0.7+7-LTS
   Encoding: UTF-8 (UTF-8)
 
 ```
@@ -77,18 +77,24 @@ only_validate_fastqs: true
 conda_envs_location: /path/to/both/conda_envs
 ```
 
+
+> **Note**
+The `-profile` mechanism is used to enable infrastructure specific settings of the pipeline. The example below, assumes you are using `conda` based setup.
+
+
 Which could be provided to the pipeline using `-params-file` parameter as shown below
 
 ```console
 nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
 		 -profile conda_local \ 
+		 -r v1.0.1 \
 		 -params-file  my_parameters_1.yml
 
 ```
 
 ### Running MAGMA using conda
 
-You can run the MAGMA pipeline using the Conda or (Micro)mamba package manager to install all the prerequisite softwares from popular repositories such as bioconda and conda-forge.
+You can run the pipeline using Conda, Mamba or Micromamba package managers to install all the prerequisite softwares from popular repositories such as bioconda and conda-forge.
 
 You can use the `conda` based setup for the pipeline for running MAGMA 
 - On a local linux machine(e.g. your laptop or a university server)
@@ -106,7 +112,7 @@ wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/
 
 ```
 
-The `conda` environments are expected by the `conda_local` profile of the pipeline, it is recommended that it should be created **prior** to the use of the pipeline, using the following commands. Note that if you have `mamba` (or `micromamba`) available you can rely upon those as well.
+The `conda` environments are expected by the `conda_local` profile of the pipeline, it is recommended that it should be created **prior** to the use of the pipeline, using the following commands. Note that if you have `mamba` (or `micromamba`) available you can rely upon that instead of `conda`.
 
 
 ```sh
@@ -115,43 +121,36 @@ $ conda env create -n magma-env-1 --file magma-env-1.yml
 $ conda env create -n magma-env-2 --file magma-env-2.yml
 ```
 
-Once the environments are created, you can make use of the `conda_envs_location` parameter to inform the pipeline of the names and location of the conda envs.
+Once the environments are created, you can make use of the pipeline parameter `conda_envs_location` to inform the pipeline of the names and location of the conda envs.
 
-> **Tip**
-> You can find out the location of conda environments using `conda env list`. [Here's](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) a useful cheatsheet for conda operations.
+> **Note**
+You can find out the location of conda environments using `conda env list`. [Here's](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) a useful cheatsheet for conda operations.
 
 ### Running MAGMA using docker
 
-> **NOTE**
-> If you do have access to Singularity or Podman, then owing to their compatibility with Docker, you can still use the MAGMA Docker containers mentioned [docker.config](../conf/docker.config).
+We provide [two docker containers](https://github.com/orgs/TORCH-Consortium/packages?repo_name=MAGMA) with the pipeline so that you could just download and run the pipeline with them. There is **NO** need to create any docker containers, just download and enable the `docker` profile.
+
+> **Note**
+> If you do have access to Singularity or Podman, then owing to their compatibility with Docker, you can still use the provided docker containers.
 
 Here's the command which should be used 
 
 ```console
-nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
-		 -name experiment-1 \
-		 -params-file experiment-1.yml \
-		 -profile conda_local \
-		 -c custom.config \
-		 -r v1.1.0 
+nextflow run 'https://github.com/torch-consortium/magma' \
+		 -params-file my_parameters_2.yml \
+		 -profile docker \
+		 -r v1.0.1 
 ```
 
+> **Note**
 You could use `-r` option of Nextflow for working with any specific version/branch of the pipeline.
 
----------
 
-And here are the contents of the following files
+### Customizing the pipeline configuration for your infrastructure
 
-- `experiment-1.yml` => You could name it as per your convenience. Here's a sample params yaml file
+There might be cases when you need to customize the default configuration such as `cpus` and `memory` etc. For these cases, it is recommended you refer Nextflow configuration docs as well as the [default_params.config](./default_params.config) file.
 
-```yaml
-input_samplesheet: "/full/path/to/samplesheet.csv"
-outdir :  "/full/path/to/magma-results"
-optimize_variant_recalibration :  false
-compute_minor_variants :  true
-dataset_is_not_contaminated :  true
-conda_envs_location :  "/home/magma-runs/magma/conda_envs"
-```
+Shown below is one sample configuration
 
 - `custom.config` => Ideally this file should only contain hardware level configurations such as 
 
@@ -171,10 +170,20 @@ process {
 }
 ```
 
+You can then include this configuration as part of the pipeline invocation command 
+
+```console
+nextflow run 'https://github.com/torch-consortium/magma' \
+		 -profile docker \
+		 -r v1.0.1 \
+         -c custom.config \
+		 -params-file my_parameters_2.yml
+```
+
 ### Running MAGMA on HPC and cloud executors
 
-1. HPC based execution for MAGMA
-2. Cloud batch (AWS/Google/Azure) based execution for MAGMA
+1. HPC based execution for MAGMA, please refer [this doc](./docs/hpc_execution.md).
+2. Cloud batch (AWS/Google/Azure) based execution for MAGMA, please refer [this doc](./docs/cloud_batch_execution.md)
 
 # Citation 
 
@@ -184,9 +193,9 @@ The XBS variant calling core was published here: https://doi.org/10.1099%2Fmgen.
 
 TODO: Update this section and add a citation.cff file 
 
-# Contributions
+# Contributions and Interactions with us
 
-Contributions are warmly accepted!
+Contributions are warmly accepted! We encourage you to interact with us using `Discussions` and `Issues` feature of Github.
 
 # License
 
