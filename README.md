@@ -15,7 +15,7 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 - An (optional) GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
 
 > **Note**
-> Downloading the reference EXIT_RIF GVCF files from FIXME
+Downloading the reference EXIT_RIF GVCF files from FIXME
 
 # Tutorials and Presentations
 
@@ -28,8 +28,8 @@ For the tutorials(./docs/tutorials.md) and [presentations](./docs/presentations.
 - `git` : The version control in the pipeline.
 - `Java-11` or `Java-17` (preferred)
 
-> **Note**
-> The `java` version should NOT be an `internal jdk` release! You can check the release via `java -version`
+> **Warning**
+The `java` version should NOT be an `internal jdk` release! You can check the release via `java -version`
 
 - Download Nextflow
 
