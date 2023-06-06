@@ -132,6 +132,17 @@ You can find out the location of conda environments using `conda env list`. [Her
 
 We provide [two docker containers](https://github.com/orgs/TORCH-Consortium/packages?repo_name=MAGMA) with the pipeline so that you could just download and run the pipeline with them. There is **NO** need to create any docker containers, just download and enable the `docker` profile.
 
+> 🚧 **Container build script**: The script used to build these containers is provided [here](./containers/build.sh).
+
+Although, you don't need to pull the containers manually, but should you need to, you could use the following commands to pull the pre-built and provided containers 
+
+```console
+docker pull ghcr.io/torch-consortium/magma/magma-container-1:1.1.0
+
+docker pull ghcr.io/torch-consortium/magma/magma-container-2:1.1.0
+```
+
+
 > :memo: **Have singularity or podman instead?**: <br>
 If you do have access to Singularity or Podman, then owing to their compatibility with Docker, you can still use the provided docker containers.
 
