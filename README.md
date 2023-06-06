@@ -123,15 +123,15 @@ $ conda env create -n magma-env-2 --file magma-env-2.yml
 
 Once the environments are created, you can make use of the pipeline parameter `conda_envs_location` to inform the pipeline of the names and location of the conda envs.
 
-> **Note**
+> :information_source: **Conda environments and cheatsheet**: <br>
 You can find out the location of conda environments using `conda env list`. [Here's](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) a useful cheatsheet for conda operations.
 
 ## Running MAGMA using docker
 
 We provide [two docker containers](https://github.com/orgs/TORCH-Consortium/packages?repo_name=MAGMA) with the pipeline so that you could just download and run the pipeline with them. There is **NO** need to create any docker containers, just download and enable the `docker` profile.
 
-> **Note**
-> If you do have access to Singularity or Podman, then owing to their compatibility with Docker, you can still use the provided docker containers.
+> :memo: **Have singularity or podman instead?**: <br>
+If you do have access to Singularity or Podman, then owing to their compatibility with Docker, you can still use the provided docker containers.
 
 Here's the command which should be used 
 
@@ -142,9 +142,8 @@ nextflow run 'https://github.com/torch-consortium/magma' \
 		 -r v1.0.1 
 ```
 
-> **Note**
+> :bulb: **Hint**: <br>
 You could use `-r` option of Nextflow for working with any specific version/branch of the pipeline.
-
 
 ## Customizing the pipeline configuration for your infrastructure
 
