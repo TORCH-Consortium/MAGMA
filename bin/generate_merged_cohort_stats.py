@@ -14,8 +14,12 @@ if __name__ == '__main__':
     
     # Read all CSV files
     df_cohort_stats = pd.read_csv(args['call_wf_cohort_stats_tsv'], sep="\t", index_col="SAMPLE")
+
     df_approved_relabundance_stats =  pd.read_csv(args['relabundance_approved_tsv'], sep="\t", index_col="SAMPLE")
+    df_approved_relabundance_stats =  df_approved_relabundance_stats.convert_dtypes()
+
     df_rejected_relabundance_stats =  pd.read_csv(args['relabundance_rejected_tsv'], sep="\t", index_col="SAMPLE")
+    df_rejected_relabundance_stats =  df_rejected_relabundance_stats.convert_dtypes()
     
     # Join the datasets
     df_relabundance_stats_concat = pd.concat([df_approved_relabundance_stats, df_rejected_relabundance_stats])
