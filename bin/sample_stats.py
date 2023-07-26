@@ -66,3 +66,4 @@ if __name__ == '__main__':
 
     with open('{}.stats.tsv'.format(args['sample_name']), 'w') as f:
         f.write('\t'.join([str(i) for i in [args['sample_name'], ins_size, mapped_p, total_seqs, avg_qual] + list(wgsmetrics.loc[0, ['MEAN_COVERAGE', 'SD_COVERAGE', 'MEDIAN_COVERAGE', 'MAD_COVERAGE', 'PCT_EXC_ADAPTER', 'PCT_EXC_MAPQ', 'PCT_EXC_DUPE', 'PCT_EXC_UNPAIRED', 'PCT_EXC_BASEQ', 'PCT_EXC_OVERLAP', 'PCT_EXC_CAPPED', 'PCT_EXC_TOTAL', 'PCT_1X', 'PCT_5X', 'PCT_10X', 'PCT_30X', 'PCT_50X', 'PCT_100X']]) + [ntm_fraction, ntm_fraction_threshold_met, coverage_threshold_met, breadth_of_coverage_threshold_met, all_thresholds_met]]))
+        f.write('\n')
