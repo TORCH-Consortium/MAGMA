@@ -10,15 +10,17 @@ re_mapped_p = re.compile(r'\d* mapped \((.*)%\)')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process the sample stats')
-    parser.add_argument('sample_name', metavar='sample_name', type=str, help='The sample name')
-    parser.add_argument('flagstat_file', metavar='flagstat_file', type=str, help='The flag stats file')
-    parser.add_argument('samtoolsstats_file', metavar='samtoolsstats_file', type=str, help='The samtools stats file')
-    parser.add_argument('wgsmetrics_file', metavar='wgsmetrics_file', type=str, help='The WGS metrics file')
-    parser.add_argument('ntmfraction_file', metavar='ntmfraction_file', type=str, help='The NTM fraction file')
-    parser.add_argument('median_coverage_cutoff', metavar='median_coverage_cutoff', default=10, type=float, help='The median coverage cutoff threshold')
-    parser.add_argument('breadth_of_coverage_cutoff', metavar='breadth_of_coverage_cutoff', default=0.9, type=float, help='The breadth of coverage cutoff threshold')
-    parser.add_argument('rel_abundance_cutoff', metavar='rel_abundance_cutoff', default=0.8, type=float, help='The relative abundance cutoff threshold')
-    parser.add_argument('ntm_fraction_cutoff', metavar='ntm_fraction_cutoff', default=0.2, type=float, help='The NTM fraction cutoff threshold')
+    parser.add_argument('--sample_name', dest='sample_name', required=True, metavar='sample_name', type=str, help='The sample name')
+    parser.add_argument('--flagstat_file', dest='flagstat_file', required=True, metavar='flagstat_file', type=str, help='The flag stats file')
+    parser.add_argument('--samtoolsstats_file', dest='samtoolsstats_file', required=True, metavar='samtoolsstats_file', type=str, help='The samtools stats file')
+    parser.add_argument('--wgsmetrics_file', dest='wgsmetrics_file', required=True, metavar='wgsmetrics_file', type=str, help='The WGS metrics file')
+    parser.add_argument('--ntmfraction_file', dest='ntmfraction_file', required=True, metavar='ntmfraction_file', type=str, help='The NTM fraction file')
+
+    parser.add_argument('--median_coverage_cutoff', metavar='median_coverage_cutoff', default=10, type=float, help='The median coverage cutoff threshold')
+    parser.add_argument('--breadth_of_coverage_cutoff', metavar='breadth_of_coverage_cutoff', default=0.9, type=float, help='The breadth of coverage cutoff threshold')
+    parser.add_argument('--rel_abundance_cutoff', metavar='rel_abundance_cutoff', default=0.8, type=float, help='The relative abundance cutoff threshold')
+    parser.add_argument('--ntm_fraction_cutoff', metavar='ntm_fraction_cutoff', default=0.2, type=float, help='The NTM fraction cutoff threshold')
+
     args = vars(parser.parse_args())
 
     with open(args['wgsmetrics_file']) as f:
