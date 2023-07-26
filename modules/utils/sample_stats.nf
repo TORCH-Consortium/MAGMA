@@ -18,8 +18,8 @@ process UTILS_SAMPLE_STATS {
             --ntmfraction_file ${ntmFraction} \\
             --median_coverage_cutoff ${params.median_coverage_cutoff} \\
             --breadth_of_coverage_cutoff ${params.breadth_of_coverage_cutoff} \\
-            --rel_abundance_cutoff ${rel_abundance_cutoff} \\
-            --ntm_fraction_cutoff ${ntm_fraction_cutoff}
+            --rel_abundance_cutoff ${params.rel_abundance_cutoff} \\
+            --ntm_fraction_cutoff ${params.ntm_fraction_cutoff}
         """
 
 }
