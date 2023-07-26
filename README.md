@@ -14,8 +14,10 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
   - Execution (software) requirements (`conf/docker.config` or `conf/conda.config`)
 - An (optional) GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
 
-> **Note**
-Downloading the reference EXIT_RIF GVCF files from FIXME
+
+# (Optional) GVCF for analyzing small number of samples
+
+You can download the  `EXIT_RIF GVCF` files from https://zenodo.org/record/8054182
 
 ## Tutorials and Presentations
 

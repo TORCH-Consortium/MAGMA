@@ -25,7 +25,7 @@ workflow {
 
         VALIDATE_FASTQS_WF(params.input_samplesheet)
 
-    } else if (params.only_pre_merge_analysis) {
+    } else if (params.skip_merge_analysis) {
 
         validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
 
