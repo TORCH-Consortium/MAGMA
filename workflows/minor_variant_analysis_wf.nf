@@ -19,6 +19,7 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
                                 .reduce { a, b -> "$a $b " }
                                 .dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
+        //NOTE: Samples implicitly get filtered here if they don't have any identified variants
         BCFTOOLS_MERGE(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
 
         // merge_call_resistance_lofreq
