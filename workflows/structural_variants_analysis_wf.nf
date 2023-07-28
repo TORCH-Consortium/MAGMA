@@ -32,12 +32,15 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 //FIXME save the string to an intermediate file
         vcfs_string_ch = BCFTOOLS_VIEW__TBP.out
                                 .collect()
+                                .dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
+
+                                /*
                                 .flatten()
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
                                 .reduce { a, b -> "$a $b " }
                                 .dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
-
+                                /*
 
 
         //BCFTOOLS_MERGE(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
