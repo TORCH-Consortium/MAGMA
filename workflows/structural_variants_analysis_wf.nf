@@ -24,7 +24,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         DELLY_CALL(samtools_bams_ch, params.ref_fasta)
 
         BCFTOOLS_VIEW__GATK(DELLY_CALL.out)
-        GATK_INDEX_FEATURE_FILE__SV(BCFTOOLS_VIEW.out, 'potentialSV')
+        GATK_INDEX_FEATURE_FILE__SV(BCFTOOLS_VIEW__GATK.out, 'potentialSV')
         GATK_SELECT_VARIANTS__INCLUSION(GATK_INDEX_FEATURE_FILE__SV.out.sample_vcf_tuple, params.drgenes_list)
 
 //FIXME save the string to an intermediate file
