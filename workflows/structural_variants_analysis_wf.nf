@@ -40,7 +40,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .map { it -> it.name }
                                 .reduce { a, b -> "$a $b " }
                                 .dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
-                                /*
+                                */
 
 
         //BCFTOOLS_MERGE(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
