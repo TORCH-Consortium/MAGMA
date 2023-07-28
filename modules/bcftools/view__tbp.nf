@@ -5,8 +5,8 @@ process BCFTOOLS_VIEW__TBP {
     input:
         tuple val(sampleName), path(bcf)
 
-    //output:
-    //    tuple val(sampleName), path("*.potentialSV.vcf.gz")
+    output:
+        tuple val(sampleName), path("*.bcf.gz"), path("*.bcf.gz.csi")
 
     shell:
 
