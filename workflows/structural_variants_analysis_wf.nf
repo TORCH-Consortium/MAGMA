@@ -30,7 +30,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         BCFTOOLS_VIEW__TBP(DELLY_CALL.out)
 
 //FIXME save the string to an intermediate file
-        vcfs_string_ch = DELLY_CALL.out
+        vcfs_string_ch = BCFTOOLS_VIEW__TBP.out
                                 .collect()
                                 .flatten()
                                 .filter { it.extension  == "gz" }
