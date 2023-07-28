@@ -21,9 +21,14 @@ def read_vcf(filename):
                 break
             else:
                 header += line
-        df = pd.read_csv(vcf, header=None, sep='\t')
-    df.columns = line[:-1].split('\t')
-    return df, header
+        try:
+            df = pd.read_csv(vcf, header=None, sep='\t')
+            df.columns = line[:-1].split('\t')
+            not_empty = True
+        except pd.errors.EmptyDataError as e:
+            df = pd.DataFrame(columns=line[:-1].split('\t'))
+            not_empty = False
+    return df, header, not_empty
 
 def write_vcf(filename, df, header):
     with open(filename, 'w') as vcf:
@@ -39,18 +44,19 @@ if __name__ == '__main__':
 
     args = vars(parser.parse_args())
 
-    vcf, header = read_vcf(args['lofreq_vcf_file'])
-    vcf['FORMAT'] = 'GT:AD:DP:GQ:PL'
+    vcf, header, not_empty = read_vcf(args['lofreq_vcf_file'])
+    if not_empty:
+        vcf['FORMAT'] = 'GT:AD:DP:GQ:PL'
 
-    for idx, row in vcf.iterrows():
-        info = [ast.literal_eval(i.split('=')[1]) for i in row['INFO'].split(';')[:4]]
-        ref_dp = sum(info[3][:2])
-        alt_dp = sum(info[3][2:])
-        GT = 1
-        AD = '{},{}'.format(ref_dp, alt_dp)
-        DP = sum(info[3])
-        GQ = 99
-        PL = '1800,0'
-        vcf.loc[idx, args['lofreq_sample_name']] = '{}:{}:{}:{}:{}'.format(GT,AD,DP,GQ,PL)
+        for idx, row in vcf.iterrows():
+            info = [ast.literal_eval(i.split('=')[1]) for i in row['INFO'].split(';')[:4]]
+            ref_dp = sum(info[3][:2])
+            alt_dp = sum(info[3][2:])
+            GT = 1
+            AD = '{},{}'.format(ref_dp, alt_dp)
+            DP = sum(info[3])
+            GQ = 99
+            PL = '1800,0'
+            vcf.loc[idx, args['lofreq_sample_name']] = '{}:{}:{}:{}:{}'.format(GT,AD,DP,GQ,PL)
 
     write_vcf(args['outfile'], vcf, header)
