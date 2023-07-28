@@ -27,15 +27,18 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         GATK_INDEX_FEATURE_FILE__SV(BCFTOOLS_VIEW__GATK.out, 'potentialSV')
         GATK_SELECT_VARIANTS__INCLUSION(GATK_INDEX_FEATURE_FILE__SV.out.sample_vcf_tuple, params.drgenes_list)
 
-//FIXME save the string to an intermediate file
-//        vcfs_string_ch = reformatted_lofreq_vcfs_tuple_ch
-//                                .flatten()
-//                                .filter { it.extension  == "gz" }
-//                                .map { it -> it.name }
-//                                .reduce { a, b -> "$a $b " }
-//                                .dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
-
         BCFTOOLS_VIEW__TBP(DELLY_CALL.out)
+
+//FIXME save the string to an intermediate file
+        vcfs_string_ch = DELLY_CALL.out
+                                .collect()
+                                .flatten()
+                                .filter { it.extension  == "gz" }
+                                .map { it -> it.name }
+                                .reduce { a, b -> "$a $b " }
+                                .dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
+
+
 
         //BCFTOOLS_MERGE(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
 
