@@ -19,7 +19,8 @@ process BCFTOOLS_VIEW__TBP {
     stub:
 
         """
-        touch ${sampleName}.potentialSV.vcf.gz
+        touch ${sampleName}.bcf.gz
+        touch ${sampleName}.bcf.gz.csi
         """
 
 }
