@@ -1,4 +1,4 @@
-process BCFTOOLS_VIEW__GATK {
+process BCFTOOLS_VIEW__TBP {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
