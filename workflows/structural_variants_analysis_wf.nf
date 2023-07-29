@@ -35,6 +35,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .collect()
                                 .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
+                                .collect()
                                 .view{ it }
 
         vcfs_string_ch = BCFTOOLS_VIEW__TBP.out
