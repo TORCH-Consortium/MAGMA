@@ -38,7 +38,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 //.view{ it }
 
         vcfs_string_ch = vcf_and_indexes_ch
-                                .view { it }
+                                .view { it.class }
                                 //.filter { it.extension  == "gz" }
                                 //.map { it -> it.name }
                                 //.reduce { a, b -> "$a $b " }
