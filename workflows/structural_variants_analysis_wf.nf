@@ -38,8 +38,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 //.view{ it }
 
         vcfs_string_ch = vcf_and_indexes_ch
-                                .filter { it.extension  == "gz" }
                                 .view { it }
+                                //.filter { it.extension  == "gz" }
                                 //.map { it -> it.name }
                                 //.reduce { a, b -> "$a $b " }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
