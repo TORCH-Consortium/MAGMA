@@ -38,8 +38,9 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
         vcfs_string_ch = BCFTOOLS_VIEW__TBP.out
                                 .filter { it.class.name  != "java.lang.String" }
-                                .filter { it.extension  == "gz" }
+                                .flatten()
                                 .view { it }
+                                //.filter { it.extension  == "gz" }
                                 //.flatten()
                                 //.filter { it.extension  == "gz" }
                                 //.map { it -> it.name }
