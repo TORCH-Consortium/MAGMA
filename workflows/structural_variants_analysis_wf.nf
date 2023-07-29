@@ -33,6 +33,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         vcfs_string_ch = BCFTOOLS_VIEW__TBP.out
                                 .collect()
                                 .flatten()
+                                .filter { it.class.name  != "java.lang.String" }
                                 .view{ it.class }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
