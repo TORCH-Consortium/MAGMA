@@ -40,16 +40,13 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
                                 .filter { it.extension  == "gz" }
-                                .view { it }
-                                //.map { it -> it.name }
-                                //.reduce { a, b -> "$a $b " }
+                                .map { it -> it.name }
+                                .reduce { a, b -> "$a $b " }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
 
-/*
         BCFTOOLS_MERGE__DELLY(vcfs_string_ch, vcf_and_indexes_ch)
 
-*/
         // merge_call_resistance_lofreq
         //BGZIP(BCFTOOLS_MERGE.out) 
 
