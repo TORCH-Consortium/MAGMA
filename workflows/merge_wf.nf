@@ -57,7 +57,7 @@ workflow MERGE_WF {
         /*         .collect() */
         /*         .dump(tag:'approved_call_wf_samples_ch.collect()') */
 
-        //NOTE: Join the approved samples from MINOR_VARIANT_ANALYSIS_WF and CALL_WF
+        //NOTE: Join the approved samples from MINOR_VARIANTS_ANALYSIS_WF and CALL_WF
         fully_approved_samples_ch = approved_samples_minor_variants_ch
                                         .join(approved_call_wf_samples_ch)
                                         .flatten()
@@ -72,6 +72,7 @@ workflow MERGE_WF {
                                         .dump(tag:'MERGE_WF: selected_gvcfs_ch', pretty: true)
 
         //NOTE: Filter only file type values and send to MERGE_WF
+        //FIXME refactor the filtering logic NOT to rely upon the exact classnames
         filtered_selected_gvcfs_ch = selected_gvcfs_ch
                                         .filter { it -> { 
                                                             (it.class.name  == "sun.nio.fs.UnixPath") 

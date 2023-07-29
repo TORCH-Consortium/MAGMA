@@ -1,10 +1,10 @@
-include { BCFTOOLS_MERGE } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE )
+include { BCFTOOLS_MERGE as BCFTOOLS_MERGE__LOFREQ } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE__LOFREQ )
 include { BGZIP } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
 include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../modules/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__LOFREQ)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
 include { UTILS_MULTIPLE_INFECTION_FILTER } from "../modules/utils/multiple_infection_filter.nf" addParams (params.UTILS_MULTIPLE_INFECTION_FILTER)
 
-workflow MINOR_VARIANT_ANALYSIS_WF {
+workflow MINOR_VARIANTS_ANALYSIS_WF {
 
     take:
         reformatted_lofreq_vcfs_tuple_ch
@@ -17,20 +17,16 @@ workflow MINOR_VARIANT_ANALYSIS_WF {
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
                                 .reduce { a, b -> "$a $b " }
-                                .dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
-
-        //NOTE: Samples implicitly get filtered here if they don't have any identified variants
-        BCFTOOLS_MERGE(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
+                                //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
         // merge_call_resistance_lofreq
-        BGZIP(BCFTOOLS_MERGE.out) 
+        //NOTE: Samples implicitly get filtered here if they don't have any identified variants
+        BCFTOOLS_MERGE__LOFREQ(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
 
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
-        //TBPROFILER minor variants
-        TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP.out, resistanceDb)
+        TBPROFILER_VCF_PROFILE__LOFREQ(BCFTOOLS_MERGE__LOFREQ.out, resistanceDb)
 
-        //TBPROFILER major variants
         TBPROFILER_COLLATE__LOFREQ(params.vcf_name,
                                   TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
                                   resistanceDb)
