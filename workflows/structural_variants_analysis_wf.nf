@@ -32,7 +32,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 //FIXME save the string to an intermediate file
         vcfs_string_ch = BCFTOOLS_VIEW__TBP.out
                                 .collect()
-                                .dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
+                                .view{ it.class }
+                                //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
                                 /*
                                 .flatten()
