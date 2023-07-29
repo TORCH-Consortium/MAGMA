@@ -32,13 +32,12 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 //FIXME save the string to an intermediate file
 
         vcf_and_indexes_ch = BCFTOOLS_VIEW__TBP.out
-                                .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
                                 .collect()
-                                //.view{ it }
+                                .view{ it }
 
         vcfs_string_ch = vcf_and_indexes_ch
-                                .view { it.class }
+                                //.view { it.class }
                                 //.filter { it.extension  == "gz" }
                                 //.map { it -> it.name }
                                 //.reduce { a, b -> "$a $b " }
