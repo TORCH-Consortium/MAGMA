@@ -19,15 +19,13 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
                                 .reduce { a, b -> "$a $b " }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
-        BCFTOOLS_MERGE__LOFREQ(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
-
-        //TODO: This can be merged into the BCFTOOLS_MERGE itself
         // merge_call_resistance_lofreq
-        BGZIP(BCFTOOLS_MERGE__LOFREQ.out) 
+
+        BCFTOOLS_MERGE__LOFREQ(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
 
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
-        TBPROFILER_VCF_PROFILE__LOFREQ(BGZIP.out, resistanceDb)
+        TBPROFILER_VCF_PROFILE__LOFREQ(BCFTOOLS_MERGE__LOFREQ.out, resistanceDb)
 
         TBPROFILER_COLLATE__LOFREQ(params.vcf_name,
                                   TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),

@@ -7,12 +7,15 @@ process BCFTOOLS_MERGE {
         path("*")
 
     output:
-        tuple val(params.vcf_name), path("*.${params.file_format}.vcf")
+        tuple val(params.vcf_name), path("*.${params.file_format}.vcf.gz"), path("*.vcf.gz.csi")
+
 
     script:
 
         """
         bcftools merge -o ${params.vcf_name}.${params.file_format}.vcf ${vcfs_string_ch}
+        bgzip ${params.vcf_name}.${params.file_format}.vcf
+        ${params.bcftools_path} index ${sampleName}.filtered.${params.file_format}.vcf.gz
         """
 
     stub:
