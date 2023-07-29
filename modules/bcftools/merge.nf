@@ -15,13 +15,15 @@ process BCFTOOLS_MERGE {
         """
         bcftools merge -o ${params.vcf_name}.${params.file_format}.vcf ${vcfs_string_ch}
         bgzip ${params.vcf_name}.${params.file_format}.vcf
-        ${params.bcftools_path} index ${sampleName}.filtered.${params.file_format}.vcf.gz
+        ${params.bcftools_path} index ${params.vcf_name}.${params.file_format}.vcf.gz
         """
 
     stub:
 
         """
-        touch ${params.vcf_name}.LoFreq.vcf
+        touch ${params.vcf_name}.${params.file_format}.vcf.gz
+        touch ${params.vcf_name}.${params.file_format}.vcf.gz.tbi
+
         """
 
 }
