@@ -7,7 +7,7 @@ process BCFTOOLS_MERGE {
         path("*")
 
     output:
-        tuple val(params.vcf_name), path("*.LoFreq.vcf")
+        tuple val(params.vcf_name), path("*.${params.file_format}.vcf")
 
     script:
 
