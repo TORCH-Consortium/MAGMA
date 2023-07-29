@@ -61,17 +61,17 @@ workflow {
         CALL_WF( MAP_WF.out.sorted_reads_ch )
 
         //NOTE: Samples implicitly get filtered in BCFTOOLS_MERGE if they don't have any identified variants
-        MINOR_VARIANT_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
+        MINOR_VARIANTS_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
-        UTILS_MERGE_COHORT_STATS( MINOR_VARIANT_ANALYSIS_WF.out.approved_samples_ch,
-                                  MINOR_VARIANT_ANALYSIS_WF.out.rejected_samples_ch,
+        UTILS_MERGE_COHORT_STATS( MINOR_VARIANTS_ANALYSIS_WF.out.approved_samples_ch,
+                                  MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch,
                                   CALL_WF.out.cohort_stats_tsv )
 
         MERGE_WF( CALL_WF.out.gvcf_ch,
                   CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch, 
                   UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch,
-                  MINOR_VARIANT_ANALYSIS_WF.out.approved_samples_ch,
-                  MINOR_VARIANT_ANALYSIS_WF.out.rejected_samples_ch)
+                  MINOR_VARIANTS_ANALYSIS_WF.out.approved_samples_ch,
+                  MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch)
 
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch,
                    MINOR_VARIANTS_ANALYSIS_WF.out.minor_variants_results_ch,
