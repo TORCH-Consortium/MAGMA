@@ -41,7 +41,6 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .flatten()
                                 .view { it.class }
                                 //.filter { it.extension  == "gz" }
-                                //.flatten()
                                 //.map { it -> it.name }
                                 //.reduce { a, b -> "$a $b " }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
