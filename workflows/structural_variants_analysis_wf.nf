@@ -31,10 +31,10 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
 //FIXME save the string to an intermediate file
 
-        vcf_and_indexes_ch = BCFTOOLS_VIEW__TBP.out
+        vcfs_and_indexes_ch = BCFTOOLS_VIEW__TBP.out
                                 .filter { it.class.name  != "java.lang.String" }
                                 .collect()
-                                //.view{ it }
+                                .view{ it }
 
         vcfs_string_ch = BCFTOOLS_VIEW__TBP.out
                                 .flatten()
@@ -42,11 +42,11 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
                                 .reduce { a, b -> "$a $b " }
-                                //.view {it}
+                                .view { it }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
 
-        BCFTOOLS_MERGE__DELLY(vcfs_string_ch, vcf_and_indexes_ch)
+        BCFTOOLS_MERGE__DELLY(vcfs_string_ch, vcfs_and_indexes_ch)
 
         // merge_call_resistance_lofreq
         //BGZIP(BCFTOOLS_MERGE.out) 
