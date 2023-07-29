@@ -35,7 +35,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
                                 .collect()
-                                .view{ it }
+                                //.view{ it }
 
         vcfs_string_ch = vcf_and_indexes_ch
                                 .filter { it.extension  == "gz" }
