@@ -30,10 +30,13 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         BCFTOOLS_VIEW__TBP(DELLY_CALL.out)
 
 //FIXME save the string to an intermediate file
-        vcfs_string_ch = BCFTOOLS_VIEW__TBP.out
+
+        vcf_and_indexes_ch = BCFTOOLS_VIEW__TBP.out
                                 .collect()
                                 .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
+
+        vcfs_string_ch = vcf_and_indexes_ch
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
                                 .reduce { a, b -> "$a $b " }
@@ -47,7 +50,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 */
 
 
-        //BCFTOOLS_MERGE(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
+        BCFTOOLS_MERGE(vcfs_string_ch, vcf_and_indexes_ch)
 
         // merge_call_resistance_lofreq
         //BGZIP(BCFTOOLS_MERGE.out) 
