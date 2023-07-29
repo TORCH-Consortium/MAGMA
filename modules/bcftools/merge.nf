@@ -22,8 +22,7 @@ process BCFTOOLS_MERGE {
 
         """
         touch ${params.vcf_name}.${params.file_format}.vcf.gz
-        touch ${params.vcf_name}.${params.file_format}.vcf.gz.tbi
-
+        touch ${params.vcf_name}.${params.file_format}.vcf.gz.csi
         """
 
 }
