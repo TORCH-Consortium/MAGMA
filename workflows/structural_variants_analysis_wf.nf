@@ -36,9 +36,11 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .collect()
                                 //.view{ it }
 
-        vcfs_string_ch = vcf_and_indexes_ch
-                                .flatten()
-                                .view { it.class }
+        vcfs_string_ch = BCFTOOLS_VIEW__TBP.out
+                                .filter { it.class.name  != "java.lang.String" }
+                                .filter { it.extension  == "gz" }
+                                .view { it }
+                                //.flatten()
                                 //.filter { it.extension  == "gz" }
                                 //.map { it -> it.name }
                                 //.reduce { a, b -> "$a $b " }
