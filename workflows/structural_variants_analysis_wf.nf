@@ -34,11 +34,13 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .collect()
                                 .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
+                                .filter { it.extension  == "gz" }
+                                .map { it -> it.name }
+                                .reduce { a, b -> "$a $b " }
                                 .view{ it.class }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
                                 /*
-                                .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
                                 .reduce { a, b -> "$a $b " }
                                 .dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
