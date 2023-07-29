@@ -37,7 +37,7 @@ workflow CALL_WF {
             }
         }
         .groupTuple()
-        .dump(tag: "CALL_WF normalize_libraries_ch : ", pretty: true)
+        //.dump(tag: "CALL_WF normalize_libraries_ch : ", pretty: true)
 
 
         // call_merge
