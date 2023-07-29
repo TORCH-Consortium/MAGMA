@@ -2,7 +2,7 @@ include { BGZIP } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINO
 include { DELLY_CALL } from "../modules/delly/call.nf" addParams ( params.DELLY_CALL )
 include { BCFTOOLS_VIEW__GATK} from "../modules/bcftools/view__gatk.nf" addParams ( params.BCFTOOLS_VIEW__GATK )
 include { BCFTOOLS_VIEW__TBP } from "../modules/bcftools/view__tbp.nf" addParams ( params.BCFTOOLS_VIEW__TBP )
-include { BCFTOOLS_MERGE } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE )
+include { BCFTOOLS_MERGE as  BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE__DELLY )
 include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__SV } from "../modules/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE__SV )
 include { GATK_SELECT_VARIANTS__INCLUSION } from "../modules/gatk/select_variants__intervals.nf" addParams ( params.GATK_SELECT_VARIANTS__INCLUSION )
 include { TBPROFILER_PROFILE__BAM } from "../modules/tbprofiler/profile__bam.nf" addParams (params.TBPROFILER_PROFILE__BAM)
@@ -32,9 +32,9 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 //FIXME save the string to an intermediate file
 
         vcf_and_indexes_ch = BCFTOOLS_VIEW__TBP.out
-                                .collect()
                                 .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
+                                .collect()
 
         vcfs_string_ch = vcf_and_indexes_ch
                                 .filter { it.extension  == "gz" }
@@ -49,8 +49,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
                                 */
 
-
-        BCFTOOLS_MERGE(vcfs_string_ch, vcf_and_indexes_ch)
+        BCFTOOLS_MERGE__DELLY(vcfs_string_ch, vcf_and_indexes_ch)
 
         // merge_call_resistance_lofreq
         //BGZIP(BCFTOOLS_MERGE.out) 

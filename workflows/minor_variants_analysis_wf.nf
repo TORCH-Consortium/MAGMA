@@ -1,4 +1,4 @@
-include { BCFTOOLS_MERGE } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE )
+include { BCFTOOLS_MERGE as BCFTOOLS_MERGE__LOFREQ } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE__LOFREQ )
 include { BGZIP } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
 include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../modules/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__LOFREQ)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
@@ -19,10 +19,11 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
                                 .reduce { a, b -> "$a $b " }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
-        BCFTOOLS_MERGE(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
+        BCFTOOLS_MERGE__LOFREQ(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
 
+        //TODO: This can be merged into the BCFTOOLS_MERGE itself
         // merge_call_resistance_lofreq
-        BGZIP(BCFTOOLS_MERGE.out) 
+        BGZIP(BCFTOOLS_MERGE__LOFREQ.out) 
 
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
