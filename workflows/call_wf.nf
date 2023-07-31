@@ -137,12 +137,12 @@ workflow CALL_WF {
 
         UTILS_SAMPLE_STATS(sample_stats_ch)
 
-        UTILS_COHORT_STATS(UTILS_SAMPLE_STATS.out.collect())
+        UTILS_COHORT_STATS(UTILS_SAMPLE_STATS.out.collect(sort:true))
 
     emit:
         cohort_stats_tsv = UTILS_COHORT_STATS.out
-        gvcf_ch = GATK_HAPLOTYPE_CALLER.out.gvcf_ch.collect()
+        gvcf_ch = GATK_HAPLOTYPE_CALLER.out.gvcf_ch.collect(sort:true)
         reformatted_lofreq_vcfs_tuple_ch = GATK_INDEX_FEATURE_FILE__LOFREQ.out.vcf_tuple.collect(sort:true)
-        bgzip_ch = BGZIP__LOFREQ.out.collect() 
+        bgzip_ch = BGZIP__LOFREQ.out.collect(sort:true) 
         samtools_bam_ch = SAMTOOLS_INDEX.out 
 }
