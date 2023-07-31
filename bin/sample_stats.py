@@ -18,8 +18,10 @@ if __name__ == '__main__':
 
     parser.add_argument('--median_coverage_cutoff', metavar='median_coverage_cutoff', default=10, type=float, help='The median coverage cutoff threshold')
     parser.add_argument('--breadth_of_coverage_cutoff', metavar='breadth_of_coverage_cutoff', default=0.9, type=float, help='The breadth of coverage cutoff threshold')
-    parser.add_argument('--rel_abundance_cutoff', metavar='rel_abundance_cutoff', default=0.8, type=float, help='The relative abundance cutoff threshold')
     parser.add_argument('--ntm_fraction_cutoff', metavar='ntm_fraction_cutoff', default=0.2, type=float, help='The NTM fraction cutoff threshold')
+
+## NOTE: This is computed by the multiple_infection_filter script
+#    parser.add_argument('--rel_abundance_cutoff', metavar='rel_abundance_cutoff', default=0.8, type=float, help='The relative abundance cutoff threshold')
 
     args = vars(parser.parse_args())
 
