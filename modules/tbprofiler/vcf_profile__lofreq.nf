@@ -3,7 +3,7 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        tuple val(name), path(mergedLofreqVcf)
+        tuple val(name), path(mergedLofreqVcf), path(mergedLofreqVcfIndex)
         path(resistanceDb)
 
     output:

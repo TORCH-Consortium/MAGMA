@@ -11,9 +11,6 @@ include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( param
 include { SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index__lofreq.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
 include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
 include { LOFREQ_FILTER } from "../modules/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
-include { DELLY_CALL } from "../modules/delly/call.nf" addParams ( params.DELLY_CALL )
-include { BCFTOOLS_VIEW } from "../modules/bcftools/view.nf" addParams ( params.BCFTOOLS_VIEW )
-include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__SV } from "../modules/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE__SV )
 include { SAMTOOLS_STATS } from "../modules/samtools/stats.nf" addParams ( params.SAMTOOLS_STATS )
 include { GATK_COLLECT_WGS_METRICS } from "../modules/gatk/collect_wgs_metrics.nf" addParams ( params.GATK_COLLECT_WGS_METRICS )
 include { GATK_FLAG_STAT } from "../modules/gatk/flag_stat.nf" addParams ( params.GATK_FLAG_STAT )
@@ -21,8 +18,6 @@ include { UTILS_SAMPLE_STATS } from "../modules/utils/sample_stats.nf" addParams
 include { UTILS_COHORT_STATS } from "../modules/utils/cohort_stats.nf" addParams ( params.UTILS_COHORT_STATS )
 include { UTILS_REFORMAT_LOFREQ } from "../modules/utils/reformat_lofreq.nf" addParams ( params.UTILS_REFORMAT_LOFREQ )
 include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__LOFREQ } from "../modules/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE__LOFREQ )
-include { GATK_SELECT_VARIANTS__INCLUSION } from "../modules/gatk/select_variants__intervals.nf" addParams ( params.GATK_SELECT_VARIANTS__INCLUSION )
-
 
 
 
@@ -42,7 +37,7 @@ workflow CALL_WF {
             }
         }
         .groupTuple()
-        .dump(tag: "CALL_WF normalize_libraries_ch : ", pretty: true)
+        //.dump(tag: "CALL_WF normalize_libraries_ch : ", pretty: true)
 
 
         // call_merge
@@ -123,20 +118,6 @@ workflow CALL_WF {
         GATK_INDEX_FEATURE_FILE__LOFREQ(BGZIP__LOFREQ.out, 'LoFreq.Reformat')
 
         //----------------------------------------------------------------------------------
-        // Infer structural variants
-        //
-        //NOTE: This inference can not handle a contaminant and MTB allele on the same site.
-        //if so the site will be excluded.
-        //----------------------------------------------------------------------------------
-
-        // call_sv
-        DELLY_CALL(SAMTOOLS_INDEX.out, params.ref_fasta)
-        BCFTOOLS_VIEW(DELLY_CALL.out)
-        GATK_INDEX_FEATURE_FILE__SV(BCFTOOLS_VIEW.out, 'potentialSV')
-        GATK_SELECT_VARIANTS__INCLUSION(GATK_INDEX_FEATURE_FILE__SV.out.sample_vcf_tuple, params.drgenes_list)
-
-
-        //----------------------------------------------------------------------------------
         // STATS
         //----------------------------------------------------------------------------------
 
@@ -151,7 +132,7 @@ workflow CALL_WF {
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
             .join(LOFREQ_CALL__NTM.out)
-            .dump(tag: "CALL_WF sample_stats_ch : ", pretty: true)
+            //.dump(tag: "CALL_WF sample_stats_ch : ", pretty: true)
 
 
         UTILS_SAMPLE_STATS(sample_stats_ch)
@@ -163,4 +144,5 @@ workflow CALL_WF {
         gvcf_ch = GATK_HAPLOTYPE_CALLER.out.gvcf_ch.collect()
         reformatted_lofreq_vcfs_tuple_ch = GATK_INDEX_FEATURE_FILE__LOFREQ.out.vcf_tuple.collect(sort:true)
         bgzip_ch = BGZIP__LOFREQ.out.collect() 
+        samtools_bam_ch = SAMTOOLS_INDEX.out 
 }

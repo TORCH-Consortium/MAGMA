@@ -14,3 +14,6 @@ dependencies:
   - bioconda::multiqc=1.11 
   - bioconda::fastqc=0.11.8
   - bioconda::fastq_utils=0.25.1
+  - conda-forge::bc=1.07.1
+  - conda-forge::sed=4.8
+  - conda-forge::grep=3.11

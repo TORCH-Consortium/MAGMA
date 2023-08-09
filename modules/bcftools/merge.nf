@@ -7,18 +7,22 @@ process BCFTOOLS_MERGE {
         path("*")
 
     output:
-        tuple val(params.vcf_name), path("*.LoFreq.vcf")
+        tuple val(params.vcf_name), path("*.${params.file_format}.vcf.gz"), path("*.vcf.gz.csi")
+
 
     script:
 
         """
-        bcftools merge -o ${params.vcf_name}.LoFreq.vcf ${vcfs_string_ch}
+        bcftools merge -o ${params.vcf_name}.${params.file_format}.vcf ${vcfs_string_ch}
+        bgzip ${params.vcf_name}.${params.file_format}.vcf
+        ${params.bcftools_path} index ${params.vcf_name}.${params.file_format}.vcf.gz
         """
 
     stub:
 
         """
-        touch ${params.vcf_name}.LoFreq.vcf
+        touch ${params.vcf_name}.${params.file_format}.vcf.gz
+        touch ${params.vcf_name}.${params.file_format}.vcf.gz.csi
         """
 
 }

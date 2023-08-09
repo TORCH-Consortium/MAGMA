@@ -8,7 +8,7 @@ process UTILS_MERGE_COHORT_STATS {
         path(call_wf_cohort_stats_tsv)
 
     output:
-        path("*merged_cohort_stats.tsv")
+        path("*merged_cohort_stats.tsv"),    emit: merged_cohort_stats_ch
 
 
     script:

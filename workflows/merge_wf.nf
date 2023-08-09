@@ -14,7 +14,7 @@ workflow MERGE_WF {
     take:
         gvcf_ch
         reformatted_lofreq_vcfs_tuple_ch
-        cohort_stats_tsv
+        merged_cohort_stats_tsv
         approved_samples_ch
         rejected_samples_ch
 
@@ -42,7 +42,7 @@ workflow MERGE_WF {
 
         //NOTE: Use the stats file for the entire cohort (from CALL_WF)
         // and filter out the samples which pass all thresholds
-        approved_call_wf_samples_ch = cohort_stats_tsv
+        approved_call_wf_samples_ch = merged_cohort_stats_tsv
                                 .splitCsv(header: false, skip: 1, sep: '\t' )
                                 .map { row -> [
                                         row.first(),           // SAMPLE
@@ -57,7 +57,7 @@ workflow MERGE_WF {
         /*         .collect() */
         /*         .dump(tag:'approved_call_wf_samples_ch.collect()') */
 
-        //NOTE: Join the approved samples from MINOR_VARIANT_ANALYSIS_WF and CALL_WF
+        //NOTE: Join the approved samples from MINOR_VARIANTS_ANALYSIS_WF and CALL_WF
         fully_approved_samples_ch = approved_samples_minor_variants_ch
                                         .join(approved_call_wf_samples_ch)
                                         .flatten()
@@ -72,6 +72,7 @@ workflow MERGE_WF {
                                         .dump(tag:'MERGE_WF: selected_gvcfs_ch', pretty: true)
 
         //NOTE: Filter only file type values and send to MERGE_WF
+        //FIXME refactor the filtering logic NOT to rely upon the exact classnames
         filtered_selected_gvcfs_ch = selected_gvcfs_ch
                                         .filter { it -> { 
                                                             (it.class.name  == "sun.nio.fs.UnixPath") 
