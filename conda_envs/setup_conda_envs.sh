@@ -20,7 +20,7 @@ cp -r ../resources/resistance_db_who ./
 cd resistance_db_who
 
 echo "INFO: Load the database within tb-profiler"
-tb-profiler load_library resistance_db_who
+tb-profiler load_library who_catalogue_amended_v5.0.0
 
 echo "INFO: Remove the local copy of the database folder"
 cd ..
