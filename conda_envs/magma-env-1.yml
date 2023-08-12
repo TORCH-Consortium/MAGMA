@@ -10,7 +10,7 @@ dependencies:
   - bioconda::datamash=1.1.0 
   - bioconda::delly=0.8.7 
   - bioconda::lofreq=2.1.5 
-  - bioconda::tb-profiler=4.1.1 
+  - bioconda::tb-profiler=5.0.0 
   - bioconda::multiqc=1.11 
   - bioconda::fastqc=0.11.8
   - bioconda::fastq_utils=0.25.1
