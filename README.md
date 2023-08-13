@@ -21,7 +21,7 @@ We also provide some reference GVCF files which you could use for specific use-c
 
 - For small datasets (20 samples or less), we recommend that you download the `EXIT_RIF GVCF` files from https://zenodo.org/record/8054182
  
-- For including Mtb lineages and outgroup (M. canettii) in the phylogenetic tree, you can download the `LineageAndOutgroup` files from https://zenodo.org/record/8233518
+- For including Mtb lineages and outgroup (M. canettii) in the phylogenetic tree, you can download the `LineagesAndOutgroup` files from https://zenodo.org/record/8233518
 
 
 ```
