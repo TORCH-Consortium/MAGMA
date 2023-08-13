@@ -11,9 +11,9 @@ FROM base AS condaenv
 
 ENV PATH /opt/conda/bin:$PATH
 
-COPY --chown=$MAMBA_USER:$MAMBA_USER resistance_db_who /tmp/resistance_db_who
+COPY --chown=$MAMBA_USER:$MAMBA_USER who_catalogue_amended_v5.0.0 /tmp/who_catalogue_amended_v5.0.0
 
 FROM condaenv AS resistanceDbWho
 
-RUN cd /tmp/resistance_db_who && /opt/conda/bin/tb-profiler load_library resistance_db_who && cd /tmp
+RUN cd /tmp/resistance_db_who && /opt/conda/bin/tb-profiler load_library who_catalogue_amended_v5.0.0 && cd /tmp
 
