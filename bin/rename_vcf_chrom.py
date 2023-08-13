@@ -30,7 +30,7 @@ def cmd_out(cmd,verbose=1):
     stderr.close()
 
 def main(args):
-    generator = cmd_out(f"bcftools view {args.vcf}") if args.vcf else sys.stdin
+    generator = cmd_out("bcftools view " + args.vcf) if args.vcf else sys.stdin
     convert = dict(zip(args.source,args.target))
     for l in generator:
         if l[0]=="#":
