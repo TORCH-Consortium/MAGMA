@@ -34,7 +34,7 @@ def main(args):
     convert = dict(zip(args.source,args.target))
     for l in generator:
         if l[0]=="#":
-            sys.stdout.write(l)
+            sys.stdout.write(l+"\n")
         else:
             row = l.strip().split()
             row[0] = convert[row[0]]
