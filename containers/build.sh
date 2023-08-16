@@ -6,7 +6,7 @@ set -uex
 DOCKER_NAMESPACE="rg.fr-par.scw.cloud/magma-containers"
 
 cp ../conda_envs/magma-env-1.yml ./magma-container-1
-cp -r ../resources/resistance_db_who ./magma-container-1
+cp -r ../resources/who_catalogue_amended_v5.0.0 ./magma-container-1
 
 cp ../conda_envs/magma-env-2.yml ./magma-container-2
 
