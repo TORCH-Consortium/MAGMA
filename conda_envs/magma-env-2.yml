@@ -12,6 +12,3 @@ dependencies:
   - bioconda::bcftools=1.9 
   - bioconda::snpeff=4.3.1t 
   - bioconda::clusterpicker=1.2.3
-  - conda-forge::bc=1.07.1
-  - conda-forge::sed=4.8
-  - conda-forge::grep=3.11

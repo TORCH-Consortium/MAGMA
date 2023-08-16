@@ -5,7 +5,10 @@ include { BCFTOOLS_VIEW__TBP } from "../modules/bcftools/view__tbp.nf" addParams
 include { BCFTOOLS_MERGE as  BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE__DELLY )
 include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__SV } from "../modules/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE__SV )
 include { GATK_SELECT_VARIANTS__INCLUSION } from "../modules/gatk/select_variants__intervals.nf" addParams ( params.GATK_SELECT_VARIANTS__INCLUSION )
-include { TBPROFILER_PROFILE__BAM } from "../modules/tbprofiler/profile__bam.nf" addParams (params.TBPROFILER_PROFILE__BAM)
+include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
+include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__DELLY } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__DELLY)
+
+//include { TBPROFILER_PROFILE__BAM } from "../modules/tbprofiler/profile__bam.nf" addParams (params.TBPROFILER_PROFILE__BAM)
 
 workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
@@ -23,13 +26,9 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
         DELLY_CALL(samtools_bams_ch, params.ref_fasta)
 
-        BCFTOOLS_VIEW__GATK(DELLY_CALL.out)
-        GATK_INDEX_FEATURE_FILE__SV(BCFTOOLS_VIEW__GATK.out, 'potentialSV')
-        GATK_SELECT_VARIANTS__INCLUSION(GATK_INDEX_FEATURE_FILE__SV.out.sample_vcf_tuple, params.drgenes_list)
-
         BCFTOOLS_VIEW__TBP(DELLY_CALL.out)
 
-//FIXME save the string to an intermediate file
+	//FIXME save the string to an intermediate file
 
         vcfs_and_indexes_ch = BCFTOOLS_VIEW__TBP.out
                                 .collect(sort: true)
@@ -51,18 +50,11 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
         BCFTOOLS_MERGE__DELLY(vcfs_string_ch, vcfs_and_indexes_ch)
 
-        // merge_call_resistance_lofreq
-        //BGZIP(BCFTOOLS_MERGE.out) 
+	def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
-        def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
+        TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out, resistanceDb)
 
-        bams_ch = samtools_bams_ch
-                        .collect()
-                        .flatten()
-                        .collate(3)
-                        //.dump(tag:"STRUCTURAL_VARIANTS_ANALYSIS_WF")
+	TBPROFILER_COLLATE__DELLY(params.vcf_name, TBPROFILER_VCF_PROFILE__DELLY.out, resistanceDb)
 
-
-        TBPROFILER_PROFILE__BAM(bams_ch, resistanceDb)
 
 }

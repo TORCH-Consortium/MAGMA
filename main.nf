@@ -7,6 +7,7 @@ nextflow.enable.dsl = 2
 
 
 include { CALL_WF } from './workflows/call_wf.nf'
+include { CALL_WF as CALL_WF__DELLY } from './workflows/call_wf.nf' addParams( params.CALL_WF__DELLY )
 include { VALIDATE_FASTQS_WF } from './workflows/validate_fastqs_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
@@ -38,7 +39,7 @@ workflow {
 
         MINOR_VARIANTS_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
-        //STRUCTURAL_VARIANTS_ANALYSIS_WF ( CALL_WF.out.samtools_bam_ch )
+        STRUCTURAL_VARIANTS_ANALYSIS_WF ( CALL_WF.out.samtools_bam_ch )
 
         UTILS_MERGE_COHORT_STATS ( MINOR_VARIANTS_ANALYSIS_WF.out.approved_samples_ch,
                                    MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch,
@@ -60,7 +61,7 @@ workflow {
 
         CALL_WF( MAP_WF.out.sorted_reads_ch )
 
-        //STRUCTURAL_VARIANTS_ANALYSIS_WF ( CALL_WF.out.samtools_bam_ch )
+        STRUCTURAL_VARIANTS_ANALYSIS_WF ( CALL_WF.out.samtools_bam_ch )
 
         //NOTE: Samples implicitly get filtered in BCFTOOLS_MERGE if they don't have any identified variants
         MINOR_VARIANTS_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
