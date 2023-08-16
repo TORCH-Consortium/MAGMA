@@ -3,7 +3,7 @@
 set -e
 
 # NOTE: Please replace `conda` with `mamba` if it is installed for faster installs.
-resolverCondaBinary="mamba" # pick either conda OR mamba
+resolverCondaBinary="conda" # pick either conda OR mamba
 
 # NOTE: By default, the conda environments are expected by the `conda_local` profile to be created within `magma/conda_envs` directory
 
