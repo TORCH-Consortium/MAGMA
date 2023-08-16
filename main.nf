@@ -7,7 +7,6 @@ nextflow.enable.dsl = 2
 
 
 include { CALL_WF } from './workflows/call_wf.nf'
-include { CALL_WF as CALL_WF__DELLY } from './workflows/call_wf.nf' addParams( params.CALL_WF__DELLY )
 include { VALIDATE_FASTQS_WF } from './workflows/validate_fastqs_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
