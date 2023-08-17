@@ -1,4 +1,4 @@
-FROM mambaorg/micromamba:0.25.1 AS base
+FROM mambaorg/micromamba:1.4.9 AS base
 
 #NOTE: The conda env file has been copied via the build script
 COPY --chown=$MAMBA_USER:$MAMBA_USER magma-env-2.yml /tmp/magma-env-2.yml
