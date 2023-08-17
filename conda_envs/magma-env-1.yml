@@ -7,7 +7,7 @@ dependencies:
   - gatk4=4.2.6.1 
   - r-ggplot2=3.3.5 
   - pandas=1.5.1
-  - xlsxwriter=3.0.3
+  - xlsxwriter=3.1.1
   - datamash=1.1.0 
   - delly=0.8.7 
   - lofreq=2.1.5 
