@@ -83,7 +83,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         //if so the site will be excluded.
         //----------------------------------------------------------------------------------
 
-        DELLY_CALL(SAMTOOLS_INDEX.out, params.ref_fasta)
+        DELLY_CALL(SAMTOOLS_INDEX__DELLY.out, params.ref_fasta)
 
         BCFTOOLS_VIEW__TBP(DELLY_CALL.out)
 
