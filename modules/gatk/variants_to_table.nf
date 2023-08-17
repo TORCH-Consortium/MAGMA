@@ -18,7 +18,8 @@ process GATK_VARIANTS_TO_TABLE {
         !{params.gatk_path} VariantsToTable --java-options "-Xmx!{task.memory.giga}G" \
             -V !{vcf} !{params.arguments} \
             -O !{joint_name}.!{prefix}.table \
-        | variant_table_to_fasta.py !{joint_name}.!{prefix}.table \
+
+        variant_table_to_fasta.py !{joint_name}.!{prefix}.table \
             !{joint_name}.!{prefix}.fa \
             !{params.site_representation_cutoff}
         '''
