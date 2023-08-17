@@ -13,3 +13,4 @@ dependencies:
   - bcftools=1.9 
   - snpeff=4.3.1t 
   - clusterpicker=1.2.3
+  - bc=1.07.1
