@@ -158,7 +158,7 @@ if __name__ == '__main__':
             if keys not in samples:
                 continue
                 #samples[keys[1]] = {}
-            with open(os.path.join(os.path.join(os.path.join(args['minor_res_var_dir'], 'results', file_name)))) as json_file:
+            with open(os.path.join(os.path.join(os.path.join(args['struc_res_var_dir'], 'results', file_name)))) as json_file:
                 samples[keys]['delly'] = json.load(json_file)
 
     samples_df = pd.DataFrame(list(samples), columns=['full_sample'])
