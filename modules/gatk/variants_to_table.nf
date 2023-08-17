@@ -15,21 +15,13 @@ process GATK_VARIANTS_TO_TABLE {
     shell:
 
         '''
-        !{params.gatk_path} VariantsToTable --java-options "-Xmx!{task.memory.giga}G" \\
-            -V !{vcf} \\
-            !{params.arguments} \\
-            -O /dev/stdout \\
-        | sed -e 's/^\\t//g' \\
-        | sed -e '2~1 s/*/-/g' \\
-        | sed -e '2~1 s/\\./-/g' \\
-        | sed '2,${/^.*\\(-.*\\)\\{'"!{params.median_coverage_cutoff}"',\\}.*$/d}' \\
-        | !{params.datamash_path} transpose \\
-        | sed -e 's/^/>/g' \\
-        | sed -e 's/\\.GT/\\n/g' \\
-        | sed -e 's/\\t//g' \\
-        > !{joint_name}.!{prefix}.fa
+        !{params.gatk_path} VariantsToTable --java-options "-Xmx!{task.memory.giga}G" \
+            -V !{vcf} !{params.arguments} \
+            -O !{joint_name}.!{prefix}.table \
 
-
+        variant_table_to_fasta.py !{joint_name}.!{prefix}.table \
+            !{joint_name}.!{prefix}.fa \
+            !{params.site_representation_cutoff}
         '''
 
     stub:
