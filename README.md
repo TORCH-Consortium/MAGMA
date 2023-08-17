@@ -91,7 +91,7 @@ Which could be provided to the pipeline using `-params-file` parameter as shown 
 ```console
 nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
 		 -profile conda_local \ 
-		 -r v1.0.1 \
+		 -r v1.1.1 \
 		 -params-file  my_parameters_1.yml
 
 ```
@@ -139,9 +139,9 @@ We provide [two docker containers](https://github.com/orgs/TORCH-Consortium/pack
 Although, you don't need to pull the containers manually, but should you need to, you could use the following commands to pull the pre-built and provided containers 
 
 ```console
-docker pull ghcr.io/torch-consortium/magma/magma-container-1:1.1.0
+docker pull ghcr.io/torch-consortium/magma/magma-container-1:1.1.1
 
-docker pull ghcr.io/torch-consortium/magma/magma-container-2:1.1.0
+docker pull ghcr.io/torch-consortium/magma/magma-container-2:1.1.1
 ```
 
 
@@ -154,7 +154,7 @@ Here's the command which should be used
 nextflow run 'https://github.com/torch-consortium/magma' \
 		 -params-file my_parameters_2.yml \
 		 -profile docker \
-		 -r v1.0.1 
+		 -r v1.1.1 
 ```
 
 > :bulb: **Hint**: <br>
@@ -189,7 +189,7 @@ You can then include this configuration as part of the pipeline invocation comma
 ```console
 nextflow run 'https://github.com/torch-consortium/magma' \
 		 -profile docker \
-		 -r v1.0.1 \
+		 -r v1.1.1 \
                  -c custom.config \
 		 -params-file my_parameters_2.yml
 ```

@@ -3,17 +3,17 @@ set -uex
 
 # NOTE: Make sure you've set the environment correctly and are logged in to the registry.
 
-DOCKER_NAMESPACE="rg.fr-par.scw.cloud/magma-containers"
+DOCKER_NAMESPACE="ghcr.io/torch-consortium/magma"
 
 cp ../conda_envs/magma-env-1.yml ./magma-container-1
-cp -r ../resources/who_catalogue_amended_v5.0.0 ./magma-container-1
+cp -r ../resources/resistance_db_who ./magma-container-1
 
 cp ../conda_envs/magma-env-2.yml ./magma-container-2
 
 for container_dir in $(find * -maxdepth 0 -type d); do
   echo "Building $container_dir ..."
   cd $container_dir
-  CONTAINER_TAG=1.0.0
+  CONTAINER_TAG=1.1.1
   CONTAINER_NAME=$DOCKER_NAMESPACE/$container_dir:$CONTAINER_TAG
   echo "Container Name : $CONTAINER_NAME "
   docker build -t $CONTAINER_NAME .
