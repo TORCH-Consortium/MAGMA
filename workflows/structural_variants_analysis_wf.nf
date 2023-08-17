@@ -22,7 +22,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
     main:
 
 
-        BWA_MEM__DELLY(samples_ch,
+        BWA_MEM__DELLY(validated_reads_ch,
                   params.ref_fasta,
                   [params.ref_fasta_dict,
                    params.ref_fasta_amb,
