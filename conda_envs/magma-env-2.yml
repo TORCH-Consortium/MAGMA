@@ -14,5 +14,3 @@ dependencies:
   - snpeff=4.3.1t 
   - clusterpicker=1.2.3
   - bc=1.07.1
-  - sed=4.8
-  - grep=3.11

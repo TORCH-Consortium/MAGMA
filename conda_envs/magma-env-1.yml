@@ -15,6 +15,3 @@ dependencies:
   - multiqc=1.11 
   - fastqc=0.11.8
   - fastq_utils=0.25.1
-  - bc=1.07.1
-  - sed=4.8
-  - grep=3.11
