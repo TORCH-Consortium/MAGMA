@@ -2,15 +2,16 @@ name: magma-env-1
 channels:
   - conda-forge
   - bioconda
+  - defaults
 dependencies:
-  - bioconda::gatk4=4.2.6.1 
-  - conda-forge::r-ggplot2=3.3.5 
-  - conda-forge::pandas=1.5.1
-  - conda-forge::xlsxwriter=3.0.3
-  - bioconda::datamash=1.1.0 
-  - bioconda::delly=0.8.7 
-  - bioconda::lofreq=2.1.5 
-  - bioconda::tb-profiler=5.0.0 
-  - bioconda::multiqc=1.11 
-  - bioconda::fastqc=0.11.8
-  - bioconda::fastq_utils=0.25.1
+  - gatk4=4.2.6.1 
+  - r-ggplot2=3.3.5 
+  - pandas=1.5.1
+  - xlsxwriter=3.0.3
+  - datamash=1.1.0 
+  - delly=0.8.7 
+  - lofreq=2.1.5 
+  - tb-profiler=5.0.0 
+  - multiqc=1.11 
+  - fastqc=0.11.8
+  - fastq_utils=0.25.1
