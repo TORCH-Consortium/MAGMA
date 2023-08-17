@@ -55,6 +55,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out, resistanceDb)
 
 	TBPROFILER_COLLATE__DELLY(params.vcf_name, TBPROFILER_VCF_PROFILE__DELLY.out, resistanceDb)
-
-
+	
+    emit:
+	structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
 }

@@ -77,7 +77,8 @@ workflow {
 
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch,
                    MINOR_VARIANTS_ANALYSIS_WF.out.minor_variants_results_ch,
-                   MERGE_WF.out.major_variants_results_ch)
+                   MERGE_WF.out.major_variants_results_ch,
+		   STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch)
 
         }
 
