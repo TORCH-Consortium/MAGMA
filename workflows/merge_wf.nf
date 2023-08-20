@@ -25,11 +25,11 @@ workflow MERGE_WF {
         //---------------------------------------------------------------------------------
 
         //NOTE: Read the approved_samples tsv file and isolate the names of the approved samples
-        approved_samples_minor_variants_ch = approved_samples_ch
-                                .splitCsv(header: false, skip: 1, sep: '\t' )
-                                .map { row -> [ row.first() ] }
-                                .collect()
-                                .dump(tag:'MERGE_WF: approved_samples_minor_variants_ch', pretty: true)
+        //approved_samples_minor_variants_ch = approved_samples_ch
+        //                        .splitCsv(header: false, skip: 1, sep: '\t' )
+        //                        .map { row -> [ row.first() ] }
+        //                        .collect()
+        //                        .dump(tag:'MERGE_WF: approved_samples_minor_variants_ch', pretty: true)
 
         //NOTE: Reshape the flattened output of gvch_ch into the tuples of [sampleName, gvcf, gvcf.tbi]
         collated_gvcfs_ch = gvcf_ch
@@ -58,16 +58,16 @@ workflow MERGE_WF {
         /*         .dump(tag:'approved_call_wf_samples_ch.collect()') */
 
         //NOTE: Join the approved samples from MINOR_VARIANTS_ANALYSIS_WF and CALL_WF
-        fully_approved_samples_ch = approved_samples_minor_variants_ch
-                                        .join(approved_call_wf_samples_ch)
-                                        .flatten()
-                                        .dump(tag:'MERGE_WF: fully_approved_samples_ch', pretty: true)
-                                        //.collect()
-                                        //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
+        //fully_approved_samples_ch = approved_samples_minor_variants_ch
+        //                                .join(approved_call_wf_samples_ch)
+        //                                .flatten()
+        //                                .dump(tag:'MERGE_WF: fully_approved_samples_ch', pretty: true)
+        //                                //.collect()
+        //                                //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
 
 
         //NOTE: Join the fully approved samples with the gvcf channel 
-        selected_gvcfs_ch = collated_gvcfs_ch.join(fully_approved_samples_ch)
+        selected_gvcfs_ch = collated_gvcfs_ch.join(approved_call_wf_samples_ch)
                                         .flatten()
                                         .dump(tag:'MERGE_WF: selected_gvcfs_ch', pretty: true)
 
