@@ -80,7 +80,7 @@ workflow {
                    MERGE_WF.out.major_variants_results_ch,
 		   STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch)
 
-        }
+    }
 
 }
 
