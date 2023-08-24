@@ -18,6 +18,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
     take:
         validated_reads_ch
+	approved_samples_ch
 
     main:
 
@@ -45,9 +46,10 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         .groupTuple()
         //.dump(tag: "CALL_WF normalize_libraries_ch : ", pretty: true)
 
+	normalize_filtered_ch = approved_samples_ch.join(normalize_libraries_ch)
 
         // call_merge
-        SAMTOOLS_MERGE__DELLY(normalize_libraries_ch)
+        SAMTOOLS_MERGE__DELLY(normalize_filtered_ch)
 
         // call_mark_duplicates
         GATK_MARK_DUPLICATES__DELLY(SAMTOOLS_MERGE__DELLY.out)
