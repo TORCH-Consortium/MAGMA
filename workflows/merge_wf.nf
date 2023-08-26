@@ -14,9 +14,7 @@ workflow MERGE_WF {
     take:
         gvcf_ch
         reformatted_lofreq_vcfs_tuple_ch
-        merged_cohort_stats_tsv
-        approved_samples_ch
-        rejected_samples_ch
+	approved_samples_ch 
 
     main:
 
@@ -31,23 +29,8 @@ workflow MERGE_WF {
                                 .dump(tag:'MERGE_WF: collated_gvcfs_ch', pretty: true)
                                 //.collectFile(name: "$params.outdir/collated_gvcfs_ch.txt")
 
-
-
-        //NOTE: Use the stats file for the entire cohort (from CALL_WF)
-        // and filter out the samples which pass all thresholds
-        approved_call_wf_samples_ch = merged_cohort_stats_tsv
-                                .splitCsv(header: false, skip: 1, sep: '\t' )
-                                .map { row -> [
-                                        row.first(),           // SAMPLE
-                                        row.last().toInteger() // ALL_THRESHOLDS_MET
-                                        ]
-                                    }
-                                .filter { it[1] == 1} // Filter out samples which meet all the thresholds
-                                .map { [ it[0] ] }
-                                .dump(tag:'MERGE_WF: approved_call_wf_samples_ch', pretty: true)
-
         //NOTE: Join the fully approved samples with the gvcf channel 
-        selected_gvcfs_ch = collated_gvcfs_ch.join(approved_call_wf_samples_ch)
+        selected_gvcfs_ch = collated_gvcfs_ch.join(approved_samples_ch)
                                         .flatten()
                                         .dump(tag:'MERGE_WF: selected_gvcfs_ch', pretty: true)
 
