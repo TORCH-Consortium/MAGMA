@@ -109,7 +109,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
 	vcfs_string_ch.view() // FIXME I need to view this channel or I get an "Comparison method violates its general contract!" error
-        BCFTOOLS_MERGE__DELLY(vcfs_string_ch, vcfs_and_indexes_ch)
+	vcfs_file = vcfs_string_ch.collectFile(name: 'structural_variant_vcfs.txt', newLine: true)
+        BCFTOOLS_MERGE__DELLY(vcfs_file, vcfs_and_indexes_ch)
 
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 

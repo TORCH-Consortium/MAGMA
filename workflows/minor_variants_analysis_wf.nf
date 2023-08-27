@@ -21,7 +21,8 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
 
         // merge_call_resistance_lofreq
         //NOTE: Samples implicitly get filtered here if they don't have any identified variants
-        BCFTOOLS_MERGE__LOFREQ(vcfs_string_ch, reformatted_lofreq_vcfs_tuple_ch)
+	vcfs_file = vcfs_string_ch.collectFile(name: 'minor_variant_vcfs.txt', newLine: true)
+        BCFTOOLS_MERGE__LOFREQ(vcfs_file, reformatted_lofreq_vcfs_tuple_ch)
 
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
