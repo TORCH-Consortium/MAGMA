@@ -104,11 +104,11 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .filter { it.class.name  != "java.lang.String" }
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
-                                .reduce { a, b -> "$a $b " }
+                                //.reduce { a, b -> "$a $b " }
                                 //.view { it }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
-	vcfs_string_ch.view() // FIXME I need to view this channel or I get an "Comparison method violates its general contract!" error
+	//vcfs_string_ch.view() // FIXME I need to view this channel or I get an "Comparison method violates its general contract!" error
 	vcfs_file = vcfs_string_ch.collectFile(name: 'structural_variant_vcfs.txt', newLine: true)
         BCFTOOLS_MERGE__DELLY(vcfs_file, vcfs_and_indexes_ch)
 
