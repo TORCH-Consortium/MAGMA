@@ -3,7 +3,7 @@ process BCFTOOLS_MERGE {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        val(vcfs_file)
+        path(vcfs_file)
         path("*")
 
     output:
