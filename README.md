@@ -12,7 +12,6 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
   - MAGMA parameters (`default_parameters.config`)
   - Hardware requirements (`conf/standard.config`)
   - Execution (software) requirements (`conf/docker.config` or `conf/conda.config`)
-- An (optional) GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
 
 
 # (Optional) GVCF datasets 
@@ -20,14 +19,15 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 We also provide some reference GVCF files which you could use for specific use-cases.
 
 - For small datasets (20 samples or less), we recommend that you download the `EXIT_RIF GVCF` files from https://zenodo.org/record/8054182
- 
+containing GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
+
 - For including Mtb lineages and outgroup (M. canettii) in the phylogenetic tree, you can download the `LineagesAndOutgroup` files from https://zenodo.org/record/8233518
 
 
 ```
 use_ref_exit_rif_gvcf = false
 ref_exit_rif_gvcf =  "/path/to/FILE.g.vcf.gz" 
-ref_exit_rif_gvcf_tbi =  "/path/FILE.g.vcf.gz.tbi"
+ref_exit_rif_gvcf_tbi =  "/path/to/FILE.g.vcf.gz.tbi"
 ```
 
 > :note: **Custom GVCF dataset**:
