@@ -21,7 +21,7 @@ process IQTREE {
 
     script:
         if(params.iqtree_standard_bootstrap) {
-            arguments = '-bb 1000'
+            arguments = '-b 1000'
         } else if(params.iqtree_fast_ml_only) {
             arguments = '-fast'
         } else if(params.iqtree_fast_bootstrapped_phylogeny) {
