@@ -34,6 +34,9 @@ workflow MERGE_WF {
                                         .flatten()
                                         .dump(tag:'MERGE_WF: selected_gvcfs_ch', pretty: true)
 
+
+        selected_gvcfs_ch.view()
+
         //NOTE: Filter only file type values and send to MERGE_WF
         //FIXME refactor the filtering logic NOT to rely upon the exact classnames
         filtered_selected_gvcfs_ch = selected_gvcfs_ch
@@ -44,8 +47,7 @@ workflow MERGE_WF {
                                                             || (it.class.name == "com.google.cloud.storage.contrib.nio.CloudStoragePath") 
                                                     } }
                                         .collect()
-                                        .view()
-                                        //.dump(tag:'MERGE_WF: filtered_selected_gvcfs_ch', pretty: true)
+                                        .dump(tag:'MERGE_WF: filtered_selected_gvcfs_ch', pretty: true)
                                         //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
 
 
