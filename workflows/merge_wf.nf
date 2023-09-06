@@ -35,17 +35,10 @@ workflow MERGE_WF {
                                         .dump(tag:'MERGE_WF: selected_gvcfs_ch', pretty: true)
 
 
-        selected_gvcfs_ch.view()
-
         //NOTE: Filter only file type values and send to MERGE_WF
         //FIXME refactor the filtering logic NOT to rely upon the exact classnames
         filtered_selected_gvcfs_ch = selected_gvcfs_ch
-                                        .filter { it -> { 
-                                                            (it.class.name  == "sun.nio.fs.UnixPath") 
-                                                            || (it.class.name == "nextflow.cloud.azure.nio.AzPath") 
-                                                            || (it.class.name == "com.upplication.s3fs.S3Path") 
-                                                            || (it.class.name == "com.google.cloud.storage.contrib.nio.CloudStoragePath") 
-                                                    } }
+                                        .filter { it.class != String }
                                         .collect()
                                         .dump(tag:'MERGE_WF: filtered_selected_gvcfs_ch', pretty: true)
                                         //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
