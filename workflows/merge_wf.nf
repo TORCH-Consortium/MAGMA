@@ -44,7 +44,8 @@ workflow MERGE_WF {
                                                             || (it.class.name == "com.google.cloud.storage.contrib.nio.CloudStoragePath") 
                                                     } }
                                         .collect()
-                                        .dump(tag:'MERGE_WF: filtered_selected_gvcfs_ch', pretty: true)
+                                        .view()
+                                        //.dump(tag:'MERGE_WF: filtered_selected_gvcfs_ch', pretty: true)
                                         //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
 
 

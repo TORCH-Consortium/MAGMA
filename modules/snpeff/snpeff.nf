@@ -13,9 +13,9 @@ process SNPEFF {
     shell:
 
         '''
-        rename_vcf_chrom.py --vcf !{rawJointVariantsFile}  --source !{params.ref_fasta_basename} --target 'Chromosome' \
+        python2 rename_vcf_chrom.py --vcf !{rawJointVariantsFile}  --source !{params.ref_fasta_basename} --target 'Chromosome' \
             | !{params.snpeff_path} -nostats !{params.arguments}  \
-            | rename_vcf_chrom.py --target !{params.ref_fasta_basename} --source 'Chromosome' \
+            | python2 rename_vcf_chrom.py --target !{params.ref_fasta_basename} --source 'Chromosome' \
          > !{joint_name}.raw_variants.annotated.vcf
         '''
 
