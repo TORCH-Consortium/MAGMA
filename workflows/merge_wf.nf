@@ -14,7 +14,7 @@ workflow MERGE_WF {
     take:
         gvcf_ch
         reformatted_lofreq_vcfs_tuple_ch
-	approved_samples_ch 
+        approved_samples_ch 
 
     main:
 
