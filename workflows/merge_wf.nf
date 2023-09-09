@@ -14,22 +14,13 @@ workflow MERGE_WF {
     take:
         gvcf_ch
         reformatted_lofreq_vcfs_tuple_ch
-        merged_cohort_stats_tsv
-        approved_samples_ch
-        rejected_samples_ch
+        approved_samples_ch 
 
     main:
 
         //---------------------------------------------------------------------------------
         // Filter the approved samples
         //---------------------------------------------------------------------------------
-
-        //NOTE: Read the approved_samples tsv file and isolate the names of the approved samples
-        approved_samples_minor_variants_ch = approved_samples_ch
-                                .splitCsv(header: false, skip: 1, sep: '\t' )
-                                .map { row -> [ row.first() ] }
-                                .collect()
-                                .dump(tag:'MERGE_WF: approved_samples_minor_variants_ch', pretty: true)
 
         //NOTE: Reshape the flattened output of gvch_ch into the tuples of [sampleName, gvcf, gvcf.tbi]
         collated_gvcfs_ch = gvcf_ch
@@ -38,51 +29,21 @@ workflow MERGE_WF {
                                 .dump(tag:'MERGE_WF: collated_gvcfs_ch', pretty: true)
                                 //.collectFile(name: "$params.outdir/collated_gvcfs_ch.txt")
 
-
-
-        //NOTE: Use the stats file for the entire cohort (from CALL_WF)
-        // and filter out the samples which pass all thresholds
-        approved_call_wf_samples_ch = merged_cohort_stats_tsv
-                                .splitCsv(header: false, skip: 1, sep: '\t' )
-                                .map { row -> [
-                                        row.first(),           // SAMPLE
-                                        row.last().toInteger() // ALL_THRESHOLDS_MET
-                                        ]
-                                    }
-                                .filter { it[1] == 1} // Filter out samples which meet all the thresholds
-                                .map { [ it[0] ] }
-                                .dump(tag:'MERGE_WF: approved_call_wf_samples_ch', pretty: true)
-
-        /* approved_call_wf_samples_ch */
-        /*         .collect() */
-        /*         .dump(tag:'approved_call_wf_samples_ch.collect()') */
-
-        //NOTE: Join the approved samples from MINOR_VARIANTS_ANALYSIS_WF and CALL_WF
-        fully_approved_samples_ch = approved_samples_minor_variants_ch
-                                        .join(approved_call_wf_samples_ch)
-                                        .flatten()
-                                        .dump(tag:'MERGE_WF: fully_approved_samples_ch', pretty: true)
-                                        //.collect()
-                                        //.collectFile(name: "$params.outdir/approved_samples_ch.txt") 
-
-
         //NOTE: Join the fully approved samples with the gvcf channel 
-        selected_gvcfs_ch = collated_gvcfs_ch.join(fully_approved_samples_ch)
+        selected_gvcfs_ch = collated_gvcfs_ch.join(approved_samples_ch)
                                         .flatten()
                                         .dump(tag:'MERGE_WF: selected_gvcfs_ch', pretty: true)
+
 
         //NOTE: Filter only file type values and send to MERGE_WF
         //FIXME refactor the filtering logic NOT to rely upon the exact classnames
         filtered_selected_gvcfs_ch = selected_gvcfs_ch
-                                        .filter { it -> { 
-                                                            (it.class.name  == "sun.nio.fs.UnixPath") 
-                                                            || (it.class.name == "nextflow.cloud.azure.nio.AzPath") 
-                                                            || (it.class.name == "com.upplication.s3fs.S3Path") 
-                                                            || (it.class.name == "com.google.cloud.storage.contrib.nio.CloudStoragePath") 
-                                                    } }
+                                        .filter { it.class != String }
                                         .collect()
                                         .dump(tag:'MERGE_WF: filtered_selected_gvcfs_ch', pretty: true)
                                         //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
+
+        filtered_selected_gvcfs_ch.view()
 
 
        //---------------------------------------------------------------------------------

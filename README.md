@@ -12,12 +12,27 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
   - MAGMA parameters (`default_parameters.config`)
   - Hardware requirements (`conf/standard.config`)
   - Execution (software) requirements (`conf/docker.config` or `conf/conda.config`)
-- An (optional) GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
 
 
-# (Optional) GVCF for analyzing small number of samples
+# (Optional) GVCF datasets 
 
-You can download the  `EXIT_RIF GVCF` files from https://zenodo.org/record/8054182
+We also provide some reference GVCF files which you could use for specific use-cases.
+
+- For small datasets (20 samples or less), we recommend that you download the `EXIT_RIF GVCF` files from https://zenodo.org/record/8054182
+containing GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
+
+- For including Mtb lineages and outgroup (M. canettii) in the phylogenetic tree, you can download the `LineagesAndOutgroup` files from https://zenodo.org/record/8233518
+
+
+```
+use_ref_exit_rif_gvcf = false
+ref_exit_rif_gvcf =  "/path/to/FILE.g.vcf.gz" 
+ref_exit_rif_gvcf_tbi =  "/path/to/FILE.g.vcf.gz.tbi"
+```
+
+> :note: **Custom GVCF dataset**:
+For creating a custom GVCF dataset, you can refer the discussion [here](https://github.com/TORCH-Consortium/MAGMA/issues/162).
+
 
 ## Tutorials and Presentations
 
@@ -91,7 +106,7 @@ Which could be provided to the pipeline using `-params-file` parameter as shown 
 ```console
 nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
 		 -profile conda_local \ 
-		 -r v1.0.1 \
+		 -r v1.1.1 \
 		 -params-file  my_parameters_1.yml
 
 ```
@@ -139,9 +154,9 @@ We provide [two docker containers](https://github.com/orgs/TORCH-Consortium/pack
 Although, you don't need to pull the containers manually, but should you need to, you could use the following commands to pull the pre-built and provided containers 
 
 ```console
-docker pull ghcr.io/torch-consortium/magma/magma-container-1:1.1.0
+docker pull ghcr.io/torch-consortium/magma/magma-container-1:1.1.1
 
-docker pull ghcr.io/torch-consortium/magma/magma-container-2:1.1.0
+docker pull ghcr.io/torch-consortium/magma/magma-container-2:1.1.1
 ```
 
 
@@ -154,7 +169,7 @@ Here's the command which should be used
 nextflow run 'https://github.com/torch-consortium/magma' \
 		 -params-file my_parameters_2.yml \
 		 -profile docker \
-		 -r v1.0.1 
+		 -r v1.1.1 
 ```
 
 > :bulb: **Hint**: <br>
@@ -189,7 +204,7 @@ You can then include this configuration as part of the pipeline invocation comma
 ```console
 nextflow run 'https://github.com/torch-consortium/magma' \
 		 -profile docker \
-		 -r v1.0.1 \
+		 -r v1.1.1 \
                  -c custom.config \
 		 -params-file my_parameters_2.yml
 ```

@@ -45,6 +45,7 @@ if __name__ == '__main__':
     args = vars(parser.parse_args())
 
     vcf, header, not_empty = read_vcf(args['lofreq_vcf_file'])
+    header = '\n'.join([i for i in header.split('\n') if 'lofreq' not in i])
     if not_empty:
         vcf['FORMAT'] = 'GT:AD:DP:GQ:PL'
 

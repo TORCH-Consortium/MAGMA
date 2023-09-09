@@ -1,4 +1,4 @@
-FROM mambaorg/micromamba:0.25.1 AS base
+FROM mambaorg/micromamba:1.4.9 AS base
 
 #NOTE: The conda env file has been copied via the build script
 COPY --chown=$MAMBA_USER:$MAMBA_USER magma-env-1.yml /tmp/magma-env-1.yml
@@ -15,5 +15,5 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER resistance_db_who /tmp/resistance_db_who
 
 FROM condaenv AS resistanceDbWho
 
-RUN cd /tmp/resistance_db_who && /opt/conda/bin/tb-profiler load_library resistance_db_who && cd /tmp
+RUN cd /tmp/resistance_db_who && /opt/conda/bin/tb-profiler load_library ./resistance_db_who && cd /tmp
 

@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 '''Original author Jody Phelan at https://github.com/jodyphelan/pathogen-profiler/blob/master/scripts/rename_vcf_chrom.py'''
 import sys
@@ -30,11 +30,11 @@ def cmd_out(cmd,verbose=1):
     stderr.close()
 
 def main(args):
-    generator = cmd_out(f"bcftools view {args.vcf}") if args.vcf else sys.stdin
+    generator = cmd_out("bcftools view " + args.vcf) if args.vcf else sys.stdin
     convert = dict(zip(args.source,args.target))
     for l in generator:
         if l[0]=="#":
-            sys.stdout.write(l)
+            sys.stdout.write(l.strip()+"\n")
         else:
             row = l.strip().split()
             row[0] = convert[row[0]]

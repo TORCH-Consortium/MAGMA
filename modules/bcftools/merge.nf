@@ -3,17 +3,17 @@ process BCFTOOLS_MERGE {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        val(vcfs_string_ch)
+        path(vcfs_file)
         path("*")
 
     output:
-        tuple val(params.vcf_name), path("*.${params.file_format}.vcf.gz"), path("*.vcf.gz.csi")
-
+        //tuple val(params.vcf_name), path("*.${params.file_format}.vcf.gz"), path("*.vcf.gz.csi")
+        tuple val(params.vcf_name), path("*.vcf.gz.csi"), path("*.${params.file_format}.vcf.gz")
 
     script:
 
         """
-        bcftools merge -o ${params.vcf_name}.${params.file_format}.vcf ${vcfs_string_ch}
+        bcftools merge -o ${params.vcf_name}.${params.file_format}.vcf -l ${vcfs_file}
         bgzip ${params.vcf_name}.${params.file_format}.vcf
         ${params.bcftools_path} index ${params.vcf_name}.${params.file_format}.vcf.gz
         """

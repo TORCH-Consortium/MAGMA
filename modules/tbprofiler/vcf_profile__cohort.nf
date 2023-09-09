@@ -14,9 +14,10 @@ process TBPROFILER_VCF_PROFILE__COHORT {
         def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
         """
-        ${params.tbprofiler_path} vcf_profile  \\
+        ${params.tbprofiler_path} profile  \\
             ${optionalDb} \\
-            ${mergedVcf}
+	    --threads ${task.cpus}\\
+            --vcf ${mergedVcf}
 
         """
 

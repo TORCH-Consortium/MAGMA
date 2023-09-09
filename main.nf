@@ -38,12 +38,22 @@ workflow {
 
         MINOR_VARIANTS_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
-        //STRUCTURAL_VARIANTS_ANALYSIS_WF ( CALL_WF.out.samtools_bam_ch )
-
         UTILS_MERGE_COHORT_STATS ( MINOR_VARIANTS_ANALYSIS_WF.out.approved_samples_ch,
                                    MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch,
                                    CALL_WF.out.cohort_stats_tsv )
 
+	approved_samples_ch = UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch
+                                .splitCsv(header: false, skip: 1, sep: '\t' )
+                                .map { row -> [
+                                        row.first(),           // SAMPLE
+                                        row.last().toInteger() // ALL_THRESHOLDS_MET
+                                        ]
+                                    }
+                                .filter { it[1] == 1} // Filter out samples which meet all the thresholds
+                                .map { [ it[0] ] }
+                                .dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
+
+        STRUCTURAL_VARIANTS_ANALYSIS_WF ( validated_reads_ch, approved_samples_ch )
 
     //FIXME IMPLEMENT ANOTHER LOGIC FOR --only_merge_analysis
     /* else if { */
@@ -60,8 +70,6 @@ workflow {
 
         CALL_WF( MAP_WF.out.sorted_reads_ch )
 
-        //STRUCTURAL_VARIANTS_ANALYSIS_WF ( CALL_WF.out.samtools_bam_ch )
-
         //NOTE: Samples implicitly get filtered in BCFTOOLS_MERGE if they don't have any identified variants
         MINOR_VARIANTS_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
 
@@ -69,17 +77,30 @@ workflow {
                                   MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch,
                                   CALL_WF.out.cohort_stats_tsv )
 
-        MERGE_WF( CALL_WF.out.gvcf_ch,
+	approved_samples_ch = UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch
+                                .splitCsv(header: false, skip: 1, sep: '\t' )
+                                .map { row -> [
+                                        row.first(),           // SAMPLE
+                                        row.last().toInteger() // ALL_THRESHOLDS_MET
+                                        ]
+                                    }
+                                .filter { it[1] == 1} // Filter out samples which meet all the thresholds
+                                .map { [ it[0] ] }
+                                .dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
+
+        STRUCTURAL_VARIANTS_ANALYSIS_WF ( validated_reads_ch, approved_samples_ch )
+
+	MERGE_WF( CALL_WF.out.gvcf_ch,
                   CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch, 
-                  UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch,
-                  MINOR_VARIANTS_ANALYSIS_WF.out.approved_samples_ch,
-                  MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch)
+                  approved_samples_ch
+	)
 
         REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch,
                    MINOR_VARIANTS_ANALYSIS_WF.out.minor_variants_results_ch,
-                   MERGE_WF.out.major_variants_results_ch)
+                   MERGE_WF.out.major_variants_results_ch,
+		   STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch)
 
-        }
+    }
 
 }
 

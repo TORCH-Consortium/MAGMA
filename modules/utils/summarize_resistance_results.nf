@@ -4,6 +4,7 @@ process UTILS_SUMMARIZE_RESISTANCE_RESULTS {
     input:
         path("minor_variants/*")
         path("major_variants/*")
+        path("structural_variants/*")
 
     output:
         path("resistance_summaries")
@@ -11,7 +12,7 @@ process UTILS_SUMMARIZE_RESISTANCE_RESULTS {
     script:
        
         """
-        summarize_resistance.py minor_variants major_variants resistance_summaries
+        summarize_resistance.py major_variants minor_variants structural_variants resistance_summaries
         """
 
     stub: 

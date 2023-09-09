@@ -13,18 +13,10 @@ process SNPEFF {
     shell:
 
         '''
-        gunzip -c !{rawJointVariantsFile} > !{joint_name}.temp.raw_variants.vcf
-
-        sed -i 's/^!{ref_fasta.getBaseName()}/Chromosome/g' !{joint_name}.temp.raw_variants.vcf
-
-        !{params.snpeff_path} \\
-            !{params.arguments} \\
-            !{joint_name}.temp.raw_variants.vcf \\
-        > !{joint_name}.raw_variants.annotated.vcf
-
-        rm !{joint_name}.temp.raw_variants.vcf
-
-        sed -i 's/^Chromosome/!{ref_fasta.getBaseName()}/g' !{joint_name}.raw_variants.annotated.vcf
+        rename_vcf_chrom.py --vcf !{rawJointVariantsFile}  --source !{params.ref_fasta_basename} --target 'Chromosome' \
+            | !{params.snpeff_path} -nostats !{params.arguments}  \
+            | rename_vcf_chrom.py --target !{params.ref_fasta_basename} --source 'Chromosome' \
+         > !{joint_name}.raw_variants.annotated.vcf
         '''
 
     stub:
