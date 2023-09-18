@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 
 '''Original author Jody Phelan at https://github.com/jodyphelan/pathogen-profiler/blob/master/scripts/rename_vcf_chrom.py'''
 import sys
