@@ -105,7 +105,7 @@ def create_resistance_df(sample_res, method='XBS'):
                     if int(annotation['who_confidence']) != 3:
                         pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Observations', 'Fraction')] = None
                     if int(annotation['who_confidence']) > 3:
-                        pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), 5, var['type'], 'Catalogue', annotation['who_original'], annotation['literature']]
+                        pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature']]
                     elif int(annotation['who_confidence']) == 3:
                         if float(annotation['who_solo_res']) + float(annotation['who_sens']) == 0:
                             pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature', 'Observations')] = ['{:.0%}'.format(var['freq']), -1, var['type'], 'Catalogue', annotation['who_original'], annotation['literature'], '{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens'])))]
