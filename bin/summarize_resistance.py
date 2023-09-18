@@ -83,10 +83,10 @@ def create_resistance_df(sample_res, method='XBS'):
         for drug in var['annotation']:
             drug_name = drug['drug'].lower().replace(' ', '_')
             pt_df.loc[(drug_name, var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(drug['who_confidence'])], var['type'], 'Catalogue', drug['who_original'], drug['literature']]
-            if float(annotation['who_solo_res']) + float(annotation['who_sens']) == 0:
-                pt_df.loc[(drug_name, var_repr), ('Observations')] = ['{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens'])))]
+            if float(drug['who_solo_res']) + float(drug['who_sens']) == 0:
+                pt_df.loc[(drug_name, var_repr), ('Observations')] = ['{}R - {}S'.format(int(float(drug['who_solo_res'])), int(float(drug['who_sens'])))]
             else:
-                pt_df.loc[(drug_name, var_repr), ('Observations', 'Fraction')] = ['{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens']))), '{:.2f}'.format(float(annotation['who_r_fraction']))]
+                pt_df.loc[(drug_name, var_repr), ('Observations', 'Fraction')] = ['{}R - {}S'.format(int(float(drug['who_solo_res'])), int(float(drug['who_sens']))), '{:.2f}'.format(float(drug['who_r_fraction']))]
                     
 
     """
