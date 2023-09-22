@@ -35,6 +35,14 @@ map_confidence_WHO = {
     5: 6,
 }
 
+map_confidence_WHO_naming = {
+    1: 'Associated with resistance',
+    2: 'Associated with resistance - interim',
+    3: 'Uncertain significance',
+    4: 'Not associated with resistance - interim',
+    5: 'Not associated with resistance',
+}
+
 drug_mapping = {
     'AMI': 'amikacin',
     'BDQ': 'bedaquiline',
@@ -58,7 +66,7 @@ drug_mapping_inv = {
 }
 
 def create_resistance_df(sample_res, method='XBS'):
-    pt_df = pd.DataFrame(columns=['Drug', 'Variant', 'WHO Catalogue', 'Source', 'Source notation', 'Type', 'Frequency', 'Literature', 'Observations', 'Fraction']).set_index(['Drug', 'Variant'])
+    pt_df = pd.DataFrame(columns=['Drug', 'Variant', 'Resistance interpretation','WHO Catalogue', 'Source', 'Source notation', 'Type', 'Frequency', 'Literature', 'Observations', 'Fraction']).set_index(['Drug', 'Variant'])
     """
     Add the DR variants from the magma analysis to the magma variant dataframe.
     Do this after adding the lofreq dr variants to show the magma variant frequencies.
@@ -72,17 +80,17 @@ def create_resistance_df(sample_res, method='XBS'):
         #Add all drugs for which this variant falls in a tier 1 or 2 gene
         for drug in var['gene_associated_drugs']:
             drug_name = drug.lower().replace(' ', '_')
-            pt_df.loc[(drug, var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source')] = ['{:.0%}'.format(var['freq']), -1, var['type'], 'Tier 1 or 2 gene']
+            pt_df.loc[(drug, var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source')] = ['{:.0%}'.format(var['freq']), -1, 'Not listed', var['type'], 'Tier 1 or 2 gene']
 
         # Overwrite the unknown for the resistant drugs
         for drug in var['drugs']:
             drug_name = drug['drug'].lower().replace(' ', '_')
-            pt_df.loc[(drug_name, var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(drug['confidence'])], var['type'], 'Catalogue', drug['who original'], drug['literature']]
+            pt_df.loc[(drug_name, var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(drug['confidence'])], map_confidence_WHO_naming[int(drug['confidence'])], var['type'], 'Catalogue', drug['who original'], drug['literature']]
 
         # Overwrite the unknown for the sensitive drugs
         for drug in var['annotation']:
             drug_name = drug['drug'].lower().replace(' ', '_')
-            pt_df.loc[(drug_name, var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(drug['who_confidence'])], var['type'], 'Catalogue', drug['who_original'], drug['literature']]
+            pt_df.loc[(drug_name, var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(drug['who_confidence'])], map_confidence_WHO_naming[int(drug['who_confidence'])], var['type'], 'Catalogue', drug['who_original'], drug['literature']]
             if float(drug['who_solo_res']) + float(drug['who_sens']) == 0:
                 pt_df.loc[(drug_name, var_repr), ('Observations')] = ['{}R - {}S'.format(int(float(drug['who_solo_res'])), int(float(drug['who_sens'])))]
             else:
@@ -101,7 +109,7 @@ def create_resistance_df(sample_res, method='XBS'):
         # Add all the other variants as unknown classification and overwrite their classification later if necessary
         for drug in var['gene_associated_drugs']:
             drug = drug.lower().replace(' ', '_')
-            pt_df.loc[(drug, var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source')] = ['{:.0%}'.format(var['freq']), -1, var['type'], 'Tier 1 or 2 gene']
+            pt_df.loc[(drug, var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source')] = ['{:.0%}'.format(var['freq']), -1, 'Not listed', var['type'], 'Tier 1 or 2 gene']
 
         # Overwrite the variant classification for drugs which have a WHO sens classification last as to overrule all other classifications
         if 'annotation' in var:
@@ -110,12 +118,12 @@ def create_resistance_df(sample_res, method='XBS'):
                     if int(annotation['who_confidence']) != 3:
                         pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Observations', 'Fraction')] = None
                     if int(annotation['who_confidence']) > 3:
-                        pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature']]
+                        pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(annotation['who_confidence'])], map_confidence_WHO_naming[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature']]
                     elif int(annotation['who_confidence']) == 3:
                         if float(annotation['who_solo_res']) + float(annotation['who_sens']) == 0:
-                            pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature', 'Observations')] = ['{:.0%}'.format(var['freq']), -1, var['type'], 'Catalogue', annotation['who_original'], annotation['literature'], '{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens'])))]
+                            pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature', 'Observations')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(annotation['who_confidence'])], map_confidence_WHO_naming[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature'], '{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens'])))]
                         else:
-                            pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature', 'Observations', 'Fraction')] = ['{:.0%}'.format(var['freq']), -1, var['type'], 'Catalogue', annotation['who_original'], annotation['literature'], '{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens']))), '{:.2f}'.format(float(annotation['who_r_fraction']))]
+                            pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature', 'Observations', 'Fraction')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(annotation['who_confidence'])], map_confidence_WHO_naming[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature'], '{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens']))), '{:.2f}'.format(float(annotation['who_r_fraction']))]
                     else:
                         display(annotation)
                 else:
@@ -188,18 +196,19 @@ if __name__ == '__main__':
         pt_df = pd.concat([pt_df_magma, pt_df_lof, pt_df_delly]).reset_index().drop_duplicates(subset=['Drug', 'Variant']).set_index(['Drug', 'Variant']).sort_index()
 
         for drug in list(drugs - set([i[0] for i in pt_df.index.values])):
-            pt_df.loc[(drug, 'No variants found'), ('WHO Catalogue')] = 6
+            pt_df.loc[(drug, 'No variants found'), ('WHO Catalogue')] = ''
+            pt_df.loc[(drug, 'No variants found'), ('Resistance interpretation')] = 6
 
-        pt_df['WHO Catalogue'].replace(-1, unknown_position, inplace=True)
+        pt_df['Resistance interpretation'].replace(-1, unknown_position, inplace=True)
         for drug in pt_df.index.levels[0]:
-            conc = min(pt_df.loc[drug, 'WHO Catalogue'].value_counts().keys())
+            conc = min(pt_df.loc[drug, 'Resistance interpretation'].value_counts().keys())
             pt_df.loc[drug, 'Conclusion'] = conc
 
-        pt_df = pt_df.reset_index().sort_values(['Conclusion', 'Drug', 'WHO Catalogue', 'Variant'])
-        for column in ['Conclusion', 'WHO Catalogue']:
+        pt_df = pt_df.reset_index().sort_values(['Conclusion', 'Drug', 'Resistance interpretation', 'Variant'])
+        for column in ['Conclusion', 'Resistance interpretation']:
             pt_df[column] = pt_df[column].apply(lambda c: class_map[-1] if c == unknown_position else None if pd.isna(c) else class_map[c])
 
-        pt_df = pt_df[['Drug', 'Conclusion', 'Variant', 'WHO Catalogue', 'Type', 'Frequency', 'Method', 'Source', 'Source notation', 'Literature', 'Observations', 'Fraction']]
+        pt_df = pt_df[['Drug', 'Conclusion', 'Variant', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Frequency', 'Method', 'Source notation', 'Literature', 'Observations', 'Fraction']]
 
         """
         Write the sheet to excel with formatting
