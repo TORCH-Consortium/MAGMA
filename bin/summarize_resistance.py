@@ -208,7 +208,7 @@ if __name__ == '__main__':
         for column in ['Conclusion', 'Resistance interpretation']:
             pt_df[column] = pt_df[column].apply(lambda c: class_map[-1] if c == unknown_position else None if pd.isna(c) else class_map[c])
 
-        pt_df = pt_df[['Drug', 'Conclusion', 'Variant', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Frequency', 'Method', 'Source notation', 'Literature', 'Observations', 'Fraction']]
+        pt_df = pt_df[['Drug', 'Conclusion', 'Variant', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Frequency', 'Method', 'Literature', 'Source notation', 'Observations', 'Fraction']]
 
         """
         Write the sheet to excel with formatting
