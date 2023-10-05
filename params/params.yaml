@@ -13,8 +13,4 @@ outdir :  "/home/magma-results-earlymgit10samples"
 
 conda_envs_location :  "/home/magma-conda_envs"
 
-# Some boolean options
-optimize_variant_recalibration :  false
-compute_minor_variants :  true
-dataset_is_not_contaminated :  true
-only_validate_fastqs :  false
+
