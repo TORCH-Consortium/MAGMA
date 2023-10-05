@@ -1,5 +1,6 @@
 process GATK_VARIANT_RECALIBRATOR {
     tag "annotation: ${annotations}"
+    label 'cpu_4_memory_16'
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
 
