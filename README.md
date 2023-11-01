@@ -36,7 +36,7 @@ For creating a custom GVCF dataset, you can refer the discussion [here](https://
 
 ## Tutorials and Presentations
 
-For the tutorials(./docs/tutorials.md) and [presentations](./docs/presentations.md) please refer the [docs](./docs) folder.
+For the pipeline [presentations](./docs/presentations.md) please refer the [docs](./docs) folder.
 
 ## Prerequisites
 
@@ -122,7 +122,7 @@ nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
 
 ```
 
-## Mention Tower Launch
+## Running MAGMA using Nextflow Tower 
 
 You can also use Seqera Platform (aka Nextflow Tower) to run the pipeline on any of the supported cloud platforms and monitoring the pipeline execution.
 
@@ -240,7 +240,7 @@ The MAGMA paper has been submitted and the preprint is available here: https://d
 
 The XBS variant calling core was published here: https://doi.org/10.1099%2Fmgen.0.000689
 
-# Contributions and Interactions with us
+
 
 Contributions are warmly accepted! We encourage you to interact with us using `Discussions` and `Issues` feature of Github.
 
