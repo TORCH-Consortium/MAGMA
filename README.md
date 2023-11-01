@@ -43,10 +43,21 @@ For the tutorials(./docs/tutorials.md) and [presentations](./docs/presentations.
 ### Nextflow
 
 - `git` : The version control in the pipeline.
-- `Java-11` or `Java-17` (preferred)
+- `Java-11` or `Java-17` LTS release (preferred)
 
 > :warning: **Check `java` version!**:
-The `java` version should NOT be an `internal jdk` release! You can check the release via `java -version`
+The `java` version should NOT be an `internal jdk` release! You can check the release via `java --version`
+
+
+```bash 
+
+$ java -version
+openjdk version "17.0.7" 2023-04-18 LTS
+OpenJDK Runtime Environment (build 17.0.7+7-LTS)
+OpenJDK 64-Bit Server VM (build 17.0.7+7-LTS, mixed mode, sharing)
+
+```
+
 
 - Download Nextflow
 
@@ -110,6 +121,13 @@ nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
 		 -params-file  my_parameters_1.yml
 
 ```
+
+## Mention Tower Launch
+
+You can also use Seqera Platform (aka Nextflow Tower) to run the pipeline on any of the supported cloud platforms and monitoring the pipeline execution.
+
+Please refer the [Tower docs](https://help.tower.nf/) for further information.
+
 
 ## Running MAGMA using conda
 
@@ -214,13 +232,13 @@ nextflow run 'https://github.com/torch-consortium/magma' \
 1. HPC based execution for MAGMA, please refer [this doc](./docs/hpc_execution.md).
 2. Cloud batch (AWS/Google/Azure) based execution for MAGMA, please refer [this doc](./docs/cloud_batch_execution.md)
 
+
+
 # Citation 
 
-The MAGMA pipeline paper has been submitted.
+The MAGMA paper has been submitted and the preprint is available here: https://doi.org/10.1101/2023.10.04.23296533
 
 The XBS variant calling core was published here: https://doi.org/10.1099%2Fmgen.0.000689
-
-TODO: Update this section and add a citation.cff file 
 
 # Contributions and Interactions with us
 
@@ -229,3 +247,5 @@ Contributions are warmly accepted! We encourage you to interact with us using `D
 # License
 
 Please refer the [GPL 3.0 LICENSE](./LICENSE) file.
+
+[Here's](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3#:~:text=You%20may%20copy%2C%20distribute%20and,along%20with%20build%20%26%20install%20instructions.) a quick TLDR for the license terms.
