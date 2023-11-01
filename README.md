@@ -240,7 +240,7 @@ The MAGMA paper has been submitted and the preprint is available here: https://d
 
 The XBS variant calling core was published here: https://doi.org/10.1099%2Fmgen.0.000689
 
-<-- Add posters -->
+<!-- Add posters -->
 
 # Contributions and interactions with us
 
