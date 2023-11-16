@@ -1,6 +1,6 @@
 process MULTIQC {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
-    label 'cpu_4_memory_16'
+    label 'cpu_8_memory_6'
 
     input:
         path("*")
