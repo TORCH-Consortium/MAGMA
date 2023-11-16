@@ -1,6 +1,6 @@
 process BWA_MEM {
     tag "${sampleName}"
-    label 'cpu_8_memory_8'
+    label 'cpu_8_memory_6'
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
