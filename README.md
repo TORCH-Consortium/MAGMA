@@ -14,6 +14,29 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
   - Execution (software) requirements (`conf/docker.config` or `conf/conda.config`)
 
 
+# Samplesheet Structure
+
+In order to run the MAGMA pipeline, a samplesheet (comma-seperated) is required with the following fields:
+
+1 - Study
+2 - Sample
+3 - Library
+4 - Attempt
+5 - R1
+6 - R2
+7 - Flowcell
+8 - Lane
+9 - Index
+10 - Sequence
+
+The "library" and "attempt" fields were included becuase when performing (near) real-time sequencing of clinical Mtb samples, it may be that a difficult samplee may have several associated libraries and each library may also undergo several sequencing attempts
+
+For the R1 and R2 fields, please ensure to put the full filepath
+
+The "flowcell", "lane", "index", and "sequence" fields are informative for the GATK VQSR process to distinguish between true variants and sequencing errors. If you do not have or want to include this information then you can just fill in "1" for all of these fields for all samples.
+
+An example samplesheet is included -> example_MAGMA_samplesheet.csv
+
 # (Optional) GVCF datasets 
 
 We also provide some reference GVCF files which you could use for specific use-cases.
