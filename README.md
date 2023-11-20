@@ -18,6 +18,7 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 
 In order to run the MAGMA pipeline, a samplesheet (comma-seperated) is required with the following fields:
 
+```
 1 - Study
 2 - Sample
 3 - Library
@@ -28,6 +29,7 @@ In order to run the MAGMA pipeline, a samplesheet (comma-seperated) is required 
 8 - Lane
 9 - Index
 10 - Sequence
+```
 
 The "library" and "attempt" fields were included becuase when performing (near) real-time sequencing of clinical Mtb samples, it may be that a difficult samplee may have several associated libraries and each library may also undergo several sequencing attempts
 
