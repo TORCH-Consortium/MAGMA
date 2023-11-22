@@ -1,6 +1,3 @@
-1. TODO: Add Tim's explanation video for the pipeline
+## Videos
 
-2. Mention the poster of the pipeline in ESM conference, Italy
- 
-3. 
-
+1. [TB training: XBS pipeline (Tim Heupink/Lennert Verboven) 23032022](https://www.youtube.com/watch?v=Kic2ItrJHj0)
