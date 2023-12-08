@@ -107,6 +107,22 @@ only_validate_fastqs: true
 conda_envs_location: /path/to/both/conda_envs
 ```
 
+When running the pipeline, use profiles to ensure smooth execution on your computing system
+
+The two types of profiles we have are: execution environment + memory/computing requirements
+
+Execution environment profiles:
+
+- conda_local
+- docker
+- podman
+
+Memory/computing profiles:
+
+- pbs (good for high performance computing clusters)
+- server (good for local servers)
+- low_memory (this can be run on a laptop, even limited to 8 cores and 8 GB of RAM)
+
 
 > **Note**
 The `-profile` mechanism is used to enable infrastructure specific settings of the pipeline. The example below, assumes you are using `conda` based setup.
