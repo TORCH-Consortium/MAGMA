@@ -36,7 +36,7 @@ For creating a custom GVCF dataset, you can refer the discussion [here](https://
 
 ## Tutorials and Presentations
 
-Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of the variant calling component of MAGMA:
+Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of the variant calling in MAGMA:
 
 [![Video](https://img.youtube.com/vi/Kic2ItrJHj0/maxresdefault.jpg)](https://www.youtube.com/watch?v=Kic2ItrJHj0)
 
