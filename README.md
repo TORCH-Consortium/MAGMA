@@ -196,7 +196,7 @@ Please refer the [Tower docs](https://help.tower.nf/) for further information.
 
 ## Running MAGMA using conda
 
-> :warning::warning::warning: **We strongly discourage the use of conda as it is prone to errors that are challenging to reproduce**
+> :warning::warning::warning: **We strongly discourage running MAGMA via conda as it is prone to errors that are challenging to reproduce**
 
 You can run the pipeline using Conda, Mamba or Micromamba package managers to install all the prerequisite softwares from popular repositories such as bioconda and conda-forge.
 
