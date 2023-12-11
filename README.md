@@ -9,9 +9,9 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 - Ease of use on a range of infrastructure (cloud/on-prem HPC clusters/ servers (or local machines))
 - Resumability for failed processes
 - Centralized locations for specifying analysis parameters and hardware requirements
-  - MAGMA parameters (`default_parameters.config`)
-  - Hardware requirements (`conf/standard.config`)
-  - Execution (software) requirements (`conf/docker.config` or `conf/conda.config`)
+  - MAGMA parameters (`default_parameters.config` which can overridden using a params.yaml file)
+  - Hardware requirements (`conf/server.config` or `conf/pbs.config` or `conf/low_memory.config`)
+  - Execution (software) requirements (`conf/docker.config` or `conf/conda_local.config` or `conf/podman.config`)
 
 
 # (Optional) GVCF datasets 
