@@ -123,8 +123,7 @@ different attempts of the same library.
 Providing this information may allow the VQSR filtering step
 to better distinguish between true variants and sequencing
 errors. Including these is optional, if unknown or irrelevant,
-just fill in with a '1' as shown in
-[samplesheet](./samplesheet/example_MAGMA_samplesheet.csv)
+just fill in with a '1' as shown in example_MAGMA_samplesheet.csv)
 ```
 
 
