@@ -143,13 +143,13 @@ conda_envs_location: /path/to/both/conda_envs
 
 When running the pipeline, use profiles to ensure smooth execution on your computing system. The two types of profiles employed by the pipeline are: execution environment + memory/computing requirements
 
-Execution environment profiles:
+*Execution environment profiles:*
 
 - **conda_local**
 - **docker**
 - **podman**
 
-Memory/computing profiles:
+*Memory/computing profiles:*
 
 - **pbs** (good for high performance computing clusters)
 - **server** (good for local servers)
