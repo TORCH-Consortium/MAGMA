@@ -232,6 +232,8 @@ You can find out the location of conda environments using `conda env list`. [Her
 
 ## Running MAGMA using docker
 
+> :heavy_check_mark::heavy_check_mark::heavy_check_mark:**This is the recommended execution strategy**
+
 We provide [two docker containers](https://github.com/orgs/TORCH-Consortium/packages?repo_name=MAGMA) with the pipeline so that you could just download and run the pipeline with them. There is **NO** need to create any docker containers, just download and enable the `docker` profile.
 
 > 🚧 **Container build script**: The script used to build these containers is provided [here](./containers/build.sh).
