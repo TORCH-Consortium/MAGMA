@@ -14,7 +14,7 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
   - Execution (software) requirements (`conf/docker.config` or `conf/conda_local.config` or `conf/podman.config`)
 
 
-# (Optional) GVCF datasets 
+## (Optional) GVCF datasets 
 
 We also provide some reference GVCF files which you could use for specific use-cases.
 
@@ -195,6 +195,8 @@ Please refer the [Tower docs](https://help.tower.nf/) for further information.
 
 
 ## Running MAGMA using conda
+
+> :warning::warning::warning: **We strongly discourage the use of conda as it is prone to errors that are challenging to reproduce**
 
 You can run the pipeline using Conda, Mamba or Micromamba package managers to install all the prerequisite softwares from popular repositories such as bioconda and conda-forge.
 
