@@ -145,15 +145,15 @@ When running the pipeline, use profiles to ensure smooth execution on your compu
 
 Execution environment profiles:
 
-- conda_local
-- docker
-- podman
+- **conda_local**
+- **docker**
+- **podman**
 
 Memory/computing profiles:
 
-- pbs (good for high performance computing clusters)
-- server (good for local servers)
-- low_memory (this can be run on a laptop, even limited to 8 cores and 8 GB of RAM)
+- **pbs** (good for high performance computing clusters)
+- **server** (good for local servers)
+- **low_memory** (this can be run on a laptop, even limited to 8 cores and 8 GB of RAM)
 
 
 > **Advanced Users**
