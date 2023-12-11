@@ -262,40 +262,6 @@ nextflow run 'https://github.com/torch-consortium/magma' \
 > :bulb: **Hint**: <br>
 You could use `-r` option of Nextflow for working with any specific version/branch of the pipeline.
 
-## Customizing the pipeline configuration for your infrastructure
-
-There might be cases when you need to customize the default configuration such as `cpus` and `memory` etc. For these cases, it is recommended you refer Nextflow configuration docs as well as the [default_params.config](./default_params.config) file.
-
-Shown below is one sample configuration
-
-- `custom.config` => Ideally this file should only contain hardware level configurations such as 
-
-```nextflow
-
-process {
-    errorStrategy = { task.attempt < 3 ? 'retry' : 'ignore' }
-
-    time = '1h'
-    cpus = 8
-    memory = 8.GB
-
-   withName:FASTQ_VALIDATOR {
-      cpus = 2
-      memory = 4.GB
-   }
-}
-```
-
-You can then include this configuration as part of the pipeline invocation command 
-
-```console
-nextflow run 'https://github.com/torch-consortium/magma' \
-		 -profile docker \
-		 -r v1.1.1 \
-                 -c custom.config \
-		 -params-file my_parameters_2.yml
-```
-
 ## Running MAGMA on HPC and cloud executors
 
 1. HPC based execution for MAGMA, please refer [this doc](./docs/hpc_execution.md).
