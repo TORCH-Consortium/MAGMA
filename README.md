@@ -100,7 +100,7 @@ $ nextflow info
 
 ## MAGMA samplesheets
 
-In order to run the MAGMA pipeline, you must provide a samplesheet as input. The structure of the samplesheet should be that located in (./samplesheet/example_MAGMA_samplesheet.csv)
+In order to run the MAGMA pipeline, you must provide a samplesheet as input. The structure of the samplesheet should be that located in [samplesheet](./samplesheet/example_MAGMA_samplesheet.csv)
 
 > :warning: **Make sure to use full paths!!!**:
 
@@ -124,7 +124,7 @@ Providing this information may allow the VQSR filtering step
 to better distinguish between true variants and sequencing
 errors. Including these is optional, if unknown or irrelevant,
 just fill in with a '1' as shown in
-(./samplesheet/example_MAGMA_samplesheet.csv)
+[samplesheet](./samplesheet/example_MAGMA_samplesheet.csv)
 ```
 
 
