@@ -101,17 +101,21 @@ In order to run the MAGMA pipeline, you must provide a samplesheet as input. The
 
 - Library
 ```
-Certain samples may have had multiple libraries prepared. This row allows the pipeline to distinguish between different libraries of the same sample.
+Certain samples may have had multiple libraries prepared.
+This row allows the pipeline to distinguish between different libraries of the same sample.
 ```
 
 - Attempt
 ```
-Certain libraries may need to be sequenced multiple times. This row allows the pipeline to distinguish between different attempts of the same library.
+Certain libraries may need to be sequenced multiple times.
+This row allows the pipeline to distinguish between different attempts of the same library.
 ```
 
 - Flowcell/Lane/Index Sequence
 ```
-Providing this information may allow the VQSR filtering step to better distinguish between true variants and sequencing errors. Including these is optional, if unknown or irrelevant, just fill in with a '1' as shown in samplesheet/example_MAGMA_samplesheet.csv
+Providing this information may allow the VQSR filtering step to better distinguish between
+true variants and sequencing errors. Including these is optional, if unknown or irrelevant,
+just fill in with a '1' as shown in samplesheet/example_MAGMA_samplesheet.csv
 ```
 
 
