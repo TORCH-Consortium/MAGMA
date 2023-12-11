@@ -38,7 +38,7 @@ For creating a custom GVCF dataset, you can refer the discussion [here](https://
 
 Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of the variant calling component of MAGMA:
 
-[![Video](https://www.youtube.com/watch?v=Kic2ItrJHj0)](https://www.youtube.com/watch?v=Kic2ItrJHj0)
+[![Video](https://www.img.youtube.com/vi/Kic2ItrJHj0/maxresdefault.jpg)](https://www.youtube.com/watch?v=Kic2ItrJHj0)
 
 
 For the pipeline [presentations](./docs/presentations.md) please refer the [docs](./docs) folder.
