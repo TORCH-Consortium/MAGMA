@@ -36,6 +36,11 @@ For creating a custom GVCF dataset, you can refer the discussion [here](https://
 
 ## Tutorials and Presentations
 
+Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of the variant calling component of MAGMA:
+
+[![Video](https://www.youtube.com/watch?v=Kic2ItrJHj0)](https://www.youtube.com/watch?v=Kic2ItrJHj0)
+
+
 For the pipeline [presentations](./docs/presentations.md) please refer the [docs](./docs) folder.
 
 ## Prerequisites
@@ -95,7 +100,7 @@ $ nextflow info
 
 ## MAGMA samplesheets
 
-In order to run the MAGMA pipeline, you must provide a samplesheet as input. The structure of the samplesheet should be that located in samplesheet/example_MAGMA_samplesheet.csv
+In order to run the MAGMA pipeline, you must provide a samplesheet as input. The structure of the samplesheet should be that located in (./samplesheet/example_MAGMA_samplesheet.csv)
 
 > :warning: **Make sure to use full paths!!!**:
 
@@ -119,7 +124,7 @@ Providing this information may allow the VQSR filtering step
 to better distinguish between true variants and sequencing
 errors. Including these is optional, if unknown or irrelevant,
 just fill in with a '1' as shown in
-samplesheet/example_MAGMA_samplesheet.csv
+(./samplesheet/example_MAGMA_samplesheet.csv)
 ```
 
 
