@@ -107,9 +107,7 @@ only_validate_fastqs: true
 conda_envs_location: /path/to/both/conda_envs
 ```
 
-When running the pipeline, use profiles to ensure smooth execution on your computing system
-
-The two types of profiles we have are: execution environment + memory/computing requirements
+When running the pipeline, use profiles to ensure smooth execution on your computing system. The two types of profiles employed by the pipeline are: execution environment + memory/computing requirements
 
 Execution environment profiles:
 
@@ -123,6 +121,23 @@ Memory/computing profiles:
 - server (good for local servers)
 - low_memory (this can be run on a laptop, even limited to 8 cores and 8 GB of RAM)
 
+
+> **Advanced Users**
+The MAGMA pipeline has default parameters related to minimum QC thresholds that must be reached for samples to be included in the cohort analysis. These default parameters are listed in default_params.config. Users wishing to adjust these parameters should specify these adjustments in the params.yml file supplied when launching the pipeline. An example of adjusted parameters is shown below:
+
+```yml
+
+# Sample contents of my_parameters_1.yml file
+
+input_samplesheet: /path/to/your_samplesheet.csv
+only_validate_fastqs: true
+conda_envs_location: /path/to/both/conda_envs
+median_coverage_cutoff: 5
+breadth_of_coverage_cutoff: 0.95
+rel_abundance_cutoff: 0.65
+ntm_fraction_cutoff: 0.40
+site_representation_cutoff: 0.80
+```
 
 > **Note**
 The `-profile` mechanism is used to enable infrastructure specific settings of the pipeline. The example below, assumes you are using `conda` based setup.
