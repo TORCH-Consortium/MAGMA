@@ -267,6 +267,33 @@ You could use `-r` option of Nextflow for working with any specific version/bran
 1. HPC based execution for MAGMA, please refer [this doc](./docs/hpc_execution.md).
 2. Cloud batch (AWS/Google/Azure) based execution for MAGMA, please refer [this doc](./docs/cloud_batch_execution.md)
 
+# Structure of the Results Directory 
+
+The results directory produced by MAGMA is as follows:
+
+```bash
+/path/to/results_dir/
+├── QC_statistics
+│   ├── cohort
+│   ├── coverage
+│   └── mapping
+├── analyses
+│   ├── cluster_analysis
+│   ├── drug_resistance
+│   ├── phylogeny
+│   └── snp_distances
+├── cohort
+│   ├── combined_variant_files
+│   ├── minor_variants
+│   ├── multiple_alignment_files
+│   ├── raw_variant_files
+│   ├── snp_variant_files
+│   └── structural_variants
+├── libraries
+│   └── fastq_quality_control
+└── samples
+    └── variant_files
+```
 
 
 # Citation 
