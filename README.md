@@ -13,36 +13,6 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
   - Hardware requirements (`conf/server.config` or `conf/pbs.config` or `conf/low_memory.config`)
   - Execution (software) requirements (`conf/docker.config` or `conf/conda_local.config` or `conf/podman.config`)
 
-
-## (Optional) GVCF datasets 
-
-We also provide some reference GVCF files which you could use for specific use-cases.
-
-- For **small datasets (20 samples or less)**, we recommend that you download the `EXIT_RIF GVCF` files from https://zenodo.org/record/8054182
-containing GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
-
-- For including **Mtb lineages and outgroup (M. canettii) in the phylogenetic tree**, you can download the `LineagesAndOutgroup` files from https://zenodo.org/record/8233518
-
-
-```
-use_ref_exit_rif_gvcf = false
-ref_exit_rif_gvcf =  "/path/to/FILE.g.vcf.gz" 
-ref_exit_rif_gvcf_tbi =  "/path/to/FILE.g.vcf.gz.tbi"
-```
-
-> :bulb: **Custom GVCF dataset**: <br>
-For creating a custom GVCF dataset, you can refer the discussion [here](https://github.com/TORCH-Consortium/MAGMA/issues/162).
-
-
-## Tutorials and Presentations
-
-Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of the variant calling in MAGMA:
-
-[![Video](https://img.youtube.com/vi/Kic2ItrJHj0/maxresdefault.jpg)](https://www.youtube.com/watch?v=Kic2ItrJHj0)
-
-
-We have also included a presentation (in PDF format) of the logic and workflow of the MAGMA pipeline as well as posters that have been presented at conferences. Please refer the [docs](./docs) folder.
-
 ## Prerequisites
 
 ### Nextflow
@@ -98,33 +68,6 @@ $ nextflow info
 
 > :heavy_check_mark: **With this you're all set with Nextflow. Next stop, conda or docker - pick one!**: <br>
 
-## MAGMA samplesheets
-
-In order to run the MAGMA pipeline, you must provide a samplesheet as input. The structure of the samplesheet should be that located in [samplesheet](./samplesheet/example_MAGMA_samplesheet.csv)
-
-> :warning: **Make sure to use full paths!!!**:
-
-- Library
-```
-Certain samples may have had multiple libraries prepared.
-This row allows the pipeline to distinguish between
-different libraries of the same sample.
-```
-
-- Attempt
-```
-Certain libraries may need to be sequenced multiple times.
-This row allows the pipeline to distinguish between
-different attempts of the same library.
-```
-
-- Flowcell/Lane/Index Sequence
-```
-Providing this information may allow the VQSR filtering step
-to better distinguish between true variants and sequencing
-errors. Including these is optional, if unknown or irrelevant,
-just fill in with a '1' as shown in example_MAGMA_samplesheet.csv)
-```
 
 
 ## Customizing pipeline parameters for your dataset
@@ -266,6 +209,62 @@ You could use `-r` option of Nextflow for working with any specific version/bran
 
 1. HPC based execution for MAGMA, please refer [this doc](./docs/hpc_execution.md).
 2. Cloud batch (AWS/Google/Azure) based execution for MAGMA, please refer [this doc](./docs/cloud_batch_execution.md)
+
+## MAGMA samplesheets
+
+In order to run the MAGMA pipeline, you must provide a samplesheet as input. The structure of the samplesheet should be that located in [samplesheet](./samplesheet/example_MAGMA_samplesheet.csv)
+
+> :warning: **Make sure to use full paths!!!**:
+
+- Library
+```
+Certain samples may have had multiple libraries prepared.
+This row allows the pipeline to distinguish between
+different libraries of the same sample.
+```
+
+- Attempt
+```
+Certain libraries may need to be sequenced multiple times.
+This row allows the pipeline to distinguish between
+different attempts of the same library.
+```
+
+- Flowcell/Lane/Index Sequence
+```
+Providing this information may allow the VQSR filtering step
+to better distinguish between true variants and sequencing
+errors. Including these is optional, if unknown or irrelevant,
+just fill in with a '1' as shown in example_MAGMA_samplesheet.csv)
+```
+
+## (Optional) GVCF datasets 
+
+We also provide some reference GVCF files which you could use for specific use-cases.
+
+- For **small datasets (20 samples or less)**, we recommend that you download the `EXIT_RIF GVCF` files from https://zenodo.org/record/8054182
+containing GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
+
+- For including **Mtb lineages and outgroup (M. canettii) in the phylogenetic tree**, you can download the `LineagesAndOutgroup` files from https://zenodo.org/record/8233518
+
+
+```
+use_ref_exit_rif_gvcf = false
+ref_exit_rif_gvcf =  "/path/to/FILE.g.vcf.gz" 
+ref_exit_rif_gvcf_tbi =  "/path/to/FILE.g.vcf.gz.tbi"
+```
+
+> :bulb: **Custom GVCF dataset**: <br>
+For creating a custom GVCF dataset, you can refer the discussion [here](https://github.com/TORCH-Consortium/MAGMA/issues/162).
+
+## Tutorials and Presentations
+
+Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of the variant calling in MAGMA:
+
+[![Video](https://img.youtube.com/vi/Kic2ItrJHj0/maxresdefault.jpg)](https://www.youtube.com/watch?v=Kic2ItrJHj0)
+
+
+We have also included a presentation (in PDF format) of the logic and workflow of the MAGMA pipeline as well as posters that have been presented at conferences. Please refer the [docs](./docs) folder.
 
 # Structure of the Results Directory 
 
