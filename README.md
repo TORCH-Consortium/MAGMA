@@ -2,6 +2,14 @@
 
 MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipeline for comprehensive genomic analyses of Mycobacterium tuberculosis with a focus on clinical decision making as well as research.
 
+# ReadME Index
+
+- [Prerequisites](Prerequisites)
+- [Customization](Customizing pipeline parameters for your dataset)
+- [Running the Pipeline](Running MAGMA)
+- [Interpreting Results](Structure of the Results Directory)
+- [Citation](Citation)
+
 # Salient features of the implementation
 
 - Fine-grained control over resource allocation (CPU/Memory/Storage)
@@ -129,6 +137,8 @@ nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
 		 -params-file  my_parameters_1.yml
 
 ```
+
+# Running MAGMA
 
 ## Running MAGMA using Nextflow Tower 
 
