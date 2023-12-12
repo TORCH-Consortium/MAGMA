@@ -274,26 +274,37 @@ The results directory produced by MAGMA is as follows:
 ```bash
 /path/to/results_dir/
 ├── QC_statistics
-│   ├── cohort
-│   ├── coverage
-│   └── mapping
 ├── analyses
-│   ├── cluster_analysis
-│   ├── drug_resistance
-│   ├── phylogeny
-│   └── snp_distances
 ├── cohort
-│   ├── combined_variant_files
-│   ├── minor_variants
-│   ├── multiple_alignment_files
-│   ├── raw_variant_files
-│   ├── snp_variant_files
-│   └── structural_variants
 ├── libraries
-│   └── fastq_quality_control
 └── samples
-    └── variant_files
 ```
+
+## QC Statistics Directory 
+
+In this directory you will find files related to the quality control carried out by the MAGMA pipeline. The structure is as follows:
+
+```bash
+/path/to/results_dir/QC_statistics
+├── cohort
+├── coverage
+└── mapping
+```
+
+-Cohort
+
+> Here you will find the joint.merged_cohort_stats.tsv which contains the QC statistics for all samples in the sample sheet and allows users to determine why certain samples failed to be incorporated in the cohort analysis steps
+
+- Coverage
+
+> This directory contains the GATK WGSMetrics outputs for each of the samples in the samplesheet
+
+- Mapping
+
+> This directory contains the FlagStat and samtools stats for each of the samples in the samplesheet
+
+## Analysis Directory
+
 
 
 # Citation 
