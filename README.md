@@ -2,7 +2,7 @@
 
 MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipeline for comprehensive genomic analyses of Mycobacterium tuberculosis with a focus on clinical decision making as well as research.
 
-# ReadME Index
+## Go to
 
 - [Prerequisites](#Prerequisites)
 - [Customization](#Customization)
