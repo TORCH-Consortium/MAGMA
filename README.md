@@ -4,11 +4,11 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 
 # ReadME Index
 
-- [Prerequisites](Prerequisites)
-- [Customization](Customization)
-- [Analysis](Analysis)
-- [Interpretion](Interpretion)
-- [Citation](Citation)
+- [Prerequisites](#Prerequisites)
+- [Customization](#Customization)
+- [Analysis](#Analysis)
+- [Interpretion](#Interpretion)
+- [Citation](#Citation)
 
 # Salient features of the implementation
 
