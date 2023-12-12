@@ -132,7 +132,7 @@ Which could be provided to the pipeline using `-params-file` parameter as shown 
 
 ```console
 nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
-		 -profile conda_local \ 
+		 -profile conda_local, server \ 
 		 -r v1.1.1 \
 		 -params-file  my_parameters_1.yml
 
@@ -208,7 +208,7 @@ Here's the command which should be used
 ```console
 nextflow run 'https://github.com/torch-consortium/magma' \
 		 -params-file my_parameters_2.yml \
-		 -profile docker \
+		 -profile docker, pbs \
 		 -r v1.1.1 
 ```
 
