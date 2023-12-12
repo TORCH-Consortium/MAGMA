@@ -5,9 +5,9 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 # ReadME Index
 
 - [Prerequisites](Prerequisites)
-- [Customization](Customizing pipeline parameters for your dataset)
-- [Running the Pipeline](Running MAGMA)
-- [Interpreting Results](Structure of the Results Directory)
+- [Customization](Customization)
+- [Analysis](Analysis)
+- [Interpretion](Interpretion)
 - [Citation](Citation)
 
 # Salient features of the implementation
@@ -78,7 +78,7 @@ $ nextflow info
 
 
 
-## Customizing pipeline parameters for your dataset
+## Customization
 
 The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a `yml` file as shown below
 
@@ -138,7 +138,7 @@ nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
 
 ```
 
-# Running MAGMA
+# Analysis
 
 ## Running MAGMA using Nextflow Tower 
 
@@ -276,7 +276,7 @@ Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of
 
 We have also included a presentation (in PDF format) of the logic and workflow of the MAGMA pipeline as well as posters that have been presented at conferences. Please refer the [docs](./docs) folder.
 
-# Structure of the Results Directory 
+# Interpretion 
 
 The results directory produced by MAGMA is as follows:
 
