@@ -7,7 +7,7 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 - [Prerequisites](#Prerequisites)
 - [Customization](#Customization)
 - [Analysis](#Analysis)
-- [Interpretion](#Interpretion)
+- [Interpretation](#Interpretation)
 - [Citation](#Citation)
 
 # Salient features of the implementation
@@ -276,7 +276,7 @@ Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of
 
 We have also included a presentation (in PDF format) of the logic and workflow of the MAGMA pipeline as well as posters that have been presented at conferences. Please refer the [docs](./docs) folder.
 
-# Interpretion 
+# Interpretation 
 
 The results directory produced by MAGMA is as follows:
 
