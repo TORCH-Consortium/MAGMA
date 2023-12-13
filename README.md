@@ -404,7 +404,7 @@ Contains the SNP distance tables.
 
 # Citation 
 
-The MAGMA paper has been submitted and the preprint is available here: https://doi.org/10.1101/2023.10.04.23296533
+The MAGMA paper has been published here: https://doi.org/10.1371/journal.pcbi.1011648 
 
 The XBS variant calling core was published here: https://doi.org/10.1099%2Fmgen.0.000689
 
