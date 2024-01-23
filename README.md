@@ -2,6 +2,14 @@
 
 MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipeline for comprehensive genomic analyses of Mycobacterium tuberculosis with a focus on clinical decision making as well as research.
 
+## Go to
+
+- [Prerequisites](#Prerequisites)
+- [Customization](#Customization)
+- [Analysis](#Analysis)
+- [Interpretation](#Interpretation)
+- [Citation](#Citation)
+
 # Salient features of the implementation
 
 - Fine-grained control over resource allocation (CPU/Memory/Storage)
@@ -9,34 +17,9 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 - Ease of use on a range of infrastructure (cloud/on-prem HPC clusters/ servers (or local machines))
 - Resumability for failed processes
 - Centralized locations for specifying analysis parameters and hardware requirements
-  - MAGMA parameters (`default_parameters.config`)
-  - Hardware requirements (`conf/standard.config`)
-  - Execution (software) requirements (`conf/docker.config` or `conf/conda.config`)
-
-
-# (Optional) GVCF datasets 
-
-We also provide some reference GVCF files which you could use for specific use-cases.
-
-- For **small datasets (20 samples or less)**, we recommend that you download the `EXIT_RIF GVCF` files from https://zenodo.org/record/8054182
-containing GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
-
-- For including **Mtb lineages and outgroup (M. canettii) in the phylogenetic tree**, you can download the `LineagesAndOutgroup` files from https://zenodo.org/record/8233518
-
-
-```
-use_ref_exit_rif_gvcf = false
-ref_exit_rif_gvcf =  "/path/to/FILE.g.vcf.gz" 
-ref_exit_rif_gvcf_tbi =  "/path/to/FILE.g.vcf.gz.tbi"
-```
-
-> :bulb: **Custom GVCF dataset**: <br>
-For creating a custom GVCF dataset, you can refer the discussion [here](https://github.com/TORCH-Consortium/MAGMA/issues/162).
-
-
-## Tutorials and Presentations
-
-For the pipeline [presentations](./docs/presentations.md) please refer the [docs](./docs) folder.
+  - MAGMA parameters (`default_parameters.config` which can overridden using a params.yaml file)
+  - Hardware requirements (`conf/server.config` or `conf/pbs.config` or `conf/low_memory.config`)
+  - Execution (software) requirements (`conf/docker.config` or `conf/conda_local.config` or `conf/podman.config`)
 
 ## Prerequisites
 
@@ -93,7 +76,21 @@ $ nextflow info
 
 > :heavy_check_mark: **With this you're all set with Nextflow. Next stop, conda or docker - pick one!**: <br>
 
-## Customizing pipeline parameters for your dataset
+## Samplesheet
+
+A dummy `samplesheet` is provided [here](./samplesheet/example_MAGMA_samplesheet.csv)
+
+The samplesheet structure should have the following fields. 
+
+```csv
+Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
+Study_Name,S0001,1,1,full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz,1,1,1
+Study_Name,S0002,1,1,full_path_to_directory_of_fastq_files/S0002_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0002_01_R2.fastq.gz,1,1,1
+Study_Name,S0003,1,1,full_path_to_directory_of_fastq_files/S0003_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0003_01_R2.fastq.gz,1,1,1
+Study_Name,S0004,1,1,full_path_to_directory_of_fastq_files/S0004_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0004_01_R2.fastq.gz,1,1,1
+```
+
+## Customization
 
 The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a `yml` file as shown below
 
@@ -107,6 +104,37 @@ only_validate_fastqs: true
 conda_envs_location: /path/to/both/conda_envs
 ```
 
+When running the pipeline, use profiles to ensure smooth execution on your computing system. The two types of profiles employed by the pipeline are: execution environment + memory/computing requirements
+
+*Execution environment profiles:*
+
+- **conda_local**
+- **docker**
+- **podman**
+
+*Memory/computing profiles:*
+
+- **pbs** (good for high performance computing clusters)
+- **server** (good for local servers)
+- **low_memory** (this can be run on a laptop, even limited to 8 cores and 8 GB of RAM)
+
+
+> **Advanced Users**
+The MAGMA pipeline has default parameters related to minimum QC thresholds that must be reached for samples to be included in the cohort analysis. These default parameters are listed in default_params.config. Users wishing to adjust these parameters should specify these adjustments in the params.yml file supplied when launching the pipeline. An example of adjusted parameters is shown below:
+
+```yml
+
+# Sample contents of my_parameters_1.yml file
+
+input_samplesheet: /path/to/your_samplesheet.csv
+only_validate_fastqs: true
+conda_envs_location: /path/to/both/conda_envs
+median_coverage_cutoff: 5
+breadth_of_coverage_cutoff: 0.95
+rel_abundance_cutoff: 0.65
+ntm_fraction_cutoff: 0.40
+site_representation_cutoff: 0.80
+```
 
 > **Note**
 The `-profile` mechanism is used to enable infrastructure specific settings of the pipeline. The example below, assumes you are using `conda` based setup.
@@ -116,11 +144,13 @@ Which could be provided to the pipeline using `-params-file` parameter as shown 
 
 ```console
 nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
-		 -profile conda_local \ 
+		 -profile conda_local, server \ 
 		 -r v1.1.1 \
 		 -params-file  my_parameters_1.yml
 
 ```
+
+# Analysis
 
 ## Running MAGMA using Nextflow Tower 
 
@@ -130,6 +160,8 @@ Please refer the [Tower docs](https://help.tower.nf/) for further information.
 
 
 ## Running MAGMA using conda
+
+> :warning::warning::warning: **We discourage running MAGMA via conda, it is prone to challenging-to-reproduce errors**
 
 You can run the pipeline using Conda, Mamba or Micromamba package managers to install all the prerequisite softwares from popular repositories such as bioconda and conda-forge.
 
@@ -165,6 +197,8 @@ You can find out the location of conda environments using `conda env list`. [Her
 
 ## Running MAGMA using docker
 
+> :heavy_check_mark::heavy_check_mark::heavy_check_mark:**This is the recommended execution strategy**
+
 We provide [two docker containers](https://github.com/orgs/TORCH-Consortium/packages?repo_name=MAGMA) with the pipeline so that you could just download and run the pipeline with them. There is **NO** need to create any docker containers, just download and enable the `docker` profile.
 
 > 🚧 **Container build script**: The script used to build these containers is provided [here](./containers/build.sh).
@@ -186,65 +220,209 @@ Here's the command which should be used
 ```console
 nextflow run 'https://github.com/torch-consortium/magma' \
 		 -params-file my_parameters_2.yml \
-		 -profile docker \
+		 -profile docker,pbs \
 		 -r v1.1.1 
 ```
 
 > :bulb: **Hint**: <br>
 You could use `-r` option of Nextflow for working with any specific version/branch of the pipeline.
 
-## Customizing the pipeline configuration for your infrastructure
-
-There might be cases when you need to customize the default configuration such as `cpus` and `memory` etc. For these cases, it is recommended you refer Nextflow configuration docs as well as the [default_params.config](./default_params.config) file.
-
-Shown below is one sample configuration
-
-- `custom.config` => Ideally this file should only contain hardware level configurations such as 
-
-```nextflow
-
-process {
-    errorStrategy = { task.attempt < 3 ? 'retry' : 'ignore' }
-
-    time = '1h'
-    cpus = 8
-    memory = 8.GB
-
-   withName:FASTQ_VALIDATOR {
-      cpus = 2
-      memory = 4.GB
-   }
-}
-```
-
-You can then include this configuration as part of the pipeline invocation command 
-
-```console
-nextflow run 'https://github.com/torch-consortium/magma' \
-		 -profile docker \
-		 -r v1.1.1 \
-                 -c custom.config \
-		 -params-file my_parameters_2.yml
-```
-
 ## Running MAGMA on HPC and cloud executors
 
 1. HPC based execution for MAGMA, please refer [this doc](./docs/hpc_execution.md).
 2. Cloud batch (AWS/Google/Azure) based execution for MAGMA, please refer [this doc](./docs/cloud_batch_execution.md)
 
+## MAGMA samplesheets
+
+In order to run the MAGMA pipeline, you must provide a samplesheet as input. The structure of the samplesheet should be that located in [samplesheet](./samplesheet/example_MAGMA_samplesheet.csv)
+
+> :warning: **Make sure to use full paths!!!**:
+
+- Library
+```
+Certain samples may have had multiple libraries prepared.
+This row allows the pipeline to distinguish between
+different libraries of the same sample.
+```
+
+- Attempt
+```
+Certain libraries may need to be sequenced multiple times.
+This row allows the pipeline to distinguish between
+different attempts of the same library.
+```
+
+- Flowcell/Lane/Index Sequence
+```
+Providing this information may allow the VQSR filtering step
+to better distinguish between true variants and sequencing
+errors. Including these is optional, if unknown or irrelevant,
+just fill in with a '1' as shown in example_MAGMA_samplesheet.csv)
+```
+
+## (Optional) GVCF datasets 
+
+We also provide some reference GVCF files which you could use for specific use-cases.
+
+- For **small datasets (20 samples or less)**, we recommend that you download the `EXIT_RIF GVCF` files from https://zenodo.org/record/8054182
+containing GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets
+
+- For including **Mtb lineages and outgroup (M. canettii) in the phylogenetic tree**, you can download the `LineagesAndOutgroup` files from https://zenodo.org/record/8233518
 
 
-# Citation 
+```
+use_ref_exit_rif_gvcf = false
+ref_exit_rif_gvcf =  "/path/to/FILE.g.vcf.gz" 
+ref_exit_rif_gvcf_tbi =  "/path/to/FILE.g.vcf.gz.tbi"
+```
 
-The MAGMA paper has been submitted and the preprint is available here: https://doi.org/10.1101/2023.10.04.23296533
+> :bulb: **Custom GVCF dataset**: <br>
+For creating a custom GVCF dataset, you can refer the discussion [here](https://github.com/TORCH-Consortium/MAGMA/issues/162).
+
+## Tutorials and Presentations
+
+Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of the variant calling in MAGMA:
+
+[![Video](https://img.youtube.com/vi/Kic2ItrJHj0/maxresdefault.jpg)](https://www.youtube.com/watch?v=Kic2ItrJHj0)
+
+
+We have also included a presentation (in PDF format) of the logic and workflow of the MAGMA pipeline as well as posters that have been presented at conferences. Please refer the [docs](./docs) folder.
+
+# Interpretation 
+
+The results directory produced by MAGMA is as follows:
+
+```bash
+/path/to/results_dir/
+├── QC_statistics
+├── analyses
+├── cohort
+├── libraries
+└── samples
+```
+
+## QC Statistics Directory 
+
+In this directory you will find files related to the quality control carried out by the MAGMA pipeline. The structure is as follows:
+
+```bash
+/path/to/results_dir/QC_statistics
+├── cohort
+├── coverage
+└── mapping
+```
+
+- **Cohort**
+
+> Here you will find the joint.merged_cohort_stats.tsv which contains the QC statistics for all samples in the sample sheet and allows users to determine why certain samples failed to be incorporated in the cohort analysis steps
+
+- **Coverage**
+
+> Contains the GATK WGSMetrics outputs for each of the samples in the samplesheet
+
+- **Mapping**
+
+> Contains the FlagStat and samtools stats for each of the samples in the samplesheet
+
+## Analysis Directory
+
+```bash
+/path/to/results_dir/analysis
+├── cluster_analysis
+├── drug_resistance
+├── phylogeny
+└── snp_distances
+```
+
+- **Cluster analysis**
+
+> Contains files related to clustering based on 5SNP and 12SNP cutoffs
+> **.figtree files**: These can be imported directly into Figtree for visualisation
+
+- **Drug Resistance**
+
+Organised based on the different types of variants as well as combined results:
+
+```bash
+/path/to/results_dir/analysis/drug_resistance
+├── combined_results
+├── major_variants
+├── minor_variants
+└── structural_variants
+```
+
+Each of the directories containing results related to the different variants (major | minor | structural) have text files that can be used to annotate the .treefiles produced by MAGMA in iToL (https://itol.embl.de)
+
+The combined resistance results file contains a per-sample drug resistance summary based on the WHO Catalogue of *Mtb* mutations (https://www.who.int/publications/i/item/9789240082410)
+
+MAGMA also notes the presence of all variants in in tier 1 and tier 2 drug resistance genes.
+
+- **Phylogeny**
+
+Contains the outputs of the IQTree phylogenetic tree construction. 
+
+> :memo: By default we recommend that you use the **ExDRIncComplex** files as MAGMA was optimized to be able to accurately call positions on the edges of complex regions in the *Mtb* genome
+
+- **SNP distances**
+
+Contains the SNP distance tables.
+
+> :memo: By default we recommend that you use the **ExDRIncComplex** files as MAGMA was optimized to be able to accurately call positions on the edges of complex regions in the *Mtb* genome
+
+## Cohort Directory 
+
+```bash
+/path/to/results_dir/cohort
+├── combined_variant_files
+├── minor_variants
+├── multiple_alignment_files
+├── raw_variant_files
+├── snp_variant_files
+└── structural_variants
+```
+
+- **Combined variant files**
+
+> Contains the cohort gvcfs based on major variants detected by the MAGMA pipeline
+
+- **Minor variants**
+
+> Merged vcfs of all samples, generated by LoFreq
+
+- **Multiple alignment files**
+
+> FASTA files for the generation of phylogenetic trees by IQTree
+
+- **Raw variant files**
+
+> Unfiltered indel and SNPs detected by the MAGMA pipeline
+
+- **SNP variant files**
+
+> Filtered SNPs detected by the MAGMA pipeline
+
+- **Structural variant files**
+
+> Unfiltered structural variants detected by the MAGMA pipeline
+
+## Libraries Directory 
+
+> Contains files related to FASTQ validation and FASTQC analysis
+
+## Samples Directory
+
+> Contains vcf files for major|minor|structural variants for each individual samples
+
+
+# Citations 
+
+The MAGMA paper has been published here: https://doi.org/10.1371/journal.pcbi.1011648 
 
 The XBS variant calling core was published here: https://doi.org/10.1099%2Fmgen.0.000689
 
-<!-- Add posters -->
-
 # Contributions and interactions with us
 
-Contributions are warmly accepted! We encourage you to interact with us using `Discussions` and `Issues` feature of Github.
+Contributions are warmly accepted! We encourage you to interact with us using [Discussions](https://github.com/TORCH-Consortium/MAGMA/discussions) and [Issues](https://github.com/TORCH-Consortium/MAGMA/issues) feature of Github.
 
 # License
 
