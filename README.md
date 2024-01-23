@@ -422,7 +422,7 @@ The XBS variant calling core was published here: https://doi.org/10.1099%2Fmgen.
 
 # Contributions and interactions with us
 
-Contributions are warmly accepted! We encourage you to interact with us using `Discussions` and `Issues` feature of Github.
+Contributions are warmly accepted! We encourage you to interact with us using [Discussions](https://github.com/TORCH-Consortium/MAGMA/discussions) and [Issues](https://github.com/TORCH-Consortium/MAGMA/issues) feature of Github.
 
 # License
 
