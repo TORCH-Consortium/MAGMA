@@ -76,7 +76,19 @@ $ nextflow info
 
 > :heavy_check_mark: **With this you're all set with Nextflow. Next stop, conda or docker - pick one!**: <br>
 
+## Samplesheet
 
+A dummy `samplesheet` is provided [here](./samplesheet/example_MAGMA_samplesheet.csv)
+
+The samplesheet structure should have the following fields. 
+
+```csv
+Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
+Study_Name,S0001,1,1,full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz,1,1,1
+Study_Name,S0002,1,1,full_path_to_directory_of_fastq_files/S0002_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0002_01_R2.fastq.gz,1,1,1
+Study_Name,S0003,1,1,full_path_to_directory_of_fastq_files/S0003_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0003_01_R2.fastq.gz,1,1,1
+Study_Name,S0004,1,1,full_path_to_directory_of_fastq_files/S0004_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0004_01_R2.fastq.gz,1,1,1
+```
 
 ## Customization
 
@@ -402,7 +414,7 @@ Contains the SNP distance tables.
 > Contains vcf files for major|minor|structural variants for each individual samples
 
 
-# Citation 
+# Citations 
 
 The MAGMA paper has been published here: https://doi.org/10.1371/journal.pcbi.1011648 
 
