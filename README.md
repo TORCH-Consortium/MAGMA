@@ -220,7 +220,7 @@ Here's the command which should be used
 ```console
 nextflow run 'https://github.com/torch-consortium/magma' \
 		 -params-file my_parameters_2.yml \
-		 -profile docker, pbs \
+		 -profile docker,pbs \
 		 -r v1.1.1 
 ```
 
