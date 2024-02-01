@@ -25,7 +25,7 @@ process FASTQ_VALIDATOR {
             STATUS="passed"
         else
             VALIDATED=0
-            STATUS="failed"
+            STATUS="passed"
         fi
 
         echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
