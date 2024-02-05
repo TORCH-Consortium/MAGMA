@@ -13,15 +13,17 @@ process UTILS_FASTQ_COHORT_VALIDATION {
        
         '''
 
-        if ls *passed* 1> .null 2>&1; then
+        if ls *check.passed* 1> .null 2>&1; then
             cat *check.passed* > !{params.vcf_name}.fastqs.passed.tsv
         else
             echo "No samples passed!"
         fi
 
 
+        # Creating this file anyhow, since this is an optional output
+        touch !{params.vcf_name}.fastqs.failed.tsv
 
-        if ls *failed* 1> .null 2>&1; then
+        if ls *check.failed* 1> .null 2>&1; then
             cat *check.failed* > !{params.vcf_name}.fastqs.failed.tsv
         fi
         '''
