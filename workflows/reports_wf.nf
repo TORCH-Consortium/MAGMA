@@ -11,7 +11,7 @@ workflow REPORTS_WF {
 	 structural_variants_results_ch
 
     main:
-        MULTIQC(reports_fastqc_ch)
+        //MULTIQC(reports_fastqc_ch)
 
         UTILS_SUMMARIZE_RESISTANCE_RESULTS(
             minor_variants_results_ch,
