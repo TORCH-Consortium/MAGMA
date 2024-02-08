@@ -18,6 +18,8 @@ process GATK_INDEX_FEATURE_FILE {
         def outputFileArg = ( outputPrefix != "" ? "-O ${sampleName}.${outputPrefix}.vcf.gz.tbi" : "" )
 
         """
+        # Trigger the process again by changing this script
+
         ${params.gatk_path} IndexFeatureFile --java-options "-Xmx${task.memory.giga}G" \\
             ${outputFileArg} \\
             -I ${vcf}
