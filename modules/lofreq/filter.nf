@@ -12,12 +12,12 @@ process LOFREQ_FILTER {
     script:
 
         """
-        # Trigger the process again by chaging this script
-
         ${params.lofreq_path} filter \\
             ${params.arguments} \\
             -i ${vcf}  \\
         > ${sampleName}.Filtered_AF.vcf
+
+        # Trigger the process again by chaging this script
         """
 
     stub:

@@ -20,6 +20,8 @@ process LOFREQ_CALL {
             ${params.arguments} \\
             ${dindleBam} \\
             -o ${sampleName}.LoFreq.vcf
+
+        # Trigger the process again by chaging this script
         """
 
     stub:

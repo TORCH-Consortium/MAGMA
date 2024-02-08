@@ -14,6 +14,8 @@ process UTILS_REFORMAT_LOFREQ {
         reformat_lofreq.py ${lofreqVcf} \\
             ${sampleName} \\
             ${sampleName}.LoFreq.Reformat.vcf
+
+        # Trigger the process again by chaging this script
         """
 
     stub: 
