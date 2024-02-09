@@ -15,7 +15,6 @@ process UTILS_REFORMAT_LOFREQ {
             ${sampleName} \\
             ${sampleName}.LoFreq.Reformat.vcf
 
-        # Trigger the process again by chaging this script
         """
 
     stub: 

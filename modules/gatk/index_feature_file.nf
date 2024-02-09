@@ -22,7 +22,6 @@ process GATK_INDEX_FEATURE_FILE {
             ${outputFileArg} \\
             -I ${vcf}
 
-        # Trigger the process again by changing this script
         """
 
     stub:

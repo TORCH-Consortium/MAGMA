@@ -13,6 +13,8 @@ process BGZIP {
 
         """
         ${params.bgzip_path} ${params.arguments} ${annotatedVcf}
+
+        # Trigger the process again by changing this script
         """
 
     stub:
