@@ -106,7 +106,7 @@ Here's a formatted version of the CSV above
 
 
 > **Note**
-We are currently working on the transition to nf-core standard, which would add standardized configurations and pipeline structure to benefit from the nf-core `modules` and `configs` projects.
+We are currently working on the transition to nf-core standard (see https://github.com/TORCH-Consortium/MAGMA/issues/188), which would add standardized configurations and pipeline structure to benefit from the nf-core [nf-core/modules](https://github.com/nf-core/modules) and [nf-core/configs](https://github.com/nf-core/configs) projects.
 
 
 The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a `yml` file as shown below
