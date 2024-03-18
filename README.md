@@ -104,6 +104,11 @@ Here's a formatted version of the CSV above
 
 ## Customization
 
+
+> **Note**
+We are currently working on the transition to nf-core standard, which would add standardized configurations and pipeline structure to benefit from the nf-core `modules` and `configs` projects.
+
+
 The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a `yml` file as shown below
 
 
@@ -113,7 +118,7 @@ The pipeline parameters are distinct from Nextflow parameters, and therefore it 
 
 input_samplesheet: /path/to/your_samplesheet.csv
 only_validate_fastqs: true
-conda_envs_location: /path/to/both/conda_envs
+conda_envs_location: /path/to/folder/with/conda_envs
 ```
 
 When running the pipeline, use profiles to ensure smooth execution on your computing system. The two types of profiles employed by the pipeline are: execution environment + memory/computing requirements
@@ -140,7 +145,7 @@ The MAGMA pipeline has default parameters related to minimum QC thresholds that 
 
 input_samplesheet: /path/to/your_samplesheet.csv
 only_validate_fastqs: true
-conda_envs_location: /path/to/both/conda_envs
+conda_envs_location: /path/to/folder/with/conda_envs
 median_coverage_cutoff: 5
 breadth_of_coverage_cutoff: 0.95
 rel_abundance_cutoff: 0.65
