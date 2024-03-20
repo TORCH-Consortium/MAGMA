@@ -2,7 +2,6 @@ include { PREPARE_COHORT_VCF } from "./subworkflows/prepare_cohort_vcf.nf"
 include { SNP_ANALYSIS } from "./subworkflows/snp_analysis.nf"
 include { INDEL_ANALYSIS } from "./subworkflows/indel_analysis.nf"
 include { GATK_MERGE_VCFS as GATK_MERGE_VCFS__INC } from "../modules/gatk/merge_vcfs.nf" addParams ( params.GATK_MERGE_VCFS )
-include { GATK_MERGE_VCFS as GATK_MERGE_VCFS__EXC } from "../modules/gatk/merge_vcfs.nf"  addParams ( params.GATK_MERGE_VCFS )
 include { MAJOR_VARIANT_ANALYSIS } from "./subworkflows/major_variant_analysis.nf"
 include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__INCCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
 include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__EXCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
