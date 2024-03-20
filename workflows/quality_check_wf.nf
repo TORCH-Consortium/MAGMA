@@ -1,4 +1,5 @@
-include { FASTQC } from '../modules/fastqc/fastqc.nf' addParams (params.FASTQC)
+include { FASTQC              } from '../modules/fastqc/fastqc.nf' addParams (params.FASTQC)
+include { NTMPROFILER_PROFILE } from '../modules/ntmprofiler/profile.nf' addParams (params.NTMPROFILER_PROFILE)
 
 workflow QUALITY_CHECK_WF {
 
@@ -8,6 +9,12 @@ workflow QUALITY_CHECK_WF {
     main:
 
         FASTQC(reads_ch)
+
+
+        def ntmprofilerDb =  params.ntmprofilerDb != "DEFAULT" ?  params.ntmprofilerDb : []
+
+        NTMPROFILER_PROFILE( reads_ch, ntmprofilerDb)
+
 
     emit:
         reports_fastqc_ch =  FASTQC.out.collect()
