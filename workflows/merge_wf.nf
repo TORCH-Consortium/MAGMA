@@ -64,32 +64,14 @@ workflow MERGE_WF {
 
 
         //----------
-        // Including complex regions
-        //----------
-
-        inccomplex_exclude_interval_ref_ch = Channel.of([file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)])
-                                                .ifEmpty([])
-                                                .flatten()
-
-        inccomplex_prefix_ch = Channel.of('ExDR.IncComplex')
-
-        //NOTE: Both phylogenies should be excluding DR and excluding rRNA, then it is again filtered in two datasets one including complex regions and one excluding complex regions.
-        //Ergo PHYLOGENY_...__INCCOMPLEX should take snp_exc_vcf_ch. Refer https://github.com/TORCH-Consortium/MAGMA/pull/114#discussion_r947732253
-        PHYLOGENY_ANALYSIS__INCCOMPLEX(inccomplex_prefix_ch,
-                                       inccomplex_exclude_interval_ref_ch,
-                                       SNP_ANALYSIS.out.snp_exc_vcf_ch)
-
-        CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snpsites_tree_tuple, inccomplex_prefix_ch)
-
-        //----------
-        // Excluding complex regions
+        // Exclude complex regions for downstream analysis
         //----------
 
         excomplex_exclude_interval_ref_ch = Channel.of([file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)],
                                                        [file(params.excluded_loci_list)])
                                                 .ifEmpty([])
                                                 .flatten()
-                                                .dump(tag:'MERGE_WF: excomplex_exclude_interval_ref_ch', pretty: true)
+                                                //.dump(tag:'MERGE_WF: excomplex_exclude_interval_ref_ch', pretty: true)
 
 
         // excomplex_exclude_interval_ref_ch.view{ it -> "\n\n MAGMA-LOG MERGE_WF excomplex_exclude_interval_ref_ch: $it \n\n"}
@@ -102,6 +84,32 @@ workflow MERGE_WF {
                                        SNP_ANALYSIS.out.snp_exc_vcf_ch)
 
         CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
+
+
+
+
+        //----------
+        // Include complex regions for downstream analysis
+        //----------
+
+        if(params.analyze_complex_regions) {
+
+            inccomplex_exclude_interval_ref_ch = Channel.of([file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)])
+                                                    .ifEmpty([])
+                                                    .flatten()
+
+            inccomplex_prefix_ch = Channel.of('ExDR.IncComplex')
+
+            //NOTE: Both phylogenies should be excluding DR and excluding rRNA, then it is again filtered in two datasets one including complex regions and one excluding complex regions.
+            //Ergo PHYLOGENY_...__INCCOMPLEX should take snp_exc_vcf_ch. Refer https://github.com/TORCH-Consortium/MAGMA/pull/114#discussion_r947732253
+            PHYLOGENY_ANALYSIS__INCCOMPLEX(inccomplex_prefix_ch,
+                                           inccomplex_exclude_interval_ref_ch,
+                                           SNP_ANALYSIS.out.snp_exc_vcf_ch)
+
+            CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snpsites_tree_tuple, inccomplex_prefix_ch)
+
+        }
+
 
 
     emit:
