@@ -11,7 +11,6 @@ CONTAINER_NAME="$DOCKER_NAMESPACE/magma-container-1:$CONTAINER_TAG"
 echo "Building container : $CONTAINER_NAME "
 
 cp ../../conda_envs/magma-env-1.yml ./
-cp -r ../../resources/resistance_db_who ./
 
 
 docker build -t $CONTAINER_NAME .

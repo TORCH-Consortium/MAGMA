@@ -10,10 +10,3 @@ RUN micromamba install -y -n base conda-forge::procps-ng  && micromamba clean -a
 FROM base AS condaenv
 
 ENV PATH /opt/conda/bin:$PATH
-
-COPY --chown=$MAMBA_USER:$MAMBA_USER resistance_db_who /tmp/resistance_db_who
-
-FROM condaenv AS resistanceDbWho
-
-RUN cd /tmp/resistance_db_who && /opt/conda/bin/tb-profiler load_library ./resistance_db_who && cd /tmp
-
