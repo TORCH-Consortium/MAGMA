@@ -11,20 +11,16 @@ $resolverCondaBinary env create -p magma-env-1 --file magma-env-1.yml
 
 $resolverCondaBinary env create -p magma-env-2 --file magma-env-2.yml
 
-echo "INFO: Activate conda env with tb-profiler and setup the WHO database within the magma-env-1"
+#NOTE: Setup the tbprofiler env with WHO v2 Database
+
+$resolverCondaBinary env create -p magma-tbprofiler-env --file magma-tbprofiler-env.yml
+
+echo "INFO: Activate conda env with tb-profiler and setup the WHO database"
 eval "$(conda shell.bash hook)"
-conda activate "./magma-env-1"
+conda activate "./magma-tbprofiler-env"
 
-echo "INFO: Make a local copy and cd inside it"
-cp -r ../resources/resistance_db_who ./
-cd resistance_db_who
+echo "INFO: Use WHO-v2 database in tb-profiler"
+tb-profiler update_tbdb --commit 22e9ceb6433d02071222af8dca506c6348604877 --logging DEBUG
 
-echo "INFO: Load the database within tb-profiler"
-tb-profiler load_library ./resistance_db_who
-
-echo "INFO: Remove the local copy of the database folder"
-cd ..
-rm -rf resistance_db_who
-
-echo "INFO: Deactivate the magma-env-1 env"
+echo "INFO: Deactivate the magma-tbprofiler-env "
 conda deactivate
