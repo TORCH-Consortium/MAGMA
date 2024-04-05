@@ -11,11 +11,11 @@ CONTAINER_NAME="$DOCKER_NAMESPACE/magma-tbprofiler:$CONTAINER_TAG"
 
 echo "Building container : $CONTAINER_NAME "
 
-cp ../../conda_envs/magma-env-2.yml ./
+cp ../../conda_envs/magma-tbprofiler-env.yml ./
 
 
 docker build -t $CONTAINER_NAME .
-CONTAINER_ID=$(docker run -d $CONTAINER_NAME)
-docker commit $CONTAINER_ID $CONTAINER_NAME
-docker push $DOCKER_NAMESPACE/$container_dir:$CONTAINER_TAG
-docker stop $CONTAINER_ID
+#CONTAINER_ID=$(docker run -d $CONTAINER_NAME)
+#docker commit $CONTAINER_ID $CONTAINER_NAME
+#docker push $DOCKER_NAMESPACE/$container_dir:$CONTAINER_TAG
+#docker stop $CONTAINER_ID
