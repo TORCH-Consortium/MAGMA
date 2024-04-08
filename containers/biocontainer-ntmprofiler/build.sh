@@ -26,7 +26,7 @@ echo "Building container : $CONTAINER_NAME "
 
 docker build -t $CONTAINER_NAME .
 
-#CONTAINER_ID=$(docker run -d $CONTAINER_NAME)
-#docker commit $CONTAINER_ID $CONTAINER_NAME
-#docker push $DOCKER_NAMESPACE/$container_dir:$CONTAINER_TAG
-#docker stop $CONTAINER_ID
+CONTAINER_ID=$(docker run -d $CONTAINER_NAME)
+docker commit $CONTAINER_ID $CONTAINER_NAME
+docker push $CONTAINER_NAME
+docker stop $CONTAINER_ID
