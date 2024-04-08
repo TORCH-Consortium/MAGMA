@@ -6,8 +6,9 @@ process NTMPROFILER_PROFILE {
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
 
-    //output:
-        //tuple val(sampleName), path("vcf/*"), emit: per_sample_results
+    output:
+        path("results"),  emit: per_sample_results
+        path("results/*json"), , emit: profile_json
 
     script:
 
@@ -15,12 +16,15 @@ process NTMPROFILER_PROFILE {
         ${params.ntmprofiler_path} profile \\
             -1 ${sampleReads[0]} \\
             -2 ${sampleReads[1]} \\
-            -p ${sampleName}
+            -p ${sampleName}    \\
+            -d results    \\
+            --txt 
         """
 
     stub:
         """
-        touch ${sampleName}.txt
+        mkdir ${sampleName}
+        touch "${sampleName}/${sampleName}.json"
         """
 }
 
