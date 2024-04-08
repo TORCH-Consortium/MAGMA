@@ -1,6 +1,6 @@
 include { FASTQC              } from '../modules/fastqc/fastqc.nf' addParams (params.FASTQC)
 include { NTMPROFILER_PROFILE } from '../modules/ntmprofiler/profile.nf' addParams (params.NTMPROFILER_PROFILE)
-include { NTMPROFILER_COLLATE } from '../modules/ntmprofiler/profile.nf' addParams (params.NTMPROFILER_COLLATE)
+include { NTMPROFILER_COLLATE } from '../modules/ntmprofiler/collate.nf' addParams (params.NTMPROFILER_COLLATE)
 
 workflow QUALITY_CHECK_WF {
 
