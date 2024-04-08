@@ -5,18 +5,15 @@ process NTMPROFILER_PROFILE {
 
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
-        path(resistanceDb)
 
     //output:
         //tuple val(sampleName), path("vcf/*"), emit: per_sample_results
 
     script:
-        def optionalDb  = resistanceDb ? "--db ${resistanceDb}" : ""
 
         """
         ${params.tbprofiler_path} profile \\
             -a ${bam} \\
-            ${optionalDb} \\
             -p ${sampleName}
         """
 

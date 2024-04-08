@@ -10,10 +10,7 @@ workflow QUALITY_CHECK_WF {
 
         FASTQC(reads_ch)
 
-
-        def ntmprofilerDb =  params.ntmprofilerDb != "DEFAULT" ?  params.ntmprofilerDb : []
-
-        NTMPROFILER_PROFILE( reads_ch, ntmprofilerDb)
+        NTMPROFILER_PROFILE( reads_ch )
 
 
     emit:
