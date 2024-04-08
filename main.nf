@@ -26,6 +26,12 @@ workflow {
 
         VALIDATE_FASTQS_WF(params.input_samplesheet)
 
+    } else if (params.only_validate_and_qc) {
+
+        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
+
+        QUALITY_CHECK_WF( validated_reads_ch )
+
     } else if (params.skip_merge_analysis) {
 
         validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
