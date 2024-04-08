@@ -8,7 +8,6 @@ process NTMPROFILER_COLLATE {
 
     output:
         path("*${params.prefix}*"), emit: cohort_results
-        path("results"), emit: per_sample_results
 
     script:
 

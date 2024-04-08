@@ -1,13 +1,11 @@
 process NTMPROFILER_PROFILE {
     tag "${sampleName}"
-    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish, pattern: "vcf/*vcf.gz", saveAs: { f -> f.tokenize("/").last()}
-
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
 
     output:
-        path("results"),  emit: per_sample_results
         path("results/*json"), emit: profile_json
 
     script:
