@@ -1,6 +1,6 @@
 process NTMPROFILER_PROFILE {
     tag "${sampleName}"
-    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish, pattern: "results/*json"
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish, saveAs: { f -> f.tokenize("/").last()}
 
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
