@@ -8,7 +8,7 @@ process NTMPROFILER_PROFILE {
 
     output:
         path("results"),  emit: per_sample_results
-        path("results/*json"), , emit: profile_json
+        path("results/*json"), emit: profile_json
 
     script:
 
