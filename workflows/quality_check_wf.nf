@@ -14,7 +14,7 @@ workflow QUALITY_CHECK_WF {
         NTMPROFILER_PROFILE( reads_ch )
 
         NTMPROFILER_COLLATE( params.vcf_name,
-                             NTMPROFILER_PROFILE.out.resistance_json.collect() )
+                             NTMPROFILER_PROFILE.out.profile_json.collect() )
 
 
     emit:
