@@ -12,8 +12,9 @@ process NTMPROFILER_PROFILE {
     script:
 
         """
-        ${params.tbprofiler_path} profile \\
-            -a ${bam} \\
+        ${params.ntmprofiler_path} profile \\
+            -1 ${sampleReads[0]} \\
+            -2 ${sampleReads[1]} \\
             -p ${sampleName}
         """
 
