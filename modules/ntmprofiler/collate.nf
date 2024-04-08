@@ -16,7 +16,7 @@ process NTMPROFILER_COLLATE {
 
         ${params.ntmprofiler_path} collate \\
             -d results \\
-            -p ${joint_name}.${params.prefix}
+            -o ${joint_name}.${params.prefix}.txt
         """
 
     stub:
