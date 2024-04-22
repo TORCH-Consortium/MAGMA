@@ -90,7 +90,24 @@ Study_Name,S0003,1,1,full_path_to_directory_of_fastq_files/S0003_01_R1.fastq.gz,
 Study_Name,S0004,1,1,full_path_to_directory_of_fastq_files/S0004_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0004_01_R2.fastq.gz,1,1,1
 ```
 
+Here's a formatted version of the CSV above
+
+
+|Study     |Sample|Library|Attempt|R1                                                        |R2                                                        |Flowcell|Lane|Index Sequence|
+|----------|------|-------|-------|----------------------------------------------------------|----------------------------------------------------------|--------|----|--------------|
+|Study_Name|S0001 |1      |1      |full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz|full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz|1       |1   |1             |
+|Study_Name|S0002 |1      |1      |full_path_to_directory_of_fastq_files/S0002_01_R1.fastq.gz|full_path_to_directory_of_fastq_files/S0002_01_R2.fastq.gz|1       |1   |1             |
+|Study_Name|S0003 |1      |1      |full_path_to_directory_of_fastq_files/S0003_01_R1.fastq.gz|full_path_to_directory_of_fastq_files/S0003_01_R2.fastq.gz|1       |1   |1             |
+|Study_Name|S0004 |1      |1      |full_path_to_directory_of_fastq_files/S0004_01_R1.fastq.gz|full_path_to_directory_of_fastq_files/S0004_01_R2.fastq.gz|1       |1   |1             |
+
+
+
 ## Customization
+
+
+> **Note**
+We are currently working on the transition to nf-core standard (see https://github.com/TORCH-Consortium/MAGMA/issues/188), which would add standardized configurations and pipeline structure to benefit from the nf-core [nf-core/modules](https://github.com/nf-core/modules) and [nf-core/configs](https://github.com/nf-core/configs) projects.
+
 
 The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a `yml` file as shown below
 
@@ -101,7 +118,7 @@ The pipeline parameters are distinct from Nextflow parameters, and therefore it 
 
 input_samplesheet: /path/to/your_samplesheet.csv
 only_validate_fastqs: true
-conda_envs_location: /path/to/both/conda_envs
+conda_envs_location: /path/to/folder/with/conda_envs
 ```
 
 When running the pipeline, use profiles to ensure smooth execution on your computing system. The two types of profiles employed by the pipeline are: execution environment + memory/computing requirements
@@ -128,7 +145,7 @@ The MAGMA pipeline has default parameters related to minimum QC thresholds that 
 
 input_samplesheet: /path/to/your_samplesheet.csv
 only_validate_fastqs: true
-conda_envs_location: /path/to/both/conda_envs
+conda_envs_location: /path/to/folder/with/conda_envs
 median_coverage_cutoff: 5
 breadth_of_coverage_cutoff: 0.95
 rel_abundance_cutoff: 0.65
@@ -165,6 +182,10 @@ Please refer the [Tower docs](https://help.tower.nf/) for further information.
 
 You can run the pipeline using Conda, Mamba or Micromamba package managers to install all the prerequisite softwares from popular repositories such as bioconda and conda-forge.
 
+> :information_source: **Conda environments and cheatsheet**: <br>
+You can find out the location of conda environments using `conda env list`. [Here's](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) a useful cheatsheet for conda operations.
+
+
 You can use the `conda` based setup for the pipeline for running MAGMA 
 - On a local linux machine(e.g. your laptop or a university server)
 - On an HPC cluster (e.g. SLURM, PBS) in case you don't have access to container systems like Singularity, Podman or Docker 
@@ -192,8 +213,39 @@ $ conda env create -n magma-env-2 --file magma-env-2.yml
 
 Once the environments are created, you can make use of the pipeline parameter `conda_envs_location` to inform the pipeline of the names and location of the conda envs.
 
-> :information_source: **Conda environments and cheatsheet**: <br>
-You can find out the location of conda environments using `conda env list`. [Here's](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) a useful cheatsheet for conda operations.
+Next, you need to load the WHO Resistance Catalog within `tb-profiler`; basically the [instructions](https://github.com/TORCH-Consortium/MAGMA/blob/master/conda_envs/setup_conda_envs.sh#L20-L23), which are used to build the necessary containers. 
+
+1. Download [magma_resistance_db_who_v1.zip](https://github.com/TORCH-Consortium/MAGMA/files/14559680/resistance_db_who_v1.zip)  and unzip it
+
+```console
+wget https://github.com/TORCH-Consortium/MAGMA/files/14559680/resistance_db_who_v1.zip
+
+unzip resistance_db_who
+
+```
+
+2. Activate `magma-env-1`, which has `tb-profiler`
+
+```console
+conda activate magma-env-1
+
+```
+
+3. Move inside that folder and use `tb-profiler load_library` functionality to load the database
+
+
+```console
+
+cd resistance_db_who
+
+tb-profiler load_library ./resistance_db_who
+
+```
+
+Success, would look like this
+<img width="1060" alt="image" src="https://github.com/TORCH-Consortium/MAGMA/assets/12799326/de5eb0fc-c636-44f6-a787-39bbbf8bc8c7">
+
+
 
 ## Running MAGMA using docker
 
