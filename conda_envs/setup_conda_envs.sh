@@ -27,7 +27,7 @@ eval "$(conda shell.bash hook)"
 conda activate "./magma-tbprofiler-env"
 
 echo "INFO: Use WHO-v2 database in magma-tbprofiler-env"
-tb-profiler update_tbdb --commit 22e9ceb6433d02071222af8dca506c6348604877 --logging DEBUG
+tb-profiler update_tbdb --commit bdace1f82d948ce0001e1dade6eb93d2da9c47e5 --logging DEBUG
 
 echo "INFO: Deactivate the magma-tbprofiler-env "
 conda deactivate

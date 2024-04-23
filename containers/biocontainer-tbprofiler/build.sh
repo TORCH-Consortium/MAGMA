@@ -4,10 +4,10 @@ set -uex
 # NOTE: Make sure you've set the environment correctly and are logged in to the registry.
 
 
-TBPROFILER_VERSION=6.0.0
+TBPROFILER_VERSION=6.2.0
 DOCKER_NAMESPACE="ghcr.io/torch-consortium/magma"
 
-CONTAINER_NAME="$DOCKER_NAMESPACE/biocontainer-tbprofiler-whodb-v2:$TBPROFILER_VERSION"
+CONTAINER_NAME="$DOCKER_NAMESPACE/biocontainer-tbprofiler:$TBPROFILER_VERSION"
 
 echo "Building container : $CONTAINER_NAME "
 
