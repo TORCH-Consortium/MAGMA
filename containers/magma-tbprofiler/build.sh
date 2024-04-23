@@ -4,7 +4,7 @@ set -uex
 # NOTE: Make sure you've set the environment correctly and are logged in to the registry.
 #
 
-CONTAINER_TAG=6.0.0
+CONTAINER_TAG=6.2.0
 DOCKER_NAMESPACE="ghcr.io/torch-consortium/magma"
 
 CONTAINER_NAME="$DOCKER_NAMESPACE/magma-tbprofiler:$CONTAINER_TAG"
