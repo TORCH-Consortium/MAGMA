@@ -1,0 +1,7 @@
+name: magma-tbprofiler-env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - tb-profiler=6.2.0 
