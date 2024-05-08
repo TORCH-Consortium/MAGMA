@@ -35,6 +35,11 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
 
         UTILS_MULTIPLE_INFECTION_FILTER(TBPROFILER_COLLATE__LOFREQ.out.per_sample_results)
 
+        //FIXME:
+        //SUMMARIZE_RESISTANCE ( UTILS_MULTIPLE_INFECTION_FILTER.out.rejected_samples)
+        // might need to create a different script to focus only on minor resistance, for failing samples
+        // can go to same resistance summary result folder
+
      emit: 
          approved_samples_ch = UTILS_MULTIPLE_INFECTION_FILTER.out.approved_samples
          rejected_samples_ch = UTILS_MULTIPLE_INFECTION_FILTER.out.rejected_samples
