@@ -39,7 +39,7 @@ workflow MERGE_WF {
         filtered_selected_gvcfs_ch = selected_gvcfs_ch
                                         .filter { it.class != String }
                                         .collect()
-                                        .dump(tag:'MERGE_WF: filtered_selected_gvcfs_ch', pretty: true)
+                                        //.dump(tag:'MERGE_WF: filtered_selected_gvcfs_ch', pretty: true)
                                         //.collectFile(name: "$params.outdir/selected_gvcfs_ch")
 
         //filtered_selected_gvcfs_ch.view()

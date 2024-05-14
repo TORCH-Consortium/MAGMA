@@ -57,7 +57,7 @@ workflow {
                                     }
                                 .filter { it[1] == 1} // Filter out samples which meet all the thresholds
                                 .map { [ it[0] ] }
-                                .dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
+                                //.dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
 
         STRUCTURAL_VARIANTS_ANALYSIS_WF ( validated_reads_ch, approved_samples_ch )
 
@@ -92,7 +92,7 @@ workflow {
                                     }
                                 .filter { it[1] == 1} // Filter out samples which meet all the thresholds
                                 .map { [ it[0] ] }
-                                .dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
+                                //.dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
 
         STRUCTURAL_VARIANTS_ANALYSIS_WF ( validated_reads_ch, approved_samples_ch )
 
