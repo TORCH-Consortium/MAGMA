@@ -3,7 +3,6 @@ include { BGZIP } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINO
 include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../modules/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__LOFREQ)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
 include { UTILS_MULTIPLE_INFECTION_FILTER } from "../modules/utils/multiple_infection_filter.nf" addParams (params.UTILS_MULTIPLE_INFECTION_FILTER)
-include { UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION } from "../modules/utils/summarize_resistance_results_mixed_infection.nf" addParams (params.UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION)
 
 workflow MINOR_VARIANTS_ANALYSIS_WF {
 
@@ -39,8 +38,6 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
 
         //NOTE:Use the output from this process and send the samples 
         //UTILS_MULTIPLE_INFECTION_FILTER.out.rejected_samples
-
-        UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION ( UTILS_MULTIPLE_INFECTION_FILTER.out.rejected_samples)
 
      emit: 
          approved_samples_ch = UTILS_MULTIPLE_INFECTION_FILTER.out.approved_samples
