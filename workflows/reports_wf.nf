@@ -23,13 +23,11 @@ workflow REPORTS_WF {
             structural_variants_results_ch
         )
 
-/*
         UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION(
             merged_cohort_stats_ch,
             minor_variants_results_ch,
             structural_variants_results_ch
         )
-*/
 
 
 }
