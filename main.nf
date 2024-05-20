@@ -109,7 +109,6 @@ workflow {
                                 //.dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
 
 
-
         MERGE_WF( CALL_WF.out.gvcf_ch,
                   CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch, 
                   approved_samples_ch )
