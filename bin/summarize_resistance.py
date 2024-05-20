@@ -11,7 +11,10 @@ import numpy as np
 from tqdm import tqdm
 
 alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-drugs = set(['amikacin', 'bedaquiline', 'capreomycin', 'clofazimine', 'cycloserine', 'delamanid', 'ethambutol', 'ethionamide', 'imipenem', 'isoniazid', 'kanamycin','levofloxacin', 'linezolid', 'meropenem', 'moxifloxacin', 'para_aminosalicylic_acid', 'pretomanid', 'prothionamide', 'pyrazinamide', 'rifabutin', 'rifampicin', 'streptomycin', 'terizidone'])
+drugs = {'amikacin', 'bedaquiline', 'capreomycin', 'clofazimine', 'cycloserine', 'delamanid', 'ethambutol',
+         'ethionamide', 'imipenem', 'isoniazid', 'kanamycin', 'levofloxacin', 'linezolid', 'meropenem', 'moxifloxacin',
+         'para_aminosalicylic_acid', 'pretomanid', 'prothionamide', 'pyrazinamide', 'rifabutin', 'rifampicin',
+         'streptomycin', 'terizidone'}
 unknown_position = 2.5
 
 major_variants_sheet_name = 'resistance_variants'

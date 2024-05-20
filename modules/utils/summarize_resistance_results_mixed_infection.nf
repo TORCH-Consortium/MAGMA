@@ -2,6 +2,7 @@ process UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
+        path("*")
         path("minor_variants/*")
         path("structural_variants/*")
 
