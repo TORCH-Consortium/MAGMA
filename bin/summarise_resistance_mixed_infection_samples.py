@@ -115,7 +115,6 @@ def create_resistance_df(sample_res, method='XBS'):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Analyse resistance output from magma Pipeline')
-    parser.add_argument('merged_cohort_stats_file', metavar='merged_cohort_stats_file', type=str, help='The file containing the merged cohort statistics')
     parser.add_argument('minor_res_var_dir', metavar='minor_res_var_dir', type=str, help='The directory containing the minor variants TBProfiler output files')
     parser.add_argument('struc_res_var_dir', metavar='struc_res_var_dir', type=str, help='The directory containing the structural variants TBProfiler output files')
     parser.add_argument('summary_output_dir', metavar='summary_output_dir', type=str, help='The directory where the resulting CSV files should be placed')
@@ -144,22 +143,8 @@ if __name__ == '__main__':
             with open(os.path.join(args['struc_res_var_dir'], 'results', file_name)) as json_file:
                 samples[keys]['delly'] = json.load(json_file)
 
-#===============
-# ADD FILTER FOR SAMPLES FAILING << RELABUNDANCE THRESHOLD_MET >>
-#===============
-    stats_df = pd.read_csv(args["merged_cohort_stats_file"], sep="\t")
-    filtered_stats_df = stats_df[ stats_df["RELABUNDANCE_THRESHOLD_MET"] == 0 ]
-
     samples_df = pd.DataFrame(list(samples), columns=['full_sample'])
-
-    filtered_samples_df = samples_df[samples_df["full_sample"].isin(filtered_stats_df["SAMPLE"].to_list())]
-    samples_df = filtered_samples_df.set_index('full_sample').sort_index()
-
-
-#===============
-# POPULATE THE DATAFRAME
-#===============
-
+    samples_df = samples_df.set_index('full_sample').sort_index()
 
     for patient, sample in tqdm(samples_df.iterrows(), total=samples_df.shape[0]):
         sample_res = samples[patient]
@@ -190,7 +175,7 @@ if __name__ == '__main__':
 
         pt_df = pt_df[['Drug', 'Conclusion', 'Variant', 'WHO Catalogue', 'Type', 'Frequency', 'Method', 'Source', 'Source notation', 'Literature', 'Observations', 'Fraction']]
 
-        """
+         """
         Write the sheet to excel with formatting
         """
         with pd.ExcelWriter(os.path.join(summary_dir, '{}.xlsx'.format(patient)), engine='xlsxwriter') as writer:

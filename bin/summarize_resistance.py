@@ -10,16 +10,13 @@ import numpy as np
 
 from tqdm import tqdm
 
-ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-DRUGS = {'amikacin', 'bedaquiline', 'capreomycin', 'clofazimine', 'cycloserine', 'delamanid', 'ethambutol',
-         'ethionamide', 'imipenem', 'isoniazid', 'kanamycin', 'levofloxacin', 'linezolid', 'meropenem', 'moxifloxacin',
-         'para_aminosalicylic_acid', 'pretomanid', 'prothionamide', 'pyrazinamide', 'rifabutin', 'rifampicin',
-         'streptomycin', 'terizidone'}
-UNKNOWN_POSITIONS = 2.5
+alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+drugs = set(['amikacin', 'bedaquiline', 'capreomycin', 'clofazimine', 'cycloserine', 'delamanid', 'ethambutol', 'ethionamide', 'imipenem', 'isoniazid', 'kanamycin','levofloxacin', 'linezolid', 'meropenem', 'moxifloxacin', 'para_aminosalicylic_acid', 'pretomanid', 'prothionamide', 'pyrazinamide', 'rifabutin', 'rifampicin', 'streptomycin', 'terizidone'])
+unknown_position = 2.5
 
-MAJOR_VARIANTS_SHEET_NAME = 'resistance_variants'
+major_variants_sheet_name = 'resistance_variants'
 
-MAP_RESISTANCE_CLASS = {
+class_map = {
     0: 'R',
     1: 'Very high probability',
     2: 'High probability',
@@ -30,7 +27,7 @@ MAP_RESISTANCE_CLASS = {
     -1: 'Unknown'
 }
 
-MAP_CONFIDENCE_WHO = {
+map_confidence_WHO = {
     1: 0,
     2: 1,
     3: -1,
@@ -38,7 +35,7 @@ MAP_CONFIDENCE_WHO = {
     5: 6,
 }
 
-MAP_CONFIDENCE_WHO_NAMING = {
+map_confidence_WHO_naming = {
     1: 'Associated with resistance',
     2: 'Associated with resistance - interim',
     3: 'Uncertain significance',
@@ -46,7 +43,7 @@ MAP_CONFIDENCE_WHO_NAMING = {
     5: 'Not associated with resistance',
 }
 
-DRUG_MAPPING = {
+drug_mapping = {
     'AMI': 'amikacin',
     'BDQ': 'bedaquiline',
     'CAP': 'capreomycin',
@@ -64,9 +61,8 @@ DRUG_MAPPING = {
     'STM': 'streptomycin',
     'PTH': 'prothionamide'
 }
-
 drug_mapping_inv = {
-   item[1]: item[0] for item in DRUG_MAPPING.items()
+   item[1]: item[0] for item in drug_mapping.items()
 }
 
 def create_resistance_df(sample_res, method='XBS'):
@@ -89,12 +85,12 @@ def create_resistance_df(sample_res, method='XBS'):
         # Overwrite the unknown for the resistant drugs
         for drug in var['drugs']:
             drug_name = drug['drug'].lower().replace(' ', '_')
-            pt_df.loc[(drug_name, var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), MAP_CONFIDENCE_WHO[int(drug['confidence'])], MAP_CONFIDENCE_WHO_NAMING[int(drug['confidence'])], var['type'], 'Catalogue', drug['who original'], drug['literature']]
+            pt_df.loc[(drug_name, var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(drug['confidence'])], map_confidence_WHO_naming[int(drug['confidence'])], var['type'], 'Catalogue', drug['who original'], drug['literature']]
 
         # Overwrite the unknown for the sensitive drugs
         for drug in var['annotation']:
             drug_name = drug['drug'].lower().replace(' ', '_')
-            pt_df.loc[(drug_name, var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), MAP_CONFIDENCE_WHO[int(drug['who_confidence'])], MAP_CONFIDENCE_WHO_NAMING[int(drug['who_confidence'])], var['type'], 'Catalogue', drug['who_original'], drug['literature']]
+            pt_df.loc[(drug_name, var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(drug['who_confidence'])], map_confidence_WHO_naming[int(drug['who_confidence'])], var['type'], 'Catalogue', drug['who_original'], drug['literature']]
             if float(drug['who_solo_res']) + float(drug['who_sens']) == 0:
                 pt_df.loc[(drug_name, var_repr), ('Observations')] = ['{}R - {}S'.format(int(float(drug['who_solo_res'])), int(float(drug['who_sens'])))]
             else:
@@ -122,12 +118,12 @@ def create_resistance_df(sample_res, method='XBS'):
                     if int(annotation['who_confidence']) != 3:
                         pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Observations', 'Fraction')] = None
                     if int(annotation['who_confidence']) > 3:
-                        pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), MAP_CONFIDENCE_WHO[int(annotation['who_confidence'])], MAP_CONFIDENCE_WHO_NAMING[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature']]
+                        pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(annotation['who_confidence'])], map_confidence_WHO_naming[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature']]
                     elif int(annotation['who_confidence']) == 3:
                         if float(annotation['who_solo_res']) + float(annotation['who_sens']) == 0:
-                            pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature', 'Observations')] = ['{:.0%}'.format(var['freq']), MAP_CONFIDENCE_WHO[int(annotation['who_confidence'])], MAP_CONFIDENCE_WHO_NAMING[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature'], '{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens'])))]
+                            pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature', 'Observations')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(annotation['who_confidence'])], map_confidence_WHO_naming[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature'], '{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens'])))]
                         else:
-                            pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature', 'Observations', 'Fraction')] = ['{:.0%}'.format(var['freq']), MAP_CONFIDENCE_WHO[int(annotation['who_confidence'])], MAP_CONFIDENCE_WHO_NAMING[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature'], '{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens']))), '{:.2f}'.format(float(annotation['who_r_fraction']))]
+                            pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Frequency', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Source', 'Source notation', 'Literature', 'Observations', 'Fraction')] = ['{:.0%}'.format(var['freq']), map_confidence_WHO[int(annotation['who_confidence'])], map_confidence_WHO_naming[int(annotation['who_confidence'])], var['type'], 'Catalogue', annotation['who_original'], annotation['literature'], '{}R - {}S'.format(int(float(annotation['who_solo_res'])), int(float(annotation['who_sens']))), '{:.2f}'.format(float(annotation['who_r_fraction']))]
                     else:
                         display(annotation)
                 else:
@@ -137,13 +133,11 @@ def create_resistance_df(sample_res, method='XBS'):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Analyse resistance output from magma Pipeline')
-    parser.add_argument('merged_cohort_stats_file', metavar='merged_cohort_stats_file', type=str, help='The file containing the merged cohort statistics')
     parser.add_argument('major_res_var_dir', metavar='major_res_var_dir', type=str, help='The directory containing the major variants TBProfiler output files')
     parser.add_argument('minor_res_var_dir', metavar='minor_res_var_dir', type=str, help='The directory containing the minor variants TBProfiler output files')
     parser.add_argument('struc_res_var_dir', metavar='struc_res_var_dir', type=str, help='The directory containing the structural variants TBProfiler output files')
     parser.add_argument('summary_output_dir', metavar='summary_output_dir', type=str, help='The directory where the resulting excel sheets should be placed')
     args = vars(parser.parse_args())
-
 
     summary_dir = args['summary_output_dir']
     if not os.path.exists(summary_dir):
@@ -180,20 +174,9 @@ if __name__ == '__main__':
             with open(os.path.join(os.path.join(os.path.join(args['struc_res_var_dir'], 'results', file_name)))) as json_file:
                 samples[keys]['delly'] = json.load(json_file)
 
-#===============
-# ADD FILTER FOR SAMPLES PASSING << ALL_THRESHOLDS >>
-#===============
-    stats_df = pd.read_csv(args["merged_cohort_stats_file"], sep="\t")
-    filtered_stats_df = stats_df[ stats_df["ALL_THRESHOLDS_MET"] == 1 ]
-
     samples_df = pd.DataFrame(list(samples), columns=['full_sample'])
     #samples_df[['patient', 'sample']] = samples_df['full_sample'].apply(lambda sample: extract_patient_and_sample(sample))
-    filtered_samples_df = samples_df[samples_df["full_sample"].isin(filtered_stats_df["SAMPLE"].to_list())]
-    samples_df = filtered_samples_df.set_index('full_sample').sort_index()
-
-#===============
-# POPULATE THE DATAFRAME
-#===============
+    samples_df = samples_df.set_index('full_sample').sort_index()
 
     for patient, sample in tqdm(samples_df.iterrows(), total=samples_df.shape[0]):
         sample_res = samples[patient]
@@ -212,18 +195,18 @@ if __name__ == '__main__':
 
         pt_df = pd.concat([pt_df_magma, pt_df_lof, pt_df_delly]).reset_index().drop_duplicates(subset=['Drug', 'Variant']).set_index(['Drug', 'Variant']).sort_index()
 
-        for drug in list(DRUGS - set([i[0] for i in pt_df.index.values])):
+        for drug in list(drugs - set([i[0] for i in pt_df.index.values])):
             pt_df.loc[(drug, 'No variants found'), ('WHO Catalogue')] = ''
             pt_df.loc[(drug, 'No variants found'), ('Resistance interpretation')] = 6
 
-        pt_df['Resistance interpretation'].replace(-1, UNKNOWN_POSITIONS, inplace=True)
+        pt_df['Resistance interpretation'].replace(-1, unknown_position, inplace=True)
         for drug in pt_df.index.levels[0]:
             conc = min(pt_df.loc[drug, 'Resistance interpretation'].value_counts().keys())
             pt_df.loc[drug, 'Conclusion'] = conc
 
         pt_df = pt_df.reset_index().sort_values(['Conclusion', 'Drug', 'Resistance interpretation', 'Variant'])
         for column in ['Conclusion', 'Resistance interpretation']:
-            pt_df[column] = pt_df[column].apply(lambda c: MAP_RESISTANCE_CLASS[-1] if c == UNKNOWN_POSITIONS else None if pd.isna(c) else MAP_RESISTANCE_CLASS[c])
+            pt_df[column] = pt_df[column].apply(lambda c: class_map[-1] if c == unknown_position else None if pd.isna(c) else class_map[c])
 
         pt_df = pt_df[['Drug', 'Conclusion', 'Variant', 'Resistance interpretation', 'WHO Catalogue', 'Type', 'Frequency', 'Method', 'Literature', 'Source notation', 'Observations', 'Fraction']]
 
@@ -231,7 +214,7 @@ if __name__ == '__main__':
         Write the sheet to excel with formatting
         """
         with pd.ExcelWriter(os.path.join(summary_dir, '{}.xlsx'.format(patient)), engine='xlsxwriter') as writer:
-            pt_df.set_index(['Drug', 'Conclusion', 'Variant']).to_excel(writer, sheet_name=MAJOR_VARIANTS_SHEET_NAME)
+            pt_df.set_index(['Drug', 'Conclusion', 'Variant']).to_excel(writer, sheet_name=major_variants_sheet_name)
 
             format_sens = writer.book.add_format({'bold': False, 'font_color': 'green'})
             format_mod = writer.book.add_format({'bold': True, 'font_color': 'orange'})
@@ -246,11 +229,11 @@ if __name__ == '__main__':
 
             # Add formatting to Variants sheet
             for cond_format in [cond_res_0, cond_res_1, cond_res_2, cond_mod_3, cond_sens_4, cond_sens_5, cond_sens_6]:
-                writer.sheets[MAJOR_VARIANTS_SHEET_NAME].conditional_format('{}1:{}{}'.format(ALPHABET[1], ALPHABET[1], pt_df.shape[0] + 1), cond_format)
-                writer.sheets[MAJOR_VARIANTS_SHEET_NAME].conditional_format('{}1:{}{}'.format(ALPHABET[3], ALPHABET[3], pt_df.shape[0] + 1), cond_format)
+                writer.sheets[major_variants_sheet_name].conditional_format('{}1:{}{}'.format(alphabet[1], alphabet[1], pt_df.shape[0]+1),  cond_format)
+                writer.sheets[major_variants_sheet_name].conditional_format('{}1:{}{}'.format(alphabet[3], alphabet[3], pt_df.shape[0]+1),  cond_format)
 
             # Autofit the worksheet and hide columns
-            writer.sheets[MAJOR_VARIANTS_SHEET_NAME].autofit() # Not available in the version we are using
-            writer.sheets[MAJOR_VARIANTS_SHEET_NAME].set_column(2, 2, 25, None, None)
-            writer.sheets[MAJOR_VARIANTS_SHEET_NAME].set_column(5, 5, 25, None, None)
+            writer.sheets[major_variants_sheet_name].autofit() # Not available in the version we are using
+            writer.sheets[major_variants_sheet_name].set_column(2, 2, 25, None, None)
+            writer.sheets[major_variants_sheet_name].set_column(5, 5, 25, None, None)
             #writer.sheets[major_variants_sheet_name].set_column(5, 6, None, None, {"hidden": True})

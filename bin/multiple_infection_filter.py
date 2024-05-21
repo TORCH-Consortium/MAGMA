@@ -19,9 +19,9 @@ if __name__ == '__main__':
     accepted = [['SAMPLE', 'LINEAGES', 'FREQUENCIES', 'RELABUNDANCE_THRESHOLD_MET']]
     rejected = [['SAMPLE', 'LINEAGES', 'FREQUENCIES', 'RELABUNDANCE_THRESHOLD_MET']]
     for sample in samples:
-        sublins = [i for i in sample['lineage'] if i['lineage'] in sample['sub_lineage'].split(';')]
-        lins = [i['lineage'] for i in sublins]
-        fracs = [i['fraction'] for i in sublins]
+        sublins = [i for i in sample['lineage'] if i['lineage'] in sample['sublineage'].split(';')]
+        lins = [i['lin'] for i in sublins]
+        fracs = [i['frac'] for i in sublins]
         if not lins:
             rejected.append([sample['id'], 'None', 'None', 0])
         elif max(fracs) < args['relative_abundance_threshold']:

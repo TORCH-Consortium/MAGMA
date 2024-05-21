@@ -11,12 +11,14 @@ include { BCFTOOLS_MERGE as  BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/m
 include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__DELLY } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__DELLY)
 
+//include { TBPROFILER_PROFILE__BAM } from "../modules/tbprofiler/profile__bam.nf" addParams (params.TBPROFILER_PROFILE__BAM)
+
 
 workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
     take:
         validated_reads_ch
-        samples_ch
+	approved_samples_ch
 
     main:
 
@@ -44,7 +46,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         .groupTuple()
         //.dump(tag: "CALL_WF normalize_libraries_ch : ", pretty: true)
 
-        normalize_filtered_ch = samples_ch.join(normalize_libraries_ch)
+	normalize_filtered_ch = approved_samples_ch.join(normalize_libraries_ch)
 
         // call_merge
         SAMTOOLS_MERGE__DELLY(normalize_filtered_ch)
@@ -106,15 +108,15 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 //.view { it }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
-        vcfs_file = vcfs_string_ch.collectFile(name: 'structural_variant_vcfs.txt', newLine: true)
+	vcfs_file = vcfs_string_ch.collectFile(name: 'structural_variant_vcfs.txt', newLine: true)
         BCFTOOLS_MERGE__DELLY(vcfs_file, vcfs_and_indexes_ch)
 
         def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
 
         TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out, resistanceDb)
 
-        TBPROFILER_COLLATE__DELLY(params.vcf_name, TBPROFILER_VCF_PROFILE__DELLY.out, resistanceDb)
+	TBPROFILER_COLLATE__DELLY(params.vcf_name, TBPROFILER_VCF_PROFILE__DELLY.out, resistanceDb)
 	
     emit:
-	  structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
+	structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
 }

@@ -18,8 +18,7 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
         ${params.tbprofiler_path} profile \\
             ${optionalDb} \\
             --threads ${task.cpus}\\
-            --vcf ${mergedLofreqVcf} \\
-            ${params.arguments}
+            --vcf ${mergedLofreqVcf}
         """
 
     stub:
