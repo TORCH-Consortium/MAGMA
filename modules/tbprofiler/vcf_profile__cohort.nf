@@ -16,8 +16,9 @@ process TBPROFILER_VCF_PROFILE__COHORT {
         """
         ${params.tbprofiler_path} profile  \\
             ${optionalDb} \\
-	    --threads ${task.cpus}\\
-            --vcf ${mergedVcf}
+            --threads ${task.cpus}\\
+            --vcf ${mergedVcf} \\
+            ${params.arguments}
 
         """
 
