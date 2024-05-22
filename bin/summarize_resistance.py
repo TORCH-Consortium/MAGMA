@@ -76,7 +76,7 @@ def create_resistance_df(sample_res, method='XBS'):
     Do this after adding the lofreq dr variants to show the magma variant frequencies.
     """
     for var in sample_res['dr_variants']:
-        gene = var['gene']
+        gene = var['gene_name']
         if gene == '.':
             gene = var['locus_tag']
         var_repr = '{}_{}'.format(gene, var['change'])
@@ -105,7 +105,7 @@ def create_resistance_df(sample_res, method='XBS'):
     Add the other variants from the magma analysis to the magma variant dataframe.
     """
     for var in sample_res['other_variants']:
-        gene = var['gene']
+        gene = var['gene_name']
         if gene == '.':
             gene = var['locus_tag']
         var_repr = '{}_{}'.format(gene, var['change'])
