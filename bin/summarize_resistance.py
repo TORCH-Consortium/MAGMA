@@ -40,7 +40,7 @@ map_confidence_who = {
 }
 
 
-def create_resistance_df(sample_res, method='XBS'):
+def create_resistance_df(sample_res, method):
     pt_df = pd.DataFrame(columns=['Drug', 'Variant', 'Resistance interpretation','Source', 'Source notation', 'Type', 'Frequency', 'Literature']).set_index(['Drug', 'Variant'])
 
     # DR variants from the MAGMA analysis. Added after LoFreq DR variants to give priority to MAGMA frequencies.
