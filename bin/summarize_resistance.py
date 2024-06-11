@@ -48,6 +48,12 @@ def create_resistance_df(sample_res, method):
         gene = var['gene_name']
         var_repr = '{}_{}'.format(gene, var['change'])
 
+        # Add variants with an unlisted classification and overwrite later if necessary
+        for drug in var['gene_associated_drugs']:
+            drug_name = drug.lower().replace(' ', '_')
+            pt_df.loc[(drug_name, var_repr), ('Resistance interpretation', 'Source', 'Source notation', 'Type', 'Frequency', 'Literature')] = [unknown_positions, 'non-Catalogue', '', var['type'], '{:.0%}'.format(var['freq']), 'Manually curated']
+
+        # Overwrite the variant classification for drugs which have a WHO classification last as to overrule unlisted classifications
         for drug in var['drugs']:
             drug_name = drug['drug'].lower().replace(' ', '_')
             pt_df.loc[(drug_name, var_repr), ('Resistance interpretation', 'Source', 'Source notation', 'Type', 'Frequency', 'Literature')] = [map_confidence_who[drug['confidence']], 'Catalogue', drug['original_mutation'], var['type'], '{:.0%}'.format(var['freq']), drug['source']]
