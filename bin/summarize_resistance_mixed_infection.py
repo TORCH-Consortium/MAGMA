@@ -63,7 +63,7 @@ map_confidence_who = {
 # }
 
 
-def create_resistance_df(sample_res, method='XBS'):
+def create_resistance_df(sample_res, method):
     pt_df = pd.DataFrame(columns=['Drug', 'Variant', 'Resistance interpretation','Source', 'Source notation', 'Type', 'Frequency', 'Literature']).set_index(['Drug', 'Variant'])
 
     # DR variants from the MAGMA analysis. Add after LoFreq DR variants to give priority to MAGMA frequencies.
@@ -71,6 +71,12 @@ def create_resistance_df(sample_res, method='XBS'):
         gene = var['gene_name']
         var_repr = '{}_{}'.format(gene, var['change'])
 
+        # Add all the DR variants wi classification and overwrite later if necessary
+        for drug in var['gene_associated_drugs']:
+            drug_name = drug.lower().replace(' ', '_')
+            pt_df.loc[(drug_name, var_repr), ('Resistance interpretation', 'Source', 'Source notation', 'Type', 'Frequency', 'Literature')] = [unknown_positions, 'non-Catalogue', '', var['type'], '{:.0%}'.format(var['freq']), 'Manually curated']
+
+        # Overwrite the variant classification for drugs which have a WHO classification last as to overrule all other classifications
         for drug in var['drugs']:
             drug_name = drug['drug'].lower().replace(' ', '_')
             pt_df.loc[(drug_name, var_repr), ('Resistance interpretation', 'Source', 'Source notation', 'Type', 'Frequency', 'Literature')] = [map_confidence_who[drug['confidence']], 'Catalogue', drug['original_mutation'], var['type'], '{:.0%}'.format(var['freq']), drug['source']]
@@ -85,7 +91,7 @@ def create_resistance_df(sample_res, method='XBS'):
             drug_name = drug.lower().replace(' ', '_')
             pt_df.loc[(drug_name, var_repr), ('Resistance interpretation', 'Source', 'Source notation', 'Type', 'Frequency', 'Literature')] = [unknown_positions, 'non-Catalogue', '', var['type'], '{:.0%}'.format(var['freq']), 'Manually curated']
 
-        # Overwrite the variant classification for drugs which have a WHO sens classification last as to overrule all other classifications
+        # Overwrite the variant classification for drugs which have a WHO classification last as to overrule all other classifications
         if 'annotation' in var:
             for annotation in var['annotation']:
                 pt_df.loc[(annotation['drug'].lower().replace(' ', '_'), var_repr), ('Resistance interpretation', 'Source', 'Source notation', 'Type', 'Frequency', 'Literature')] = [map_confidence_who[annotation['confidence']], 'Catalogue', annotation['original_mutation'], var['type'], '{:.0%}'.format(var['freq']), annotation['source']]
