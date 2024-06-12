@@ -71,7 +71,7 @@ def create_resistance_df(sample_res, method):
         gene = var['gene_name']
         var_repr = '{}_{}'.format(gene, var['change'])
 
-        # Add all the DR variants wi classification and overwrite later if necessary
+        # Add all the DR variants with classification and overwrite later if necessary
         for drug in var['gene_associated_drugs']:
             drug_name = drug.lower().replace(' ', '_')
             pt_df.loc[(drug_name, var_repr), ('Resistance interpretation', 'Source', 'Source notation', 'Type', 'Frequency', 'Literature')] = [unknown_positions, 'non-Catalogue', '', var['type'], '{:.0%}'.format(var['freq']), 'Manually curated']
@@ -140,6 +140,7 @@ if __name__ == '__main__':
     samples_df = pd.DataFrame(list(samples), columns=['full_sample'])
     filtered_samples_df = samples_df[samples_df["full_sample"].isin(filtered_stats_df["SAMPLE"].to_list())]
     samples_df = filtered_samples_df.set_index('full_sample').sort_index()
+
 
 #===============
 # POPULATE THE DATAFRAME
