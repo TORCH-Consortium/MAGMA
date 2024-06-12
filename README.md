@@ -145,12 +145,17 @@ The MAGMA pipeline has default parameters related to minimum QC thresholds that 
 
 input_samplesheet: /path/to/your_samplesheet.csv
 only_validate_fastqs: true
+
+# Use only if using conda based execution
 conda_envs_location: /path/to/folder/with/conda_envs
-median_coverage_cutoff: 5
-breadth_of_coverage_cutoff: 0.95
-rel_abundance_cutoff: 0.65
-ntm_fraction_cutoff: 0.40
-site_representation_cutoff: 0.80
+
+# NOTE: Change these as per your samples as shown below parameters
+median_coverage_cutoff: 5 # 10 default
+breadth_of_coverage_cutoff : 0.30 #  0.90 default
+rel_abundance_cutoff : 0.40 # 0.80 default
+ntm_fraction_cutoff : 0.40 # 0.20 default
+site_representation_cutoff : 0.10 # 0.10 default
+
 ```
 
 > **Note**
