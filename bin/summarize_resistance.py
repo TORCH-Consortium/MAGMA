@@ -24,7 +24,7 @@ map_resistance_class = {
     0: 'R',
     1: 'Very high probability',
     2: 'High probability',
-    3: 'Moderate Probability',
+    3: 'Moderate probability',
     4: 'Low probability',
     5: 'Very low probability',
     6: 'S',
