@@ -79,12 +79,14 @@ workflow MERGE_WF {
         excomplex_prefix_ch = Channel.of('ExDR.ExComplex')
 
 
-        PHYLOGENY_ANALYSIS__EXCOMPLEX(excomplex_prefix_ch,
-                                       excomplex_exclude_interval_ref_ch,
-                                       SNP_ANALYSIS.out.snp_exc_vcf_ch)
+            if (params.analyze_phylogeny_and_cluster) {
+                PHYLOGENY_ANALYSIS__EXCOMPLEX(excomplex_prefix_ch,
+                                               excomplex_exclude_interval_ref_ch,
+                                               SNP_ANALYSIS.out.snp_exc_vcf_ch)
 
-        CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
+                CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
 
+        }
 
 
 
@@ -100,13 +102,16 @@ workflow MERGE_WF {
 
             inccomplex_prefix_ch = Channel.of('ExDR.IncComplex')
 
-            //NOTE: Both phylogenies should be excluding DR and excluding rRNA, then it is again filtered in two datasets one including complex regions and one excluding complex regions.
-            //Ergo PHYLOGENY_...__INCCOMPLEX should take snp_exc_vcf_ch. Refer https://github.com/TORCH-Consortium/MAGMA/pull/114#discussion_r947732253
-            PHYLOGENY_ANALYSIS__INCCOMPLEX(inccomplex_prefix_ch,
-                                           inccomplex_exclude_interval_ref_ch,
-                                           SNP_ANALYSIS.out.snp_exc_vcf_ch)
 
-            CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snpsites_tree_tuple, inccomplex_prefix_ch)
+            if (params.analyze_phylogeny_and_cluster) {
+                //NOTE: Both phylogenies should be excluding DR and excluding rRNA, then it is again filtered in two datasets one including complex regions and one excluding complex regions.
+                //Ergo PHYLOGENY_...__INCCOMPLEX should take snp_exc_vcf_ch. Refer https://github.com/TORCH-Consortium/MAGMA/pull/114#discussion_r947732253
+                PHYLOGENY_ANALYSIS__INCCOMPLEX(inccomplex_prefix_ch,
+                                               inccomplex_exclude_interval_ref_ch,
+                                               SNP_ANALYSIS.out.snp_exc_vcf_ch)
+
+                CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snpsites_tree_tuple, inccomplex_prefix_ch)
+            }
 
         }
 
