@@ -24,7 +24,7 @@ map_resistance_class = {
     0: 'R',
     1: 'Very high probability',
     2: 'High probability',
-    3: 'Moderate Probability',
+    3: 'Moderate probability',
     4: 'Low probability',
     5: 'Very low probability',
     6: 'S',
@@ -136,7 +136,7 @@ if __name__ == '__main__':
 #===============
     stats_df = pd.read_csv(args["merged_cohort_stats_file"], sep="\t")
     mixed_inf_stats_df = stats_df[stats_df["RELABUNDANCE_THRESHOLD_MET"] == 0]
-    filtered_stats_df = mixed_inf_stats_df[(mixed_inf_stats_df[["MAPPED_NTM_FRACTION_16S_THRESHOLD_MET", "COVERAGE_THRESHOLD_MET", "BREADTH_OF_COVERAGE_THRESHOLD_MET"]] == 1).all(axis=1)]
+    filtered_stats_df = mixed_inf_stats_df.loc[ (mixed_inf_stats_df["RELABUNDANCE_THRESHOLD_MET"]==0) & (mixed_inf_stats_df["MAPPED_NTM_FRACTION_16S_THRESHOLD_MET"]==1) & (mixed_inf_stats_df["COVERAGE_THRESHOLD_MET"]==1) & (mixed_inf_stats_df["BREADTH_OF_COVERAGE_THRESHOLD_MET"]==1)]
 
     samples_df = pd.DataFrame(list(samples), columns=['full_sample'])
     filtered_samples_df = samples_df[samples_df["full_sample"].isin(filtered_stats_df["SAMPLE"].to_list())]
