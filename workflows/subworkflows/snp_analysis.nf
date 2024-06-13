@@ -57,7 +57,7 @@ workflow SNP_ANALYSIS {
 
 
 
-        if(params.optimize_variant_recalibration) {
+        if(!params.skip_variant_recalibration) {
 
             OPTIMIZE_VARIANT_RECALIBRATION('SNP',
                                         GATK_SELECT_VARIANTS__SNP.out.variantsVcfTuple,

@@ -59,7 +59,7 @@ workflow INDEL_ANALYSIS {
 
 
         //FIXME XBS_merge#L169
-        if(params.optimize_variant_recalibration) {
+        if(!params.skip_variant_recalibration) {
 
             OPTIMIZE_VARIANT_RECALIBRATION('INDEL',
                                         GATK_SELECT_VARIANTS__INDEL.out.variantsVcfTuple,
