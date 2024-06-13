@@ -79,7 +79,7 @@ workflow MERGE_WF {
         excomplex_prefix_ch = Channel.of('ExDR.ExComplex')
 
 
-            if (!params.skip_phylogeny_and_cluster) {
+            if (!params.skip_phylogeny_and_clustering) {
                 PHYLOGENY_ANALYSIS__EXCOMPLEX(excomplex_prefix_ch,
                                                excomplex_exclude_interval_ref_ch,
                                                SNP_ANALYSIS.out.snp_exc_vcf_ch)
@@ -103,7 +103,7 @@ workflow MERGE_WF {
             inccomplex_prefix_ch = Channel.of('ExDR.IncComplex')
 
 
-            if (!params.skip_phylogeny_and_cluster) {
+            if (!params.skip_phylogeny_and_clustering) {
                 //NOTE: Both phylogenies should be excluding DR and excluding rRNA, then it is again filtered in two datasets one including complex regions and one excluding complex regions.
                 //Ergo PHYLOGENY_...__INCCOMPLEX should take snp_exc_vcf_ch. Refer https://github.com/TORCH-Consortium/MAGMA/pull/114#discussion_r947732253
                 PHYLOGENY_ANALYSIS__INCCOMPLEX(inccomplex_prefix_ch,
