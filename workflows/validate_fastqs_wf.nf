@@ -31,11 +31,13 @@ workflow VALIDATE_FASTQS_WF {
 
                     unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
 
+
+                    println(row)
+
                     //Accomodate single/multi reads
                     if (read1 && read2) {
 
-                        //return tuple(unique_sample_id, bam_rg_string, tuple(file(read1, checkIfExists: true), file(read2, checkIfExists: true)))
-                        return [unique_sample_id, bam_rg_string, [path(read1), path(read2)]]
+                        return tuple(unique_sample_id, bam_rg_string, tuple(file(read1, checkIfExists: true), file(read2, checkIfExists: true)))
 
                     } else if (read1) {
 
