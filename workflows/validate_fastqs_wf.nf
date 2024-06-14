@@ -48,6 +48,7 @@ workflow VALIDATE_FASTQS_WF {
                 }
             }
 
+        SAMPLESHEET_VALIDATION.dump(tag:'SAMPLESHEET_VALIDATION', pretty: true)
 
         FASTQ_VALIDATOR(reads_ch)
 

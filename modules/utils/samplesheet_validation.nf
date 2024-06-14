@@ -1,5 +1,4 @@
 process SAMPLESHEET_VALIDATION {
-//TODO: Test with relative paths for input samplesheet
 
     input:
         path(samplesheet)
