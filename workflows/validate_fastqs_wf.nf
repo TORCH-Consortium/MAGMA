@@ -14,7 +14,7 @@ workflow VALIDATE_FASTQS_WF {
         // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
 
         //reads_ch = SAMPLESHEET_VALIDATION.out
-        reads_ch = samplesheet
+        reads_ch = Channel.fromPath(samplesheet)
                     .splitCsv(header: false, skip: 1)
                     .map { row -> {
                                 study           = row[0]
@@ -31,9 +31,6 @@ workflow VALIDATE_FASTQS_WF {
                     bam_rg_string ="@RG\\tID:${flowcell}.${lane}\\tSM:${study}.${sample}\\tPL:illumina\\tLB:lib${library}\\tPU:${flowcell}.${lane}.${index_sequence}"
 
                     unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
-
-
-                    println(row)
 
                     //Accomodate single/multi reads
                     if (read1 && read2) {
