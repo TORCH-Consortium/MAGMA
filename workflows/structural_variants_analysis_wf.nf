@@ -52,7 +52,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         // call_mark_duplicates
         GATK_MARK_DUPLICATES__DELLY(SAMTOOLS_MERGE__DELLY.out)
 
-        if (params.dataset_is_not_contaminated) {
+        if (!params.skip_base_recalibration) {
             // call_base_recal
             GATK_BASE_RECALIBRATOR__DELLY(GATK_MARK_DUPLICATES__DELLY.out.bam_tuple,
                                 params.dbsnp_vcf,

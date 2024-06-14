@@ -30,6 +30,7 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 
 > :warning: **Check `java` version!**:
 The `java` version should NOT be an `internal jdk` release! You can check the release via `java --version`
+Notice the `LTS` next to `OpenJDK` line.
 
 
 ```bash 
@@ -140,17 +141,39 @@ When running the pipeline, use profiles to ensure smooth execution on your compu
 The MAGMA pipeline has default parameters related to minimum QC thresholds that must be reached for samples to be included in the cohort analysis. These default parameters are listed in default_params.config. Users wishing to adjust these parameters should specify these adjustments in the params.yml file supplied when launching the pipeline. An example of adjusted parameters is shown below:
 
 ```yml
-
 # Sample contents of my_parameters_1.yml file
-
 input_samplesheet: /path/to/your_samplesheet.csv
-only_validate_fastqs: true
-conda_envs_location: /path/to/folder/with/conda_envs
-median_coverage_cutoff: 5
-breadth_of_coverage_cutoff: 0.95
-rel_abundance_cutoff: 0.65
-ntm_fraction_cutoff: 0.40
-site_representation_cutoff: 0.80
+
+
+#NOTE: Use only when using conda for environments and no container system is available
+# conda_envs_location: /path/to/folder/with/conda_envs
+
+
+# NOTE: Optionally, change these as per your samples as shown below parameters
+median_coverage_cutoff: 5 # 10 default
+breadth_of_coverage_cutoff : 0.30 #  0.90 default
+rel_abundance_cutoff : 0.40 # 0.80 default
+ntm_fraction_cutoff : 0.40 # 0.20 default
+site_representation_cutoff : 0.10 # 0.10 default
+
+
+only_validate_fastqs : false # OR true
+only_validate_and_qc : false # OR true
+
+skip_merge_analysis : false # OR true
+skip_variant_recalibration : true #OR true
+skip_base_recalibration: true
+skip_minor_variants_gatk : true
+skip_phylogeny_and_clustering : true #OR false
+skip_complex_regions : true #OR true
+
+
+#NOTE: PICK ONE of the following parameters related to IQTREE.
+iqtree_standard_bootstrap: false
+iqtree_fast_ml_only: false
+iqtree_fast_bootstrapped_phylogeny: false
+iqtree_accurate_ml_only: false
+
 ```
 
 > **Note**

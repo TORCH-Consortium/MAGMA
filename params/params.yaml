@@ -13,8 +13,20 @@ outdir :  "/home/magma-results-earlymgit10samples"
 
 conda_envs_location :  "/home/magma-conda_envs"
 
-# Some boolean options
-optimize_variant_recalibration :  false
-compute_minor_variants :  true
-dataset_is_not_contaminated :  true
-only_validate_fastqs :  false
+
+only_validate_fastqs : false # OR true
+only_validate_and_qc : false # OR true
+
+skip_merge_analysis : false # OR true
+skip_variant_recalibration : true #OR true
+skip_base_recalibration: true
+skip_minor_variants_gatk : true
+skip_phylogeny_and_clustering : true #OR false
+skip_complex_regions : true #OR true
+
+
+#NOTE: PICK ONE of the following parameters related to IQTREE.
+iqtree_standard_bootstrap: false
+iqtree_fast_ml_only: false
+iqtree_fast_bootstrapped_phylogeny: false
+iqtree_accurate_ml_only: false
