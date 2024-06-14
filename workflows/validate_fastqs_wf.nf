@@ -1,13 +1,11 @@
 include { FASTQ_VALIDATOR } from '../modules/fastq_utils/validator.nf' addParams ( params.FASTQ_VALIDATOR  )
 include { UTILS_FASTQ_COHORT_VALIDATION } from '../modules/utils/fastq_cohort_validation.nf' addParams ( params.UTILS_FASTQ_COHORT_VALIDATION  )
-include { SAMPLESHEET_VALIDATION } from '../modules/utils/samplesheet_validation.nf' 
 
 workflow VALIDATE_FASTQS_WF {
     take:
          samplesheet
 
     main:
-        //SAMPLESHEET_VALIDATION(samplesheet)
 
         //NOTE: Expected structure of input CSV samplesheet
         //   0     1       2       3    4  5     6      7       8

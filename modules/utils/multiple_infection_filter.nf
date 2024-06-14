@@ -12,6 +12,8 @@ process UTILS_MULTIPLE_INFECTION_FILTER {
     script:
        
         """
+        sleep 30
+
         multiple_infection_filter.py per_sample_results ${params.rel_abundance_cutoff}
         """
 

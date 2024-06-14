@@ -13,6 +13,7 @@ include { MERGE_WF } from './workflows/merge_wf.nf'
 include { MINOR_VARIANTS_ANALYSIS_WF } from './workflows/minor_variants_analysis_wf.nf'
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
 include { REPORTS_WF } from './workflows/reports_wf.nf'
+include { SAMPLESHEET_VALIDATION } from './modules/utils/samplesheet_validation.nf' 
 include { STRUCTURAL_VARIANTS_ANALYSIS_WF } from './workflows/structural_variants_analysis_wf.nf'
 include { UTILS_MERGE_COHORT_STATS } from "./modules/utils/merge_cohort_stats.nf" addParams ( params.UTILS_MERGE_COHORT_STATS )
 
@@ -24,15 +25,15 @@ workflow {
 
     if (params.only_validate_fastqs) {
 
-        VALIDATE_FASTQS_WF(params.input_samplesheet)
-
-    } else if (params.only_validate_and_qc) {
+        SAMPLESHEET_VALIDATION(params.input_samplesheet)
 
         validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
 
         QUALITY_CHECK_WF( validated_reads_ch )
 
-    } else if (params.skip_merge_analysis) {
+    } else if (!params.skip_merge_analysis) {
+
+        SAMPLESHEET_VALIDATION(params.input_samplesheet)
 
         validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
 
@@ -67,6 +68,8 @@ workflow {
     /* } */
 
     } else {
+
+        SAMPLESHEET_VALIDATION(params.input_samplesheet)
 
         validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
 
