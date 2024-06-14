@@ -34,7 +34,8 @@ workflow VALIDATE_FASTQS_WF {
                     //Accomodate single/multi reads
                     if (read1 && read2) {
 
-                        return tuple(unique_sample_id, bam_rg_string, tuple(file(read1, checkIfExists: true), file(read2, checkIfExists: true)))
+                        //return tuple(unique_sample_id, bam_rg_string, tuple(file(read1, checkIfExists: true), file(read2, checkIfExists: true)))
+                        return tuple(unique_sample_id, bam_rg_string, [path(read1), path(read2)])
 
                     } else if (read1) {
 
