@@ -48,7 +48,7 @@ workflow VALIDATE_FASTQS_WF {
                 }
             }
 
-        SAMPLESHEET_VALIDATION.out.view()
+        reads_ch.view()
 
         FASTQ_VALIDATOR(reads_ch)
 
