@@ -7,13 +7,14 @@ workflow VALIDATE_FASTQS_WF {
          samplesheet
 
     main:
-        SAMPLESHEET_VALIDATION(samplesheet)
+        //SAMPLESHEET_VALIDATION(samplesheet)
 
         //NOTE: Expected structure of input CSV samplesheet
         //   0     1       2       3    4  5     6      7       8
         // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
 
-        reads_ch = SAMPLESHEET_VALIDATION.out
+        //reads_ch = SAMPLESHEET_VALIDATION.out
+        reads_ch = samplesheet
                     .splitCsv(header: false, skip: 1)
                     .map { row -> {
                                 study           = row[0]
@@ -47,7 +48,6 @@ workflow VALIDATE_FASTQS_WF {
                 }
             }
 
-        reads_ch.view()
 
         FASTQ_VALIDATOR(reads_ch)
 
