@@ -4,6 +4,7 @@ include { UTILS_FASTQ_COHORT_VALIDATION } from '../modules/utils/fastq_cohort_va
 workflow VALIDATE_FASTQS_WF {
     take:
          samplesheet
+         ready
 
     main:
 
@@ -44,7 +45,7 @@ workflow VALIDATE_FASTQS_WF {
             }
 
 
-        FASTQ_VALIDATOR(reads_ch)
+        FASTQ_VALIDATOR(reads_ch, ready)
 
         UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.check_result.collect() )
 

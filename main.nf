@@ -27,7 +27,7 @@ workflow {
 
         SAMPLESHEET_VALIDATION(params.input_samplesheet)
 
-        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
+        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet , SAMPLESHEET_VALIDATION.out )
 
         QUALITY_CHECK_WF( validated_reads_ch )
 
@@ -35,7 +35,7 @@ workflow {
 
         SAMPLESHEET_VALIDATION(params.input_samplesheet)
 
-        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
+        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet , SAMPLESHEET_VALIDATION.out )
 
         QUALITY_CHECK_WF( validated_reads_ch )
 

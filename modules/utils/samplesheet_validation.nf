@@ -4,7 +4,7 @@ process SAMPLESHEET_VALIDATION {
         path(samplesheet)
 
     output:
-        path(samplesheet)
+        val true
 
     script:
 
