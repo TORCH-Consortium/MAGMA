@@ -24,12 +24,15 @@ process FASTQ_VALIDATOR {
         if [ "$(echo "$TEMP")" == "OK" ]; then
             VALIDATED=1
             STATUS="passed"
+            echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
+            exit 0
         else
             VALIDATED=0
             STATUS="failed"
+            echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
+            exit 1
         fi
 
-        echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
 
         '''
 
