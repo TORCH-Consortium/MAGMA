@@ -2,6 +2,10 @@ process FASTQ_VALIDATOR {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
+    //NOTE: Default action is to ignore the process if the second attempt fails
+    errorStrategy { task.attempt < 3 ? 'retry' : 'ignore' }
+
+
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
         val ready
