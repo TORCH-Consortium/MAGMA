@@ -16,7 +16,7 @@ if __name__ == '__main__':
     samples = []
     json_files = glob.glob(args['indir'] + "/" + "*.json")
     for file_name in json_files:
-        with open(os.path.join(args['indir'], file_name)) as json_file:
+        with open(file_name) as json_file:
             samples.append(json.load(json_file))
     accepted = [['SAMPLE', 'LINEAGES', 'FREQUENCIES', 'RELABUNDANCE_THRESHOLD_MET']]
     rejected = [['SAMPLE', 'LINEAGES', 'FREQUENCIES', 'RELABUNDANCE_THRESHOLD_MET']]
