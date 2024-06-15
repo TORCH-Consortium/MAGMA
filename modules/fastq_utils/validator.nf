@@ -4,6 +4,7 @@ process FASTQ_VALIDATOR {
 
     //NOTE: Default action is to ignore the process if the second attempt fails
     errorStrategy { task.attempt < 3 ? 'retry' : 'ignore' }
+    stageInMode 'copy'
 
 
     input:
