@@ -4,7 +4,7 @@ process FASTQ_VALIDATOR {
 
     stageInMode 'copy'
     maxRetries 3
-    errorStrategy { task.attempts < 3 ? 'retry' : 'ignore' }
+    errorStrategy { task.attempt < 3 ? 'retry' : 'ignore' }
 
 
     //errorStrategy 'retry'
