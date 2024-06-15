@@ -81,7 +81,7 @@ workflow CALL_WF {
                           [params.ref_fasta_fai, params.ref_fasta_dict])
 
         // call_haplotype_caller_minor_variants
-        if (params.skip_minor_variants_gatk) {
+        if (!params.skip_minor_variants_gatk) {
             GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out,
                                                 params.ref_fasta,
                                                 [params.ref_fasta_fai, params.ref_fasta_dict])

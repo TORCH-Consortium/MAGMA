@@ -62,11 +62,6 @@ workflow {
         STRUCTURAL_VARIANTS_ANALYSIS_WF ( validated_reads_ch, all_samples_ch )
 
 
-    //FIXME IMPLEMENT ANOTHER LOGIC FOR --only_merge_analysis
-    /* else if { */
-    /*         //--cohort_data  --only_merge_wf */
-    /* } */
-
     } else {
 
         SAMPLESHEET_VALIDATION(params.input_samplesheet)
