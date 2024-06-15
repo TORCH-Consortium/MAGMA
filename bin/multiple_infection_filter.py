@@ -9,7 +9,6 @@ import argparse
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Analyse resistance output from MAGMA pipeline')
-    parser.add_argument('indir', metavar='indir', type=str, help='The directory containing the LoFreq TBProfiler output')
     parser.add_argument('relative_abundance_threshold', metavar='relative_abundance_threshold', type=float, help='Minimum relative abundance of the majority strain required to process the sample')
 
     args = vars(parser.parse_args())
