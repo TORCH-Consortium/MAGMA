@@ -13,7 +13,7 @@ include { MERGE_WF } from './workflows/merge_wf.nf'
 include { MINOR_VARIANTS_ANALYSIS_WF } from './workflows/minor_variants_analysis_wf.nf'
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
 include { REPORTS_WF } from './workflows/reports_wf.nf'
-include { SAMPLESHEET_VALIDATION } from './modules/utils/samplesheet_validation.nf' 
+include { SAMPLESHEET_VALIDATION } from './modules/utils/samplesheet_validation.nf'  addParams ( params.SAMPLESHEET_VALIDATION )
 include { STRUCTURAL_VARIANTS_ANALYSIS_WF } from './workflows/structural_variants_analysis_wf.nf'
 include { UTILS_MERGE_COHORT_STATS } from "./modules/utils/merge_cohort_stats.nf" addParams ( params.UTILS_MERGE_COHORT_STATS )
 
