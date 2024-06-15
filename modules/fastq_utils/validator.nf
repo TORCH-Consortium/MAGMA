@@ -8,7 +8,7 @@ process FASTQ_VALIDATOR {
 
     //errorStrategy 'retry'
     //NOTE: Default action is to ignore the process if the second attempt fails
-    errorStrategy { (task.attempt <= task.maxRetries) ? 'retry' : 'ignore' }
+    errorStrategy { (task.attempt < task.maxRetries) ? 'retry' : 'ignore' }
 
 
 
