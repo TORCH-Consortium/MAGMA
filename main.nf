@@ -89,8 +89,7 @@ workflow {
                         MINOR_VARIANTS_ANALYSIS_WF.out.minor_variants_results_ch,
                         STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch )
 
-
-            }
+        }
     }
 }
 
