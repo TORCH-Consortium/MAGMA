@@ -27,6 +27,7 @@ for idx, row in ss.iterrows():
         fail = True
 
 if not fail:
+    pd.write_csv("samplesheet.magma.csv")
     print('Samplesheet validation checks passed')
     exit(0)
 else:
