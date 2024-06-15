@@ -3,7 +3,7 @@ process FASTQ_VALIDATOR {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     //NOTE: Default action is to ignore the process if the second attempt fails
-    errorStrategy { task.attempt < 3 ? 'retry' : 'ignore' }
+    errorStrategy { (task.attempt <= 3) ? 'retry' : 'ignore' }
     stageInMode 'copy'
 
 
