@@ -4,15 +4,11 @@ process FASTQ_VALIDATOR {
 
     stageInMode 'copy'
     maxRetries 3
-    //errorStrategy { task.exitStatus != 0 ? 'retry' : 'ignore' }
+    errorStrategy { task.exitStatus != 0 ? 'retry' : 'ignore' }
 
     //errorStrategy 'retry'
     //NOTE: Default action is to ignore the process if the second attempt fails
-    errorStrategy { (task.attempt < task.maxRetries) ? 'retry' : 'ignore' }
-
-
-
-
+    //errorStrategy { (task.attempt < task.maxRetries) ? 'retry' : 'ignore' }
 
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
