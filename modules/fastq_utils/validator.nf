@@ -7,10 +7,6 @@ process FASTQ_VALIDATOR {
     errorStrategy { task.attempt < 3 ? 'retry' : 'ignore' }
 
 
-    //errorStrategy 'retry'
-    //NOTE: Default action is to ignore the process if the second attempt fails
-    //errorStrategy { (task.attempt < task.maxRetries) ? 'retry' : 'ignore' }
-
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
         val ready

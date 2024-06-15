@@ -11,6 +11,7 @@ include { VALIDATE_FASTQS_WF } from './workflows/validate_fastqs_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
 include { MINOR_VARIANTS_ANALYSIS_WF } from './workflows/minor_variants_analysis_wf.nf'
+//include { MULTIQC AS MULTIQC_FASTQS } from '../modules/multiqc/multiqc.nf' addParams (params.MULTIQC_FASTQS)
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
 include { REPORTS_WF } from './workflows/reports_wf.nf'
 include { SAMPLESHEET_VALIDATION } from './modules/utils/samplesheet_validation.nf'  addParams ( params.SAMPLESHEET_VALIDATION )
@@ -30,6 +31,9 @@ workflow {
         validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet , SAMPLESHEET_VALIDATION.out )
 
         QUALITY_CHECK_WF( validated_reads_ch )
+
+        //TODO: Add modules for generating fastq stats and then capturing them in the MultiQC image
+        //MULTIQC_FASTQS( QUALITY_CHECK_WF.out.reports_fastqc_ch )
 
     } else  {
 
