@@ -1,27 +1,60 @@
-# Replace these values to reflect your samplesheet and file-paths
-# FIXME: Use absolute paths
-#
-# Samplesheets
+input_samplesheet : "samplesheet.magma.csv"
 
-input_samplesheet: "/home/magma-runs/data/EarlyMGIT.10samples.slurm.csv"
+# The directory to which all output files should be written
+outdir : "magma-results"
 
-# Main output dir
+# The name of the output VCF file
+# NOTE: This parameter is used to derive the JOINT_NAME in XBS_main.py
+vcf_name : "joint"
 
-outdir :  "/home/magma-results-earlymgit10samples"
+# ##### The follow sections generally do not require adjusting. #####
 
-# Location for manually created conda-envs
+#  ##### QC THRESHOLDS ##### 
 
-conda_envs_location :  "/home/magma-conda_envs"
+#The median coverage required to process the sample
+median_coverage_cutoff : 10
+
+#The breadth of coverage required to process the sample
+breadth_of_coverage_cutoff : 0.90
+
+#The relative abundunce of the majority strain required to process the sample
+rel_abundance_cutoff : 0.80
+
+#The maximum fraction of NTM DNA allowed to process the sample
+ntm_fraction_cutoff : 0.20
+
+# The minimum fraction of samples that need to have a call at a site before the site is considered in phylogeny
+site_representation_cutoff : 0.95
 
 
+# ##### Partial workflows ##### 
+
+# Set this to true if you'd like to only validate input fastqs and check their FASTQC reports
 only_validate_fastqs : false # OR true
-only_validate_and_qc : false # OR true
 
+
+#Use this flag to skip the final merge analysis
 skip_merge_analysis : false # OR true
+
+
+# MAGMA optimises VQSR, if this messes up use the default settings for VQSR
 skip_variant_recalibration : true #OR true
-skip_base_recalibration: true
+
+
+#NOTE: If the dataset is contaminated, Base Recalibration steps are skipped (XBS_call#L48)
+skip_base_recalibration : true
+
+#NOTE: Output file for minor variants detection from bam with GATK XBS_call#L82. Lofreq does a better job for most purposes.
 skip_minor_variants_gatk : true
+
+#:::::::::::::::::::::::::::::::::::::::::
+# 
+#:::::::::::::::::::::::::::::::::::::::::
+
+# Use this flag to disable downstream phylogenetic of merged GVCF
 skip_phylogeny_and_clustering : true #OR false
+
+# Use this flag to enable downstream analysis of merged GVCF
 skip_complex_regions : true #OR true
 
 
@@ -30,3 +63,5 @@ iqtree_standard_bootstrap: false
 iqtree_fast_ml_only: false
 iqtree_fast_bootstrapped_phylogeny: false
 iqtree_accurate_ml_only: false
+
+

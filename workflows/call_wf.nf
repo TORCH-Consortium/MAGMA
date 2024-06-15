@@ -46,7 +46,7 @@ workflow CALL_WF {
         // call_mark_duplicates
         GATK_MARK_DUPLICATES(SAMTOOLS_MERGE.out)
 
-        if (params.dataset_is_not_contaminated) {
+        if (!params.skip_base_recalibration) {
             // call_base_recal
             GATK_BASE_RECALIBRATOR(GATK_MARK_DUPLICATES.out.bam_tuple,
                                 params.dbsnp_vcf,
@@ -81,7 +81,7 @@ workflow CALL_WF {
                           [params.ref_fasta_fai, params.ref_fasta_dict])
 
         // call_haplotype_caller_minor_variants
-        if (params.skip_minor_variants_gatk) {
+        if (!params.skip_minor_variants_gatk) {
             GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out,
                                                 params.ref_fasta,
                                                 [params.ref_fasta_fai, params.ref_fasta_dict])

@@ -4,6 +4,7 @@ process FASTQ_VALIDATOR {
 
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
+        val ready
 
     output:
         tuple val(sampleName), path("*.check.*tsv") 

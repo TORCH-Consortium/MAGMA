@@ -27,6 +27,7 @@ for idx, row in ss.iterrows():
         fail = True
 
 if not fail:
+    ss.to_csv('samplesheet.valid.csv', index=False)
     print('Samplesheet validation checks passed')
     exit(0)
 else:

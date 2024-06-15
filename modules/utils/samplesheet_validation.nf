@@ -1,11 +1,11 @@
 process SAMPLESHEET_VALIDATION {
-//TODO: Test with relative paths for input samplesheet
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
         path(samplesheet)
 
     output:
-        path(samplesheet)
+        val true
 
     script:
 
