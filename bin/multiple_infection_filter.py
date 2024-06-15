@@ -3,6 +3,7 @@
 import os
 import json
 import csv
+import glob
 
 import argparse
 
@@ -13,7 +14,8 @@ if __name__ == '__main__':
 
     args = vars(parser.parse_args())
     samples = []
-    for file_name in os.listdir(args['indir']):
+    json_files = glob.glob(args['indir'] + "*.json")
+    for file_name in json_files:
         with open(os.path.join(args['indir'], file_name)) as json_file:
             samples.append(json.load(json_file))
     accepted = [['SAMPLE', 'LINEAGES', 'FREQUENCIES', 'RELABUNDANCE_THRESHOLD_MET']]
