@@ -18,7 +18,8 @@ process TBPROFILER_COLLATE {
 
         ${params.tbprofiler_path} collate \\
             ${optionalDb} \\
-            -p ${joint_name}.${params.prefix}
+            -p ${joint_name}.${params.prefix} \\
+            --itol
         """
 
     stub:
