@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import glob
 import json
 import os
 import re
@@ -108,27 +108,31 @@ if __name__ == '__main__':
     parser.add_argument('summary_output_dir', metavar='summary_output_dir', type=str, help='The directory where the resulting CSV files should be placed')
     args = vars(parser.parse_args())
 
-    summary_dir = args['summary_output_dir']
-    if not os.path.exists(summary_dir):
-        os.makedirs(summary_dir)
+    dir_summary = args['summary_output_dir']
+    if not os.path.exists(dir_summary):
+        os.makedirs(dir_summary)
 
     samples = {}
-    for file_name in os.listdir(os.path.join(args['minor_res_var_dir'], 'results')):
-        if file_name == '.DS_Store':
-            continue
-        keys = '.'.join(file_name.split('.')[:-2])
-        samples[keys] = {}
-        with open(os.path.join(args['minor_res_var_dir'], 'results', file_name)) as json_file:
-            samples[keys]['lofreq'] = json.load(json_file)
 
-    if os.path.exists(os.path.join(args['struc_res_var_dir'], 'results')):
-        for file_name in os.listdir(os.path.join(args['struc_res_var_dir'], 'results')):
-            if file_name == '.DS_Store':
-                continue
-            keys = '.'.join(file_name.split('.')[:-2])
+    dir_minor_vars = args['minor_res_var_dir'] + "/" + 'results'
+    if os.path.exists(dir_minor_vars):
+        json_minor_vars = glob.glob(dir_minor_vars + "/" + "*.json")
+        for file_name in json_minor_vars:
+            keys = '.'.join(file_name.split('.')[:-2]).split('/')[-1]
             if keys not in samples:
                 continue
-            with open(os.path.join(args['struc_res_var_dir'], 'results', file_name)) as json_file:
+            with open(file_name) as json_file:
+                samples[keys]['lofreq'] = json.load(json_file)
+
+
+    dir_struc_vars = args['struc_res_var_dir'] + "/" + 'results'
+    if os.path.exists(dir_struc_vars):
+        json_struc_vars = glob.glob(dir_struc_vars + "/" + "*.json")
+        for file_name in json_struc_vars:
+            keys = '.'.join(file_name.split('.')[:-2]).split('/')[-1]
+            if keys not in samples:
+                continue
+            with open(file_name) as json_file:
                 samples[keys]['delly'] = json.load(json_file)
 
 #===============
