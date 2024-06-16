@@ -20,13 +20,13 @@ workflow PREPARE_COHORT_VCF {
             .dump(tag: "PREPARE_COHORT_VCF gvcfs_string_ch:", pretty: true)
 
 
-        if (params.use_ref_exit_rif_gvcf) {
+        if (params.use_ref_gvcf) {
             refExitRifGvcf = file(params.ref_exit_rif_gvcf, checkIfExists: true)
         } else {
             refExitRifGvcf = []
         }
 
-        if (params.use_ref_exit_rif_gvcf) {
+        if (params.use_ref_gvcf) {
             refExitRifGvcfTbi = file(params.ref_exit_rif_gvcf_tbi, checkIfExists: true)
         } else {
             refExitRifGvcfTbi = []
