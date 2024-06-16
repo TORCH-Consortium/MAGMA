@@ -1,19 +1,19 @@
 include { FASTQ_VALIDATOR } from '../modules/fastq_utils/validator.nf' addParams ( params.FASTQ_VALIDATOR  )
 include { UTILS_FASTQ_COHORT_VALIDATION } from '../modules/utils/fastq_cohort_validation.nf' addParams ( params.UTILS_FASTQ_COHORT_VALIDATION  )
-include { SAMPLESHEET_VALIDATION } from '../modules/utils/samplesheet_validation.nf' 
 
 workflow VALIDATE_FASTQS_WF {
     take:
          samplesheet
+         ready
 
     main:
-        SAMPLESHEET_VALIDATION(samplesheet)
 
         //NOTE: Expected structure of input CSV samplesheet
         //   0     1       2       3    4  5     6      7       8
         // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
 
-        reads_ch = SAMPLESHEET_VALIDATION.out
+        //reads_ch = SAMPLESHEET_VALIDATION.out
+        reads_ch = Channel.fromPath(samplesheet)
                     .splitCsv(header: false, skip: 1)
                     .map { row -> {
                                 study           = row[0]
@@ -34,22 +34,18 @@ workflow VALIDATE_FASTQS_WF {
                     //Accomodate single/multi reads
                     if (read1 && read2) {
 
-                        return tuple(unique_sample_id, bam_rg_string, tuple(file(read1, checkIfExists: true), file(read2, checkIfExists: true)))
-
-                    } else if (read1) {
-
-                        return tuple(unique_sample_id, bam_rg_string, tuple(file(read1, checkIfExists: true)))
+                        return [unique_sample_id, bam_rg_string, [file(read1, checkIfExists: true), file(read2, checkIfExists: true)]]
 
                     } else {
 
-                        return tuple(unique_sample_id, bam_rg_string, tuple(file(read2, checkIfExists: true)))
+                        return [unique_sample_id, bam_rg_string, [file(read1, checkIfExists: true)]]
 
                     }
                 }
             }
 
 
-        FASTQ_VALIDATOR(reads_ch)
+        FASTQ_VALIDATOR(reads_ch, ready)
 
         UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.check_result.collect() )
 

@@ -14,10 +14,17 @@ process TBPROFILER_VCF_PROFILE__COHORT {
         def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
         """
+
+        bcftools view ${mergedVcf} | sed 's/NC-000962-3-H37Rv/Chromosome/g' > intermediate.vcf
+         
+        cat  intermediate.vcf | bcftools view -Oz -o intermediate.vcf.gz
+
         ${params.tbprofiler_path} profile  \\
             ${optionalDb} \\
-	    --threads ${task.cpus}\\
-            --vcf ${mergedVcf}
+            --threads ${task.cpus}\\
+            --vcf intermediate.vcf.gz \\
+            ${params.arguments}
+
 
         """
 

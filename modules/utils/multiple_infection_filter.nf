@@ -1,6 +1,7 @@
 process UTILS_MULTIPLE_INFECTION_FILTER {
     tag "${params.vcf_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+    stageInMode "copy"
 
     input:
         path("per_sample_results")

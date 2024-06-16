@@ -1,11 +1,14 @@
 process SAMPLESHEET_VALIDATION {
-//TODO: Test with relative paths for input samplesheet
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+    //NOTE: If this process fails, terminate the pipeline execution
+    errorStrategy = 'terminate'
 
     input:
         path(samplesheet)
 
     output:
-        path(samplesheet)
+        val true, emit: status
+        path("samplesheet.valid.csv"), emit: validate_samplesheet
 
     script:
 

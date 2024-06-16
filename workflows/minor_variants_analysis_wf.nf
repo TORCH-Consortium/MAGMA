@@ -35,6 +35,7 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
 
         UTILS_MULTIPLE_INFECTION_FILTER(TBPROFILER_COLLATE__LOFREQ.out.per_sample_results)
 
+
      emit: 
          approved_samples_ch = UTILS_MULTIPLE_INFECTION_FILTER.out.approved_samples
          rejected_samples_ch = UTILS_MULTIPLE_INFECTION_FILTER.out.rejected_samples

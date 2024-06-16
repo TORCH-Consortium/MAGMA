@@ -1,0 +1,7 @@
+name: magma-ntmprofiler-env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - ntm-profiler=0.4.0 

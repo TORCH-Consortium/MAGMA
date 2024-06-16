@@ -11,8 +11,10 @@ include { VALIDATE_FASTQS_WF } from './workflows/validate_fastqs_wf.nf'
 include { MAP_WF } from './workflows/map_wf.nf'
 include { MERGE_WF } from './workflows/merge_wf.nf'
 include { MINOR_VARIANTS_ANALYSIS_WF } from './workflows/minor_variants_analysis_wf.nf'
+//include { MULTIQC AS MULTIQC_FASTQS } from '../modules/multiqc/multiqc.nf' addParams (params.MULTIQC_FASTQS)
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
 include { REPORTS_WF } from './workflows/reports_wf.nf'
+include { SAMPLESHEET_VALIDATION } from './modules/utils/samplesheet_validation.nf'  addParams ( params.SAMPLESHEET_VALIDATION )
 include { STRUCTURAL_VARIANTS_ANALYSIS_WF } from './workflows/structural_variants_analysis_wf.nf'
 include { UTILS_MERGE_COHORT_STATS } from "./modules/utils/merge_cohort_stats.nf" addParams ( params.UTILS_MERGE_COHORT_STATS )
 
@@ -24,45 +26,20 @@ workflow {
 
     if (params.only_validate_fastqs) {
 
-        VALIDATE_FASTQS_WF(params.input_samplesheet)
+        SAMPLESHEET_VALIDATION( params.input_samplesheet )
 
-    } else if (params.skip_merge_analysis) {
-
-        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
+        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet , SAMPLESHEET_VALIDATION.out.status )
 
         QUALITY_CHECK_WF( validated_reads_ch )
 
-        MAP_WF( validated_reads_ch )
+        //TODO: Add modules for generating fastq stats and then capturing them in the MultiQC image
+        //MULTIQC_FASTQS( QUALITY_CHECK_WF.out.reports_fastqc_ch )
 
-        CALL_WF( MAP_WF.out.sorted_reads_ch )
+    } else  {
 
-        MINOR_VARIANTS_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
+        SAMPLESHEET_VALIDATION(params.input_samplesheet)
 
-        UTILS_MERGE_COHORT_STATS ( MINOR_VARIANTS_ANALYSIS_WF.out.approved_samples_ch,
-                                   MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch,
-                                   CALL_WF.out.cohort_stats_tsv )
-
-	approved_samples_ch = UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch
-                                .splitCsv(header: false, skip: 1, sep: '\t' )
-                                .map { row -> [
-                                        row.first(),           // SAMPLE
-                                        row.last().toInteger() // ALL_THRESHOLDS_MET
-                                        ]
-                                    }
-                                .filter { it[1] == 1} // Filter out samples which meet all the thresholds
-                                .map { [ it[0] ] }
-                                .dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
-
-        STRUCTURAL_VARIANTS_ANALYSIS_WF ( validated_reads_ch, approved_samples_ch )
-
-    //FIXME IMPLEMENT ANOTHER LOGIC FOR --only_merge_analysis
-    /* else if { */
-    /*         //--cohort_data  --only_merge_wf */
-    /* } */
-
-    } else {
-
-        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet )
+        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet , SAMPLESHEET_VALIDATION.out.status )
 
         QUALITY_CHECK_WF( validated_reads_ch )
 
@@ -77,30 +54,46 @@ workflow {
                                   MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch,
                                   CALL_WF.out.cohort_stats_tsv )
 
-	approved_samples_ch = UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch
+
+        all_samples_ch = UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch
                                 .splitCsv(header: false, skip: 1, sep: '\t' )
                                 .map { row -> [
                                         row.first(),           // SAMPLE
                                         row.last().toInteger() // ALL_THRESHOLDS_MET
                                         ]
                                     }
-                                .filter { it[1] == 1} // Filter out samples which meet all the thresholds
                                 .map { [ it[0] ] }
-                                .dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
+                                //.dump(tag:'MERGE_WF: all_samples_ch', pretty: true)
 
-        STRUCTURAL_VARIANTS_ANALYSIS_WF ( validated_reads_ch, approved_samples_ch )
+        STRUCTURAL_VARIANTS_ANALYSIS_WF ( validated_reads_ch, all_samples_ch )
 
-	MERGE_WF( CALL_WF.out.gvcf_ch,
-                  CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch, 
-                  approved_samples_ch
-	)
 
-        REPORTS_WF(QUALITY_CHECK_WF.out.reports_fastqc_ch,
-                   MINOR_VARIANTS_ANALYSIS_WF.out.minor_variants_results_ch,
-                   MERGE_WF.out.major_variants_results_ch,
-		   STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch)
+        if (!params.skip_merge_analysis) {
 
+            approved_samples_ch = UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch
+                                    .splitCsv(header: false, skip: 1, sep: '\t' )
+                                    .map { row -> [
+                                            row.first(),           // SAMPLE
+                                            row.last().toInteger() // ALL_THRESHOLDS_MET
+                                            ]
+                                        }
+                                    .filter { it[1] == 1} // Filter out samples which meet all the thresholds
+                                    .map { [ it[0] ] }
+                                    //.dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
+
+
+            MERGE_WF( CALL_WF.out.gvcf_ch,
+                      CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch, 
+                      approved_samples_ch )
+
+
+            REPORTS_WF( QUALITY_CHECK_WF.out.reports_fastqc_ch,
+                        UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch,
+                        MERGE_WF.out.major_variants_results_ch,
+                        MINOR_VARIANTS_ANALYSIS_WF.out.minor_variants_results_ch,
+                        STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch )
+
+        }
     }
-
 }
 

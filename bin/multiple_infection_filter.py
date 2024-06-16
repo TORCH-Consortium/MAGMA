@@ -3,6 +3,7 @@
 import os
 import json
 import csv
+import glob
 
 import argparse
 
@@ -13,15 +14,16 @@ if __name__ == '__main__':
 
     args = vars(parser.parse_args())
     samples = []
-    for file_name in os.listdir(args['indir']):
-        with open(os.path.join(args['indir'], file_name)) as json_file:
+    json_files = glob.glob(args['indir'] + "/" + "*.json")
+    for file_name in json_files:
+        with open(file_name) as json_file:
             samples.append(json.load(json_file))
     accepted = [['SAMPLE', 'LINEAGES', 'FREQUENCIES', 'RELABUNDANCE_THRESHOLD_MET']]
     rejected = [['SAMPLE', 'LINEAGES', 'FREQUENCIES', 'RELABUNDANCE_THRESHOLD_MET']]
     for sample in samples:
-        sublins = [i for i in sample['lineage'] if i['lin'] in sample['sublin'].split(';')]
-        lins = [i['lin'] for i in sublins]
-        fracs = [i['frac'] for i in sublins]
+        sublins = [i for i in sample['lineage'] if i['lineage'] in sample['sub_lineage'].split(';')]
+        lins = [i['lineage'] for i in sublins]
+        fracs = [i['fraction'] for i in sublins]
         if not lins:
             rejected.append([sample['id'], 'None', 'None', 0])
         elif max(fracs) < args['relative_abundance_threshold']:

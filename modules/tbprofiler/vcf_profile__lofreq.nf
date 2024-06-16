@@ -15,10 +15,16 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
         def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
 
         """
+
+        bcftools view ${mergedLofreqVcf} | sed 's/NC-000962-3-H37Rv/Chromosome/g' > intermediate.vcf
+         
+        cat  intermediate.vcf | bcftools view -Oz -o intermediate.vcf.gz
+
         ${params.tbprofiler_path} profile \\
             ${optionalDb} \\
             --threads ${task.cpus}\\
-            --vcf ${mergedLofreqVcf}
+            --vcf intermediate.vcf.gz \\
+            ${params.arguments}
         """
 
     stub:
