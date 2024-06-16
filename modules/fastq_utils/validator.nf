@@ -2,6 +2,11 @@ process FASTQ_VALIDATOR {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
+    stageInMode 'copy'
+    maxRetries 3
+    errorStrategy { task.attempt < 3 ? 'retry' : 'ignore' }
+
+
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
         val ready
@@ -24,12 +29,15 @@ process FASTQ_VALIDATOR {
         if [ "$(echo "$TEMP")" == "OK" ]; then
             VALIDATED=1
             STATUS="passed"
+            echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
+            exit 0
         else
             VALIDATED=0
             STATUS="failed"
+            echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
+            exit 1
         fi
 
-        echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
 
         '''
 

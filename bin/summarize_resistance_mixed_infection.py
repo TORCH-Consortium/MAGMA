@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import glob
 import json
 import os
 import re
@@ -108,27 +108,33 @@ if __name__ == '__main__':
     parser.add_argument('summary_output_dir', metavar='summary_output_dir', type=str, help='The directory where the resulting CSV files should be placed')
     args = vars(parser.parse_args())
 
-    summary_dir = args['summary_output_dir']
-    if not os.path.exists(summary_dir):
-        os.makedirs(summary_dir)
+    dir_summary = args['summary_output_dir']
+    if not os.path.exists(dir_summary):
+        os.makedirs(dir_summary)
+
+    dir_summary_json = args['summary_output_dir'] + "/json_format"
+    if not os.path.exists(dir_summary_json):
+        os.makedirs(dir_summary_json)
 
     samples = {}
-    for file_name in os.listdir(os.path.join(args['minor_res_var_dir'], 'results')):
-        if file_name == '.DS_Store':
-            continue
-        keys = '.'.join(file_name.split('.')[:-2])
+
+    dir_minor_vars = args['minor_res_var_dir'] + "/" + 'results'
+    json_minor_vars = glob.glob(dir_minor_vars + "/" + "*.json")
+    for file_name in json_minor_vars:
+        keys = '.'.join(file_name.split('.')[:-2]).split('/')[-1]
         samples[keys] = {}
-        with open(os.path.join(args['minor_res_var_dir'], 'results', file_name)) as json_file:
+        with open(file_name) as json_file:
             samples[keys]['lofreq'] = json.load(json_file)
 
-    if os.path.exists(os.path.join(args['struc_res_var_dir'], 'results')):
-        for file_name in os.listdir(os.path.join(args['struc_res_var_dir'], 'results')):
-            if file_name == '.DS_Store':
-                continue
-            keys = '.'.join(file_name.split('.')[:-2])
+
+    dir_struc_vars = args['struc_res_var_dir'] + "/" + 'results'
+    if os.path.exists(dir_struc_vars):
+        json_struc_vars = glob.glob(dir_struc_vars + "/" + "*.json")
+        for file_name in json_struc_vars:
+            keys = '.'.join(file_name.split('.')[:-2]).split('/')[-1]
             if keys not in samples:
                 continue
-            with open(os.path.join(args['struc_res_var_dir'], 'results', file_name)) as json_file:
+            with open(file_name) as json_file:
                 samples[keys]['delly'] = json.load(json_file)
 
 #===============
@@ -174,8 +180,13 @@ if __name__ == '__main__':
 
         pt_df = pt_df[['Drug', 'Conclusion', 'Variant', 'Resistance interpretation', 'Type', 'Frequency', 'Method', 'Literature', 'Source notation']]
 
+        # Write a json output
+        json_data = pt_df.to_json()
+        with open(os.path.join(dir_summary_json, '{}.json'.format(patient)), 'w') as f:
+            f.write(json_data)
+
         # Write the sheet to excel with formatting
-        with pd.ExcelWriter(os.path.join(summary_dir, '{}.xlsx'.format(patient)), engine='xlsxwriter') as writer:
+        with pd.ExcelWriter(os.path.join(dir_summary, '{}.xlsx'.format(patient)), engine='xlsxwriter') as writer:
             pt_df.set_index(['Drug', 'Conclusion', 'Variant']).to_excel(writer, sheet_name='resistance_variants')  # Updated sheet name
 
             format_sens = writer.book.add_format({'bold': False, 'font_color': 'green'})
