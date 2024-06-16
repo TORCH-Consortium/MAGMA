@@ -112,17 +112,19 @@ if __name__ == '__main__':
     if not os.path.exists(dir_summary):
         os.makedirs(dir_summary)
 
+    dir_summary_json = args['summary_output_dir'] + "/json_format"
+    if not os.path.exists(dir_summary_json):
+        os.makedirs(dir_summary_json)
+
     samples = {}
 
     dir_minor_vars = args['minor_res_var_dir'] + "/" + 'results'
-    if os.path.exists(dir_minor_vars):
-        json_minor_vars = glob.glob(dir_minor_vars + "/" + "*.json")
-        for file_name in json_minor_vars:
-            keys = '.'.join(file_name.split('.')[:-2]).split('/')[-1]
-            if keys not in samples:
-                continue
-            with open(file_name) as json_file:
-                samples[keys]['lofreq'] = json.load(json_file)
+    json_minor_vars = glob.glob(dir_minor_vars + "/" + "*.json")
+    for file_name in json_minor_vars:
+        keys = '.'.join(file_name.split('.')[:-2]).split('/')[-1]
+        samples[keys] = {}
+        with open(file_name) as json_file:
+            samples[keys]['lofreq'] = json.load(json_file)
 
 
     dir_struc_vars = args['struc_res_var_dir'] + "/" + 'results'
@@ -178,8 +180,13 @@ if __name__ == '__main__':
 
         pt_df = pt_df[['Drug', 'Conclusion', 'Variant', 'Resistance interpretation', 'Type', 'Frequency', 'Method', 'Literature', 'Source notation']]
 
+        # Write a json output
+        json_data = pt_df.to_json()
+        with open(os.path.join(dir_summary_json, '{}.json'.format(patient)), 'w') as f:
+            f.write(json_data)
+
         # Write the sheet to excel with formatting
-        with pd.ExcelWriter(os.path.join(summary_dir, '{}.xlsx'.format(patient)), engine='xlsxwriter') as writer:
+        with pd.ExcelWriter(os.path.join(dir_summary, '{}.xlsx'.format(patient)), engine='xlsxwriter') as writer:
             pt_df.set_index(['Drug', 'Conclusion', 'Variant']).to_excel(writer, sheet_name='resistance_variants')  # Updated sheet name
 
             format_sens = writer.book.add_format({'bold': False, 'font_color': 'green'})

@@ -90,6 +90,11 @@ if __name__ == '__main__':
     if not os.path.exists(dir_summary):
         os.makedirs(dir_summary)
 
+    dir_summary_json = args['summary_output_dir'] + "/json_format"
+    if not os.path.exists(dir_summary_json):
+        os.makedirs(dir_summary_json)
+
+
     samples = {}
 
     dir_major_vars = args['major_res_var_dir'] + "/" + 'results'
@@ -163,6 +168,11 @@ if __name__ == '__main__':
             pt_df[column] = pt_df[column].apply(lambda c: map_resistance_class[-1] if c == unknown_positions else None if pd.isna(c) else map_resistance_class[c])
 
         pt_df = pt_df[['Drug', 'Conclusion', 'Variant', 'Resistance interpretation', 'Type', 'Frequency', 'Method', 'Literature', 'Source notation']]
+
+        # Write a json output
+        json_data = pt_df.to_json()
+        with open(os.path.join(dir_summary_json, '{}.json'.format(patient)), 'w') as f:
+            f.write(json_data)
 
         # Write the sheet to excel with formatting
         with pd.ExcelWriter(os.path.join(dir_summary, '{}.xlsx'.format(patient)), engine='xlsxwriter') as writer:
