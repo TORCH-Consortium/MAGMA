@@ -309,9 +309,9 @@ containing GVCF reference dataset for ~600 samples is provided for augmenting sm
 
 
 ```
-use_ref_exit_rif_gvcf = false
-ref_exit_rif_gvcf =  "/path/to/FILE.g.vcf.gz" 
-ref_exit_rif_gvcf_tbi =  "/path/to/FILE.g.vcf.gz.tbi"
+use_ref_gvcf = false
+ref_gvcf =  "/path/to/FILE.g.vcf.gz" 
+ref_gvcf_tbi =  "/path/to/FILE.g.vcf.gz.tbi"
 ```
 
 > :bulb: **Custom GVCF dataset**: <br>
