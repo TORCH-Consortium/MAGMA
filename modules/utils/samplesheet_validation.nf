@@ -7,7 +7,8 @@ process SAMPLESHEET_VALIDATION {
         path(samplesheet)
 
     output:
-        val true
+        val true, emit: status
+        path("samplesheet.valid.csv"), emit: validate_samplesheet
 
     script:
 
