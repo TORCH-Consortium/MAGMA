@@ -25,7 +25,7 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
 
         BCFTOOLS_MERGE__LOFREQ(vcfs_file, reformatted_lofreq_vcfs_tuple_ch)
 
-        def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
+        def resistanceDb =  []
 
         TBPROFILER_VCF_PROFILE__LOFREQ(BCFTOOLS_MERGE__LOFREQ.out, resistanceDb)
 
