@@ -6,20 +6,26 @@ process UTILS_REFORMAT_LOFREQ {
         tuple val(sampleName), path(lofreqVcf)
 
     output:
-        tuple val(sampleName), path("*LoFreq.Reformat.vcf")
+        tuple val(sampleName), path("*lofreq.reformat.corrected.vcf")
 
     script:
        
         """
         reformat_lofreq.py ${lofreqVcf} \\
             ${sampleName} \\
-            ${sampleName}.LoFreq.Reformat.vcf
+            ${sampleName}.lofreq.reformat.vcf
+
+        reduce_strand_bias.py \\
+            ${params.strand_bias_cutoff} \\
+            ${sampleName}.lofreq.reformat.vcf  \\
+            ${sampleName}.lofreq.reformat.corrected.vcf 
         """
 
     stub: 
 
         """
-        touch ${sampleName}.LoFreq.Reformat.vcf
+        touch ${sampleName}.lofreq.reformat.vcf
+        touch ${sampleName}.lofreq.reformat.corrected.vcf 
         """ 
 
 }

@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
+
 import argparse
 import vcf
-from scipy.stats import binom_test
+from scipy.stats import binom_test, binomtest
 
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-def filter_vcf_file(vcf_input, vcf_output, pval=0.5):
-
+def filter_vcf_file(vcf_input, vcf_output, pval):
     # Open the VCF file for reading
 
     vcf_reader = vcf.Reader(open(vcf_input, 'r'))
@@ -33,7 +35,6 @@ def filter_vcf_file(vcf_input, vcf_output, pval=0.5):
             if p_value >= pval:
                 filtered_records.append(record)
 
-
     # Write the filtered records to a new VCF file
     vcf_writer = vcf.Writer(open(vcf_output, 'w'), vcf_reader)
 
@@ -46,11 +47,13 @@ def filter_vcf_file(vcf_input, vcf_output, pval=0.5):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Reduce strand bias in VCF file')
+    parser.add_argument('pval', metavar='pval', type=str, help='The pval to be used for filtering')
     parser.add_argument('input', metavar='input_vcf', type=str, help='The initial VCF file')
     parser.add_argument('output', metavar='output_vcf', type=str, help='The output VCF filed')
     args = vars(parser.parse_args())
 
+    input_pval = float(args['pval'])
     input_vcf_file = args['input']
     output_vcf_file = args['output']
 
-    filter_vcf_file(input_vcf_file, output_vcf_file)
+    filter_vcf_file(input_vcf_file, output_vcf_file, input_pval)

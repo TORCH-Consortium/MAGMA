@@ -115,7 +115,7 @@ workflow CALL_WF {
 
         BGZIP__LOFREQ(UTILS_REFORMAT_LOFREQ.out)
 
-        GATK_INDEX_FEATURE_FILE__LOFREQ(BGZIP__LOFREQ.out, 'LoFreq.Reformat')
+        GATK_INDEX_FEATURE_FILE__LOFREQ(BGZIP__LOFREQ.out, 'lofreq.reformat.corrected')
 
         //----------------------------------------------------------------------------------
         // STATS
