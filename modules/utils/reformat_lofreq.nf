@@ -1,6 +1,7 @@
 process UTILS_REFORMAT_LOFREQ {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+    container "ghcr.io/torch-consortium/magma/misc:2.0.0-alpha"
 
     input:
         tuple val(sampleName), path(lofreqVcf)
