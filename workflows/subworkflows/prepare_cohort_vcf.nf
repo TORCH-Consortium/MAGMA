@@ -21,13 +21,13 @@ workflow PREPARE_COHORT_VCF {
 
 
         if (params.use_ref_gvcf) {
-            refExitRifGvcf = file(params.ref_exit_rif_gvcf, checkIfExists: true)
+            refExitRifGvcf = file(params.ref_gvcf, checkIfExists: true)
         } else {
             refExitRifGvcf = []
         }
 
         if (params.use_ref_gvcf) {
-            refExitRifGvcfTbi = file(params.ref_exit_rif_gvcf_tbi, checkIfExists: true)
+            refExitRifGvcfTbi = file(params.ref_gvcf_tbi, checkIfExists: true)
         } else {
             refExitRifGvcfTbi = []
         }
