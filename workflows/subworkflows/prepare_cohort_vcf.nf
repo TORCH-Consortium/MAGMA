@@ -27,7 +27,7 @@ workflow PREPARE_COHORT_VCF {
         }
 
         if (params.use_ref_gvcf) {
-            refExitRifGvcfTbi = file(params.ref_gvcf, checkIfExists: true)
+            refExitRifGvcfTbi = file(params.ref_gvcf_tbi, checkIfExists: true)
         } else {
             refExitRifGvcfTbi = []
         }
