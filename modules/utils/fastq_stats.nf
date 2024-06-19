@@ -9,17 +9,16 @@ process UTILS_FASTQ_STATS {
 //    output:
 //        tuple val(sampleName), path("*.check.*tsv"), emit: check_result
 
-    shell:
+    script:
        
-        '''
+        """
         seqkit stats -a -T  *fastq*  > ${sampleName}.seqkit.stats.csv
 
         md5sum *fastq* > ${sampleName}.md5sum.stats.csv
 
         du -sh *fastq* > ${sampleName}.du.stats.csv
 
-
-        '''
+        """
 
     stub: 
 
