@@ -1,4 +1,5 @@
 include { FASTQ_VALIDATOR } from '../modules/fastq_utils/validator.nf' addParams ( params.FASTQ_VALIDATOR  )
+include { UTILS_FASTQ_STATS } from '../modules/utils/fastq_stats.nf' addParams (params.FASTQ_STATS)
 include { UTILS_FASTQ_COHORT_VALIDATION } from '../modules/utils/fastq_cohort_validation.nf' addParams ( params.UTILS_FASTQ_COHORT_VALIDATION  )
 
 workflow VALIDATE_FASTQS_WF {
