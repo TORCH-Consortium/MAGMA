@@ -19,7 +19,7 @@ process UTILS_FASTQ_STATS {
         cat ${sampleName}.md5sum_stats.csv | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > ${sampleName}.md5sum_stats.final.csv
 
         du -shL *fastq* > ${sampleName}.du_stats.csv 
-        cat ${sampleName}.du_stats.csv | csvtk tab2csv | csvtk add-header -n size,file > du -shL *fastq* > ${sampleName}.du_stats.final.csv
+        cat ${sampleName}.du_stats.csv | csvtk tab2csv | csvtk add-header -n size,file > ${sampleName}.du_stats.final.csv
 
         """
 
