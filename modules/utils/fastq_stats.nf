@@ -13,7 +13,7 @@ process UTILS_FASTQ_STATS {
        
         """
         seqkit stats -a -T  *fastq*  > ${sampleName}.seqkit_stats.csv
-        cat ${sampleName}.seqkit_stats.csv | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > ${sampleName}.seqkit_stats.final.csv
+        cat ${sampleName}.seqkit_stats.csv | csvtk space2tab | csvtk tab2csv > ${sampleName}.seqkit_stats.final.csv
 
         md5sum *fastq* > ${sampleName}.md5sum_stats.csv 
         cat ${sampleName}.md5sum_stats.csv | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > ${sampleName}.md5sum_stats.final.csv
