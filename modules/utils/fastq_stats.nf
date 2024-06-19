@@ -6,8 +6,8 @@ process UTILS_FASTQ_STATS {
     input:
         tuple val(sampleName), path(sampleReads)
 
-//    output:
-//        tuple val(sampleName), path("*.check.*tsv"), emit: check_result
+    output:
+        path("*fastq_stats.csv")
 
     script:
        
@@ -27,7 +27,7 @@ process UTILS_FASTQ_STATS {
             ${sampleName}.seqkit_stats.final.csv \\
             ${sampleName}.md5sum_stats.csv \\
             ${sampleName}.du_stats.csv \\
-        > ${sampleName}.fastq_stats.csv \\
+        > ${sampleName}.fastq_stats.csv
 
 
         """
