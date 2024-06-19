@@ -21,6 +21,15 @@ process UTILS_FASTQ_STATS {
         du -shL *fastq* > ${sampleName}.du.txt 
         cat ${sampleName}.du.txt | csvtk tab2csv | csvtk add-header -n size,file > ${sampleName}.du_stats.csv
 
+
+
+        csvtk join -f file \\
+            ${sampleName}.seqkit_stats.final.csv \\
+            ${sampleName}.md5sum_stats.csv \\
+            ${sampleName}.du_stats.csv \\
+        > ${sampleName}.fastq_stats.csv \\
+
+
         """
 
     stub: 
