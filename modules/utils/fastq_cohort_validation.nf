@@ -2,8 +2,6 @@ process UTILS_FASTQ_COHORT_VALIDATION {
     tag "joint_name: ${params.vcf_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
-//FIXME: Adapt this process to also summarize the FASTQ_STATS results 
-
     input:
         path("*")
 

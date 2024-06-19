@@ -21,16 +21,11 @@ if __name__ == '__main__':
             if '## METRICS CLASS' in line:
                 rows = [f.readline().strip(), f.readline().strip()]
                 wgsmetrics = pd.DataFrame([rows[1].split('\t')], columns=rows[0].split('\t'))
+
     with open(args['ntmfraction_file']) as f:
         ntm_fraction = float(f.read().strip())
-    with open(args['samtoolsstats_file']) as f:
-        for line in f:
-            if 'insert size average' in line:
-                ins_size = float(line.strip().split('\t')[2])
-            if 'raw total sequences' in line:
-                total_seqs = int(line.strip().split('\t')[2])
-            if 'average quality' in line:
-                avg_qual = float(line.strip().split('\t')[2])
+
+
     with open(args['flagstat_file']) as f:
         for line in f:
             m = re_mapped_p.match(line)
@@ -42,20 +37,6 @@ if __name__ == '__main__':
     else:
         coverage_threshold_met = 0
 
-    if float(wgsmetrics.loc[0, 'PCT_1X']) >= args['breadth_of_coverage_cutoff']:
-        breadth_of_coverage_threshold_met = 1
-    else:
-        breadth_of_coverage_threshold_met = 0
-
-    if ntm_fraction <= args['ntm_fraction_cutoff']:
-        ntm_fraction_threshold_met = 1
-    else:
-        ntm_fraction_threshold_met = 0
-
-    if coverage_threshold_met and breadth_of_coverage_threshold_met and ntm_fraction_threshold_met:
-        all_thresholds_met = 1
-    else:
-        all_thresholds_met = 0
 
     with open('{}.fastq_stats.tsv'.format(args['sample_name']), 'w') as f:
         f.write('\t'.join([str(i) for i in [args['sample_name'], ins_size, mapped_p, total_seqs, avg_qual] + list(wgsmetrics.loc[0, ['MEAN_COVERAGE', 'SD_COVERAGE', 'MEDIAN_COVERAGE', 'MAD_COVERAGE', 'PCT_EXC_ADAPTER', 'PCT_EXC_MAPQ', 'PCT_EXC_DUPE', 'PCT_EXC_UNPAIRED', 'PCT_EXC_BASEQ', 'PCT_EXC_OVERLAP', 'PCT_EXC_CAPPED', 'PCT_EXC_TOTAL', 'PCT_1X', 'PCT_5X', 'PCT_10X', 'PCT_30X', 'PCT_50X', 'PCT_100X']]) + [ntm_fraction, ntm_fraction_threshold_met, coverage_threshold_met, breadth_of_coverage_threshold_met, all_thresholds_met]]))
