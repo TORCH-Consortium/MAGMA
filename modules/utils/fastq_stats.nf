@@ -13,7 +13,7 @@ process UTILS_FASTQ_STATS {
     shell:
        
         '''
-        seqkit stats -a -T  !{sampleReads} | csvtk pretty -t  > ${sampleName}.seqkit.stats.csv
+        seqkit stats -a -T  !{sampleReads}  > ${sampleName}.seqkit.stats.csv
 
         md5sum !{} >> 
 
