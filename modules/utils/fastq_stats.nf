@@ -1,23 +1,23 @@
 process UTILS_FASTQ_STATS {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+    container "ghcr.io/torch-consortium/magma/misc:2.0.0-alpha"
 
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
-        val ready
 
-    output:
-        tuple val(sampleName), path("*.check.*tsv") 
-        path("*.check.*tsv"), emit: check_result
+//    output:
+//        tuple val(sampleName), path("*.check.*tsv"), emit: check_result
 
     shell:
        
         '''
-        seqkit stats -a -T  !{sampleReads}  > ${sampleName}.seqkit.stats.csv
+        seqkit stats -a -T  *fastq*  > ${sampleName}.seqkit.stats.csv
 
-        md5sum !{} >> 
+        md5sum *fastq* > ${sampleName}.md5sum.stats.csv
 
-        du -h !{}
+        du -sh *fastq* > ${sampleName}.du.stats.csv
+
 
         '''
 

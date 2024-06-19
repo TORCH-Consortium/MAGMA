@@ -13,7 +13,8 @@ process FASTQ_VALIDATOR {
 
     output:
         tuple val(sampleName), path("*.check.*tsv") 
-        path("*.check.*tsv"), emit: check_result
+        path("*.check.*tsv")                          , emit: check_result
+        tuple val(sampleName), path(sampleReads)      , emit: passed_reads
 
     shell:
        
