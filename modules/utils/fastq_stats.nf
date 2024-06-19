@@ -4,7 +4,7 @@ process UTILS_FASTQ_STATS {
     container "ghcr.io/torch-consortium/magma/misc:2.0.0-alpha"
 
     input:
-        tuple val(sampleName), val(bamRgString), path(sampleReads)
+        tuple val(sampleName), path(sampleReads)
 
 //    output:
 //        tuple val(sampleName), path("*.check.*tsv"), emit: check_result
