@@ -25,15 +25,11 @@ process FASTQ_VALIDATOR {
         cp !{sampleName}.command.log .command.log
 
 
-        seqkit stats -a -T  !{sampleReads}  > !{sampleName}.seqkit.txt
-        cat !{sampleName}.seqkit.txt | csvtk space2tab | csvtk tab2csv > !{sampleName}.seqkit_stats.csv
+        seqkit stats -a -T  !{sampleReads}  >  csvtk space2tab | csvtk tab2csv > !{sampleName}.seqkit_stats.csv
 
-        md5sum !{sampleReads} > !{sampleName}.md5sum.txt
-        cat !{sampleName}.md5sum.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleName}.md5sum_stats.csv
+        md5sum !{sampleReads} > csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleName}.md5sum_stats.csv
 
-        du -shL !{sampleReads} > !{sampleName}.du.txt
-        cat !{sampleName}.du.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleName}.du_stats.csv
-
+        du -shL !{sampleReads} > csvtk tab2csv | csvtk add-header -n size,file > !{sampleName}.du_stats.csv
 
 
         csvtk join -f file \\
@@ -42,7 +38,10 @@ process FASTQ_VALIDATOR {
         !{sampleName}.du_stats.csv \\
         > !{sampleName}.fastq_stats.csv
 
-        rm !{sampleName}.seqkit_stats.csv !{sampleName}.md5sum_stats.csv !{sampleName}.du_stats.csv
+
+        rm !{sampleName}.seqkit_stats.csv
+        rm !{sampleName}.md5sum_stats.csv
+        rm !{sampleName}.du_stats.csv
 
 
         TEMP=$(tail -n 1 !{sampleName}.command.log)
