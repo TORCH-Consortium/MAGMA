@@ -40,7 +40,7 @@ process FASTQ_VALIDATOR {
         rm *_out.txt *_stats.csv
 
 
-        !{params.fastq_validator_path} !{sampleRead.simpleName} \\
+        !{params.fastq_validator_path} !{sampleRead} \\
         2>!{sampleRead.simpleName}.command.log || true
 
         cp !{sampleRead.simpleName}.command.log .command.log
