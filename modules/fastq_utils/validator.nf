@@ -40,6 +40,7 @@ process FASTQ_VALIDATOR {
         rm *_out.txt *_stats.csv
 
 
+
         !{params.fastq_validator_path} !{sampleRead} \\
         2>!{sampleRead.simpleName}.command.log || true
 
@@ -57,6 +58,10 @@ process FASTQ_VALIDATOR {
             echo -e "!{sampleRead},!{magmaName},${STATUS}" >> !{sampleRead.simpleName}.check.${STATUS}.csv
 
             csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.csv >  !{sampleRead.simpleName}.fastq_report.csv
+
+
+
+            rm !{sampleRead.simpleName}.fastq_statistics.csv
             exit 0
 
         else
@@ -67,6 +72,8 @@ process FASTQ_VALIDATOR {
 
             csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.csv  > !{sampleRead.simpleName}.fastq_report.csv
 
+
+            rm !{sampleRead.simpleName}.fastq_statistics.csv
             exit 1
         fi
 
