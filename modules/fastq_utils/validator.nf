@@ -59,7 +59,7 @@ process FASTQ_VALIDATOR {
         else
             VALIDATED=0
             STATUS="failed"
-            echo -e "!{sampleRead.simpleName}\t${VALIDATED}" > !{sampleRead..simpleName}.check.${STATUS}.tsv
+            echo -e "!{sampleRead.simpleName}\t${VALIDATED}" > !{sampleRead.simpleName}.check.${STATUS}.tsv
             exit 1
         fi
 
