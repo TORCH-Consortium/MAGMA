@@ -19,21 +19,21 @@ process FASTQ_VALIDATOR {
     shell:
 
         '''
-        seqkit stats -a -T  !{sampleRead}  > !{sampleRead.name}.seqkit_out.txt
+        seqkit stats -a -T  !{sampleRead}  > !{sampleRead.simpleName}.seqkit_out.txt
         cat *seqkit_out.txt | csvtk space2tab | csvtk tab2csv > !{sampleName}.seqkit_stats.csv
 
-        md5sum !{sampleRead} > !{sampleRead.name}.md5sum_out.txt
-        cat *md5sum_out.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleRead.name}.md5sum_stats.csv
+        md5sum !{sampleRead} > !{sampleRead.simpleName}.md5sum_out.txt
+        cat *md5sum_out.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleRead.simpleName}.md5sum_stats.csv
 
-        du -shL !{sampleRead} > !{sampleRead.name}.du_out.txt
-        cat *du_out.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleRead.name}.du_stats.csv
+        du -shL !{sampleRead} > !{sampleRead.simpleName}.du_out.txt
+        cat *du_out.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleRead.simpleName}.du_stats.csv
 
 
 
         csvtk join -f file \\
-        !{sampleRead.name}.seqkit_stats.csv \\
-        !{sampleRead.name}.md5sum_stats.csv \\
-        !{sampleRead.name.name}.du_stats.csv \\
+        !{sampleRead.simpleName}.seqkit_stats.csv \\
+        !{sampleRead.simpleName}.md5sum_stats.csv \\
+        !{sampleRead.simpleName.simpleName}.du_stats.csv \\
         > !{sampleName}.fastq_statistics.csv
 
 
