@@ -26,7 +26,7 @@ process FASTQ_VALIDATOR {
         cat !{sampleName}.md5sum_out.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleName}.md5sum_stats.csv
 
         du -shL !{sampleReads} > !{sampleName}.du_out.txt
-        cat !{sampleName}.md5sum_out.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleName}.du_stats.csv
+        cat !{sampleName}.du_out.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleName}.du_stats.csv
 
 
 
