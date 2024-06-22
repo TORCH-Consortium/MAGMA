@@ -8,8 +8,8 @@ from sys import exit
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run the MAGMA pipeline samplesheet validation')
-    parser.add_argument('input', metavar='input_file', type=str, help='The input sample file')
-    parser.add_argument('output', metavar='output_file', type=str, help='The validate output sample file')
+    parser.add_argument('input_file', metavar='input_file', type=str, help='The input sample file')
+    parser.add_argument('output_file', metavar='output_file', type=str, help='The validate output sample file')
     args = vars(parser.parse_args())
 
     name_re = re.compile('^[a-zA-Z0-9\-_]*$')
