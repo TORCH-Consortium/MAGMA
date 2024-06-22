@@ -15,7 +15,7 @@ workflow VALIDATE_FASTQS_WF {
 
 
 
-        fastqs_ch = Channel.fromPath(samplesheet)
+        fastqs_ch = samplesheet
                     .splitCsv(header: false, skip: 1)
                     .map { row -> {
                                 study           = row[0]
