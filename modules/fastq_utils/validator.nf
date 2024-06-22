@@ -54,18 +54,19 @@ process FASTQ_VALIDATOR {
             VALIDATED=1
             STATUS="passed"
             echo -e "file,magma_name,fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.tsv
-            echo -e "file,magma_name,!{magmaName},fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.tsv
+            echo -e "file,magma_name,!{magmaName},fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.csv
 
-            csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.tsv
+            csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.csv >  !{sampleRead.simpleName}.fastq_report.csv
             exit 0
 
         else
             VALIDATED=0
             STATUS="failed"
             echo -e "file,magma_name,fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.tsv
-            echo -e "file,magma_name,!{magmaName},fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.tsv
+            echo -e "file,magma_name,!{magmaName},fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.csv
 
-            csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.tsv
+            csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.csv  > !{sampleRead.simpleName}.fastq_report.csv
+
             exit 1
         fi
 
