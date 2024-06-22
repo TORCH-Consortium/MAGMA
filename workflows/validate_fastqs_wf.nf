@@ -41,7 +41,7 @@ workflow VALIDATE_FASTQS_WF {
 
                     }
                 }
-            }.transpose().view()
+            }.transpose()
 
 
         FASTQ_VALIDATOR( fastqs_ch, ready )
