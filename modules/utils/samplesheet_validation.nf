@@ -13,6 +13,6 @@ process SAMPLESHEET_VALIDATION {
     script:
 
         """
-        samplesheet_validation.py --input ${samplesheet} --output  samplesheet.format_valid.csv
+        samplesheet_validation.py ${samplesheet} samplesheet.format_valid.csv
         """
 }
