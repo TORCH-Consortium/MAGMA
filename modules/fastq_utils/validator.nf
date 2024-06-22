@@ -63,7 +63,7 @@ process FASTQ_VALIDATOR {
             VALIDATED=0
             STATUS="failed"
             echo -e "file,magma_name,fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.tsv
-            echo -e "!{sampleRead.simpleName},!{magmaName},${VALIDATED}" > !{sampleRead.simpleName}.check.${STATUS}.csv
+            echo -e "file,magma_name,!{magmaName},fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.tsv
 
             csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.tsv
             exit 1
