@@ -25,11 +25,8 @@ process FASTQ_VALIDATOR {
         cp !{sampleName}.command.log .command.log
 
 
-        TEMP=$(tail -n 1 !{sampleName}.command.log)
-
-
         seqkit stats -a -T  !{sampleReads}  > !{sampleName}.seqkit.txt
-        cat !{sampleName}.seqkit.txt | csvtk space2tab | csvtk tab2csv > !{sampleName}.seqkit_stats.final.csv
+        cat !{sampleName}.seqkit.txt | csvtk space2tab | csvtk tab2csv > !{sampleName}.seqkit_stats.csv
 
         md5sum !{sampleReads} > !{sampleName}.md5sum.txt
         cat !{sampleName}.md5sum.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleName}.md5sum_stats.csv
@@ -40,12 +37,15 @@ process FASTQ_VALIDATOR {
 
 
         csvtk join -f file \\
-        !{sampleName}.seqkit_stats.final.csv \\
+        !{sampleName}.seqkit_stats.csv \\
         !{sampleName}.md5sum_stats.csv \\
         !{sampleName}.du_stats.csv \\
         > !{sampleName}.fastq_stats.csv
 
+        rm !{sampleName}.seqkit_stats.csv !{sampleName}.md5sum_stats.csv !{sampleName}.du_stats.csv
 
+
+        TEMP=$(tail -n 1 !{sampleName}.command.log)
 
 
         if [ "$(echo "$TEMP")" == "OK" ]; then
