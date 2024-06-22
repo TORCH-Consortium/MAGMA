@@ -48,7 +48,7 @@ workflow VALIDATE_FASTQS_WF {
 
         FASTQ_VALIDATOR( reads_ch, ready )
 
-        UTILS_FASTQ_STATS( FASTQ_VALIDATOR.out.reads )
+        UTILS_FASTQ_STATS( reads_ch, ready )
 
         UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.check_result.collect(), UTILS_FASTQ_STATS.out.collect() )
 
