@@ -8,7 +8,7 @@ process FASTQ_VALIDATOR {
 
 
     input:
-        tuple val(sampleName), val(bamRgString), path(sampleReads)
+        tuple val(sampleName), path(sampleReads)
         val ready
 
     output:
@@ -28,10 +28,29 @@ process FASTQ_VALIDATOR {
         TEMP=$(tail -n 1 !{sampleName}.command.log)
 
         if [ "$(echo "$TEMP")" == "OK" ]; then
-            VALIDATED=1
-            STATUS="passed"
-            echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
+                VALIDATED=1
+                STATUS="passed"
+                echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
+
+                seqkit stats -a -T  *fastq*  > !{sampleName}.seqkit.txt
+                cat !{sampleName}.seqkit.txt | csvtk space2tab | csvtk tab2csv > !{sampleName}.seqkit_stats.final.csv
+
+                md5sum *fastq* > !{sampleName}.md5sum.txt
+                cat !{sampleName}.md5sum.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleName}.md5sum_stats.csv
+
+                du -shL *fastq* > !{sampleName}.du.txt
+                cat !{sampleName}.du.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleName}.du_stats.csv
+
+
+
+                csvtk join -f file \\
+                !{sampleName}.seqkit_stats.final.csv \\
+                !{sampleName}.md5sum_stats.csv \\
+                !{sampleName}.du_stats.csv \\
+                > !{sampleName}.fastq_stats.csv
+
             exit 0
+
         else
             VALIDATED=0
             STATUS="failed"
