@@ -18,7 +18,7 @@ if __name__ == '__main__':
     vcf_name = args['joint_vcf_name']
 
     # Check for files matching *check.passed*
-    passed_files = glob.glob("*check.passed*")
+    passed_files = glob.glob("fastq_validation/*check.passed*")
     if passed_files:
         with open(f"{vcf_name}.fastqs.passed.tsv", "w") as outfile:
             for fname in passed_files:
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     open(f"{vcf_name}.fastqs.failed.tsv", 'a').close()
 
     # Check for files matching *check.failed*
-    failed_files = glob.glob("*check.failed*")
+    failed_files = glob.glob("fastq_validation/*check.failed*")
     if failed_files:
         with open(f"{vcf_name}.fastqs.failed.tsv", "w") as outfile:
             for fname in failed_files:

@@ -10,15 +10,15 @@ process UTILS_FASTQ_STATS {
         path("*fastq_stats.csv")
 
     script:
-       
-        """
-        seqkit stats -a -T  *fastq*  > ${sampleName}.seqkit.txt
+
+    """
+    seqkit stats -a -T  *fastq*  > ${sampleName}.seqkit.txt
         cat ${sampleName}.seqkit.txt | csvtk space2tab | csvtk tab2csv > ${sampleName}.seqkit_stats.final.csv
 
-        md5sum *fastq* > ${sampleName}.md5sum.txt 
+        md5sum *fastq* > ${sampleName}.md5sum.txt
         cat ${sampleName}.md5sum.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > ${sampleName}.md5sum_stats.csv
 
-        du -shL *fastq* > ${sampleName}.du.txt 
+        du -shL *fastq* > ${sampleName}.du.txt
         cat ${sampleName}.du.txt | csvtk tab2csv | csvtk add-header -n size,file > ${sampleName}.du_stats.csv
 
 
@@ -32,10 +32,10 @@ process UTILS_FASTQ_STATS {
 
         """
 
-    stub: 
+    stub:
 
         """
-        touch ${sampleName}.check.tsv 
-        """ 
+        touch ${sampleName}.check.tsv
+        """
 
 }

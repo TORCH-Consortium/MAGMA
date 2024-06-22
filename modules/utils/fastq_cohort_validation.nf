@@ -3,7 +3,8 @@ process UTILS_FASTQ_COHORT_VALIDATION {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        path("*")
+        path("fastq_validation/*")
+        path("fastq_stats/*")
 
     output:
         path("*.fastqs.passed.tsv"), emit: passed_fastqs
