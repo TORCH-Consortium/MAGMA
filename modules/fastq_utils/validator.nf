@@ -19,12 +19,6 @@ process FASTQ_VALIDATOR {
     shell:
 
         '''
-        !{params.fastq_validator_path} !{sampleReads} \\
-            2>!{sampleName}.command.log || true
-
-        cp !{sampleName}.command.log .command.log
-
-
         seqkit stats -a -T  !{sampleReads}  >  csvtk space2tab | csvtk tab2csv > !{sampleName}.seqkit_stats.csv
 
         md5sum !{sampleReads} > csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleName}.md5sum_stats.csv
@@ -42,6 +36,13 @@ process FASTQ_VALIDATOR {
         rm !{sampleName}.seqkit_stats.csv
         rm !{sampleName}.md5sum_stats.csv
         rm !{sampleName}.du_stats.csv
+
+
+        !{params.fastq_validator_path} !{sampleReads} \\
+        2>!{sampleName}.command.log || true
+
+        cp !{sampleName}.command.log .command.log
+
 
 
         TEMP=$(tail -n 1 !{sampleName}.command.log)
