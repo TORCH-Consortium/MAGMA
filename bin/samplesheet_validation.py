@@ -12,7 +12,7 @@ parser.add_argument('output', metavar='output_file', type=str, help='The validat
 args = vars(parser.parse_args())
 
 input_file = args['input_file']
-output_file = args['input_file']
+output_file = args['output_file']
 
 name_re = re.compile('^[a-zA-Z0-9\-\_]*$')
 ss = pd.read_csv(input_file)
