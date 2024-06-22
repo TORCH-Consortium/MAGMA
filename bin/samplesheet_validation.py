@@ -11,11 +11,10 @@ parser.add_argument('input', metavar='input_file', type=str, help='The input sam
 parser.add_argument('output', metavar='output_file', type=str, help='The validate output sample file')
 args = vars(parser.parse_args())
 
-input_file = args['input_file']
-output_file = args['output_file']
 
 name_re = re.compile('^[a-zA-Z0-9\-\_]*$')
-ss = pd.read_csv(input_file)
+
+ss = pd.read_csv(args['input_file'])
 
 # Create another column by adding Sample and Attempt columns
 ss['MagmaSampleName'] = ss['Study'].astype(str) + \
@@ -41,7 +40,7 @@ for idx, row in ss.iterrows():
 
 
 if not fail:
-    ss.to_csv(output_file, index=False)
+    ss.to_csv(args['output_file'] , index=False)
     print('Samplesheet format validation checks passed')
     exit(0)
 else:
