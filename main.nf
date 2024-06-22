@@ -30,7 +30,7 @@ workflow {
 
         validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet , SAMPLESHEET_VALIDATION.out.status )
 
-        QUALITY_CHECK_WF( validated_reads_ch )
+        //QUALITY_CHECK_WF( validated_reads_ch )
 
         //TODO: Add modules for generating fastq stats and then capturing them in the MultiQC image
         //MULTIQC_FASTQS( QUALITY_CHECK_WF.out.reports_fastqc_ch )
@@ -83,7 +83,7 @@ workflow {
 
 
             MERGE_WF( CALL_WF.out.gvcf_ch,
-                      CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch, 
+                      CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch,
                       approved_samples_ch )
 
 
@@ -96,4 +96,3 @@ workflow {
         }
     }
 }
-
