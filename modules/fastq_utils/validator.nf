@@ -19,7 +19,7 @@ process FASTQ_VALIDATOR {
     shell:
 
         '''
-        seqkit stats -a -T  !{sampleRead}  > !{sampleRead}.seqkit_out.txt
+        seqkit stats -a -T  !{sampleRead}  > !{sampleRead.simpleName}.seqkit_out.txt
         cat *seqkit_out.txt | csvtk space2tab | csvtk tab2csv > !{sampleRead}.seqkit_stats.csv
 
         md5sum !{sampleRead} > !{sampleRead}.md5sum_out.txt
