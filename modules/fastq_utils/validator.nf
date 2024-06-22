@@ -12,8 +12,8 @@ process FASTQ_VALIDATOR {
         val ready
 
     output:
-        tuple val(magmaName), path("*.check.*tsv")
-        path("*.check.*tsv")                          , emit: check_result
+        tuple val(magmaName), path("*.check.*csv")
+        path("*.check.*csv")                          , emit: check_result
         tuple val(magmaName), path(sampleRead)        , emit: reads
 
     shell:
@@ -53,13 +53,19 @@ process FASTQ_VALIDATOR {
         if [ "$(echo "$TEMP")" == "OK" ]; then
             VALIDATED=1
             STATUS="passed"
-            echo -e "!{sampleRead.simpleName}\t${VALIDATED}" > !{sampleRead.simpleName}.check.${STATUS}.tsv
+            echo -e "file,magma_name,fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.tsv
+            echo -e "file,magma_name,!{magmaName},fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.tsv
+
+            csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.tsv
             exit 0
 
         else
             VALIDATED=0
             STATUS="failed"
-            echo -e "!{sampleRead.simpleName}\t${VALIDATED}" > !{sampleRead.simpleName}.check.${STATUS}.tsv
+            echo -e "file,magma_name,fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.tsv
+            echo -e "!{sampleRead.simpleName},!{magmaName},${VALIDATED}" > !{sampleRead.simpleName}.check.${STATUS}.csv
+
+            csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.tsv
             exit 1
         fi
 
@@ -69,7 +75,7 @@ process FASTQ_VALIDATOR {
     stub:
 
         """
-        touch ${sampleRead.simpleName}.check.tsv
+        touch ${sampleRead.simpleName}.check.csv
         """
 
 }
