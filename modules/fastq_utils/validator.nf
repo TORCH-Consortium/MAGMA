@@ -8,40 +8,39 @@ process FASTQ_VALIDATOR {
 
 
     input:
-        tuple val(sampleName), path(sampleReads)
+        tuple val(sampleName), path(sampleRead)
         val ready
 
     output:
         tuple val(sampleName), path("*.check.*tsv")
         path("*.check.*tsv")                          , emit: check_result
-        tuple val(sampleName), path(sampleReads)      , emit: reads
+        tuple val(sampleName), path(sampleRead)      , emit: reads
 
     shell:
 
         '''
-        seqkit stats -a -T  !{sampleReads}  > !{sampleName}.seqkit_out.txt
-        cat !{sampleName}.seqkit_out.txt | csvtk space2tab | csvtk tab2csv > !{sampleName}.seqkit_stats.csv
+        seqkit stats -a -T  !{sampleRead}  > !{sampleRead.baseName}.seqkit_out.txt
+        cat *seqkit_out.txt | csvtk space2tab | csvtk tab2csv > !{sampleName}.seqkit_stats.csv
 
-        md5sum !{sampleReads} > !{sampleName}.md5sum_out.txt
-        cat !{sampleName}.md5sum_out.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleName}.md5sum_stats.csv
+        md5sum !{sampleRead} > !{sampleRead.baseName}.md5sum_out.txt
+        cat *md5sum_out.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleRead.baseName}.md5sum_stats.csv
 
-        du -shL !{sampleReads} > !{sampleName}.du_out.txt
-        cat !{sampleName}.du_out.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleName}.du_stats.csv
-
+        du -shL !{sampleRead} > !{sampleRead.baseName}.du_out.txt
+        cat *du_out.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleRead.baseName}.du_stats.csv
 
 
 
         csvtk join -f file \\
-        !{sampleName}.seqkit_stats.csv \\
-        !{sampleName}.md5sum_stats.csv \\
-        !{sampleName}.du_stats.csv \\
+        !{sampleRead.baseName}.seqkit_stats.csv \\
+        !{sampleRead.baseName}.md5sum_stats.csv \\
+        !{sampleRead.baseName.baseName}.du_stats.csv \\
         > !{sampleName}.fastq_statistics.csv
 
 
         rm *_out.txt *_stats.csv
 
 
-        !{params.fastq_validator_path} !{sampleReads} \\
+        !{params.fastq_validator_path} !{sampleRead} \\
         2>!{sampleName}.command.log || true
 
         cp !{sampleName}.command.log .command.log
