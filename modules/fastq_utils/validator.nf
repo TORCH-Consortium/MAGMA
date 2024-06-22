@@ -1,5 +1,5 @@
 process FASTQ_VALIDATOR {
-    tag "${sampleName}"
+    tag "${magmaName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     stageInMode 'copy'
@@ -8,58 +8,58 @@ process FASTQ_VALIDATOR {
 
 
     input:
-        tuple val(sampleName), path(sampleRead)
+        tuple val(magmaName), path(sampleRead)
         val ready
 
     output:
-        tuple val(sampleName), path("*.check.*tsv")
+        tuple val(magmaName), path("*.check.*tsv")
         path("*.check.*tsv")                          , emit: check_result
-        tuple val(sampleName), path(sampleRead)      , emit: reads
+        tuple val(magmaName), path(sampleRead)        , emit: reads
 
     shell:
 
         '''
-        seqkit stats -a -T  !{sampleRead}  > !{sampleRead.simpleName}.seqkit_out.txt
-        cat *seqkit_out.txt | csvtk space2tab | csvtk tab2csv > !{sampleName}.seqkit_stats.csv
+        seqkit stats -a -T  !{sampleRead}  > !{sampleRead}.seqkit_out.txt
+        cat *seqkit_out.txt | csvtk space2tab | csvtk tab2csv > !{sampleRead}.seqkit_stats.csv
 
-        md5sum !{sampleRead} > !{sampleRead.simpleName}.md5sum_out.txt
-        cat *md5sum_out.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleRead.simpleName}.md5sum_stats.csv
+        md5sum !{sampleRead} > !{sampleRead}.md5sum_out.txt
+        cat *md5sum_out.txt | csvtk space2tab | csvtk tab2csv | csvtk add-header -n md5sum,file > !{sampleRead}.md5sum_stats.csv
 
-        du -shL !{sampleRead} > !{sampleRead.simpleName}.du_out.txt
-        cat *du_out.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleRead.simpleName}.du_stats.csv
+        du -shL !{sampleRead} > !{sampleRead}.du_out.txt
+        cat *du_out.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleRead}.du_stats.csv
 
 
 
         csvtk join -f file \\
-        !{sampleRead.simpleName}.seqkit_stats.csv \\
-        !{sampleRead.simpleName}.md5sum_stats.csv \\
-        !{sampleRead.simpleName.simpleName}.du_stats.csv \\
-        > !{sampleName}.fastq_statistics.csv
+        !{sampleRead}.seqkit_stats.csv \\
+        !{sampleRead}.md5sum_stats.csv \\
+        !{sampleRead}.du_stats.csv \\
+        > !{sampleRead}.fastq_statistics.csv
 
 
         rm *_out.txt *_stats.csv
 
 
         !{params.fastq_validator_path} !{sampleRead} \\
-        2>!{sampleName}.command.log || true
+        2>!{sampleRead}.command.log || true
 
-        cp !{sampleName}.command.log .command.log
+        cp !{sampleRead}.command.log .command.log
 
 
 
-        TEMP=$(tail -n 1 !{sampleName}.command.log)
+        TEMP=$(tail -n 1 !{sampleRead}.command.log)
 
 
         if [ "$(echo "$TEMP")" == "OK" ]; then
             VALIDATED=1
             STATUS="passed"
-            echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
+            echo -e "!{sampleRead}\t${VALIDATED}" > !{sampleRead}.check.${STATUS}.tsv
             exit 0
 
         else
             VALIDATED=0
             STATUS="failed"
-            echo -e "!{sampleName}\t${VALIDATED}" > !{sampleName}.check.${STATUS}.tsv
+            echo -e "!{sampleRead}\t${VALIDATED}" > !{sampleRead}.check.${STATUS}.tsv
             exit 1
         fi
 
@@ -69,7 +69,7 @@ process FASTQ_VALIDATOR {
     stub:
 
         """
-        touch ${sampleName}.check.tsv
+        touch ${sampleRead}.check.tsv
         """
 
 }
