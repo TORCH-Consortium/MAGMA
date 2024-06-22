@@ -12,7 +12,7 @@ process UTILS_FASTQ_COHORT_VALIDATION {
     script:
 
         """
-        fastq_cohort_validation.py
+        fastq_cohort_validation.py ${params.vcf_name}
         """
 
 
