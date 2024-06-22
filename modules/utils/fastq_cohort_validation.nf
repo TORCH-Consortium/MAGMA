@@ -5,6 +5,7 @@ process UTILS_FASTQ_COHORT_VALIDATION {
     input:
         path("fastq_validation/*")
         path("fastq_stats/*")
+        path("initial_samplesheet.csv")
 
     output:
         path("*.fastqs.passed.tsv"), emit: passed_fastqs

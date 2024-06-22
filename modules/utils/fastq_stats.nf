@@ -3,12 +3,17 @@ process UTILS_FASTQ_STATS {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
     container "ghcr.io/torch-consortium/magma/misc:2.0.0-alpha"
 
+    stageInMode 'copy'
+    maxRetries 3
+    errorStrategy { task.attempt < 3 ? 'retry' : 'ignore' }
+
+
     input:
         tuple val(sampleName), val(bamRgString), path(sampleReads)
         val ready
 
     output:
-    path("*fastq_stats.csv")
+        path("*fastq_stats.csv")
 
     script:
 
