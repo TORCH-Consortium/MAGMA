@@ -9,11 +9,45 @@ workflow VALIDATE_FASTQS_WF {
 
     main:
 
-        //NOTE: Expected structure of input CSV samplesheet
-        //   0     1       2       3    4  5     6      7       8
-        // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
+    //NOTE: Expected structure of input CSV samplesheet
+    //   0     1       2       3    4  5     6      7       8
+    // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
 
-        //reads_ch = SAMPLESHEET_VALIDATION.out
+
+
+        fastqs_ch = Channel.fromPath(samplesheet)
+                    .splitCsv(header: false, skip: 1)
+                    .map { row -> {
+                                study           = row[0]
+                                sample          = row[1]
+                                library         = row[2]
+                                attempt         = row[3]
+                                read1           = row[4]
+                                read2           = row[5]
+                                flowcell        = row[6]
+                                lane            = row[7]
+                                index_sequence  = row[8]
+                                magma_derived_name = row[9]
+
+
+                //Accomodate single/multi reads
+                if (read1 && read2) {
+
+                    return [[magma_derived_name, [paired: true] ,[file(read1, checkIfExists: true), file(read2, checkIfExists: true)]]]
+
+                } else {
+
+                    return [[magma_derived_name , [paired: true], [file(read1, checkIfExists: true)]]]
+
+                    }
+                }
+            }.transpose().view()
+
+
+        FASTQ_VALIDATOR( fastqs_ch, ready )
+
+    /*
+
         reads_ch = Channel.fromPath(samplesheet)
                     .splitCsv(header: false, skip: 1)
                     .map { row -> {
@@ -46,7 +80,6 @@ workflow VALIDATE_FASTQS_WF {
             }
 
 
-        FASTQ_VALIDATOR( reads_ch, ready )
 
         UTILS_FASTQ_STATS( reads_ch, ready )
 
@@ -59,5 +92,6 @@ workflow VALIDATE_FASTQS_WF {
                                                         .map { row -> { row[0] } }
                                                         .join(reads_ch)
 
+*/
 
 }
