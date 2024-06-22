@@ -12,12 +12,12 @@ process FASTQ_VALIDATOR {
         val ready
 
     output:
-        tuple val(sampleName), path("*.check.*tsv") 
+        tuple val(sampleName), path("*.check.*tsv")
         path("*.check.*tsv")                          , emit: check_result
         tuple val(sampleName), path(sampleReads)      , emit: passed_reads
 
     shell:
-       
+
         '''
         !{params.fastq_validator_path} !{sampleReads} \\
             2>!{sampleName}.command.log || true
@@ -42,10 +42,10 @@ process FASTQ_VALIDATOR {
 
         '''
 
-    stub: 
+    stub:
 
         """
-        touch ${sampleName}.check.tsv 
-        """ 
+        touch ${sampleName}.check.tsv
+        """
 
 }

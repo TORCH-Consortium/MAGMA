@@ -2,11 +2,9 @@
 
 import ast
 import argparse
-import re
 
 import pandas as pd
 
-re_mapped_p = re.compile(r'\d* mapped \((.*)%\)')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process the sample stats')
