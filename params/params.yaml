@@ -9,7 +9,7 @@ vcf_name : "joint"
 
 # ##### The follow sections generally do not require adjusting. #####
 
-#  ##### QC THRESHOLDS ##### 
+#  ##### QC THRESHOLDS #####
 
 #The median coverage required to process the sample
 median_coverage_cutoff : 10
@@ -27,7 +27,7 @@ ntm_fraction_cutoff : 0.20
 site_representation_cutoff : 0.95
 
 
-# ##### Partial workflows ##### 
+# ##### Partial workflows #####
 
 # Set this to true if you'd like to only validate input fastqs and check their FASTQC reports
 only_validate_fastqs : false # OR true
@@ -48,7 +48,7 @@ skip_base_recalibration : true
 skip_minor_variants_gatk : true
 
 #:::::::::::::::::::::::::::::::::::::::::
-# 
+#
 #:::::::::::::::::::::::::::::::::::::::::
 
 # Use this flag to disable downstream phylogenetic of merged GVCF
@@ -63,5 +63,3 @@ iqtree_standard_bootstrap: false
 iqtree_fast_ml_only: false
 iqtree_fast_bootstrapped_phylogeny: false
 iqtree_accurate_ml_only: false
-
-

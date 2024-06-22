@@ -9,29 +9,17 @@ process UTILS_FASTQ_COHORT_VALIDATION {
         path("*.fastqs.passed.tsv"), emit: passed_fastqs
         path("*.fastqs.failed.tsv"), optional: true
 
-    shell:
-       
-        '''
+    script:
 
-        if ls *check.passed* 1> .null 2>&1; then
-            cat *check.passed* > !{params.vcf_name}.fastqs.passed.tsv
-        else
-            echo "No samples passed!"
-        fi
+        """
+        fastq_cohort_validation.py
+        """
 
 
-        # Creating this file anyhow, since this is an optional output
-        touch !{params.vcf_name}.fastqs.failed.tsv
-
-        if ls *check.failed* 1> .null 2>&1; then
-            cat *check.failed* > !{params.vcf_name}.fastqs.failed.tsv
-        fi
-        '''
-
-    stub: 
+    stub:
 
         """
         touch ${params.vcf_name}.passed.tsv ${params.vcf_name}.failed.tsv
-        """ 
+        """
 
 }
