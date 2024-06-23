@@ -28,6 +28,13 @@ if __name__ == '__main__':
     # FIXME Add the info for BWA MEM mapipng using a derived column into the dataframe
     # bam_rg_string ="@RG\\tID:${flowcell}.${lane}\\tSM:${study}.${sample}\\tPL:illumina\\tLB:lib${library}\\tPU:${flowcell}.${lane}.${index_sequence}"
 
+    ss['magma_bwa_rg_string'] = "@RG\\tID:" + ss['Flowcell'].astype(str) + "." + ss['Lane'].astype(str) + \
+                                "\\tSM:" + ss['Study'].astype(str) + "." + ss['Sample'].astype(str) + \
+                                "\\tPL:illumina" + \
+                                "\\tLB:lib" + ss['Library'].astype(str) + \
+                                "\\tPU:" + ss['Flowcell'].astype(str) + "." + ss['Lane'].astype(str) + "." + ss['Index Sequence'].astype(str)
+
+
     fail = False
     for idx, row in ss.iterrows():
         if not name_re.match(row['Study']):
@@ -42,8 +49,8 @@ if __name__ == '__main__':
 
     if not fail:
         ss.to_csv(args['output_file'], index=False)
-        print('Samplesheet format validation checks passed')
+        print('Samplesheet format validation checks PASSED')
         exit(0)
     else:
-        print('Samplesheet format validation checks failed')
+        print('Samplesheet format validation checks FAILED')
         exit(1)
