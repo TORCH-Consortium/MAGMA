@@ -36,7 +36,8 @@ workflow VALIDATE_FASTQS_WF {
     UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.fastq_report.collect(), samplesheet_json )
 
 
-    approved_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.magma_analysis_json.splitJson()
+    approved_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.magma_analysis_json
+        .splitJson()
         .filter {it.value.fastqs_approved}
         .map {
             if (it.value.R2) {
@@ -46,13 +47,10 @@ workflow VALIDATE_FASTQS_WF {
             }
         }
 
-    approved_fastqs_ch.view()
 
-    /*
      emit:
 
-    passed_fastqs_ch = approved_fastqs_ch.join()
+    passed_fastqs_ch = approved_fastqs_ch
 
-     */
 
 }
