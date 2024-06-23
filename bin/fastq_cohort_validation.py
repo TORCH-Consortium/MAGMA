@@ -17,35 +17,6 @@ if __name__ == '__main__':
 
     vcf_name = args['joint_vcf_name']
 
-    # # Check for files matching *check.passed*
-    # passed_files = glob.glob("fastq_validation/*check.passed*")
-    # passed_data = []  # Store contents of passed files
-    # if passed_files:
-    #     for fname in passed_files:
-    #         with open(fname) as infile:
-    #             passed_data.append(infile.read())
-    #     with open(f"{vcf_name}.fastqs.passed.tsv", "w") as outfile:
-    #         for data in passed_data:
-    #             outfile.write(data)
-    # else:
-    #     print("No samples passed!")
-    #
-    # # Create the failed file anyhow, since this is an optional output
-    # open(f"{vcf_name}.fastqs.failed.tsv", 'a').close()
-    #
-    # # Check for files matching *check.failed*
-    # failed_files = glob.glob("fastq_validation/*check.failed*")
-    # failed_data = []  # Store contents of failed files
-    # if failed_files:
-    #     for fname in failed_files:
-    #         with open(fname) as infile:
-    #             failed_data.append(infile.read())
-    #     with open(f"{vcf_name}.fastqs.failed.tsv", "w") as outfile:
-    #         for data in failed_data:
-    #             outfile.write(data)
-    # else:
-    #     print("No samples failed!")
-
     # ============================================
     # Parse the validation reports for exact sample names which passed/failed
     # ============================================
@@ -64,10 +35,12 @@ if __name__ == '__main__':
 
         if magma_analysis_dict[k]['R1'] is not None:
             fastq_1_name = magma_analysis_dict[k]['R1'].split("/")[-1]
+            magma_analysis_dict[k]["fastqs_approved"] = True
             if fastq_1_name in fastq_report_keys_list:
                 magma_analysis_dict[k]["fastq_report"][fastq_1_name] = {"file": fastq_report_dict[fastq_1_name]}
             else:
                 magma_analysis_dict[k]["fastq_report"][fastq_1_name] = {"fastq_utils_check": "failed"}
+                magma_analysis_dict[k]["fastqs_approved"] = False
 
         if magma_analysis_dict[k]['R2'] is not None:
             fastq_2_name = magma_analysis_dict[k]['R2'].split("/")[-1]
@@ -75,6 +48,7 @@ if __name__ == '__main__':
                 magma_analysis_dict[k]["fastq_report"][fastq_2_name] = {"file": fastq_report_dict[fastq_2_name]}
             else:
                 magma_analysis_dict[k]["fastq_report"][fastq_2_name] = {"fastq_utils_check": "failed"}
+                magma_analysis_dict[k]["fastqs_approved"] = False
 
     with open('magma_analysis.json', 'w') as f:
         json.dump(magma_analysis_dict, f, indent=4)
@@ -82,26 +56,16 @@ if __name__ == '__main__':
 # ============================================
 # Parse the validation reports for exact sample names which passed/failed
 # ============================================
-#
-# validation_and_stats_dict = {}
-# validate_passed_samples = []
-#
-# for row in passed_data:
-#     row_split = row.split("\t")
-#     derived_magma_name = row_split[0]
-#     sample_name = derived_magma_name.split(".")[1]
-#     validate_passed_samples.append(sample_name)
-#     validation_and_stats_dict[sample_name] = {"magma_name": derived_magma_name,
-#                                               "fastq_validation_status": "passed"}
-#
-# validate_failed_samples = []
-# for row in failed_data:
-#     row_split = row.split("\t")
-#     derived_magma_name = row_split[0]
-#     sample_name = derived_magma_name.split(".")[1]
-#     validate_passed_samples.append(sample_name)
-#     validation_and_stats_dict[sample_name] = {"magma_name": derived_magma_name,
-#                                               "fastq_validation_status": "failed"}
-#
 
-# print(validation_and_stats_dict)
+    # Filter the dictionary for samples with fastqs_approved == True and False
+    approved_samples = {k for k, v in magma_analysis_dict.items() if v["fastqs_approved"] == True}
+    # Write approved_samples to a txt file with newline
+    with open("approved_samples.txt", "w") as f:
+        for sample in approved_samples:
+            f.write(sample + "\n")
+
+    rejected_samples = {k for k, v in magma_analysis_dict.items() if v["fastqs_approved"] == False}
+    # Write approved_samples to a txt file with newline
+    with open("rejected_samples.txt", "w") as f:
+        for sample in rejected_samples:
+            f.write(sample + "\n")

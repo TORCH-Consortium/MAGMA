@@ -51,53 +51,13 @@ workflow VALIDATE_FASTQS_WF {
 
     UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.fastq_report.collect(), samplesheet )
 
-    /*
-
-
-
-
-        reads_ch = Channel.fromPath(samplesheet)
-                    .splitCsv(header: false, skip: 1)
-                    .map { row -> {
-                                study           = row[0]
-                                sample          = row[1]
-                                library         = row[2]
-                                attempt         = row[3]
-                                read1           = row[4]
-                                read2           = row[5]
-                                flowcell        = row[6]
-                                lane            = row[7]
-                                index_sequence  = row[8]
-
-                    //NOTE: Platform is hard-coded to illumina
-                    bam_rg_string ="@RG\\tID:${flowcell}.${lane}\\tSM:${study}.${sample}\\tPL:illumina\\tLB:lib${library}\\tPU:${flowcell}.${lane}.${index_sequence}"
-
-                    unique_sample_id = "${study}.${sample}.L${library}.A${attempt}.${flowcell}.${lane}.${index_sequence}"
-
-                    //Accomodate single/multi reads
-                    if (read1 && read2) {
-
-                        return [unique_sample_id, bam_rg_string, [file(read1, checkIfExists: true), file(read2, checkIfExists: true)]]
-
-                    } else {
-
-                        return [unique_sample_id, bam_rg_string, [file(read1, checkIfExists: true)]]
-
-                    }
-                }
-            }
-
-
 
 
     emit:
 
         passed_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.passed_fastqs
-                                                        .splitCsv(header: false, sep: '\t')
-                                                        .map { row -> { row[0] } }
-                                                        .join(reads_ch)
+                                                            .splitText().view()
 
-
-*/
+                                                        //.join(reads_ch)
 
 }
