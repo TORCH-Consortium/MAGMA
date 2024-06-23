@@ -8,17 +8,16 @@ process UTILS_FASTQ_COHORT_VALIDATION {
 
     output:
         path("magma_analysis.json"), emit: magma_analysis_json
-        path("approved_samples.txt"), emit: passed_fastqs
-        path("rejected_samples.txt"), optional: true
 
     script:
 
         """
         csvtk concat fastq_reports/* |  csvtk csv2json -k file > merged_fastq_reports.json
 
-        csvtk csv2json ${magma_validated_samplesheet_json} -k magma_sample_name > samplesheet.json
+        fastq_cohort_validation.py ${magma_validated_samplesheet_json} merged_fastq_reports.json magma_analysis.json
 
-        fastq_cohort_validation.py ${params.vcf_name}
+        rm merged_fastq_reports.json
+
         """
 
 
