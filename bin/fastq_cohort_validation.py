@@ -66,6 +66,7 @@ if __name__ == '__main__':
 
     rejected_samples = {k for k, v in magma_analysis_dict.items() if v["fastqs_approved"] == False}
     # Write approved_samples to a txt file with newline
-    with open("rejected_samples.txt", "w") as f:
-        for sample in rejected_samples:
-            f.write(sample + "\n")
+    if rejected_samples:
+        with open("rejected_samples.txt", "w") as f:
+            for sample in rejected_samples:
+                f.write(sample + "\n")

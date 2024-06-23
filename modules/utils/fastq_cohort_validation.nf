@@ -6,9 +6,9 @@ process UTILS_FASTQ_COHORT_VALIDATION {
         path("fastq_reports/*")
         path(magma_validated_samplesheet)
 
-//    output:
-    //        path("*.fastqs.passed.tsv"), emit: passed_fastqs
-    //        path("*.fastqs.failed.tsv"), optional: true
+    output:
+            path("approved_samples.txt"), emit: passed_fastqs
+            path("rejected_samples.txt"), optional: true
 
     script:
 
