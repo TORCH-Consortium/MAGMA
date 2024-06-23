@@ -12,9 +12,7 @@ process FASTQ_VALIDATOR {
         val ready
 
     output:
-        tuple val(magmaSampleName), path("*.check.*csv")
-        path("*.check.*csv")                          , emit: check_result
-        path("*.fastq_report.csv")                    , emit: fastq_report
+        path("*.fastq_report.csv")                          , emit: fastq_report
         tuple val(magmaSampleName), path(sampleRead)        , emit: reads
 
     shell:

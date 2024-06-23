@@ -5,7 +5,7 @@ include { UTILS_FASTQ_COHORT_VALIDATION } from '../modules/utils/fastq_cohort_va
 
 workflow VALIDATE_FASTQS_WF {
     take:
-         samplesheet
+         samplesheet_json
          ready
 
     main:
@@ -16,39 +16,27 @@ workflow VALIDATE_FASTQS_WF {
 
 
 
-        fastqs_ch = samplesheet
-                    .splitCsv(header: false, skip: 1)
-                    .map { row -> {
-                                study           = row[0]
-                                sample          = row[1]
-                                library         = row[2]
-                                attempt         = row[3]
-                                read1           = row[4]
-                                read2           = row[5]
-                                flowcell        = row[6]
-                                lane            = row[7]
-                                index_sequence  = row[8]
-                                magma_sample_name = row[9]
-                                magma_bam_rg_string = row[10]
-
+        fastqs_ch = samplesheet_json
+                    .splitJson()
+                    .map { it -> {
 
                 //Accomodate single/multi reads
-                if (read1 && read2) {
+                if (it.value.R1 && it.value.R2) {
 
-                    return [ magma_sample_name,  [file(read1, checkIfExists: true), file(read2, checkIfExists: true)]]
+                    return [ magma_sample_name,  [file(it.value.R1, checkIfExists: true), file(it.value.R2, checkIfExists: true)]]
 
                 } else {
 
-                    return [magma_sample_name, [file(read1, checkIfExists: true)]]
+                    return [magma_sample_name, [file(it.value.R1, checkIfExists: true)]]
 
-                    }
                 }
+            }
         }.transpose().view()
 
 
+    /*
     FASTQ_VALIDATOR( fastqs_ch, ready )
 
-    /*
 
     UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.fastq_report.collect(), samplesheet )
 

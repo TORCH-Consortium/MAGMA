@@ -8,7 +8,7 @@ process SAMPLESHEET_VALIDATION {
 
     output:
         val true, emit: status
-        path("samplesheet.format_valid.csv"), emit: validated_samplesheet
+        path("magma_samplesheet.json"), emit: validated_samplesheet
 
     script:
 
