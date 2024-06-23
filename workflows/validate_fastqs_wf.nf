@@ -52,12 +52,14 @@ workflow VALIDATE_FASTQS_WF {
     UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.fastq_report.collect(), samplesheet )
 
 
-    UTILS_FASTQ_COHORT_VALIDATION.out.passed_fastqs.view()
+    UTILS_FASTQ_COHORT_VALIDATION.out.magma_analysis_json.view()
 
 
+    /*
     emit:
 
         passed_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.passed_fastqs
                                                             .splitJson()
                                                             .view()
+     */
 }

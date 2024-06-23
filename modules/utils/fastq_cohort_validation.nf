@@ -7,7 +7,7 @@ process UTILS_FASTQ_COHORT_VALIDATION {
         path(magma_validated_samplesheet)
 
     output:
-            path("magma_analyis.json"), emit: magma_analysis_json
+            path("magma_analysis.json"), emit: magma_analysis_json
             path("approved_samples.txt"), emit: passed_fastqs
             path("rejected_samples.txt"), optional: true
 
