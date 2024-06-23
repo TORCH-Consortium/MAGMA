@@ -18,7 +18,14 @@ workflow VALIDATE_FASTQS_WF {
 
         fastqs_ch = samplesheet_json
                     .splitJson()
-        .map {[it.Study, [it.R1, it.R2]] }
+        .map {
+            if (it.R2) {
+                [it.magma_sample_name, [it.R1, it.R2]]
+            } else {
+
+                [it.magma_sample_name, [it.R1]]
+            }
+             }
         .view()
 
     /*
