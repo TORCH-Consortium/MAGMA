@@ -45,7 +45,7 @@ workflow {
         QUALITY_CHECK_WF( VALIDATE_FASTQS_WF.out.approved_fastqs_ch )
 
 
-        MAP_WF( validated_reads_ch )
+        MAP_WF( VALIDATE_FASTQS_WF.out.approved_fastqs_ch  )
 
         CALL_WF( MAP_WF.out.sorted_reads_ch )
 
@@ -67,7 +67,7 @@ workflow {
                                 .map { [ it[0] ] }
                                 //.dump(tag:'MERGE_WF: all_samples_ch', pretty: true)
 
-        STRUCTURAL_VARIANTS_ANALYSIS_WF ( validated_reads_ch, all_samples_ch )
+        STRUCTURAL_VARIANTS_ANALYSIS_WF ( VALIDATE_FASTQS_WF.out.approved_fastqs_ch, all_samples_ch )
 
 
         if (!params.skip_merge_analysis) {
