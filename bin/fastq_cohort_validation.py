@@ -17,34 +17,34 @@ if __name__ == '__main__':
 
     vcf_name = args['joint_vcf_name']
 
-    # Check for files matching *check.passed*
-    passed_files = glob.glob("fastq_validation/*check.passed*")
-    passed_data = []  # Store contents of passed files
-    if passed_files:
-        for fname in passed_files:
-            with open(fname) as infile:
-                passed_data.append(infile.read())
-        with open(f"{vcf_name}.fastqs.passed.tsv", "w") as outfile:
-            for data in passed_data:
-                outfile.write(data)
-    else:
-        print("No samples passed!")
-
-    # Create the failed file anyhow, since this is an optional output
-    open(f"{vcf_name}.fastqs.failed.tsv", 'a').close()
-
-    # Check for files matching *check.failed*
-    failed_files = glob.glob("fastq_validation/*check.failed*")
-    failed_data = []  # Store contents of failed files
-    if failed_files:
-        for fname in failed_files:
-            with open(fname) as infile:
-                failed_data.append(infile.read())
-        with open(f"{vcf_name}.fastqs.failed.tsv", "w") as outfile:
-            for data in failed_data:
-                outfile.write(data)
-    else:
-        print("No samples failed!")
+    # # Check for files matching *check.passed*
+    # passed_files = glob.glob("fastq_validation/*check.passed*")
+    # passed_data = []  # Store contents of passed files
+    # if passed_files:
+    #     for fname in passed_files:
+    #         with open(fname) as infile:
+    #             passed_data.append(infile.read())
+    #     with open(f"{vcf_name}.fastqs.passed.tsv", "w") as outfile:
+    #         for data in passed_data:
+    #             outfile.write(data)
+    # else:
+    #     print("No samples passed!")
+    #
+    # # Create the failed file anyhow, since this is an optional output
+    # open(f"{vcf_name}.fastqs.failed.tsv", 'a').close()
+    #
+    # # Check for files matching *check.failed*
+    # failed_files = glob.glob("fastq_validation/*check.failed*")
+    # failed_data = []  # Store contents of failed files
+    # if failed_files:
+    #     for fname in failed_files:
+    #         with open(fname) as infile:
+    #             failed_data.append(infile.read())
+    #     with open(f"{vcf_name}.fastqs.failed.tsv", "w") as outfile:
+    #         for data in failed_data:
+    #             outfile.write(data)
+    # else:
+    #     print("No samples failed!")
 
     # ============================================
     # Parse the validation reports for exact sample names which passed/failed
