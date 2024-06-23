@@ -1,5 +1,5 @@
 process FASTQ_VALIDATOR {
-    tag "${magmaSampleName}"
+    tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     stageInMode 'copy'
@@ -8,12 +8,12 @@ process FASTQ_VALIDATOR {
 
 
     input:
-        tuple val(magmaSampleName), path(sampleRead)
+        tuple val(sampleName), val(bamRgString), path(sampleRead)
         val ready
 
     output:
-        path("*.fastq_report.csv")                          , emit: fastq_report
-        tuple val(magmaSampleName), path(sampleRead)        , emit: reads
+        path("*.fastq_report.csv")                                       , emit: fastq_report
+        tuple val(sampleName), val(bamRgString), path(sampleRead)        , emit: reads
 
     shell:
 
@@ -54,7 +54,7 @@ process FASTQ_VALIDATOR {
             VALIDATED=1
             STATUS="passed"
             echo -e "file,magma_name,fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.csv
-            echo -e "!{sampleRead},!{magmaSampleName},${STATUS}" >> !{sampleRead.simpleName}.check.${STATUS}.csv
+            echo -e "!{sampleRead},!{sampleName},${STATUS}" >> !{sampleRead.simpleName}.check.${STATUS}.csv
 
             csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.csv >  !{sampleRead.simpleName}.fastq_report.csv
 
@@ -67,7 +67,7 @@ process FASTQ_VALIDATOR {
             VALIDATED=0
             STATUS="failed"
             echo -e "file,magma_name,fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.csv
-            echo -e "!{sampleRead},!{magmaSampleName},${STATUS}" >> !{sampleRead.simpleName}.check.${STATUS}.csv
+            echo -e "!{sampleRead},!{sampleName},${STATUS}" >> !{sampleRead.simpleName}.check.${STATUS}.csv
 
             csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.csv  > !{sampleRead.simpleName}.fastq_report.csv
 
