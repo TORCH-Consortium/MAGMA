@@ -21,7 +21,7 @@ if __name__ == '__main__':
         reader = csv.DictReader(infile)
 
         writer = csv.DictWriter(outfile,
-                                fieldnames=standard_magma_fields + ['magma_sample_name', 'magma_bam_rg_string'])
+                                fieldnames=standard_magma_fields + ['magma_sample_name', 'magma_bam_rg_string'], escapechar='\\')
         writer.writeheader()
 
         fail = False
