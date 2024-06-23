@@ -30,7 +30,6 @@ workflow VALIDATE_FASTQS_WF {
 
 
 
-    /*
     FASTQ_VALIDATOR( fastqs_ch, ready )
 
 
@@ -39,19 +38,18 @@ workflow VALIDATE_FASTQS_WF {
 
     approved_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.magma_analysis_json
                             .splitJson()
-     .filter {it.value.fastqs_approved}
-     .map {
-     if (it.value.R2) {
-     [it.value.magma_sample_name, it.value.magma_bam_rg_string, [it.value.R1, it.value.R2]]
- } else {
-     [it.value.magma_sample_name, it.value.magma_bam_rg_string, [it.value.R1]]
- }
- }
+                            .filter {it.value.fastqs_approved}
+                            .map {
+                                    if (it.value.R2) {
+                                    [it.value.magma_sample_name, it.value.magma_bam_rg_string, [it.value.R1, it.value.R2]]
+                                    } else {
+                                        [it.value.magma_sample_name, it.value.magma_bam_rg_string, [it.value.R1]]
+                                    }
+                            }
 
      emit:
 
-    passed_fastqs_ch = approved_fastqs_ch
+        passed_fastqs_ch = approved_fastqs_ch
 
-*/
 
 }
