@@ -28,17 +28,18 @@ workflow VALIDATE_FASTQS_WF {
                                 flowcell        = row[6]
                                 lane            = row[7]
                                 index_sequence  = row[8]
-                                magma_derived_name = row[9]
+                                magma_sample_name = row[9]
+                                magma_bam_rg_string = row[10]
 
 
                 //Accomodate single/multi reads
                 if (read1 && read2) {
 
-                    return [magma_derived_name, [file(read1, checkIfExists: true), file(read2, checkIfExists: true)]]
+                    return [[id: magma_sample_name, paired: true, bam_rg_string:magma_bam_rg_string ], [file(read1, checkIfExists: true), file(read2, checkIfExists: true)]]
 
                 } else {
 
-                    return [magma_derived_name,  [file(read1, checkIfExists: true)]]
+                    return [[id: magma_sample_name, paired: true, bam_rg_string:magma_bam_rg_string ],  [file(read1, checkIfExists: true)]]
 
                     }
                 }
