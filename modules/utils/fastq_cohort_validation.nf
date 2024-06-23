@@ -4,13 +4,12 @@ process UTILS_FASTQ_COHORT_VALIDATION {
 
     input:
         path("fastq_reports/*")
-        path(magma_validated_samplesheet)
-        path("magma_analysis.json"), emit: magma_analysis_json
+        path(magma_validated_samplesheet_json)
 
     output:
-    path("magma_analysis.json"), emit: magma_analysis_json
-            path("approved_samples.txt"), emit: passed_fastqs
-            path("rejected_samples.txt"), optional: true
+        path("magma_analysis.json"), emit: magma_analysis_json
+        path("approved_samples.txt"), emit: passed_fastqs
+        path("rejected_samples.txt"), optional: true
 
     script:
 

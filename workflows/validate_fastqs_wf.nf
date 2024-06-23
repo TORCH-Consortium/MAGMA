@@ -25,18 +25,18 @@ workflow VALIDATE_FASTQS_WF {
 
                 [it.magma_sample_name, it.magma_bam_rg_string, [it.R1]]
             }
-             }.transpose().view()
+             }.transpose()
 
 
 
 
     FASTQ_VALIDATOR( fastqs_ch, ready )
 
+
+    UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.fastq_report.collect(), samplesheet_json )
+
+
 /*
-
-    UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.fastq_report.collect(), samplesheet )
-
-
     approved_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.magma_analysis_json.splitJson()
         .filter {it.value.fastqs_approved}
         .map{ [it.key, it.value.magma_bam_rg_string, [it.value.R1, it.value.R2] ]
