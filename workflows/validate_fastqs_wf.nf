@@ -35,11 +35,11 @@ workflow VALIDATE_FASTQS_WF {
                 //Accomodate single/multi reads
                 if (read1 && read2) {
 
-                    return [[id: magma_sample_name, paired: true, bam_rg_string:magma_bam_rg_string ], [file(read1, checkIfExists: true), file(read2, checkIfExists: true)]]
+                    return [ magma_sample_name,  [file(read1, checkIfExists: true), file(read2, checkIfExists: true)]]
 
                 } else {
 
-                    return [[id: magma_sample_name, paired: true, bam_rg_string:magma_bam_rg_string ],  [file(read1, checkIfExists: true)]]
+                    return [magma_sample_name, [file(read1, checkIfExists: true)]]
 
                     }
                 }

@@ -51,7 +51,7 @@ if __name__ == '__main__':
                 magma_analysis_dict[k]["fastqs_approved"] = False
 
     with open('magma_analysis.json', 'w') as f:
-        json.dump(magma_analysis_dict, f, indent=4)
+        json.dump(magma_analysis_dict, f, indent=4, ensure_ascii= False)
 
 # ============================================
 # Parse the validation reports for exact sample names which passed/failed
