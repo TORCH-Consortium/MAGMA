@@ -57,6 +57,6 @@ workflow VALIDATE_FASTQS_WF {
 
         passed_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.passed_fastqs
                                                             .splitText()
-                                                            .join(reads_ch)
+                                                            .join(fastqs_ch)
                                                             .view()
 }
