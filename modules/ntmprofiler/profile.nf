@@ -22,17 +22,17 @@ process NTMPROFILER_PROFILE {
         """
     } else {
         """
-        ${params.ntmprofiler_path} profile \\
-        -1 ${sampleReads[0]} \\
-        -p ${sampleName}    \\
-        -d results    \\
-        --txt
-
+            ${params.ntmprofiler_path} profile \\
+            -1 ${sampleReads[0]} \\
+            -p ${sampleName}    \\
+            -d results    \\
+            --txt
+        """
     }
 
     stub:
-        """
-        mkdir ${sampleName}
-        touch "${sampleName}/${sampleName}.json"
-        """
+    """
+    mkdir ${sampleName}
+    touch "${sampleName}/${sampleName}.json"
+    """
 }
