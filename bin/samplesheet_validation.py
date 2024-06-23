@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
+
 import re
 import argparse
 import csv
+import json
 
 from sys import exit
 
@@ -21,9 +23,12 @@ if __name__ == '__main__':
         reader = csv.DictReader(infile)
 
         writer = csv.DictWriter(outfile,
-                                fieldnames=standard_magma_fields + ['magma_sample_name', 'magma_bam_rg_string'], escapechar='\\')
+                                fieldnames=standard_magma_fields + ['magma_sample_name', 'magma_bam_rg_string'],
+                                quoting=csv.QUOTE_NONE,  # Disable quoting
+                                escapechar='\\')  # Use backslash as escape character
         writer.writeheader()
 
+        samplesheet_data = []
         fail = False
         for row in reader:
 
@@ -69,6 +74,13 @@ if __name__ == '__main__':
 
             # Write the validated row to the output file
             writer.writerow(row)
+
+            # Append the row to the samplesheet_data list
+            samplesheet_data.append(row)
+
+        # Convert the samplesheet_data list to JSON and write to a file
+        with open('magma_samplesheet.json', 'w') as f:
+            json.dump(samplesheet_data, f, indent=4, ensure_ascii=False)
 
         if not fail:
             print('Samplesheet format validation checks PASSED')
