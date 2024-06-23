@@ -32,6 +32,7 @@ if __name__ == '__main__':
 
     fastq_report_keys_list = list(fastq_report_dict.keys())
 
+    magma_analysis_json = {}
 
     for elem in magma_samplesheet_json:
         elem["fastq_report"] = {}
@@ -53,5 +54,7 @@ if __name__ == '__main__':
                 elem["fastq_report"][fastq_2_name] = {"fastq_utils_check": "failed"}
                 elem["fastqs_approved"] = False
 
+        magma_analysis_json[elem["magma_sample_name"]] = elem
+
     with open(args['magma_analysis'], 'w') as f:
-        json.dump(magma_samplesheet_json, f, indent=4, ensure_ascii= False)
+        json.dump(magma_analysis_json, f, indent=4, ensure_ascii= False)
