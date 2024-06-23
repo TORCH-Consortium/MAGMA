@@ -25,7 +25,7 @@ workflow VALIDATE_FASTQS_WF {
 
                 [it.magma_sample_name, [it.R1]]
             }
-        }.transpose().view()
+        }.transpose()
 
 
 
@@ -49,7 +49,7 @@ workflow VALIDATE_FASTQS_WF {
 
      emit:
 
-        passed_fastqs_ch = approved_fastqs_ch
+        approved_fastqs_ch = approved_fastqs_ch
 
 
 }

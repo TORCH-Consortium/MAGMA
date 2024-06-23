@@ -28,9 +28,9 @@ workflow {
 
         SAMPLESHEET_VALIDATION( params.input_samplesheet )
 
-        validated_reads_ch = VALIDATE_FASTQS_WF( SAMPLESHEET_VALIDATION.out.validated_samplesheet , SAMPLESHEET_VALIDATION.out.status )
+        VALIDATE_FASTQS_WF( SAMPLESHEET_VALIDATION.out.validated_samplesheet , SAMPLESHEET_VALIDATION.out.status )
 
-        //QUALITY_CHECK_WF( validated_reads_ch )
+        QUALITY_CHECK_WF( VALIDATE_FASTQS_WF.out.approved_fastqs_ch )
 
         //TODO: Add modules for generating fastq stats and then capturing them in the MultiQC image
         //MULTIQC_FASTQS( QUALITY_CHECK_WF.out.reports_fastqc_ch )
