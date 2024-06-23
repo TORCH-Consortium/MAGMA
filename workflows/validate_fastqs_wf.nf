@@ -18,12 +18,15 @@ workflow VALIDATE_FASTQS_WF {
 
         fastqs_ch = samplesheet_json
                     .splitJson()
-                    .map { it -> {
+        .view(it.value)
 
-                //Accomodate single/multi reads
-                if (it.value.R1 && it.value.R2) {
+    /*
+     .map { it -> {
 
-                    return [ magma_sample_name,  [file(it.value.R1, checkIfExists: true), file(it.value.R2, checkIfExists: true)]]
+     //Accomodate single/multi reads
+     if (it.value.R1 && it.value.R2) {
+
+     return [ magma_sample_name,  [file(it.value.R1, checkIfExists: true), file(it.value.R2, checkIfExists: true)]]
 
                 } else {
 
@@ -34,7 +37,6 @@ workflow VALIDATE_FASTQS_WF {
         }.transpose().view()
 
 
-    /*
     FASTQ_VALIDATOR( fastqs_ch, ready )
 
 
