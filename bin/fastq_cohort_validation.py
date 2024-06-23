@@ -57,12 +57,24 @@ if __name__ == '__main__':
     with open('samplesheet.json', 'r') as f:
         magma_analysis_dict = json.load(f)
 
+    fastq_report_keys_list = list(fastq_report_dict.keys())
+
     for k in magma_analysis_dict.keys():
-        fastq_1_name = magma_analysis_dict[k]['R1'].split("/")[-1]
-        magma_analysis_dict[k]["fastq_report"] = {fastq_1_name: {"file": fastq_report_dict[fastq_1_name]}}
-        if magma_analysis_dict[k]['R2'] != None:
+        magma_analysis_dict[k]["fastq_report"] = {}
+
+        if magma_analysis_dict[k]['R1'] is not None:
+            fastq_1_name = magma_analysis_dict[k]['R1'].split("/")[-1]
+            if fastq_1_name in fastq_report_keys_list:
+                magma_analysis_dict[k]["fastq_report"][fastq_1_name] = {"file": fastq_report_dict[fastq_1_name]}
+            else:
+                magma_analysis_dict[k]["fastq_report"][fastq_1_name] = {"fastq_utils_check": "failed"}
+
+        if magma_analysis_dict[k]['R2'] is not None:
             fastq_2_name = magma_analysis_dict[k]['R2'].split("/")[-1]
-            magma_analysis_dict[k]["fastq_report"][fastq_2_name] = {"file": fastq_report_dict[fastq_2_name]}
+            if fastq_2_name in fastq_report_keys_list:
+                magma_analysis_dict[k]["fastq_report"][fastq_2_name] = {"file": fastq_report_dict[fastq_2_name]}
+            else:
+                magma_analysis_dict[k]["fastq_report"][fastq_2_name] = {"fastq_utils_check": "failed"}
 
     with open('magma_analysis.json', 'w') as f:
         json.dump(magma_analysis_dict, f, indent=4)

@@ -17,13 +17,16 @@ if __name__ == '__main__':
     ss = pd.read_csv(args['input_file'])
 
     # Create another column by adding Sample and Attempt columns
-    ss['MagmaSampleName'] = ss['Study'].astype(str) + \
-                            "." + ss['Sample'].astype(str) + \
-                            ".L" + ss['Library'].astype(str) + \
-                            ".A" + ss['Attempt'].astype(str) + \
-                            "." + ss['Flowcell'].astype(str) + \
-                            "." + ss['Lane'].astype(str) + \
-                            "." + ss['Index Sequence'].astype(str)  # Corrected column name
+    ss['magma_sample_name'] = ss['Study'].astype(str) + \
+                              "." + ss['Sample'].astype(str) + \
+                              ".L" + ss['Library'].astype(str) + \
+                              ".A" + ss['Attempt'].astype(str) + \
+                              "." + ss['Flowcell'].astype(str) + \
+                              "." + ss['Lane'].astype(str) + \
+                              "." + ss['Index Sequence'].astype(str)  # Corrected column name
+
+    # FIXME Add the info for BWA MEM mapipng using a derived column into the dataframe
+    # bam_rg_string ="@RG\\tID:${flowcell}.${lane}\\tSM:${study}.${sample}\\tPL:illumina\\tLB:lib${library}\\tPU:${flowcell}.${lane}.${index_sequence}"
 
     fail = False
     for idx, row in ss.iterrows():
