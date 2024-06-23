@@ -15,13 +15,13 @@ process UTILS_FASTQ_COHORT_VALIDATION {
         """
         csvtk concat fastq_reports/* > merged_fastq_reports.csv
 
-        csvtk csv2json ${magma_validated_samplesheet} -k MagmaSampleName
+        csvtk csv2json merged_fastq_report.csv > merged_fastq_report.json
 
-        csvtk csv2json merged_fastq_report.csv
+        csvtk csv2json ${magma_validated_samplesheet} -k MagmaSampleName > samplesheet.json
 
+        fastq_cohort_validation.py ${params.vcf_name}
         """
 
-//    fastq_cohort_validation.py ${params.vcf_name}
 
     stub:
 
