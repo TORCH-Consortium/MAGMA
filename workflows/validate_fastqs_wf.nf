@@ -43,11 +43,12 @@ workflow VALIDATE_FASTQS_WF {
 
                     }
                 }
-        }.transpose()
+        }.transpose().view()
 
 
     FASTQ_VALIDATOR( fastqs_ch, ready )
 
+    /*
 
     UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.fastq_report.collect(), samplesheet )
 
@@ -59,7 +60,6 @@ workflow VALIDATE_FASTQS_WF {
 
     approved_fastqs_ch.view()
 
-    /*
     emit:
 
     passed_fastqs_ch = approved_fastqs_ch.join()
