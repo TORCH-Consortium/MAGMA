@@ -20,10 +20,10 @@ workflow VALIDATE_FASTQS_WF {
                     .splitJson()
         .map {
             if (it.R2) {
-                [it.magma_sample_name, it.magma_bam_rg_string, [it.R1, it.R2]]
+                [it.magma_sample_name, [it.R1, it.R2]]
             } else {
 
-                [it.magma_sample_name, it.magma_bam_rg_string, [it.R1]]
+                [it.magma_sample_name, [it.R1]]
             }
              }.transpose()
 

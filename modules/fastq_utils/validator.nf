@@ -8,12 +8,12 @@ process FASTQ_VALIDATOR {
 
 
     input:
-        tuple val(sampleName), val(bamRgString), path(sampleRead)
+        tuple val(sampleName), path(sampleRead)
         val ready
 
     output:
         path("*.fastq_report.csv")                                       , emit: fastq_report
-        tuple val(sampleName), val(bamRgString), path(sampleRead)        , emit: reads
+        tuple val(sampleName), path(sampleRead)                          , emit: reads
 
     shell:
 
