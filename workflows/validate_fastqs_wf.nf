@@ -52,9 +52,11 @@ workflow VALIDATE_FASTQS_WF {
     UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.fastq_report.collect(), samplesheet )
 
 
-    approved_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.magma_analysis_json.splitJson().filter {
-        if (it.value.fastqs_approved) return [it.key, it.value.magma_bam_rg_string, [it.value.R1, it.value.R2] ]
-    }
+    approved_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.magma_analysis_json.splitJson()
+        .filter {it.value.fastqs_approved}
+        .map{ [it.key, it.value.magma_bam_rg_string, [it.value.R1, it.value.R2] ]
+        }
+
     approved_fastqs_ch.view()
 
     /*
