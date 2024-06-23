@@ -56,8 +56,7 @@ workflow VALIDATE_FASTQS_WF {
     emit:
 
         passed_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.passed_fastqs
-                                                            .splitText().view()
-
-                                                        //.join(reads_ch)
-
+                                                            .splitText()
+                                                            .join(reads_ch)
+                                                            .view()
 }
