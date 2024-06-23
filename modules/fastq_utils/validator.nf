@@ -1,5 +1,5 @@
 process FASTQ_VALIDATOR {
-    tag "${magmaName}"
+    tag "${meta.id}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     stageInMode 'copy'
@@ -8,14 +8,14 @@ process FASTQ_VALIDATOR {
 
 
     input:
-        tuple val(magmaName), path(sampleRead)
+        tuple val(meta), path(sampleRead)
         val ready
 
     output:
-        tuple val(magmaName), path("*.check.*csv")
+        tuple val(meta), path("*.check.*csv")
         path("*.check.*csv")                          , emit: check_result
-        path("*.fastq_report.csv")                   , emit: fastq_report
-        tuple val(magmaName), path(sampleRead)        , emit: reads
+        path("*.fastq_report.csv")                    , emit: fastq_report
+        tuple val(meta), path(sampleRead)             , emit: reads
 
     shell:
 
@@ -56,7 +56,7 @@ process FASTQ_VALIDATOR {
             VALIDATED=1
             STATUS="passed"
             echo -e "file,magma_name,fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.csv
-            echo -e "!{sampleRead},!{magmaName},${STATUS}" >> !{sampleRead.simpleName}.check.${STATUS}.csv
+            echo -e "!{sampleRead},!{meta.id},${STATUS}" >> !{sampleRead.simpleName}.check.${STATUS}.csv
 
             csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.csv >  !{sampleRead.simpleName}.fastq_report.csv
 
@@ -69,7 +69,7 @@ process FASTQ_VALIDATOR {
             VALIDATED=0
             STATUS="failed"
             echo -e "file,magma_name,fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.csv
-            echo -e "!{sampleRead},!{magmaName},${STATUS}" >> !{sampleRead.simpleName}.check.${STATUS}.csv
+            echo -e "!{sampleRead},!{meta.id},${STATUS}" >> !{sampleRead.simpleName}.check.${STATUS}.csv
 
             csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.csv  > !{sampleRead.simpleName}.fastq_report.csv
 
