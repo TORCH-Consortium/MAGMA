@@ -36,7 +36,7 @@ workflow VALIDATE_FASTQS_WF {
     UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.fastq_report.collect(), samplesheet_json )
 
 
-    approved_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.magma_analysis_json
+    validated_fastqs_ch = UTILS_FASTQ_COHORT_VALIDATION.out.magma_analysis_json
                             .splitJson()
                             .filter {it.value.fastqs_approved}
                             .map {
@@ -49,7 +49,7 @@ workflow VALIDATE_FASTQS_WF {
 
      emit:
 
-        approved_fastqs_ch = approved_fastqs_ch
+        approved_fastqs_ch = validated_fastqs_ch
 
 
 }
