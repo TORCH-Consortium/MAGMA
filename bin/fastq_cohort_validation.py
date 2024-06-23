@@ -51,7 +51,7 @@ if __name__ == '__main__':
     # ============================================
 
     # Load the JSON file into a dictionary
-    with open('merged_fastq_report.json', 'r') as f:
+    with open('merged_fastq_reports.json', 'r') as f:
         fastq_report_dict = json.load(f)
 
     with open('samplesheet.json', 'r') as f:
