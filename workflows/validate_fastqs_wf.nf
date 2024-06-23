@@ -18,7 +18,7 @@ workflow VALIDATE_FASTQS_WF {
 
         fastqs_ch = samplesheet_json
                     .splitJson()
-        .view { it.key }
+        .map {[it.Study, [it.R1, it.R2]]   }
 
     /*
      .map { it -> {
