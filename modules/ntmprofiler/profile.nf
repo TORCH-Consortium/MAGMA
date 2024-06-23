@@ -3,7 +3,7 @@ process NTMPROFILER_PROFILE {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish, pattern: "results/*txt", saveAs: { f -> f.tokenize("/").last()}
 
     input:
-        tuple val(sampleName), val(bamRgString), path(sampleReads)
+        tuple val(sampleName), val(meta), path(sampleReads)
 
     output:
         path("results/*txt"), emit: profile_txt
@@ -11,14 +11,24 @@ process NTMPROFILER_PROFILE {
 
     script:
 
+    if(meta.paired) {
         """
         ${params.ntmprofiler_path} profile \\
-            -1 ${sampleReads[0]} \\
-            -2 ${sampleReads[1]} \\
-            -p ${sampleName}    \\
-            -d results    \\
-            --txt 
+        -1 ${sampleReads[0]} \\
+        -2 ${sampleReads[1]} \\
+        -p ${sampleName}    \\
+        -d results    \\
+        --txt
         """
+    } else {
+        """
+        ${params.ntmprofiler_path} profile \\
+        -1 ${sampleReads[0]} \\
+        -p ${sampleName}    \\
+        -d results    \\
+        --txt
+
+    }
 
     stub:
         """
@@ -26,5 +36,3 @@ process NTMPROFILER_PROFILE {
         touch "${sampleName}/${sampleName}.json"
         """
 }
-
-

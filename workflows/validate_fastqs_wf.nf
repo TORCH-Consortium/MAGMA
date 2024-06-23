@@ -41,9 +41,9 @@ workflow VALIDATE_FASTQS_WF {
                             .filter {it.value.fastqs_approved}
                             .map {
                                     if (it.value.R2) {
-                                    [it.value.magma_sample_name, it.value.magma_bam_rg_string, [it.value.R1, it.value.R2]]
+                [it.value.magma_sample_name, [bam_rg_string: it.value.magma_bam_rg_string, paired: true], [it.value.R1, it.value.R2]]
                                     } else {
-                                        [it.value.magma_sample_name, it.value.magma_bam_rg_string, [it.value.R1]]
+                [it.value.magma_sample_name, [bam_rg_string: it.value.magma_bam_rg_string, paired: false] , [it.value.R1]]
                                     }
                             }
 
