@@ -20,33 +20,19 @@ workflow VALIDATE_FASTQS_WF {
                     .splitJson()
         .map {
             if (it.R2) {
-                [it.magma_sample_name, [it.R1, it.R2]]
+                [it.magma_sample_name, it.magma_bam_rg_string, [it.R1, it.R2]]
             } else {
 
-                [it.magma_sample_name, [it.R1]]
+                [it.magma_sample_name, it.magma_bam_rg_string, [it.R1]]
             }
-             }
-        .view()
+             }.transpose().view()
 
-    /*
-     .map { it -> {
 
-     //Accomodate single/multi reads
-     if (it.value.R1 && it.value.R2) {
-
-     return [ magma_sample_name,  [file(it.value.R1, checkIfExists: true), file(it.value.R2, checkIfExists: true)]]
-
-                } else {
-
-                    return [magma_sample_name, [file(it.value.R1, checkIfExists: true)]]
-
-                }
-            }
-        }.transpose().view()
 
 
     FASTQ_VALIDATOR( fastqs_ch, ready )
 
+/*
 
     UTILS_FASTQ_COHORT_VALIDATION( FASTQ_VALIDATOR.out.fastq_report.collect(), samplesheet )
 
