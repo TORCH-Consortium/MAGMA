@@ -3,6 +3,7 @@
 import glob
 import argparse
 import csv
+import json
 
 import pandas as pd
 
@@ -49,39 +50,38 @@ if __name__ == '__main__':
     # Parse the validation reports for exact sample names which passed/failed
     # ============================================
 
-    # Example usage:
-    csv_file = 'initial_samplesheet.csv'  # Replace with your CSV file path
-    samplesheet_df = pd.read_csv(csv_file)
-    # print(samplesheet_df)
+    # Load the JSON file into a dictionary
+    with open('merged_fastq_report.json', 'r') as f:
+        fastq_report_dict = json.load(f)
 
-    # Create another column by adding Sample and Attempt columns
-    samplesheet_df['MagmaSampleName'] = samplesheet_df['Study'].astype(str) + \
-                                        "." + samplesheet_df['Sample'].astype(str) + \
-                                        ".L" + samplesheet_df['Library'].astype(str) + \
-                                        ".A" + samplesheet_df['Attempt'].astype(str) + \
-                                        "." + samplesheet_df['Flowcell'].astype(str) + \
-                                        "." + samplesheet_df['Lane'].astype(str) + \
-                                        "." + samplesheet_df['Index Sequence'].astype(str)
+    with open('samplesheet.json', 'r') as f:
+        magma_analysis_dict = json.load(f)
 
-    magma_dict = samplesheet_df.set_index('MagmaSampleName').to_dict(orient='index')
+    for k in magma_analysis_dict.keys():
+        fastq_1_name = magma_analysis_dict[k]['R1'].split("/")[-1]
+        magma_analysis_dict[k]["fastq_report"] = {fastq_1_name: {"file": fastq_report_dict[fastq_1_name]}}
+        if magma_analysis_dict[k]['R2'] != None:
+            fastq_2_name = magma_analysis_dict[k]['R2'].split("/")[-1]
+            magma_analysis_dict[k]["fastq_report"][fastq_2_name] = {"file": fastq_report_dict[fastq_2_name]}
 
-    print(magma_dict)
+    with open('magma_analysis.json', 'w') as f:
+        json.dump(magma_analysis_dict, f, indent=4)
 
 # ============================================
 # Parse the validation reports for exact sample names which passed/failed
 # ============================================
-
-validation_and_stats_dict = {}
-validate_passed_samples = []
-
-for row in passed_data:
-    row_split = row.split("\t")
-    derived_magma_name = row_split[0]
-    sample_name = derived_magma_name.split(".")[1]
-    validate_passed_samples.append(sample_name)
-    validation_and_stats_dict[sample_name] = {"magma_name": derived_magma_name,
-                                              "fastq_validation_status": "passed"}
-
+#
+# validation_and_stats_dict = {}
+# validate_passed_samples = []
+#
+# for row in passed_data:
+#     row_split = row.split("\t")
+#     derived_magma_name = row_split[0]
+#     sample_name = derived_magma_name.split(".")[1]
+#     validate_passed_samples.append(sample_name)
+#     validation_and_stats_dict[sample_name] = {"magma_name": derived_magma_name,
+#                                               "fastq_validation_status": "passed"}
+#
 # validate_failed_samples = []
 # for row in failed_data:
 #     row_split = row.split("\t")

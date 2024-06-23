@@ -96,6 +96,7 @@ workflow VALIDATE_FASTQS_WF {
                                                         .map { row -> { row[0] } }
                                                         .join(reads_ch)
 
+
 */
 
 }

@@ -13,7 +13,11 @@ process UTILS_FASTQ_COHORT_VALIDATION {
     script:
 
         """
-        ls
+        csvtk concat fastq_reports/* > merged_fastq_reports.csv
+
+        csvtk csv2json ${magma_validated_samplesheet} -k MagmaSampleName
+
+        csvtk csv2json merged_fastq_report.csv
 
         """
 
