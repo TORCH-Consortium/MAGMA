@@ -8,7 +8,7 @@ workflow MAJOR_VARIANT_ANALYSIS {
 
     main:
 
-        def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
+        def resistanceDb =  []
 
         // merge_call_resistance
         TBPROFILER_VCF_PROFILE__COHORT(merged_vcf_ch, resistanceDb)

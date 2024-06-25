@@ -109,7 +109,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         vcfs_file = vcfs_string_ch.collectFile(name: 'structural_variant_vcfs.txt', newLine: true)
         BCFTOOLS_MERGE__DELLY(vcfs_file, vcfs_and_indexes_ch)
 
-        def resistanceDb =  params.resistance_db != "NONE" ?  params.resistance_db : []
+        def resistanceDb =  []
 
         TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out, resistanceDb)
 
