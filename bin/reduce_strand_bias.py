@@ -29,7 +29,8 @@ def filter_vcf_file(vcf_input, vcf_output, pval):
 
         if dp4_values:
 
-            p_value = binom_test([dp4_values[-2], dp4_values[-1]], n=sum(dp4_values[-2:]), p=pval)
+            # The binom_test tests the null hypothesis that ALT variants are fairly distributed across the read directions, the hypothetical success probability of which is 0.5, p=0.5 reflects this hypothetical probability not the significance level.
+            p_value = binom_test([dp4_values[-2], dp4_values[-1]], n=sum(dp4_values[-2:]), p=0.5)
 
             # Check if p-value is above or equal to 0.05
             if p_value >= pval:
