@@ -2,10 +2,6 @@ process FASTQ_VALIDATOR {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
-    stageInMode 'copy'
-    maxRetries 3
-    errorStrategy { task.attempt < 3 ? 'retry' : 'ignore' }
-
 
     input:
         tuple val(sampleName), path(sampleRead)
