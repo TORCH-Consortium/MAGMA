@@ -4,7 +4,7 @@ process BWA_MEM {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        tuple val(sampleName), val(bamRgString), path(sampleReads)
+        tuple val(sampleName), val(meta), path(sampleReads)
         path(reference)
         path("*")
 
@@ -19,7 +19,7 @@ process BWA_MEM {
             -M \\
             ${params.arguments} \\
             -t ${task.cpus} \\
-            -R "${bamRgString}"  \\
+            -R "${meta.bam_rg_string}"  \\
             ${reference} \\
             ${sampleReads} \\
         | ${params.samtools_path} sort \\
@@ -34,7 +34,7 @@ process BWA_MEM {
         echo "${params.bwa_path} mem \\
             -M \\
             -t ${task.cpus} \\
-            -R ${RG}  \\
+            -R ${meta.bam_rg_string}  \\
             ${reference} \\
             ${sampleReads} \\
         | ${params.samtools_path} sort \\

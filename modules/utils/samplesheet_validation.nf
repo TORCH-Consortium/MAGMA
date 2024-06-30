@@ -1,6 +1,6 @@
 process SAMPLESHEET_VALIDATION {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
-    //NOTE: If this process fails, terminate the pipeline execution
+    //NOTE: If this process fails, terminate the pipeline execution immediately
     errorStrategy = 'terminate'
 
     input:
@@ -8,11 +8,11 @@ process SAMPLESHEET_VALIDATION {
 
     output:
         val true, emit: status
-        path("samplesheet.valid.csv"), emit: validate_samplesheet
+        path("magma_samplesheet.json"), emit: validated_samplesheet
 
     script:
 
         """
-        samplesheet_validation.py ${samplesheet}
+        samplesheet_validation.py ${samplesheet} samplesheet.format_valid.csv
         """
 }
