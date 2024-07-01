@@ -81,7 +81,16 @@ $ nextflow info
 
 A dummy `samplesheet` is provided [here](./samplesheet/example_MAGMA_samplesheet.csv)
 
-The samplesheet structure should have the following fields. 
+The minimal samplesheet structure should have the following fields.
+
+```csv
+Sample,R1,R2
+S0001,/full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz
+S0002,/full_path_to_directory_of_fastq_files/S0002_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0002_01_R2.fastq.gz
+S0003,/full_path_to_directory_of_fastq_files/S0003_01_R1.fastq.gz,
+```
+
+If you have the metadata from sequencing instrument, you can specify further information in the samplesheet 
 
 ```csv
 Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
@@ -91,7 +100,7 @@ Study_Name,S0003,1,1,full_path_to_directory_of_fastq_files/S0003_01_R1.fastq.gz,
 Study_Name,S0004,1,1,full_path_to_directory_of_fastq_files/S0004_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0004_01_R2.fastq.gz,1,1,1
 ```
 
-Here's a formatted version of the CSV above
+Here's a formatted version of the CSV above, including all optional fields
 
 
 |Study     |Sample|Library|Attempt|R1                                                        |R2                                                        |Flowcell|Lane|Index Sequence|
