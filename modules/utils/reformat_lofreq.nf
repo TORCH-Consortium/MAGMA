@@ -17,7 +17,7 @@ process UTILS_REFORMAT_LOFREQ {
             ${sampleName}.lofreq.reformat.vcf
 
         reduce_strand_bias.py \\
-            ${params.strand_bias_cutoff} \\
+            ${params.cutoff_strand_bias} \\
             ${sampleName}.lofreq.reformat.vcf  \\
             ${sampleName}.lofreq.reformat.corrected.vcf 
         """

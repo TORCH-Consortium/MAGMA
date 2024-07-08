@@ -30,7 +30,7 @@ if __name__ == '__main__':
             if m:
                 mapped_p = float(m[1])
 
-    if int(wgsmetrics.loc[0, 'MEDIAN_COVERAGE']) >= args['median_coverage_cutoff']:
+    if int(wgsmetrics.loc[0, 'MEDIAN_COVERAGE']) >= args['cutoff_median_coverage']:
         coverage_threshold_met = 1
     else:
         coverage_threshold_met = 0
