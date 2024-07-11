@@ -10,6 +10,7 @@ include { BCFTOOLS_VIEW__TBP } from "../modules/bcftools/view__tbp.nf" addParams
 include { BCFTOOLS_MERGE as  BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE__DELLY )
 include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__DELLY } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__DELLY)
+include { ISMAPPER } from "../modules/ismapper/ismapper.nf" addParams ( params.ISMAPPER )
 
 
 workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
@@ -19,6 +20,13 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         samples_ch
 
     main:
+
+
+    //NOTE: For now we look for a single element, but later on we can add other queries
+    //FIXME
+        ISMAPPER(validated_reads_ch,
+                  params.ref_fasta,
+                  QUERY)
 
 
         BWA_MEM__DELLY(validated_reads_ch,
@@ -87,7 +95,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
         BCFTOOLS_VIEW__TBP(DELLY_CALL.out)
 
-	//FIXME save the string to an intermediate file
+  //FIXME save the string to an intermediate file
 
         vcfs_and_indexes_ch = BCFTOOLS_VIEW__TBP.out
                                 .collect()
@@ -106,6 +114,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 //.view { it }
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
+
+    //TODO: Merge the ISMAPPER output
         vcfs_file = vcfs_string_ch.collectFile(name: 'structural_variant_vcfs.txt', newLine: true)
         BCFTOOLS_MERGE__DELLY(vcfs_file, vcfs_and_indexes_ch)
 
@@ -114,7 +124,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out, resistanceDb)
 
         TBPROFILER_COLLATE__DELLY(params.vcf_name, TBPROFILER_VCF_PROFILE__DELLY.out, resistanceDb)
-	
+
     emit:
-	  structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
+    structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
 }
