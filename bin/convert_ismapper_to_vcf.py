@@ -1,11 +1,8 @@
+import argparse
 import csv
 from Bio import SeqIO
 
-# Define the input files
-is_mapper_file = 'S011__NC_000962.3_table.txt'
-vcf_file = 'S011_ismapper.vcf'
-reference_file = 'NC-000962-3-H37Rv.fa'
-te_file = 'transposable_elements.csv'
+
 
 # Define the VCF header
 vcf_header = """##fileformat=VCFv4.2
@@ -76,11 +73,36 @@ def convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_i
             vcf_entry = f"{chrom}\t{pos}\t{region_id}\t{ref}\t{alt}\t{qual}\t{filter_status}\t{info}\n"
             outfile.write(vcf_entry)
 
-# Read the reference genome sequence
-reference_sequences = read_reference_genome(reference_file)
 
-# Read the transposable element information
-te_info = read_transposable_elements(te_file)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Convert ISMapper output to VCF format.')
+    parser.add_argument('--is_mapper_file', required=True, help='Path to the ISMapper output file.')
+    parser.add_argument('--reference_file', required=True, help='Path to the reference genome file.')
+    parser.add_argument('--te_file', required=True, help='Path to the transposable elements information file.')
+    parser.add_argument('--output_vcf_file', required=True, help='Path to the output VCF file.')
 
-# Run the conversion function
-convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_info)
+    # Step 3: Parse the command-line arguments
+    args = parser.parse_args()
+
+    # Define the input files
+    is_mapper_file = 'S011__NC_000962.3_table.txt'
+    vcf_file = 'S011_ismapper.vcf'
+    reference_file = 'NC-000962-3-H37Rv.gb'
+    te_file = 'transposable_elements.csv'
+
+
+    # Step 4: Replace hardcoded file paths with variables
+    is_mapper_file = args.is_mapper_file
+    vcf_file = args.output_vcf_file
+    reference_file = args.reference_file
+    te_file = args.te_file
+
+
+    # Read the reference genome sequence
+    reference_sequences = read_reference_genome(reference_file)
+
+    # Read the transposable element information
+    te_info = read_transposable_elements(te_file)
+
+    # Run the conversion function
+    convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_info)
