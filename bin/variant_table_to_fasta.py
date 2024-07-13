@@ -11,7 +11,7 @@ def main(args):
         for idx, l in enumerate(table_file):
             l = l.strip().split('\t')
             l = [i.replace('*', '-').replace('.', '-') for i in l]
-            if l.count('-')/len(l) < (1-args.site_representation_cutoff):
+            if l.count('-')/len(l) < (1-args.cutoff_site_representation):
                 table.append(l)
             else:
                 pass
@@ -24,7 +24,7 @@ def main(args):
 parser = argparse.ArgumentParser(description='tbprofiler script',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('table', type=str, help='The input table to convert (stdin if empty)')
 parser.add_argument('output_fasta', type=str, help='The output fasta file')
-parser.add_argument('site_representation_cutoff', type=float, help='Minimum fraction of samples that need to have a call at a site before it is considered')
+parser.add_argument('cutoff_site_representation', type=float, help='Minimum fraction of samples that need to have a call at a site before it is considered')
 parser.set_defaults(func=main)
 args = parser.parse_args()
 args.func(args)

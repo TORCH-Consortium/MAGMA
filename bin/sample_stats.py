@@ -16,12 +16,12 @@ if __name__ == '__main__':
     parser.add_argument('--wgsmetrics_file', dest='wgsmetrics_file', required=True, metavar='wgsmetrics_file', type=str, help='The WGS metrics file')
     parser.add_argument('--ntmfraction_file', dest='ntmfraction_file', required=True, metavar='ntmfraction_file', type=str, help='The NTM fraction file')
 
-    parser.add_argument('--median_coverage_cutoff', metavar='median_coverage_cutoff', default=10, type=float, help='The median coverage cutoff threshold')
-    parser.add_argument('--breadth_of_coverage_cutoff', metavar='breadth_of_coverage_cutoff', default=0.9, type=float, help='The breadth of coverage cutoff threshold')
-    parser.add_argument('--ntm_fraction_cutoff', metavar='ntm_fraction_cutoff', default=0.2, type=float, help='The NTM fraction cutoff threshold')
+    parser.add_argument('--cutoff_median_coverage', metavar='cutoff_median_coverage', default=10, type=float, help='The median coverage cutoff threshold')
+    parser.add_argument('--cutoff_breadth_of_coverage', metavar='cutoff_breadth_of_coverage', default=0.9, type=float, help='The breadth of coverage cutoff threshold')
+    parser.add_argument('--cutoff_ntm_fraction', metavar='cutoff_ntm_fraction', default=0.2, type=float, help='The NTM fraction cutoff threshold')
 
 ## NOTE: This is computed by the multiple_infection_filter script
-#    parser.add_argument('--rel_abundance_cutoff', metavar='rel_abundance_cutoff', default=0.8, type=float, help='The relative abundance cutoff threshold')
+#    parser.add_argument('--cutoff_rel_abundance', metavar='cutoff_rel_abundance', default=0.8, type=float, help='The relative abundance cutoff threshold')
 
     args = vars(parser.parse_args())
 
@@ -46,17 +46,17 @@ if __name__ == '__main__':
             if m:
                 mapped_p = float(m[1])
 
-    if int(wgsmetrics.loc[0, 'MEDIAN_COVERAGE']) >= args['median_coverage_cutoff']:
+    if int(wgsmetrics.loc[0, 'MEDIAN_COVERAGE']) >= args['cutoff_median_coverage']:
         coverage_threshold_met = 1
     else:
         coverage_threshold_met = 0
 
-    if float(wgsmetrics.loc[0, 'PCT_1X']) >= args['breadth_of_coverage_cutoff']:
+    if float(wgsmetrics.loc[0, 'PCT_1X']) >= args['cutoff_breadth_of_coverage']:
         breadth_of_coverage_threshold_met = 1
     else:
         breadth_of_coverage_threshold_met = 0
 
-    if ntm_fraction <= args['ntm_fraction_cutoff']:
+    if ntm_fraction <= args['cutoff_ntm_fraction']:
         ntm_fraction_threshold_met = 1
     else:
         ntm_fraction_threshold_met = 0
