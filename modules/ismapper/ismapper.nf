@@ -27,7 +27,11 @@ process ISMAPPER {
 
 
         # FIXME This would need to updated later for accommodating various static lengths per insertion element. Work with a CSV file name,element_sequence,sequence_length
-        #convert_ismapper_to_vcf.py
+        convert_ismapper_to_vcf.py \\
+            --is_mapper_file \\
+            --reference_file \\
+            --te_file \\
+            --output_vcf_file output.vcf
 
         """
 }

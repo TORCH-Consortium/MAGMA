@@ -88,13 +88,6 @@ if __name__ == '__main__':
     # Step 3: Parse the command-line arguments
     args = parser.parse_args()
 
-    # Define the input files
-    is_mapper_file = 'S011__NC_000962.3_table.txt'
-    vcf_file = 'S011_ismapper.vcf'
-    reference_file = 'NC-000962-3-H37Rv.fa'
-    te_file = 'transposable_elements.csv'
-
-
     # Step 4: Replace hardcoded file paths with variables
     is_mapper_file = args.is_mapper_file
     vcf_file = args.output_vcf_file
