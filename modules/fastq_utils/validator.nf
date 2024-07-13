@@ -21,15 +21,17 @@ process FASTQ_VALIDATOR {
         cat *du_out.txt | csvtk tab2csv | csvtk add-header -n size,file > !{sampleRead.simpleName}.du_stats.csv
 
 
+
         csvtk join -f file \\
         !{sampleRead.simpleName}.md5sum_stats.csv \\
         !{sampleRead.simpleName}.du_stats.csv \\
         > !{sampleRead.simpleName}.du_md5sum_stats.csv
 
+        rm *_out.txt !{sampleRead.simpleName}.du_stats.csv !{sampleRead.simpleName}.md5sum_stats.csv
+
 
         seqkit stats -a -T  !{sampleRead}  > !{sampleRead.simpleName}.seqkit_out.txt
         cat *seqkit_out.txt | csvtk space2tab | csvtk tab2csv > !{sampleRead.simpleName}.seqkit_stats.csv
-
 
 
         csvtk join -f file \\
@@ -37,8 +39,7 @@ process FASTQ_VALIDATOR {
         !{sampleRead.simpleName}.du_md5sum_stats.csv \\
         > !{sampleRead.simpleName}.fastq_statistics.csv
 
-
-        rm *_out.txt !{sampleRead.simpleName}.du_stats.csv !{sampleRead.simpleName}.md5sum_stats.csv
+        rm *_out.txt
 
 
         !{params.fastq_validator_path} !{sampleRead} \\
