@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import csv
 from Bio import SeqIO
@@ -18,18 +20,20 @@ def read_reference_genome(reference_file):
         # Read the reference genome using Biopython
         for record in SeqIO.parse(ref_file, "fasta"):
             reference_sequences[record.id] = record.seq
-    return reference_sequences
+            reference_sequence_length = len(record.seq)
+    return reference_sequences, reference_sequence_length
 
 # Function to read the transposable element information
-def read_transposable_elements(te_file):
+def read_transposable_elements(te_file, reference_file):
     te_info = {}
     with open(te_file, 'r') as te_csv:
         reader = csv.DictReader(te_csv)
         for row in reader:
             te_name = row['name']
-            te_length = int(row['length'])
+            _, te_length = read_reference_genome(reference_file)
             te_info[te_name] = te_length
     return te_info
+
 
 # Function to convert ISMapper data to VCF format
 def convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_info):
@@ -87,7 +91,7 @@ if __name__ == '__main__':
     # Define the input files
     is_mapper_file = 'S011__NC_000962.3_table.txt'
     vcf_file = 'S011_ismapper.vcf'
-    reference_file = 'NC-000962-3-H37Rv.gb'
+    reference_file = 'NC-000962-3-H37Rv.fa'
     te_file = 'transposable_elements.csv'
 
 
@@ -99,10 +103,10 @@ if __name__ == '__main__':
 
 
     # Read the reference genome sequence
-    reference_sequences = read_reference_genome(reference_file)
+    reference_sequences, _ = read_reference_genome(reference_file)
 
     # Read the transposable element information
-    te_info = read_transposable_elements(te_file)
+    te_info = read_transposable_elements(te_file, reference_file)
 
     # Run the conversion function
     convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_info)

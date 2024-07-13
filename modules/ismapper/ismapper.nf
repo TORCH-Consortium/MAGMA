@@ -40,8 +40,8 @@ process ISMAPPER {
         mv $sampleName/*/* ismapper/
 
 
-        FIXME This would need to updated later for accommodating various static lengths per insertion element. Work with a CSV file name,element_sequence,sequence_length
-        pythonscript.
+        # FIXME This would need to updated later for accommodating various static lengths per insertion element. Work with a CSV file name,element_sequence,sequence_length
+        convert_ismapper_to_vcf.py
 
         """
 }
