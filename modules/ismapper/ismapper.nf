@@ -18,7 +18,6 @@ process ISMAPPER {
             --t $task.cpus \\
             --output_dir $sampleName \\
             --queries $query \\
-            --log ${prefix} \\
             --reference $reference \\
             --reads $reads
 
