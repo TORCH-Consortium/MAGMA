@@ -32,7 +32,7 @@ process FASTQ_VALIDATOR {
         > !{sampleRead.simpleName}.fastq_statistics.csv
 
 
-        rm *_out.txt *_stats.csv
+        rm *_out.txt
 
 
 
