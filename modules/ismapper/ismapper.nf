@@ -1,7 +1,7 @@
 process ISMAPPER {
 
     input:
-        tuple val(meta), path(reads)
+        tuple val(sampleName), val(meta), path(reads)
         path(reference)
         path(query)
 
