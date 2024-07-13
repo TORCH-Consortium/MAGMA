@@ -1,10 +1,6 @@
 process ISMAPPER {
 
     input:
-        tuple val(sampleName), val(bamRgString), path(sampleReads)
-        path(reference)
-        path("*")
-
         tuple val(meta), path(reads)
         path(reference)
         path(query)
