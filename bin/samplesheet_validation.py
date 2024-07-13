@@ -32,22 +32,22 @@ if __name__ == '__main__':
         fail = False
         for row in reader:
 
-            if 'Library' not in reader.fieldnames or row['Library'] == "":
+            if 'Library' not in reader.fieldnames or row['Library'] == "" or row['Library'] == None:
                 row['Library'] = "1"
 
-            if 'Attempt' not in reader.fieldnames or row['Attempt'] == "":
+            if 'Attempt' not in reader.fieldnames or row['Attempt'] == "" or row['Attempt'] == None:
                 row['Attempt'] = "1"
 
-            if 'Flowcell' not in reader.fieldnames or row['Flowcell'] == "":
+            if 'Flowcell' not in reader.fieldnames or row['Flowcell'] == "" or row['Flowcell'] == None:
                 row['Flowcell'] = "1"
 
-            if 'Lane' not in reader.fieldnames or row['Lane'] == "":
+            if 'Lane' not in reader.fieldnames or row['Lane'] == "" or row['Lane'] == None:
                 row['Lane'] = "1"
 
             # if 'IndexSequence' not in reader.fieldnames or row['IndexSequence'] == "":
             #     row['IndexSequence'] = "1"
 
-            if 'Index Sequence' not in reader.fieldnames or row['Index Sequence'] == "":
+            if 'Index Sequence' not in reader.fieldnames or row['Index Sequence'] == "" or row['Index Sequence'] == None:
                 row['Index Sequence'] = "1"
 
             if 'Study' not in reader.fieldnames or row['Study'] == "":
