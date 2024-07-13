@@ -15,7 +15,6 @@ process ISMAPPER {
         """
 
         ismap \\
-            $options.args \\
             --t $task.cpus \\
             --output_dir $sampleName \\
             --queries $query \\
