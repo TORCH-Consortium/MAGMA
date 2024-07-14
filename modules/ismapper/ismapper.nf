@@ -2,23 +2,23 @@ process ISMAPPER {
 
     input:
         tuple val(sampleName), val(meta), path(reads)
-        path(reference)
-        path(query)
+        path(ref_gbk)
+        path(ref_fasta)
+        path(query_multifasta)
 
 
     output:
         tuple val(meta), path("ismapper/*"), emit: results
 
     script:
-        query_base = query.getSimpleName()
 
         """
 
         ismap \\
             --t $task.cpus \\
             --output_dir $sampleName \\
-            --queries $query \\
-            --reference $reference \\
+            --queries $query_multifasta \\
+            --reference $ref_gbk \\
             --reads $reads
 
         # Reorganize output files
@@ -29,7 +29,7 @@ process ISMAPPER {
         # FIXME This would need to updated later for accommodating various static lengths per insertion element. Work with a CSV file name,element_sequence,sequence_length
         convert_ismapper_to_vcf.py \\
             --is_mapper_file \\
-            --reference_file \\
+            --reference_file $ref_fasta \\
             --te_file \\
             --output_vcf_file output.vcf
 

@@ -25,7 +25,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
     //NOTE: For now we look for a single element, but later on we can add other queries
         ISMAPPER(validated_reads_ch,
                   params.ref_fasta_gb,
-                  "${projectDir}/resources/regions/IS6110_Mtb.fasta")
+                  params.ref_fasta,
+                  params.queries_multifasta)
 
 
         BWA_MEM__DELLY(validated_reads_ch,

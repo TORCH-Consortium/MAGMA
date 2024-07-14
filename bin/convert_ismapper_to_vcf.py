@@ -16,6 +16,7 @@ vcf_header = """##fileformat=VCFv4.2
 # Function to read the reference genome
 def read_reference_genome(reference_file):
     reference_sequences = {}
+    reference_sequence_length = 0
     with open(reference_file, 'r') as ref_file:
         # Read the reference genome using Biopython
         for record in SeqIO.parse(ref_file, "fasta"):
@@ -24,27 +25,32 @@ def read_reference_genome(reference_file):
     return reference_sequences, reference_sequence_length
 
 # Function to read the transposable element information
-def read_transposable_elements(te_file, reference_file):
+def read_transposable_elements(te_file):
     te_info = {}
-    with open(te_file, 'r') as te_csv:
-        reader = csv.DictReader(te_csv)
-        for row in reader:
-            te_name = row['name']
-            _, te_length = read_reference_genome(reference_file)
-            te_info[te_name] = te_length
-    return te_info
+    with open(te_file, 'r') as te_file:
+        # Read the multifasta using Biopython
+        for record in SeqIO.parse(te_file, "fasta"):
+            te_name = record.id
+            te_info[te_name] = len(record.seq)
 
+        # NOTE: Renable in case we need to dump this on disk.
+        # with open("temp_transposable_elements.csv", mode='w', newline='') as file:
+        #     writer = csv.writer(file)
+        #     writer.writerow(["name", "length"])
+        #     for te_name, te_length in te_info.items():
+        #         writer.writerow([te_name, te_length])
+    return te_info
 
 # Function to convert ISMapper data to VCF format
 def convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_info):
-    with open(is_mapper_file, 'r') as infile, open(vcf_file, 'w') as outfile:
+    with open(is_mapper_file, 'r') as infile_is_mapper, open(vcf_file, 'w') as outfile:
         # Write the VCF header
         outfile.write(vcf_header)
 
         # Read the ISMapper TSV file
-        reader = csv.DictReader(infile, delimiter='\t')
+        reader_is_mapper = csv.DictReader(infile_is_mapper, delimiter='\t')
 
-        for row in reader:
+        for row in reader_is_mapper:
             chrom = "NC-000962-3-H37Rv"  # Using the specified chromosome
             pos = int(row['x'])  # Convert position to integer
             region_id = row['region']
@@ -99,7 +105,7 @@ if __name__ == '__main__':
     reference_sequences, _ = read_reference_genome(reference_file)
 
     # Read the transposable element information
-    te_info = read_transposable_elements(te_file, reference_file)
+    te_info = read_transposable_elements(te_file)
 
     # Run the conversion function
     convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_info)
