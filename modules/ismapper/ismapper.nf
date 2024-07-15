@@ -30,7 +30,7 @@ process ISMAPPER {
         convert_ismapper_to_vcf.py \\
             --is_mapper_file \\
             --reference_file $ref_fasta \\
-            --te_file \\
+            --query_file $query_multifasta \\
             --output_vcf_file output.vcf
 
         """

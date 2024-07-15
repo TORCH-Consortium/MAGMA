@@ -25,11 +25,11 @@ def read_reference_genome(reference_file):
     return reference_sequences, reference_sequence_length
 
 # Function to read the transposable element information
-def read_transposable_elements(te_file):
+def read_transposable_elements(query_file):
     te_info = {}
-    with open(te_file, 'r') as te_file:
+    with open(query_file, 'r') as query_file:
         # Read the multifasta using Biopython
-        for record in SeqIO.parse(te_file, "fasta"):
+        for record in SeqIO.parse(query_file, "fasta"):
             te_name = record.id
             te_info[te_name] = len(record.seq)
 
@@ -56,7 +56,7 @@ def convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_i
             region_id = row['region']
             ref = reference_sequences[chrom][pos - 1]  # Extract the reference allele from the reference sequence
             orientation = row['orientation']
-            #FIXME Hard-code the name of this specific element for now.
+            #FIXME Hard-code the name of this specific element
             te_name = 'IS6110'
             te_length = te_info.get(te_name, 'NA')
             alt = f"{ref}[<{te_name},{orientation}>:{te_length}["  # Use transposable element, orientation, and its length
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert ISMapper output to VCF format.')
     parser.add_argument('--is_mapper_file', required=True, help='Path to the ISMapper output file.')
     parser.add_argument('--reference_file', required=True, help='Path to the reference genome file.')
-    parser.add_argument('--te_file', required=True, help='Path to the transposable elements information file.')
+    parser.add_argument('--query_file', required=True, help='Path to the transposable elements multifasta file.')
     parser.add_argument('--output_vcf_file', required=True, help='Path to the output VCF file.')
 
     # Step 3: Parse the command-line arguments
@@ -99,14 +99,14 @@ if __name__ == '__main__':
     is_mapper_file = args.is_mapper_file
     vcf_file = args.output_vcf_file
     reference_file = args.reference_file
-    te_file = args.te_file
+    qeury_file = args.query_file
 
 
     # Read the reference genome sequence
     reference_sequences, _ = read_reference_genome(reference_file)
 
     # Read the transposable element information
-    te_info = read_transposable_elements(te_file)
+    query_info = read_transposable_elements(query_file)
 
     # Run the conversion function
-    convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_info)
+    convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, query_info)
