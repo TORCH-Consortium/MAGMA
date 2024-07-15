@@ -56,7 +56,8 @@ def convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_i
             region_id = row['region']
             ref = reference_sequences[chrom][pos - 1]  # Extract the reference allele from the reference sequence
             orientation = row['orientation']
-            te_name = row['transposable_element']
+            #FIXME Hard-code the name of this specific element for now.
+            te_name = 'IS6110'
             te_length = te_info.get(te_name, 'NA')
             alt = f"{ref}[<{te_name},{orientation}>:{te_length}["  # Use transposable element, orientation, and its length
             qual = '.'
