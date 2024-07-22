@@ -103,7 +103,7 @@ if __name__ == '__main__':
     is_mapper_dir = args.is_mapper_dir
     vcf_file = args.output_vcf_file
     reference_file = args.reference_file
-    qeury_file = args.query_file
+    query_file = args.query_file
 
 
     # Read the reference genome sequence
