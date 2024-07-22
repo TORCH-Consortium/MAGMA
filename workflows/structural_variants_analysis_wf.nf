@@ -146,9 +146,9 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
 
 
-        vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch )
+        vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch ).collect()
 
-        vcfs_string_ch = delly_vcfs_string_ch.concat ( ismapper_vcfs_string_ch )
+        vcfs_string_ch = delly_vcfs_string_ch.concat ( ismapper_vcfs_string_ch ).collect()
 
 
         //TODO: Merge the ISMAPPER output
