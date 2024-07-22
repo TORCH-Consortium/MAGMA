@@ -3,10 +3,10 @@ process BCFTOOLS_VIEW__ISMAPPER {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        tuple val(meta), path(vcf)
+        tuple val(sampleName), path(vcf)
 
     output:
-        tuple val(meta), path("*.ismapper.vcf.gz")
+        tuple val(sampleName), path("*.ismapper.vcf.gz")
 
     script:
 

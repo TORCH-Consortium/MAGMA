@@ -8,8 +8,8 @@ process ISMAPPER {
 
 
     output:
-        tuple val(meta), path("*.ismapper.vcf"), emit: formatted_vcf
-        tuple val(meta), path("ismapper"), emit: results_dir
+        tuple val(sampleName), path("*.ismapper.vcf"), emit: formatted_vcf
+        tuple val(sampleName), path("ismapper"), emit: results_dir
 
     script:
 
