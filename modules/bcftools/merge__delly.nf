@@ -3,9 +3,7 @@ process BCFTOOLS_MERGE__DELLY {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        path(vcfs_file)
-        path("vcfs_delly/*")
-        path("vcfs_ismapper/*")
+        path("*")
 
     output:
         tuple val(params.vcf_name), path("*.vcf.gz.csi"), path("*.${params.file_format}.vcf.gz")
@@ -13,7 +11,9 @@ process BCFTOOLS_MERGE__DELLY {
     script:
 
         """
-        bcftools merge -o ${params.vcf_name}.${params.file_format}.vcf -l ${vcfs_file}
+        ls *gz >> vcf_files.txt
+
+        bcftools merge -o ${params.vcf_name}.${params.file_format}.vcf -l vcfs_file.txt
         bgzip ${params.vcf_name}.${params.file_format}.vcf
         ${params.bcftools_path} index ${params.vcf_name}.${params.file_format}.vcf.gz
         """
