@@ -8,7 +8,7 @@ include { GATK_APPLY_BQSR as GATK_APPLY_BQSR__DELLY } from "../modules/gatk/appl
 include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__DELLY } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__DELLY )
 include { BCFTOOLS_VIEW__DELLY } from "../modules/bcftools/view__delly.nf" addParams ( params.BCFTOOLS_VIEW__DELLY )
 include { BCFTOOLS_VIEW__ISMAPPER } from "../modules/bcftools/view__ismapper.nf" addParams ( params.BCFTOOLS_VIEW__ISMAPPER )
-include { BCFTOOLS_MERGE as  BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE__DELLY )
+include { BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/merge__delly.nf" addParams ( params.BCFTOOLS_MERGE__DELLY )
 include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__DELLY } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__DELLY)
 include { ISMAPPER } from "../modules/ismapper/ismapper.nf" addParams ( params.ISMAPPER )
