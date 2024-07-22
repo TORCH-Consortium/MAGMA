@@ -106,8 +106,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
                                 .collect(sort: true)
+                                .view{ it }
                                 .dump(tag:'STRUCTURAL_VARIANT_WF: vcfs_and_indexes_ch', pretty: true)
-                                //.view{ it }
 
         vcfs_string_ch = BCFTOOLS_VIEW__DELLY.out
                                 .collect()
@@ -115,12 +115,12 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .filter { it.class.name  != "java.lang.String" }
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
+                                .view { it }
                                 .dump(tag:'STRUCTURAL_VARIANT_WF: vcfs_string_ch', pretty: true)
                                 //.reduce { a, b -> "$a $b " }
-                                //.view { it }
 
 
-    //TODO: Merge the ISMAPPER output
+        //TODO: Merge the ISMAPPER output
         vcfs_file = vcfs_string_ch.collectFile(name: 'structural_variant_vcfs.txt', newLine: true)
         BCFTOOLS_MERGE__DELLY(vcfs_file, vcfs_and_indexes_ch)
 
