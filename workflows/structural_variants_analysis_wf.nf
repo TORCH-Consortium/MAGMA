@@ -152,7 +152,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
 
         //TODO: Merge the ISMAPPER output
-        vcfs_file = vcfs_string_ch.collectFile(name: 'structural_variant_vcfs.txt', newLine: true)
+        vcfs_file = vcfs_string_ch.collectFile(name: "$params.outdir/structural_variant_vcfs.txt", newLine: true)
         BCFTOOLS_MERGE__DELLY(vcfs_file, delly_vcfs_and_indexes_ch, ismapper_vcfs_and_indexes_ch)
 
         def resistanceDb =  []
