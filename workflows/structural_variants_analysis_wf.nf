@@ -148,7 +148,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
         vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch)
 
-        vcfs_string_ch = delly_vcfs_string_ch.concat ( delly_vcfs_string_ch)
+        vcfs_string_ch = delly_vcfs_string_ch.concat ( ismapper_vcfs_string_ch)
 
 
         //TODO: Merge the ISMAPPER output
@@ -162,5 +162,5 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         TBPROFILER_COLLATE__DELLY(params.vcf_name, TBPROFILER_VCF_PROFILE__DELLY.out, resistanceDb)
 
     emit:
-    structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
+        structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
 }
