@@ -8,7 +8,8 @@ process ISMAPPER {
 
 
     output:
-        tuple val(meta), path("ismapper/*"), emit: results
+        tuple val(meta), path("*.ismapper.vcf.gz"), emit: formatted_vcf
+        tuple val(meta), path("ismapper/*"), emit: results_dir
 
     script:
 
@@ -26,12 +27,16 @@ process ISMAPPER {
         mv $sampleName/*/* ismapper/
 
 
-        # FIXME This would need to updated later for accommodating various static lengths per insertion element. Work with a CSV file name,element_sequence,sequence_length
+        # Reformat the is-mapper output to a standard VCF
+        # FIXME the IS element name is hard-coded
         convert_ismapper_to_vcf.py \\
-            --is_mapper_file \\
+            --is_mapper_dir ismapper/IS6110/ \\
             --reference_file $ref_fasta \\
             --query_file $query_multifasta \\
-            --output_vcf_file output.vcf
+            --output_vcf_file ${sampleName}.ismapper.vcf
+
+
+        bcftools view -Oz -o ${sampleName}.ismapper.vcf.gz ${sampleName}.ismapper.vcf
 
         """
 }

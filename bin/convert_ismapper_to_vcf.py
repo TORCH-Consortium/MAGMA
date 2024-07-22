@@ -42,8 +42,12 @@ def read_transposable_elements(query_file):
     return te_info
 
 # Function to convert ISMapper data to VCF format
-def convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_info):
-    with open(is_mapper_file, 'r') as infile_is_mapper, open(vcf_file, 'w') as outfile:
+def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_info):
+
+
+    is_mapper_txt_file = glob.glob(is_mapper_dir + "/" + "*.txt")
+
+    with open(is_mapper_txt_file, 'r') as infile_is_mapper, open(vcf_file, 'w') as outfile:
         # Write the VCF header
         outfile.write(vcf_header)
 
@@ -87,7 +91,7 @@ def convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, te_i
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert ISMapper output to VCF format.')
-    parser.add_argument('--is_mapper_file', required=True, help='Path to the ISMapper output file.')
+    parser.add_argument('--is_mapper_dir', required=True, help='Path to the ISMapper output directory.')
     parser.add_argument('--reference_file', required=True, help='Path to the reference genome file.')
     parser.add_argument('--query_file', required=True, help='Path to the transposable elements multifasta file.')
     parser.add_argument('--output_vcf_file', required=True, help='Path to the output VCF file.')
@@ -96,7 +100,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Step 4: Replace hardcoded file paths with variables
-    is_mapper_file = args.is_mapper_file
+    is_mapper_dir = args.is_mapper_dir
     vcf_file = args.output_vcf_file
     reference_file = args.reference_file
     qeury_file = args.query_file
@@ -109,4 +113,4 @@ if __name__ == '__main__':
     query_info = read_transposable_elements(query_file)
 
     # Run the conversion function
-    convert_is_mapper_to_vcf(is_mapper_file, vcf_file, reference_sequences, query_info)
+    convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, query_info)
