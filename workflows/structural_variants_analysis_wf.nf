@@ -124,7 +124,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
   //FIXME save the string to an intermediate file
 
-        vcfs_and_indexes_ch = BCFTOOLS_VIEW__DELLY.out
+        delly_vcfs_and_indexes_ch = BCFTOOLS_VIEW__DELLY.out
                                 .collect()
                                 .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
@@ -132,7 +132,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .view{ it }
                                 .dump(tag:'STRUCTURAL_VARIANT_WF: vcfs_and_indexes_ch', pretty: true)
 
-        vcfs_string_ch = BCFTOOLS_VIEW__DELLY.out
+        delly_vcfs_string_ch = BCFTOOLS_VIEW__DELLY.out
                                 .collect()
                                 .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
@@ -143,6 +143,12 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 //.reduce { a, b -> "$a $b " }
 
 
+
+
+
+        vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch)
+
+        vcfs_string_ch = delly_vcfs_string_ch.concat ( delly_vcfs_string_ch)
 
 
         //TODO: Merge the ISMAPPER output
