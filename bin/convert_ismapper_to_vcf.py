@@ -2,6 +2,7 @@
 
 import argparse
 import csv
+import glob
 from Bio import SeqIO
 
 
