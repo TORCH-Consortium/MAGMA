@@ -39,7 +39,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .flatten()
                                 .filter { it.class.name  != "java.lang.String" }
                                 .collect(sort: true)
-                                .view { "STRUCTURAL_VARIANT_WF: ismapper_vcfs_string_ch: $it"  }
+                                .view { "STRUCTURAL_VARIANT_WF: ismapper_vcfs_and_indexes_ch: $it"  }
                                 //.dump(tag:'STRUCTURAL_VARIANT_WF: ismapper_vcfs_and_indexes_ch', pretty: true)
 
         ismapper_vcfs_string_ch = BCFTOOLS_VIEW__ISMAPPER.out
@@ -146,9 +146,9 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
 
 
-        vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch)
+        vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch )
 
-        vcfs_string_ch = delly_vcfs_string_ch.concat ( ismapper_vcfs_string_ch)
+        vcfs_string_ch = delly_vcfs_string_ch.concat ( ismapper_vcfs_string_ch )
 
 
         //TODO: Merge the ISMAPPER output
