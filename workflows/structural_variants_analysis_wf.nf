@@ -33,6 +33,29 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         BCFTOOLS_VIEW__ISMAPPER ( ISMAPPER.out.formatted_vcf )
 
 
+
+        ismapper_vcfs_and_indexes_ch = BCFTOOLS_VIEW__ISMAPPER.out
+                                .collect()
+                                .flatten()
+                                .filter { it.class.name  != "java.lang.String" }
+                                .collect(sort: true)
+                                .view { "STRUCTURAL_VARIANT_WF: ismapper_vcfs_string_ch: $it"  }
+                                //.dump(tag:'STRUCTURAL_VARIANT_WF: ismapper_vcfs_and_indexes_ch', pretty: true)
+
+        ismapper_vcfs_string_ch = BCFTOOLS_VIEW__ISMAPPER.out
+                                .collect()
+                                .flatten()
+                                .filter { it.class.name  != "java.lang.String" }
+                                .filter { it.extension  == "gz" }
+                                .map { it -> it.name }
+                                .view { "STRUCTURAL_VARIANT_WF: ismapper_vcfs_string_ch: $it"  }
+                                //.dump(tag:'STRUCTURAL_VARIANT_WF: ismapper_vcfs_string_ch', pretty: true)
+                                //.reduce { a, b -> "$a $b " }
+
+
+
+
+
         BWA_MEM__DELLY(validated_reads_ch,
                   params.ref_fasta,
                   [params.ref_fasta_dict,
@@ -118,6 +141,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .view { it }
                                 .dump(tag:'STRUCTURAL_VARIANT_WF: vcfs_string_ch', pretty: true)
                                 //.reduce { a, b -> "$a $b " }
+
+
 
 
         //TODO: Merge the ISMAPPER output
