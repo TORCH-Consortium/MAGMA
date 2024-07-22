@@ -8,8 +8,8 @@ process ISMAPPER {
 
 
     output:
-        tuple val(meta), path("*.ismapper.vcf.gz"), emit: formatted_vcf
-        tuple val(meta), path("ismapper/*"), emit: results_dir
+        tuple val(meta), path("*.ismapper.vcf"), emit: formatted_vcf
+        tuple val(meta), path("ismapper"), emit: results_dir
 
     script:
 
@@ -34,9 +34,6 @@ process ISMAPPER {
             --reference_file $ref_fasta \\
             --query_file $query_multifasta \\
             --output_vcf_file ${sampleName}.ismapper.vcf
-
-
-        bcftools view -Oz -o ${sampleName}.ismapper.vcf.gz ${sampleName}.ismapper.vcf
 
         """
 }

@@ -46,7 +46,7 @@ def read_transposable_elements(query_file):
 def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_info):
 
 
-    is_mapper_txt_file = glob.glob(is_mapper_dir + "*.txt")
+    is_mapper_txt_file = glob.glob(is_mapper_dir + "*.txt")[0]
 
     with open(is_mapper_txt_file, 'r') as infile_is_mapper, open(vcf_file, 'w') as outfile:
         # Write the VCF header

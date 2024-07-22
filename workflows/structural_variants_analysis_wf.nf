@@ -7,6 +7,7 @@ include { GATK_BASE_RECALIBRATOR as GATK_BASE_RECALIBRATOR__DELLY } from "../mod
 include { GATK_APPLY_BQSR as GATK_APPLY_BQSR__DELLY } from "../modules/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR__DELLY )
 include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__DELLY } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__DELLY )
 include { BCFTOOLS_VIEW__TBP } from "../modules/bcftools/view__tbp.nf" addParams ( params.BCFTOOLS_VIEW__TBP )
+include { BCFTOOLS_VIEW__ISMAPPER } from "../modules/bcftools/view__ismapper.nf" addParams ( params.BCFTOOLS_VIEW__ISMAPPER )
 include { BCFTOOLS_MERGE as  BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE__DELLY )
 include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__DELLY } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__DELLY)
@@ -22,11 +23,14 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
     main:
 
 
-    //NOTE: For now we look for a single element, but later on we can add other queries
+        //FIXME: For now we look for a single element, but we need to adapt the
+        //flow for adding other queries
         ISMAPPER(validated_reads_ch,
                   params.ref_fasta_gb,
                   params.ref_fasta,
                   params.queries_multifasta)
+
+        BCFTOOLS_VIEW__ISMAPPER ( ISMAPPER.out.formatted_vcf )
 
 
         BWA_MEM__DELLY(validated_reads_ch,
@@ -63,9 +67,9 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         if (!params.skip_base_recalibration) {
             // call_base_recal
             GATK_BASE_RECALIBRATOR__DELLY(GATK_MARK_DUPLICATES__DELLY.out.bam_tuple,
-                                params.dbsnp_vcf,
-                                params.ref_fasta,
-                                [params.ref_fasta_fai, params.ref_fasta_dict, params.dbsnp_vcf_tbi ] )
+                                            params.dbsnp_vcf,
+                                            params.ref_fasta,
+                                            [params.ref_fasta_fai, params.ref_fasta_dict, params.dbsnp_vcf_tbi ] )
 
             // call_apply_bqsr
             GATK_APPLY_BQSR__DELLY(GATK_BASE_RECALIBRATOR__DELLY.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
