@@ -6,7 +6,7 @@ include { GATK_MARK_DUPLICATES as  GATK_MARK_DUPLICATES__DELLY } from "../module
 include { GATK_BASE_RECALIBRATOR as GATK_BASE_RECALIBRATOR__DELLY } from "../modules/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR__DELLY )
 include { GATK_APPLY_BQSR as GATK_APPLY_BQSR__DELLY } from "../modules/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR__DELLY )
 include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__DELLY } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__DELLY )
-include { BCFTOOLS_VIEW__DELLY } from "../modules/bcftools/view__tbp.nf" addParams ( params.BCFTOOLS_VIEW__DELLY )
+include { BCFTOOLS_VIEW__DELLY } from "../modules/bcftools/view__delly.nf" addParams ( params.BCFTOOLS_VIEW__DELLY )
 include { BCFTOOLS_VIEW__ISMAPPER } from "../modules/bcftools/view__ismapper.nf" addParams ( params.BCFTOOLS_VIEW__ISMAPPER )
 include { BCFTOOLS_MERGE as  BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE__DELLY )
 include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
