@@ -6,13 +6,15 @@ process BCFTOOLS_VIEW__ISMAPPER {
         tuple val(sampleName), path(vcf)
 
     output:
-        tuple val(sampleName), path("*.ismapper.vcf.gz")
+        tuple val(sampleName), path("*.ismapper.vcf.gz"), path("*.ismapper.vcf.gz.csi")
+
 
     script:
 
         """
         bcftools view -Oz -o ${sampleName}.ismapper.vcf.gz $vcf
 
+        bcftools index ${sampleName}.ismapper.vcf.gz
         """
 
     stub:
