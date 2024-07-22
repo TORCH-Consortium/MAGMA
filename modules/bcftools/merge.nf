@@ -4,10 +4,10 @@ process BCFTOOLS_MERGE {
 
     input:
         path(vcfs_file)
-        path("*")
+        path("vcfs_delly/*")
+        path("vcfs_ismapper/*")
 
     output:
-        //tuple val(params.vcf_name), path("*.${params.file_format}.vcf.gz"), path("*.vcf.gz.csi")
         tuple val(params.vcf_name), path("*.vcf.gz.csi"), path("*.${params.file_format}.vcf.gz")
 
     script:
