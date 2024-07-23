@@ -5,12 +5,24 @@ import csv
 import glob
 from Bio import SeqIO
 
-
-
 # Define the VCF header
 vcf_header = """##fileformat=VCFv4.2
 ##source=ISMapper
 ##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=Orientation,Number=1,Type=String,Description="Orientation of the transposable element">
+##INFO=<ID=Gap,Number=1,Type=Integer,Description="Gap between sequences">
+##INFO=<ID=Call,Number=1,Type=String,Description="Call information">
+##INFO=<ID=Percent_ID,Number=1,Type=Float,Description="Percent identity">
+##INFO=<ID=Percent_cov,Number=1,Type=Float,Description="Percent coverage">
+##INFO=<ID=Left_gene,Number=1,Type=String,Description="Left gene">
+##INFO=<ID=Left_description,Number=1,Type=String,Description="Description of the left gene">
+##INFO=<ID=Left_strand,Number=1,Type=String,Description="Strand of the left gene">
+##INFO=<ID=Left_distance,Number=1,Type=Integer,Description="Distance to the left gene">
+##INFO=<ID=Right_gene,Number=1,Type=String,Description="Right gene">
+##INFO=<ID=Right_description,Number=1,Type=String,Description="Description of the right gene">
+##INFO=<ID=Right_strand,Number=1,Type=String,Description="Strand of the right gene">
+##INFO=<ID=Right_distance,Number=1,Type=Integer,Description="Distance to the right gene">
+##INFO=<ID=Gene_interruption,Number=1,Type=String,Description="Gene interruption status">
 #CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO
 """
 
@@ -45,7 +57,6 @@ def read_transposable_elements(query_file):
 # Function to convert ISMapper data to VCF format
 def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_info):
 
-
     is_mapper_txt_file = glob.glob(is_mapper_dir + "*.txt")[0]
 
     with open(is_mapper_txt_file, 'r') as infile_is_mapper, open(vcf_file, 'w') as outfile:
@@ -61,7 +72,7 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
             region_id = row['region']
             ref = reference_sequences[chrom][pos - 1]  # Extract the reference allele from the reference sequence
             orientation = row['orientation']
-            #FIXME Hard-code the name of this specific element
+            # FIXME Hard-code the name of this specific element
             te_name = 'IS6110'
             te_length = te_info.get(te_name, 'NA')
             alt = f"{ref}[<{te_name},{orientation}>:{te_length}["  # Use transposable element, orientation, and its length
@@ -105,7 +116,6 @@ if __name__ == '__main__':
     vcf_file = args.output_vcf_file
     reference_file = args.reference_file
     query_file = args.query_file
-
 
     # Read the reference genome sequence
     reference_sequences, _ = read_reference_genome(reference_file)
