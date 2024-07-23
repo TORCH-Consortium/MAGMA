@@ -4,7 +4,7 @@ set -uex
 # NOTE: Make sure you've set the environment correctly and are logged in to the registry.
 
 CONTAINER_NAME=misc
-CONTAINER_TAG=2.0.0-beta
+CONTAINER_TAG=2.0.0-theta
 DOCKER_NAMESPACE="ghcr.io/torch-consortium/magma"
 CONTAINER_DIR=misc
 

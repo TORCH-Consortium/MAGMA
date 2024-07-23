@@ -7,3 +7,6 @@ RUN micromamba install -y -f /tmp/misc-env.yml -n base
 
 RUN micromamba install -y -n base conda-forge::procps-ng  && micromamba clean -a -y
 
+FROM base AS condaenv
+
+ENV PATH /opt/conda/bin:$PATH
