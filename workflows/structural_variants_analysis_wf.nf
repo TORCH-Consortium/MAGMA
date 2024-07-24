@@ -40,8 +40,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .filter { it.class.name  != "java.lang.String" }
                                 .unique()
                                 .collect(sort: true)
-                                .view { "ismapper_vcfs_and_indexes_ch: $it"  }
-                                //.dump(tag:'STRUCTURAL_VARIANT_WF: ismapper_vcfs_and_indexes_ch', pretty: true)
+                                .dump(tag:'STRUCTURAL_VARIANTS_WF: ismapper_vcfs_and_indexes_ch', pretty: true)
+                                //.view { "ismapper_vcfs_and_indexes_ch: $it"  }
 
         ismapper_vcfs_string_ch = BCFTOOLS_VIEW__ISMAPPER.out
                                 .collect()
@@ -49,8 +49,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .filter { it.class.name  != "java.lang.String" }
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
-                                .view { "ismapper_vcfs_string_ch: $it"  }
-                                //.dump(tag:'STRUCTURAL_VARIANT_WF: ismapper_vcfs_string_ch', pretty: true)
+                                .dump(tag:'STRUCTURAL_VARIANTS_WF: ismapper_vcfs_string_ch', pretty: true)
+                                //.view { "ismapper_vcfs_string_ch: $it"  }
                                 //.reduce { a, b -> "$a $b " }
 
 
@@ -78,7 +78,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
             }
         }
         .groupTuple()
-        //.dump(tag: "CALL_WF normalize_libraries_ch : ", pretty: true)
+        //.dump(tag: "STRUCTURAL_VARIANTS_WF normalize_libraries_ch : ", pretty: true)
 
         normalize_filtered_ch = samples_ch.join(normalize_libraries_ch)
 
@@ -131,8 +131,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .filter { it.class.name  != "java.lang.String" }
                                 .unique()
                                 .collect(sort: true)
-                                .view { "delly_vcfs_and_indexes_ch $it" }
-                                //.dump(tag:'STRUCTURAL_VARIANT_WF: delly_vcfs_and_indexes_ch', pretty: true)
+                                .dump(tag:'STRUCTURAL_VARIANTS_WF: delly_vcfs_and_indexes_ch', pretty: true)
+                                //.view { "delly_vcfs_and_indexes_ch $it" }
 
         delly_vcfs_string_ch = BCFTOOLS_VIEW__DELLY.out
                                 .collect()
@@ -140,8 +140,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .filter { it.class.name  != "java.lang.String" }
                                 .filter { it.extension  == "gz" }
                                 .map { it -> it.name }
-                                .view { "delly_vcfs_string_ch $it" }
-                                //.dump(tag:'STRUCTURAL_VARIANT_WF: delly_vcfs_string_ch', pretty: true)
+                                .dump(tag:'STRUCTURAL_VARIANTS_WF: delly_vcfs_string_ch', pretty: true)
+                                //.view { "delly_vcfs_string_ch $it" }
                                 //.reduce { a, b -> "$a $b " }
 
 
