@@ -8,7 +8,7 @@ workflow VALIDATE_FASTQS_WF {
 
     main:
 
-    //NOTE: Expected structure of input CSV samplesheet
+    //NOTE: Expected structure of input CSV samplesheet, including all optional fields
     //   0     1       2       3    4  5     6      7       8
     // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
 
