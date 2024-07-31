@@ -9,7 +9,7 @@ process GATK_APPLY_BQSR {
         path("*")
 
     output:
-        tuple val(sampleName), path("*.recal_reads.bam")
+        tuple val(sampleName), path("*.baserecalibrated.bam")
 
     script:
 
@@ -18,7 +18,7 @@ process GATK_APPLY_BQSR {
             -R ${ref_fasta} \\
             -I ${dedupedBam} \\
             --bqsr ${recalibrationTable} \\
-            -O ${sampleName}.recal_reads.bam
+            -O ${sampleName}.baserecalibrated.bam
         """
 
     stub:
@@ -28,9 +28,8 @@ process GATK_APPLY_BQSR {
             -R ${ref_fasta} \\
             -I ${dedupedBam} \\
             --bqsr ${recalibrationTable} \\
-            -O ${sampleName}.recal_reads.bam"
+            -O ${sampleName}.baserecalibrated.bam"
 
-        touch ${sampleName}.recal_reads.bam
+        touch ${sampleName}.baserecalibrated.bam
         """
 }
-
