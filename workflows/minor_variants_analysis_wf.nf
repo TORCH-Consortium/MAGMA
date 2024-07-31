@@ -1,4 +1,4 @@
-include { BCFTOOLS_MERGE as BCFTOOLS_MERGE__LOFREQ } from "../modules/bcftools/merge.nf" addParams ( params.BCFTOOLS_MERGE__LOFREQ )
+include { BCFTOOLS_MERGE__LOFREQ } from "../modules/bcftools/merge__lofreq.nf" addParams ( params.BCFTOOLS_MERGE__LOFREQ )
 include { BGZIP } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
 include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../modules/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__LOFREQ)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
@@ -20,9 +20,9 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
                                 //.dump(tag:'MINOR_VARIANT_WF: vcfs_string_ch', pretty: true)
 
         // merge_call_resistance_lofreq
-        //NOTE: Samples implicitly get filtered here if they don't have any identified variants
-	      vcfs_file = vcfs_string_ch.collectFile(name: 'minor_variant_vcfs.txt', newLine: true)
+        vcfs_file = vcfs_string_ch.collectFile(name: "${params.outdir}/minor_variant_vcfs.txt", newLine: true)
 
+        //NOTE: Samples implicitly get filtered here if they don't have any identified variants
         BCFTOOLS_MERGE__LOFREQ(vcfs_file, reformatted_lofreq_vcfs_tuple_ch)
 
         def resistanceDb =  []
@@ -36,7 +36,7 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
         UTILS_MULTIPLE_INFECTION_FILTER(TBPROFILER_COLLATE__LOFREQ.out.per_sample_results)
 
 
-     emit: 
+     emit:
          approved_samples_ch = UTILS_MULTIPLE_INFECTION_FILTER.out.approved_samples
          rejected_samples_ch = UTILS_MULTIPLE_INFECTION_FILTER.out.rejected_samples
          minor_variants_results_ch = TBPROFILER_COLLATE__LOFREQ.out.per_sample_results

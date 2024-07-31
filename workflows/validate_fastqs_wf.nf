@@ -1,5 +1,3 @@
-//FIXME Replace the name of FASTQ_VALIDATOR with FASTQ_REPORT
-//include { UTILS_FASTQ_REPORT } from '../modules/utils/fastq_report.nf' addParams (params.FASTQ_REPORT)
 include { FASTQ_VALIDATOR } from '../modules/fastq_utils/validator.nf' addParams ( params.FASTQ_VALIDATOR  )
 include { UTILS_FASTQ_COHORT_VALIDATION } from '../modules/utils/fastq_cohort_validation.nf' addParams ( params.UTILS_FASTQ_COHORT_VALIDATION  )
 
@@ -10,7 +8,7 @@ workflow VALIDATE_FASTQS_WF {
 
     main:
 
-    //NOTE: Expected structure of input CSV samplesheet
+    //NOTE: Expected structure of input CSV samplesheet, including all optional fields
     //   0     1       2       3    4  5     6      7       8
     // Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
 
