@@ -23,7 +23,12 @@ vcf_header = """##fileformat=VCFv4.2
 ##INFO=<ID=Right_strand,Number=1,Type=String,Description="Strand of the right gene">
 ##INFO=<ID=Right_distance,Number=1,Type=Integer,Description="Distance to the right gene">
 ##INFO=<ID=Gene_interruption,Number=1,Type=String,Description="Gene interruption status">
-#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO
+##FORMAT=<ID=AD,Number=R,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth (reads with MQ=255 or with bad mates are filtered)">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description="Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification">
+#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tSAMPLE
 """
 
 # Function to read the reference genome
@@ -95,11 +100,12 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
                 f"Right_distance={row['right_distance']};"
                 f"Gene_interruption={row['gene_interruption']}"
             )
+            format_field = "GT:AD:DP:GQ:PL"
+            sample_field = "1:10,10:10:99:1800.0"
 
             # Write the VCF entry
-            vcf_entry = f"{chrom}\t{pos}\t{region_id}\t{ref}\t{alt}\t{qual}\t{filter_status}\t{info}\n"
+            vcf_entry = f"{chrom}\t{pos}\t{region_id}\t{ref}\t{alt}\t{qual}\t{filter_status}\t{info}\t{format_field}\t{sample_field}\n"
             outfile.write(vcf_entry)
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert ISMapper output to VCF format.')
