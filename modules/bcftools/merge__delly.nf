@@ -36,7 +36,7 @@ process BCFTOOLS_MERGE__DELLY {
     script:
 
         """
-        bcftools merge *.gz -o ${params.vcf_name}.${params.file_format}.vcf --force-samples
+        bcftools merge *.gz -o ${params.vcf_name}.${params.file_format}.vcf
         bgzip ${params.vcf_name}.${params.file_format}.vcf
         ${params.bcftools_path} index ${params.vcf_name}.${params.file_format}.vcf.gz
         """
