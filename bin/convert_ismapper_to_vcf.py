@@ -106,7 +106,7 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
             orientation = row['orientation']
             te_name = 'IS6110'
             te_length = te_info.get(te_name, 'NA')
-            qual = '.'
+            qual = '1000'
             filter_status = 'PASS'
             info = (
                 f"SVTYPE=INS;"
