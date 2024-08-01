@@ -126,7 +126,13 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
                 f"Gene_interruption={row['gene_interruption']}"
             )
             format_field = "GT:AD:DP:GQ:PL"
-            sample_field = "1:10,10:10:99:1800"
+            ad_value = "10,10"  # Allelic depths for the ref and alt alleles
+            dp_value = "10"     # Approximate read depth
+            gq_value = "99"     # Genotype Quality
+            gt_value = "1"      # Genotype
+            pl_value = "1800"   # Normalized, Phred-scaled likelihoods
+
+            sample_field = f"{gt_value}:{ad_value}:{dp_value}:{gq_value}:{pl_value}"
 
             # Write the VCF entry
             vcf_entry = f"{chrom}\t{pos}\t{region_id}\t{ref}\t{alt}\t{qual}\t{filter_status}\t{info}\t{format_field}\t{sample_field}\n"
