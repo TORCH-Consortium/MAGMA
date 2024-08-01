@@ -8,6 +8,11 @@ from Bio import SeqIO
 # Define the VCF header
 vcf_header = """##fileformat=VCFv4.2
 ##source=ISMapper
+##ALT=<ID=DEL,Description="Deletion">
+##ALT=<ID=DUP,Description="Duplication">
+##ALT=<ID=INV,Description="Inversion">
+##ALT=<ID=BND,Description="Breakend">
+##ALT=<ID=INS,Description="Insertion">
 ##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
 ##INFO=<ID=Orientation,Number=1,Type=String,Description="Orientation of the transposable element">
 ##INFO=<ID=Gap,Number=1,Type=Integer,Description="Gap between sequences">
@@ -23,6 +28,9 @@ vcf_header = """##fileformat=VCFv4.2
 ##INFO=<ID=Right_strand,Number=1,Type=String,Description="Strand of the right gene">
 ##INFO=<ID=Right_distance,Number=1,Type=Integer,Description="Distance to the right gene">
 ##INFO=<ID=Gene_interruption,Number=1,Type=String,Description="Gene interruption status">
+##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Insertion length for SVTYPE=INS">
+##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the structural variant">
+##INFO=<ID=Insertion,Number=1,Type=String,Description="Details of the insertion">
 ##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth (reads with MQ=255 or with bad mates are filtered)">
 ##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
@@ -50,12 +58,6 @@ def read_transposable_elements(query_file):
             te_name = record.id
             te_info[te_name] = len(record.seq)
 
-        # NOTE: Renable in case we need to dump this on disk.
-        # with open("temp_transposable_elements.csv", mode='w', newline='') as file:
-        #     writer = csv.writer(file)
-        #     writer.writerow(["name", "length"])
-        #     for te_name, te_length in te_info.items():
-        #         writer.writerow([te_name, te_length])
     return te_info
 
 # Function to convert ISMapper data to VCF format
@@ -73,17 +75,16 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
         for row in reader_is_mapper:
             chrom = "NC-000962-3-H37Rv"  # Using the specified chromosome
             pos = int(row['x'])  # Convert position to integer
+            end = int(row['y'])  # Convert end position to integer
             region_id = row['region']
             ref = reference_sequences[chrom][pos - 1]  # Extract the reference allele from the reference sequence
             orientation = row['orientation']
-            # FIXME Hard-code the name of this specific element
             te_name = 'IS6110'
             te_length = te_info.get(te_name, 'NA')
-            alt = f"{ref}[<{te_name},{orientation}>:{te_length}["  # Use transposable element, orientation, and its length
             qual = '.'
             filter_status = 'PASS'
             info = (
-                f"SVTYPE=BND;"
+                f"SVTYPE=INS;"
                 f"Orientation={orientation};"
                 f"Gap={row['gap']};"
                 f"Call={row['call']};"
@@ -97,18 +98,21 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
                 f"Right_description={row['right_description']};"
                 f"Right_strand={row['right_strand']};"
                 f"Right_distance={row['right_distance']};"
-                f"Gene_interruption={row['gene_interruption']}"
+                f"Gene_interruption={row['gene_interruption']};"
+                f"SVLEN={te_length};"
+                f"END={end};"
+                f"Insertion=<{te_name},{orientation}>:{te_length}"
             )
             format_field = "GT:DP:GQ:PL"
             dp_value = "10"     # Approximate read depth
             gq_value = "99"     # Genotype Quality
-            gt_value = "1/1"      # Genotype
-            pl_value = "1800"   # Normalized, Phred-scaled likelihoods
+            gt_value = "1/1"    # Genotype for homozygous alternate allele
+            pl_value = "1800,0,0" # Phred-scaled likelihoods for genotypes
 
             sample_field = f"{gt_value}:{dp_value}:{gq_value}:{pl_value}"
 
             # Write the VCF entry
-            vcf_entry = f"{chrom}\t{pos}\t{region_id}\t{ref}\t{alt}\t{qual}\t{filter_status}\t{info}\t{format_field}\t{sample_field}\n"
+            vcf_entry = f"{chrom}\t{pos}\t{region_id}\t{ref}\t<INS>\t{qual}\t{filter_status}\t{info}\t{format_field}\t{sample_field}\n"
             outfile.write(vcf_entry)
 
 if __name__ == '__main__':
