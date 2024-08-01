@@ -8,12 +8,33 @@ from Bio import SeqIO
 # Define the VCF header
 vcf_header = """##fileformat=VCFv4.2
 ##source=ISMapper
+##FILTER=<ID=PASS,Description="All filters passed">
+##FILTER=<ID=LowQual,Description="Poor quality and insufficient number of PEs and SRs.">
 ##ALT=<ID=DEL,Description="Deletion">
 ##ALT=<ID=DUP,Description="Duplication">
 ##ALT=<ID=INV,Description="Inversion">
 ##ALT=<ID=BND,Description="Breakend">
 ##ALT=<ID=INS,Description="Insertion">
+##INFO=<ID=CIEND,Number=2,Type=Integer,Description="PE confidence interval around END">
+##INFO=<ID=CIPOS,Number=2,Type=Integer,Description="PE confidence interval around POS">
+##INFO=<ID=CHR2,Number=1,Type=String,Description="Chromosome for POS2 coordinate in case of an inter-chromosomal translocation">
+##INFO=<ID=POS2,Number=1,Type=Integer,Description="Genomic position for CHR2 in case of an inter-chromosomal translocation">
+##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the structural variant">
+##INFO=<ID=PE,Number=1,Type=Integer,Description="Paired-end support of the structural variant">
+##INFO=<ID=MAPQ,Number=1,Type=Integer,Description="Median mapping quality of paired-ends">
+##INFO=<ID=SRMAPQ,Number=1,Type=Integer,Description="Median mapping quality of split-reads">
+##INFO=<ID=SR,Number=1,Type=Integer,Description="Split-read support">
+##INFO=<ID=SRQ,Number=1,Type=Float,Description="Split-read consensus alignment quality">
+##INFO=<ID=CONSENSUS,Number=1,Type=String,Description="Split-read consensus sequence">
+##INFO=<ID=CE,Number=1,Type=Float,Description="Consensus sequence entropy">
+##INFO=<ID=CT,Number=1,Type=String,Description="Paired-end signature induced connection type">
+##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Insertion length for SVTYPE=INS">
+##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description="Imprecise structural variation">
+##INFO=<ID=PRECISE,Number=0,Type=Flag,Description="Precise structural variation">
 ##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=SVMETHOD,Number=1,Type=String,Description="Type of approach used to detect SV">
+##INFO=<ID=INSLEN,Number=1,Type=Integer,Description="Predicted length of the insertion">
+##INFO=<ID=HOMLEN,Number=1,Type=Integer,Description="Predicted microhomology length using a max. edit distance of 2">
 ##INFO=<ID=Orientation,Number=1,Type=String,Description="Orientation of the transposable element">
 ##INFO=<ID=Gap,Number=1,Type=Integer,Description="Gap between sequences">
 ##INFO=<ID=Call,Number=1,Type=String,Description="Call information">
@@ -28,14 +49,21 @@ vcf_header = """##fileformat=VCFv4.2
 ##INFO=<ID=Right_strand,Number=1,Type=String,Description="Strand of the right gene">
 ##INFO=<ID=Right_distance,Number=1,Type=Integer,Description="Distance to the right gene">
 ##INFO=<ID=Gene_interruption,Number=1,Type=String,Description="Gene interruption status">
-##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Insertion length for SVTYPE=INS">
-##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the structural variant">
-##INFO=<ID=Insertion,Number=1,Type=String,Description="Details of the insertion">
-##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth (reads with MQ=255 or with bad mates are filtered)">
-##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
-##FORMAT=<ID=PL,Number=G,Type=Integer,Description="Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification">
-#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tSAMPLE
+##FORMAT=<ID=GL,Number=G,Type=Float,Description="Log10-scaled genotype likelihoods for RR,RA,AA genotypes">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=FT,Number=1,Type=String,Description="Per-sample genotype filter">
+##FORMAT=<ID=RC,Number=1,Type=Integer,Description="Raw high-quality read counts or base counts for the SV">
+##FORMAT=<ID=RCL,Number=1,Type=Integer,Description="Raw high-quality read counts or base counts for the left control region">
+##FORMAT=<ID=RCR,Number=1,Type=Integer,Description="Raw high-quality read counts or base counts for the right control region">
+##FORMAT=<ID=RDCN,Number=1,Type=Integer,Description="Read-depth based copy-number estimate for autosomal sites">
+##FORMAT=<ID=DR,Number=1,Type=Integer,Description="# high-quality reference pairs">
+##FORMAT=<ID=DV,Number=1,Type=Integer,Description="# high-quality variant pairs">
+##FORMAT=<ID=RR,Number=1,Type=Integer,Description="# high-quality reference junction reads">
+##FORMAT=<ID=RV,Number=1,Type=Integer,Description="# high-quality variant junction reads">
+##reference=NC-000962-3-H37Rv.fa
+##contig=<ID=NC-000962-3-H37Rv,length=4411532>
+#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tIS6110.S011
 """
 
 # Function to read the reference genome
@@ -81,7 +109,7 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
             orientation = row['orientation']
             te_name = 'IS6110'
             te_length = te_info.get(te_name, 'NA')
-            qual = '1000'
+            qual = '1000'  # Set QUAL to 1000
             filter_status = 'PASS'
             info = (
                 f"SVTYPE=INS;"
@@ -103,13 +131,21 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
                 f"END={end};"
                 f"Insertion=<{te_name},{orientation}>:{te_length}"
             )
-            format_field = "GT:DP:GQ:PL"
-            dp_value = "10"     # Approximate read depth
-            gq_value = "99"     # Genotype Quality
-            gt_value = "1/1"    # Genotype for homozygous alternate allele
-            pl_value = "1800,0,0" # Phred-scaled likelihoods for genotypes
+            format_field = "GT:GL:GQ:FT:RCL:RC:RCR:RDCN:DR:DV:RR:RV"
+            gl_value = "-665.375,-56.2674,0" # Example values for GL
+            gq_value = "10000"     # Genotype Quality
+            ft_value = "PASS"      # Per-sample genotype filter
+            rcl_value = "60468"    # Raw high-quality read counts or base counts for the left control region
+            rc_value = "122933"    # Raw high-quality read counts or base counts for the SV
+            rcr_value = "62465"    # Raw high-quality read counts or base counts for the right control region
+            rdcn_value = "2"       # Read-depth based copy-number estimate for autosomal sites
+            dr_value = "0"         # High-quality reference pairs
+            dv_value = "0"         # High-quality variant pairs
+            rr_value = "0"         # High-quality reference junction reads
+            rv_value = "187"       # High-quality variant junction reads
+            gt_value = "1/1"       # Genotype for homozygous alternate allele
 
-            sample_field = f"{gt_value}:{dp_value}:{gq_value}:{pl_value}"
+            sample_field = f"{gt_value}:{gl_value}:{gq_value}:{ft_value}:{rcl_value}:{rc_value}:{rcr_value}:{rdcn_value}:{dr_value}:{dv_value}:{rr_value}:{rv_value}"
 
             # Write the VCF entry
             vcf_entry = f"{chrom}\t{pos}\t{region_id}\t{ref}\t<INS>\t{qual}\t{filter_status}\t{info}\t{format_field}\t{sample_field}\n"
