@@ -28,6 +28,7 @@
 import argparse
 import csv
 import glob
+import os
 from Bio import SeqIO
 
 # Define the VCF header
@@ -88,7 +89,6 @@ vcf_header = """##fileformat=VCFv4.2
 ##FORMAT=<ID=RV,Number=1,Type=Integer,Description="# high-quality variant junction reads">
 ##reference=NC-000962-3-H37Rv.fa
 ##contig=<ID=NC-000962-3-H37Rv,length=4411532>
-#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tIS6110.S011
 """
 
 # Function to read the reference genome
@@ -113,14 +113,21 @@ def read_transposable_elements(query_file):
 
     return te_info
 
+# Function to extract sample name from the ISMapper file path
+def extract_sample_name(file_path):
+    base_name = os.path.basename(file_path)
+    sample_name = base_name.split('.')[0]
+    return sample_name
+
 # Function to convert ISMapper data to VCF format
 def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_info):
 
     is_mapper_txt_file = glob.glob(is_mapper_dir + "*.txt")[0]
+    sample_name = extract_sample_name(is_mapper_txt_file)
 
     with open(is_mapper_txt_file, 'r') as infile_is_mapper, open(vcf_file, 'w') as outfile:
         # Write the VCF header
-        outfile.write(vcf_header)
+        outfile.write(vcf_header + f"#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t{sample_name}\n")
 
         # Read the ISMapper TSV file
         reader_is_mapper = csv.DictReader(infile_is_mapper, delimiter='\t')
