@@ -50,7 +50,6 @@ vcf_header = """##fileformat=VCFv4.2
 ##INFO=<ID=Right_strand,Number=1,Type=String,Description="Strand of the right gene">
 ##INFO=<ID=Right_distance,Number=1,Type=Integer,Description="Distance to the right gene">
 ##INFO=<ID=Gene_interruption,Number=1,Type=String,Description="Gene interruption status">
-##INFO=<ID=Insertion,Number=1,Type=String,Description="Description of the insertion">
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
 ##FORMAT=<ID=GL,Number=G,Type=Float,Description="Log10-scaled genotype likelihoods for RR,RA,AA genotypes">
 ##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
