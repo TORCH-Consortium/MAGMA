@@ -75,7 +75,6 @@ vcf_header = """##fileformat=VCFv4.2
 ##INFO=<ID=Right_strand,Number=1,Type=String,Description="Strand of the right gene">
 ##INFO=<ID=Right_distance,Number=1,Type=Integer,Description="Distance to the right gene">
 ##INFO=<ID=Gene_interruption,Number=1,Type=String,Description="Gene interruption status">
-##INFO=<ID=Insertion,Number=1,Type=String,Description="Description of the insertion">
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
 ##FORMAT=<ID=GL,Number=G,Type=Float,Description="Log10-scaled genotype likelihoods for RR,RA,AA genotypes">
 ##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
@@ -91,6 +90,12 @@ vcf_header = """##fileformat=VCFv4.2
 ##reference=NC-000962-3-H37Rv.fa
 ##contig=<ID=NC-000962-3-H37Rv,length=4411532>
 """
+
+# Function to extract sample name from the ISMapper file path
+def extract_sample_name(file_path):
+    base_name = os.path.basename(file_path)
+    sample_name = '.'.join(base_name.split('.')[:2])
+    return sample_name
 
 # Function to read the reference genome
 def read_reference_genome(reference_file):
@@ -114,12 +119,6 @@ def read_transposable_elements(query_file):
 
     return te_info
 
-# Function to extract sample name from the ISMapper file path
-def extract_sample_name(file_path):
-    base_name = os.path.basename(file_path)
-    sample_name = base_name.split('.')[0]
-    return sample_name
-
 # Function to convert ISMapper data to VCF format
 def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_info):
 
@@ -127,7 +126,7 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
     sample_name = extract_sample_name(is_mapper_txt_file)
 
     with open(is_mapper_txt_file, 'r') as infile_is_mapper, open(vcf_file, 'w') as outfile:
-        # Write the VCF header
+        # Write the VCF header with the correct sample name
         outfile.write(vcf_header + f"#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t{sample_name}\n")
 
         # Read the ISMapper TSV file
