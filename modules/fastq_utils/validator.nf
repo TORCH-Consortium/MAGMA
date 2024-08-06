@@ -58,7 +58,7 @@ process FASTQ_VALIDATOR {
             echo -e "file,magma_name,fastq_utils_check" > !{sampleRead.simpleName}.check.${STATUS}.csv
             echo -e "!{sampleRead},!{sampleName},${STATUS}" >> !{sampleRead.simpleName}.check.${STATUS}.csv
 
-            csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.csv >  !{sampleRead.simpleName}.fastq_report.csv
+            csvtk join -f file  !{sampleRead.simpleName}.fastq_statistics.csv !{sampleRead.simpleName}.check.${STATUS}.csv >  !{sampleRead.name}.fastq_report.csv
 
 
 
