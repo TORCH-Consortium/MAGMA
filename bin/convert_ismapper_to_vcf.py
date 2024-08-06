@@ -95,7 +95,7 @@ vcf_header = """##fileformat=VCFv4.2
 # Function to extract sample name from the ISMapper file path
 def extract_sample_name(file_path):
     base_name = os.path.basename(file_path)
-    extracted_sample_name = base_name.split('.')[1]  # Extract the sample name (S370)
+    extracted_sample_name = base_name.split('__')[0]  # Extract the sample name (e.g., S011)
     sample_name = f"IS6110.{extracted_sample_name}"  # Prepend 'IS6110.'
     return sample_name
 
