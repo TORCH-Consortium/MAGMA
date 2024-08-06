@@ -70,8 +70,11 @@ vcf_header = """##fileformat=VCFv4.2
 # Function to extract sample name from the ISMapper file path
 def extract_sample_name(file_path):
     base_name = os.path.basename(file_path)
-    sample_name = base_name.split('__')[0]
+    # Split the base name by '.' and join the first two parts with a dot
+    parts = base_name.split('.')
+    sample_name = f"{parts[0]}.{parts[1]}"
     return sample_name
+
 
 # Function to read the reference genome
 def read_reference_genome(reference_file):
