@@ -3,16 +3,15 @@ process BCFTOOLS_MERGE__DELLY {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        path vcf_files, emit: vcf_list
+        path vcf_files
 
     output:
         tuple val(params.vcf_name), path("*.vcf.gz.csi"), path("*.${params.file_format}.vcf.gz")
 
     script:
-
         """
         # Extract sample prefixes
-        prefixes=($(for file in ${vcf_files[@]}; do basename \$file | cut -d '.' -f 1; done | sort -u))
+        prefixes=(\$(for file in ${vcf_files.join(' ')}; do basename \$file | cut -d '.' -f 1; done | sort -u))
 
         # Concatenate files for each sample prefix
         concat_files=()
@@ -29,7 +28,6 @@ process BCFTOOLS_MERGE__DELLY {
         """
 
     stub:
-
         """
         touch ${params.vcf_name}.${params.file_format}.vcf.gz
         touch ${params.vcf_name}.${params.file_format}.vcf.gz.csi
