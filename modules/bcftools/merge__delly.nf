@@ -28,7 +28,7 @@ process BCFTOOLS_MERGE__DELLY {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        path("*")
+        path vcf_files, emit: vcf_list
 
     output:
         tuple val(params.vcf_name), path("*.vcf.gz.csi"), path("*.${params.file_format}.vcf.gz")
@@ -36,7 +36,19 @@ process BCFTOOLS_MERGE__DELLY {
     script:
 
         """
-        bcftools concat *.gz -o ${params.vcf_name}.${params.file_format}.vcf
+        # Extract sample prefixes
+        prefixes=($(for file in ${vcf_files[@]}; do basename \$file | cut -d '.' -f 1; done | sort -u))
+
+        # Concatenate files for each sample prefix
+        concat_files=()
+        for prefix in \${prefixes[@]}; do
+            bcftools concat \${prefix}.*.vcf.gz -o \${prefix}.concat.vcf
+            bgzip \${prefix}.concat.vcf
+            concat_files+=("\${prefix}.concat.vcf.gz")
+        done
+
+        # Merge the concatenated files
+        bcftools merge *.gz -o ${params.vcf_name}.${params.file_format}.vcf
         bgzip ${params.vcf_name}.${params.file_format}.vcf
         ${params.bcftools_path} index ${params.vcf_name}.${params.file_format}.vcf.gz
         """
@@ -47,5 +59,4 @@ process BCFTOOLS_MERGE__DELLY {
         touch ${params.vcf_name}.${params.file_format}.vcf.gz
         touch ${params.vcf_name}.${params.file_format}.vcf.gz.csi
         """
-
 }
