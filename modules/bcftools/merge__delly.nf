@@ -16,7 +16,8 @@ process BCFTOOLS_MERGE__DELLY {
         # Concatenate files for each sample prefix
         concat_files=()
         for prefix in \${prefixes[@]}; do
-            bcftools concat \${prefix}.*.vcf.gz -o \${prefix}.concat.vcf
+            files=(\$(ls \${prefix}.*.bcf.gz \${prefix}.*.vcf.gz 2>/dev/null))
+            bcftools concat \${files[@]} -o \${prefix}.concat.vcf
             bgzip \${prefix}.concat.vcf
             ${params.bcftools_path} index \${prefix}.concat.vcf.gz
             concat_files+=("\${prefix}.concat.vcf.gz")
