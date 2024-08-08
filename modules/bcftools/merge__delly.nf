@@ -36,7 +36,7 @@ process BCFTOOLS_MERGE__DELLY {
     script:
         """
         # Extract sample prefixes
-        prefixes=(\$(for file in ${vcf_files.join(' ')}; do basename \$file | cut -d '.' -f 1; done | sort -u))
+        prefixes=(\$(for file in ${vcf_files.join(' ')}; do basename \$file | cut -d '.' -f 2; done | sort -u))
 
         # Concatenate files for each sample prefix
         concat_files=()
