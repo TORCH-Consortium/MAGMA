@@ -13,7 +13,7 @@ workflow MERGE_WF {
     take:
         gvcf_ch
         reformatted_lofreq_vcfs_tuple_ch
-        approved_samples_ch 
+        approved_samples_ch
 
     main:
 
@@ -28,7 +28,7 @@ workflow MERGE_WF {
                                 .dump(tag:'MERGE_WF: collated_gvcfs_ch', pretty: true)
                                 //.collectFile(name: "$params.outdir/collated_gvcfs_ch.txt")
 
-        //NOTE: Join the fully approved samples with the gvcf channel 
+        //NOTE: Join the fully approved samples with the gvcf channel
         selected_gvcfs_ch = collated_gvcfs_ch.join(approved_samples_ch)
                                         .flatten()
                                         .dump(tag:'MERGE_WF: selected_gvcfs_ch', pretty: true)
@@ -53,10 +53,21 @@ workflow MERGE_WF {
 
         INDEL_ANALYSIS(PREPARE_COHORT_VCF.out.cohort_vcf_and_index_ch)
 
+    if(!params.skip_variant_recalibration )  {
+
         merge_inc_vcf_ch = SNP_ANALYSIS.out.snp_inc_vcf_ch
                             .join(INDEL_ANALYSIS.out.indel_vcf_ch)
                             .dump(tag:'MERGE_WF: merge_inc_vcf_ch : ', pretty: true)
 
+
+    } else {
+
+        merge_inc_vcf_ch = SNP_ANALYSIS.out.snp_vcf_ch
+                            .join(INDEL_ANALYSIS.out.indel_vcf_ch)
+                            .dump(tag:'MERGE_WF: merge_inc_vcf_ch : ', pretty: true)
+
+
+    }
         // merge_snp_indel_vcf
         GATK_MERGE_VCFS__INC(merge_inc_vcf_ch)
 
@@ -121,4 +132,4 @@ workflow MERGE_WF {
         major_variants_results_ch =  MAJOR_VARIANT_ANALYSIS.out.major_variants_results_ch
 
 
-}
+    }
