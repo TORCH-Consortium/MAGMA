@@ -28,9 +28,9 @@ workflow {
 
         SAMPLESHEET_VALIDATION( params.input_samplesheet )
 
-        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet , SAMPLESHEET_VALIDATION.out.status )
+        VALIDATE_FASTQS_WF( SAMPLESHEET_VALIDATION.out.validated_samplesheet , SAMPLESHEET_VALIDATION.out.status )
 
-        QUALITY_CHECK_WF( validated_reads_ch )
+        QUALITY_CHECK_WF( VALIDATE_FASTQS_WF.out.approved_fastqs_ch )
 
         //TODO: Add modules for generating fastq stats and then capturing them in the MultiQC image
         //MULTIQC_FASTQS( QUALITY_CHECK_WF.out.reports_fastqc_ch )
@@ -39,11 +39,13 @@ workflow {
 
         SAMPLESHEET_VALIDATION(params.input_samplesheet)
 
-        validated_reads_ch = VALIDATE_FASTQS_WF( params.input_samplesheet , SAMPLESHEET_VALIDATION.out.status )
 
-        QUALITY_CHECK_WF( validated_reads_ch )
+        VALIDATE_FASTQS_WF( SAMPLESHEET_VALIDATION.out.validated_samplesheet , SAMPLESHEET_VALIDATION.out.status )
 
-        MAP_WF( validated_reads_ch )
+        QUALITY_CHECK_WF( VALIDATE_FASTQS_WF.out.approved_fastqs_ch )
+
+
+        MAP_WF( VALIDATE_FASTQS_WF.out.approved_fastqs_ch  )
 
         CALL_WF( MAP_WF.out.sorted_reads_ch )
 
@@ -65,7 +67,7 @@ workflow {
                                 .map { [ it[0] ] }
                                 //.dump(tag:'MERGE_WF: all_samples_ch', pretty: true)
 
-        STRUCTURAL_VARIANTS_ANALYSIS_WF ( validated_reads_ch, all_samples_ch )
+        STRUCTURAL_VARIANTS_ANALYSIS_WF ( VALIDATE_FASTQS_WF.out.approved_fastqs_ch, all_samples_ch )
 
 
         if (!params.skip_merge_analysis) {
@@ -83,7 +85,7 @@ workflow {
 
 
             MERGE_WF( CALL_WF.out.gvcf_ch,
-                      CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch, 
+                      CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch,
                       approved_samples_ch )
 
 
@@ -96,4 +98,3 @@ workflow {
         }
     }
 }
-

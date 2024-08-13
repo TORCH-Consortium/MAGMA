@@ -16,9 +16,9 @@ process UTILS_SAMPLE_STATS {
             --samtoolsstats_file ${samtoolsStats} \\
             --wgsmetrics_file ${wgsMetrics} \\
             --ntmfraction_file ${ntmFraction} \\
-            --median_coverage_cutoff ${params.median_coverage_cutoff} \\
-            --breadth_of_coverage_cutoff ${params.breadth_of_coverage_cutoff} \\
-            --ntm_fraction_cutoff ${params.ntm_fraction_cutoff}
+            --cutoff_median_coverage ${params.cutoff_median_coverage} \\
+            --cutoff_breadth_of_coverage ${params.cutoff_breadth_of_coverage} \\
+            --cutoff_ntm_fraction ${params.cutoff_ntm_fraction}
         """
 
 }

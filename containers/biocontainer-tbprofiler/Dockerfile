@@ -1,4 +1,4 @@
-FROM quay.io/biocontainers/tb-profiler:6.2.1--pyhdfd78af_0 AS base
+FROM quay.io/biocontainers/tb-profiler:6.3.0--pyhdfd78af_0 AS base
 
 FROM base AS tbprofiler
 

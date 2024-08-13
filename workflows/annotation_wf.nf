@@ -1,3 +1,0 @@
-workflow ANNOTATION_WF {
-
-}
