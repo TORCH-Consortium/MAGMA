@@ -22,6 +22,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
     main:
 
+    /*
 
         //FIXME: For now we look for a single element, but we need to adapt the
         //flow for adding other queries
@@ -52,7 +53,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .dump(tag:'STRUCTURAL_VARIANTS_WF: ismapper_vcfs_string_ch', pretty: true)
                                 //.view { "ismapper_vcfs_string_ch: $it"  }
                                 //.reduce { a, b -> "$a $b " }
-
+*/
 
 
 
@@ -146,14 +147,17 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
 
 
-        vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch ).unique().collect(sort: true).view { "vcfs_and_indexes_ch: $it"}
+    //FIXME: Reenable the merged channel once the ISMAPPER branch is finalized
+    // vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch ).unique().collect(sort: true).view { "vcfs_and_indexes_ch: $it"}
+
+
+        vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch
 
 
 
         //TODO: Merge the ISMAPPER output
         //vcfs_string_ch = delly_vcfs_string_ch.concat ( ismapper_vcfs_string_ch ).collect(sort: true).view { "vcfs_string_ch: $it"}
         //vcfs_file = vcfs_string_ch.collectFile(name: "$params.outdir/structural_variant_vcfs.txt", newLine: true)
-
         // delly_vcfs_and_indexes_ch, ismapper_vcfs_and_indexes_ch
 
         BCFTOOLS_MERGE__DELLY( vcfs_and_indexes_ch )
