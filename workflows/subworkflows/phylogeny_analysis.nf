@@ -46,8 +46,8 @@ workflow PHYLOGENY_ANALYSIS {
                             prefix_ch,
                             vcf_ch,
                             args_ch,
-                            resources_files_ch,
-                            resources_file_indexes_ch,
+                            [],
+                            [],
                             params.ref_fasta,
                             [params.ref_fasta_fai, params.ref_fasta_dict])
 
