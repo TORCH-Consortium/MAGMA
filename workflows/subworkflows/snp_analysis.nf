@@ -22,6 +22,7 @@ workflow SNP_ANALYSIS {
                                 [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 
+        //NOTE: Set the default content of these channels
         excluding_complex_regions_ch = Channel.of([])
         including_complex_regions_ch = Channel.of([])
 
