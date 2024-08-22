@@ -99,9 +99,18 @@ workflow MERGE_WF {
 
 
 
+        //NOTE: This is experimental works
                 PHYLOGENY_ANALYSIS__EXCOMPLEX(excomplex_prefix_ch,
-                                              excomplex_exclude_interval_ref_ch,
+                                              [],
                                               snp_exc_vcf_ch)
+
+
+        //NOTE: This one works
+//                PHYLOGENY_ANALYSIS__EXCOMPLEX(excomplex_prefix_ch,
+//                                              excomplex_exclude_interval_ref_ch,
+//                                              snp_exc_vcf_ch)
+
+
 
                 CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
 
