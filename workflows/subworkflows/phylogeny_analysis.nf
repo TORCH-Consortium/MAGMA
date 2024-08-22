@@ -45,9 +45,9 @@ workflow PHYLOGENY_ANALYSIS {
         GATK_SELECT_VARIANTS__PHYLOGENY('SNP',
                             prefix_ch,
                             vcf_ch,
-                            args_ch,
-                            [],
-                            [],
+                                        '',
+                                        [],
+                                        [],
                             params.ref_fasta,
                             [params.ref_fasta_fai, params.ref_fasta_dict])
 
