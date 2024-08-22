@@ -60,6 +60,8 @@ workflow MERGE_WF {
                             .join(INDEL_ANALYSIS.out.indel_vcf_ch)
                             .dump(tag:'MERGE_WF: merge_inc_vcf_ch : ', pretty: true)
 
+        snp_exc_vcf_ch = SNP_ANALYSIS.out.snp_exc_vcf_ch
+
 
     } else {
 
@@ -68,6 +70,7 @@ workflow MERGE_WF {
                             .join(INDEL_ANALYSIS.out.indel_vcf_ch)
                             .dump(tag:'MERGE_WF: merge_inc_vcf_ch : ', pretty: true)
 
+        snp_exc_vcf_ch = SNP_ANALYSIS.out.snp_vcf_ch
 
     }
         // merge_snp_indel_vcf
@@ -98,7 +101,7 @@ workflow MERGE_WF {
 
                 PHYLOGENY_ANALYSIS__EXCOMPLEX(excomplex_prefix_ch,
                                               excomplex_exclude_interval_ref_ch,
-                                              SNP_ANALYSIS.out.snp_exc_vcf_ch)
+                                              snp_exc_vcf_ch)
 
                 CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
 
@@ -128,7 +131,7 @@ workflow MERGE_WF {
                 //Ergo PHYLOGENY_...__INCCOMPLEX should take snp_exc_vcf_ch. Refer https://github.com/TORCH-Consortium/MAGMA/pull/114#discussion_r947732253
                 PHYLOGENY_ANALYSIS__INCCOMPLEX(inccomplex_prefix_ch,
                                                inccomplex_exclude_interval_ref_ch,
-                                               SNP_ANALYSIS.out.snp_exc_vcf_ch)
+                                               snp_exc_vcf_ch)
 
                 CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snpsites_tree_tuple, inccomplex_prefix_ch)
             }
