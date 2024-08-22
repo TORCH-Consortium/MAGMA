@@ -101,7 +101,7 @@ workflow MERGE_WF {
 
         //NOTE: This is experimental works
                 PHYLOGENY_ANALYSIS__EXCOMPLEX(excomplex_prefix_ch,
-                                              [],
+                                              Channel.of([]),
                                               snp_exc_vcf_ch)
 
 
