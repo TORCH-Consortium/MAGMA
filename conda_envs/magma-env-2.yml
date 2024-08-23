@@ -1,0 +1,16 @@
+name: magma-env-2
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=2.7
+  - bwa=0.7.17
+  - samtools=1.9
+  - iqtree=2.1.2
+  - snp-dists=0.8.2
+  - snp-sites=2.4.0
+  - bcftools=1.9
+  - snpeff=4.3.1t
+  - clusterpicker=1.2.3
+  - bc=1.07.1
