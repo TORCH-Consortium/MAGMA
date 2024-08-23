@@ -3,17 +3,19 @@ project:
 
 website:
   title: "MAGMA"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+
+  sidebar:
+      style: "docked"
+      search: true
+      contents:
+        - text: "Usage"
+          href: usage.qmd
+        - text: "Output"
+          href: output.qmd
 
 format:
   html:
     theme: cosmo
     css: styles.css
     toc: true
-
-
 
