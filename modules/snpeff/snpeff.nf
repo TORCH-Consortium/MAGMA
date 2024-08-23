@@ -18,7 +18,7 @@ process SNPEFF {
             | rename_vcf_chrom.py --target !{params.ref_fasta_basename} --source 'Chromosome' \
          > !{joint_name}.temp.vcf
 
-         cp {joint_name}.temp.vcf  {joint_name}.raw_variants.snpeff.vcf
+         cp !{joint_name}.temp.vcf  !{joint_name}.raw_variants.snpeff.vcf
         '''
 
     stub:
