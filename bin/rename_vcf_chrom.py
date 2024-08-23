@@ -32,18 +32,22 @@ def cmd_out(cmd,verbose=1):
 def main(args):
     generator = cmd_out("bcftools view " + args.vcf) if args.vcf else sys.stdin
     convert = dict(zip(args.source,args.target))
-    for l in generator:
-        if l[0]=="#":
-            sys.stdout.write(l.strip()+"\n")
-        else:
-            row = l.strip().split()
-            row[0] = convert[row[0]]
-            sys.stdout.write("\t".join(row)+"\n")
+
+    # Open the output file for writing
+    with open(args.outfile, 'w') as outfile:
+        for l in generator:
+            if l[0]=="#":
+                outfile.write(l.strip()+"\n")
+            else:
+                row = l.strip().split()
+                row[0] = convert[row[0]]
+                outfile.write("\t".join(row)+"\n")
 
 parser = argparse.ArgumentParser(description='tbprofiler script',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--vcf',type=str,help='')
 parser.add_argument('--source',nargs="+",type=str,help='')
 parser.add_argument('--target',nargs="+",type=str,help='')
+parser.add_argument('--outfile', type=str, required=True, help='Output VCF file')
 parser.set_defaults(func=main)
 args = parser.parse_args()
 args.func(args)
