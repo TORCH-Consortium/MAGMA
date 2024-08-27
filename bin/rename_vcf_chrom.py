@@ -11,7 +11,6 @@ def errlog(x,ext=False):
         quit(1)
 
 def cmd_out(cmd,verbose=1):
-    cmd = "set -u pipefail; " + cmd
     if verbose==2:
         sys.stderr.write("\nRunning command:\n%s\n" % cmd)
         stderr = open("/dev/stderr","w")
