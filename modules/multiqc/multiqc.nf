@@ -3,6 +3,7 @@ process MULTIQC {
     label 'cpu_4_memory_16'
 
     input:
+    	path(multiqc_config)
         path("*")
 
     output:
@@ -10,9 +11,10 @@ process MULTIQC {
 
 
     script:
+        def config = multiqc_config ? "--config $multiqc_config" : ''
 
         """
-        ${params.multiqc_path} .
+        ${params.multiqc_path} $config .
         """
 
     stub:
