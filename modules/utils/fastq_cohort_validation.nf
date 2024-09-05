@@ -3,35 +3,28 @@ process UTILS_FASTQ_COHORT_VALIDATION {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        path("*")
+        path("fastq_reports/*")
+        path(magma_validated_samplesheet_json)
 
     output:
-        path("*.fastqs.passed.tsv"), emit: passed_fastqs
-        path("*.fastqs.failed.tsv"), optional: true
+        path("magma_analysis.json"), emit: magma_analysis_json
 
-    shell:
-       
-        '''
+    script:
 
-        if ls *check.passed* 1> .null 2>&1; then
-            cat *check.passed* > !{params.vcf_name}.fastqs.passed.tsv
-        else
-            echo "No samples passed!"
-        fi
+        """
+        csvtk concat fastq_reports/* |  csvtk csv2json -k file > merged_fastq_reports.json
+
+        fastq_cohort_validation.py ${magma_validated_samplesheet_json} merged_fastq_reports.json magma_analysis.json
+
+        rm merged_fastq_reports.json
+
+        """
 
 
-        # Creating this file anyhow, since this is an optional output
-        touch !{params.vcf_name}.fastqs.failed.tsv
-
-        if ls *check.failed* 1> .null 2>&1; then
-            cat *check.failed* > !{params.vcf_name}.fastqs.failed.tsv
-        fi
-        '''
-
-    stub: 
+    stub:
 
         """
         touch ${params.vcf_name}.passed.tsv ${params.vcf_name}.failed.tsv
-        """ 
+        """
 
 }

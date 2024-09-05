@@ -22,7 +22,7 @@ process GATK_VARIANTS_TO_TABLE {
 
         variant_table_to_fasta.py !{joint_name}.!{prefix}.table \
             !{joint_name}.!{prefix}.fa \
-            !{params.site_representation_cutoff}
+            !{params.cutoff_site_representation}
         '''
 
     stub:
