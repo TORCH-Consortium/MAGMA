@@ -70,6 +70,7 @@ if __name__ == '__main__':
     df_final_cohort_stats['BREADTH_OF_COVERAGE_THRESHOLD_MET'] = df_final_cohort_stats['BREADTH_OF_COVERAGE_THRESHOLD_MET'].fillna(0).astype('Int64')
     df_final_cohort_stats['RELABUNDANCE_THRESHOLD_MET'] = df_final_cohort_stats['RELABUNDANCE_THRESHOLD_MET'].fillna(0).astype('Int64')
 
+
     # Derive the final threshold using Boolean operations
     df_final_cohort_stats['ALL_THRESHOLDS_MET'] = (
         df_final_cohort_stats['MAPPED_NTM_FRACTION_16S_THRESHOLD_MET'].apply(lambda x: bool(x) if pd.notna(x) else False) &
