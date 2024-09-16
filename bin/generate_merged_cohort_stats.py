@@ -28,6 +28,7 @@
 import argparse
 import pandas as pd
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Summarize the CALL_WF and MINOR_VARIANTS_ANALYSIS_WF analysis results')
     parser.add_argument('--relabundance_approved_tsv', default="approved_samples.relabundance.tsv", metavar='relabundance_approved_tsv', type=str, help='File enlisting the approved samples from MINOR_VARIANTS_ANALYSIS_WF')
