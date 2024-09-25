@@ -10,34 +10,44 @@ process BCFTOOLS_MERGE__DELLY {
 
     script:
         """
+
         # Create temporary directory
         tmp_dir=\$(mktemp -d -t bcftools-XXXXXX)
-        trap "rm -rf \$tmp_dir" EXIT
 
-        # Extract sample prefixes
-        prefixes=(\$(for file in ${vcf_files.join(' ')}; do basename \$file | cut -d '.' -f 2; done | sort -u))
+        # Extract unique sample prefixes from filenames
+        prefixes=( \$(for file in *.bcf.gz *.vcf.gz; do basename $file | cut -d '.' -f 2; done | sort -u) )
 
-        # Concatenate files for each sample prefix
-        concat_files=()
-        for prefix in \${prefixes[@]}; do
-            files=(\$(ls \${prefix}.*.bcf.gz \${prefix}.*.vcf.gz 2>/dev/null))
-            if [ \${#files[@]} -gt 0 ]; then
-                concat_file="\${tmp_dir}/\${prefix}.concat.vcf"
-                bcftools concat \${files[@]} -o \${concat_file}
-                bgzip \${concat_file}
-                sorted_file="\${tmp_dir}/\${prefix}.sorted.vcf.gz"
-                bcftools sort \${concat_file}.gz -o \${sorted_file}
-                ${params.bcftools_path} index \${sorted_file}
-                concat_files+=("\${sorted_file}")
-            fi
+        # Process each sample prefix
+        for prefix in "${prefixes[@]}"; do
+        # Find related files for the prefix
+        files=( "${prefix}"*.bcf.gz "${prefix}"*.vcf.gz )
+
+        if [[ ${#files[@]} -gt 0 ]]; then
+            # Concatenate files
+            concat_file="${tmp_dir}/${prefix}.concat.vcf"
+            bcftools concat "${files[@]}" -o "$concat_file"
+            bgzip "$concat_file"
+
+            # Sort and index the concatenated file
+            sorted_file="${tmp_dir}/${prefix}.sorted.vcf.gz"
+            bcftools sort "$concat_file.gz" -o "$sorted_file"
+            bcftools index "$sorted_file"
+
+            # Add sorted file to merged list
+            concat_files+=("$sorted_file")
+        fi
         done
 
-        # Merge the concatenated files
-        if [ \${#concat_files[@]} -gt 0 ]; then
-            bcftools merge \${concat_files[@]} -o ${params.vcf_name}.${params.file_format}.vcf
-            bgzip ${params.vcf_name}.${params.file_format}.vcf
-            ${params.bcftools_path} index ${params.vcf_name}.${params.file_format}.vcf.gz
+        # Merge concatenated files (if any)
+        if [[ ${#concat_files[@]} -gt 0 ]]; then
+        bcftools merge "${concat_files[@]}" -o joint.delly.vcf
+        bgzip joint.delly.vcf
+        bcftools index joint.delly.vcf.gz
         fi
+
+        # Clean up temporary directory
+        rm -rf "$tmp_dir"
+
         """
 
     stub:
