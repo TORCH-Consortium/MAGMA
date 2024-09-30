@@ -93,8 +93,10 @@ workflow {
                         UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch,
                         MERGE_WF.out.major_variants_results_ch,
                         MINOR_VARIANTS_ANALYSIS_WF.out.minor_variants_results_ch,
-                        STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch )
-
+                        STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch, 
+			MERGE_WF.out.snps_dists_ch
+			)
+	
         }
     }
 }
