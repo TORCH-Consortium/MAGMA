@@ -1,0 +1,24 @@
+{
+    "java": {
+        "extensions": [
+            ".java",
+            ".scala",
+            ".groovy",
+            ".config",
+            ".nf",
+            ".jape",
+            ".js",
+            ".ts",
+            ".tsx"
+        ],
+        "keepFirst": "",
+        "blockCommentStartPattern": "^\\s*/\\*",
+        "blockCommentEndPattern": "\\*/\\s*$",
+        "lineCommentStartPattern": "^\\s*//",
+        "lineCommentEndPattern": "",
+        "headerStartLine": "/*\n",
+        "headerEndLine": " */\n",
+        "headerLinePrefix": " * ",
+        "headerLineSuffix": ""
+    }
+}
