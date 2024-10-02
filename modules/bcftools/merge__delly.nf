@@ -8,19 +8,19 @@ process BCFTOOLS_MERGE__DELLY {
     output:
         tuple val(params.vcf_name), path("*.vcf.gz.csi"), path("*.${params.file_format}.vcf.gz")
 
-    script:
-        """
+    shell:
+        '''
 
         # Create temporary directory
-        tmp_dir=\$(mktemp -d -t bcftools-XXXXXX)
+        tmp_dir=$(mktemp -d -t bcftools-XXXXXX)
 
         # Extract unique sample prefixes from filenames
-        prefixes=( \$(for file in *.bcf.gz *.vcf.gz; do basename \$file | cut -d '.' -f 2; done | sort -u) )
+        prefixes=( $(for file in *.bcf.gz *.vcf.gz; do basename $file | cut -d '.' -f 2; done | sort -u) )
 
         # Process each sample prefix
-        for prefix in "${prefixes[@]}"; do
+        for prefix in "!{prefixes[@]}"; do
         # Find related files for the prefix
-        files=( "${prefix}"*.bcf.gz "${prefix}"*.vcf.gz )
+        files=( "!{prefix}"*.bcf.gz "!{prefix}"*.vcf.gz )
 
         if [[ ${#files[@]} -gt 0 ]]; then
             # Concatenate files
@@ -48,7 +48,7 @@ process BCFTOOLS_MERGE__DELLY {
         # Clean up temporary directory
         rm -rf "$tmp_dir"
 
-        """
+        '''
 
     stub:
         """
