@@ -92,25 +92,6 @@ vcf_header = """##fileformat=VCFv4.2
 ##contig=<ID=NC-000962-3-H37Rv,length=4411532>
 """
 
-
-def get_base_name(file_path):
-    base_name = os.path.basename(file_path)
-
-    if '_' in base_name:
-        split_base_name = base_name.split("_")
-        return f"{split_base_name[0]}_{split_base_name[1]}"
-    return base_name
-
-
-# Function to extract sample name from the ISMapper file path
-def extract_sample_name(file_path):
-    base_name = os.path.basename(file_path)
-    study_name = base_name.split(".")[0]
-    extracted_sample_name = get_base_name(file_path)  # Extract the sample name (e.g., S011)
-    sample_name = f"{study_name}.{extracted_sample_name}"  # Prepend study_name
-    return sample_name
-
-
 # Function to read the reference genome
 def read_reference_genome(reference_file):
     reference_sequences = {}
@@ -134,10 +115,10 @@ def read_transposable_elements(query_file):
     return te_info
 
 # Function to convert ISMapper data to VCF format
-def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_info):
+def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_info, ismapper_column_name):
 
     is_mapper_txt_file = glob.glob(is_mapper_dir + "*.txt")[0]
-    sample_name = extract_sample_name(is_mapper_txt_file)
+    sample_name = ismapper_column_name
 
     with open(is_mapper_txt_file, 'r') as infile_is_mapper, open(vcf_file, 'w') as outfile:
         # Write the VCF header with the correct sample name
@@ -203,6 +184,7 @@ if __name__ == '__main__':
     parser.add_argument('--reference_file', required=True, help='Path to the reference genome file.')
     parser.add_argument('--query_file', required=True, help='Path to the transposable elements multifasta file.')
     parser.add_argument('--output_vcf_file', required=True, help='Path to the output VCF file.')
+    parser.add_argument('--ismapper_column_name', required=True, help='Explicit name of the ISMAPPER column.')
 
     # Step 3: Parse the command-line arguments
     args = parser.parse_args()
@@ -212,6 +194,7 @@ if __name__ == '__main__':
     vcf_file = args.output_vcf_file
     reference_file = args.reference_file
     query_file = args.query_file
+    ismapper_column_name = args.ismapper_column_name
 
     # Read the reference genome sequence
     reference_sequences, _ = read_reference_genome(reference_file)
@@ -220,4 +203,4 @@ if __name__ == '__main__':
     query_info = read_transposable_elements(query_file)
 
     # Run the conversion function
-    convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, query_info)
+    convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, query_info, ismapper_column_name)
