@@ -40,7 +40,7 @@ process BCFTOOLS_MERGE__DELLY {
         tmp_dir=\$(mktemp -d -t bcftools-XXXXXX)
 
         # Extract unique sample prefixes from filenames
-        prefixes=( \$(for file in *.bcf.gz *.vcf.gz; do basename $file | cut -d '.' -f 2; done | sort -u) )
+        prefixes=( \$(for file in *.bcf.gz *.vcf.gz; do basename \$file | cut -d '.' -f 2; done | sort -u) )
 
         # Process each sample prefix
         for prefix in "${prefixes[@]}"; do
