@@ -9,7 +9,9 @@ process BCFTOOLS_MERGE__DELLY {
         tuple val(params.vcf_name), path("*.vcf.gz.csi"), path("*.${params.file_format}.vcf.gz")
 
     script:
-        template 'bcftools_merge__delly.sh'
+        """
+        bcftools_merge__delly.sh
+        """
 
     stub:
         """

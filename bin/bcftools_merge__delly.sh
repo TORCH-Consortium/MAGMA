@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 # Create temporary directory
 tmp_dir=$(mktemp -d -t bcftools-XXXXXX)
 
