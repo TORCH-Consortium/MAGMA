@@ -68,6 +68,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
 
 
+    //NOTE Merge different samples corresponding to library names.
+
         normalize_libraries_ch = BWA_MEM__DELLY.out
                                         .map { it -> {
                                                 def splittedNameArray = it[0].split("\\.")
@@ -77,7 +79,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
             }
         }
         .groupTuple()
-        //.dump(tag: "STRUCTURAL_VARIANTS_WF normalize_libraries_ch : ", pretty: true)
+        .dump(tag: "STRUCTURAL_VARIANTS_WF.normalize_libraries_ch", pretty: true)
 
         normalize_filtered_ch = samples_ch.join(normalize_libraries_ch)
 
