@@ -16,14 +16,9 @@ for prefix in "${prefixes[@]}"; do
     if [[ ${#files[@]} -gt 0 ]]; then
         # Concatenate files
         concat_file="${tmp_dir}/${prefix}.concat.vcf"
-        bcftools concat ${files[@]} -o "$concat_file"
-        bgzip "$concat_file"
+        sorted_file="${tmp_dir}/${prefix}.concat.sorted.vcf.gz"
 
-        # Sort and index the concatenated file
-        sorted_file="${tmp_dir}/${prefix}.sorted.vcf.gz"
-        bcftools sort "$concat_file.gz" -o "$sorted_file"
-        bcftools index "$sorted_file"
-
+        bcftools concat ${files[@]} | bcftools sort -o $sorted_file -W
         # Add sorted file to merged list
         concat_files+=("$sorted_file")
     fi
@@ -31,7 +26,7 @@ done
 
 # Merge concatenated files (if any)
 if [[ ${#concat_files[@]} -gt 0 ]]; then
-    bcftools merge "${concat_files[@]}" -o joint.delly.vcf
+    bcftools merge ${concat_files[@]} -o joint.delly.vcf
     bgzip joint.delly.vcf
     bcftools index joint.delly.vcf.gz
 fi
