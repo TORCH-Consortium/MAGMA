@@ -96,7 +96,8 @@ vcf_header = """##fileformat=VCFv4.2
 def get_base_name(file_path):
     base_name = os.path.basename(file_path)
     if '_' in base_name:
-        return base_name.split('_')[0]
+        split_base_name = base_name.split("_")
+        return f"{split_base_name[0]}_{split_base_name[1]}"
     return base_name
 
 
