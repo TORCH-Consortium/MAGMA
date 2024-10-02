@@ -54,6 +54,9 @@ def validate_fastq_files(r1, r2, line_num):
 def set_default_value(field, default_value):
     return field if field and field.strip() else default_value
 
+def sanitize_name(name):
+    return name.replace('.', '_').replace('-', '_')
+
 def process_row(row, line_num, reader):
     row['Library'] = set_default_value(row.get('Library'), "1")
     row['Attempt'] = set_default_value(row.get('Attempt'), "1")
@@ -61,6 +64,10 @@ def process_row(row, line_num, reader):
     row['Lane'] = set_default_value(row.get('Lane'), "1")
     row['Index Sequence'] = set_default_value(row.get('Index Sequence'), "1")
     row['Study'] = set_default_value(row.get('Study'), "MAGMA")
+
+    # Sanitize Study and Sample names
+    row['Study'] = sanitize_name(row['Study'])
+    row['Sample'] = sanitize_name(row['Sample'])
 
     valid = True
     valid &= validate_study(row['Study'], line_num)
