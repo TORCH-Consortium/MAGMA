@@ -40,7 +40,7 @@ process ISMAPPER {
         tuple val(sampleName), path("ismapper"), emit: results_dir
 
     script:
-        def splitSampleName = sampleName.split(".")
+        def splitSampleName = sampleName.split("\\.")
         def colName = "${splitSampleName[0]}.${splitSampleName[1]}"
 
         """
