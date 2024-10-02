@@ -15,13 +15,13 @@ for prefix in "${prefixes[@]}"; do
 
     if [[ ${#files[@]} -gt 0 ]]; then
         # Concatenate files
-        concat_file="${tmp_dir}/${prefix}.concat.vcf"
+        concat_file="${tmp_dir}/${prefix}.concat.vcf.gz"
         bcftools concat ${files[@]} -o "$concat_file"
-        bgzip "$concat_file"
+        bcftools view "$concat_file" -Oz -o "$concat_file"
 
         # Sort and index the concatenated file
         sorted_file="${tmp_dir}/${prefix}.sorted.vcf.gz"
-        bcftools sort "$concat_file.gz" -o "$sorted_file"
+        bcftools sort "$concat_file" -Oz -o "$sorted_file"
         bcftools index "$sorted_file"
 
         # Add sorted file to merged list
