@@ -156,8 +156,8 @@ def update_json(existing_json_file, json_output, cleaned_json_file):
 
 def main():
     parser = argparse.ArgumentParser(description='Process VCF and JSON files.')
-    parser.add_argument('--delly_vcf', required=True, help='Path to the Delly VCF file')
-    parser.add_argument('--ismapper_vcf', required=True, help='Path to the ISMapper VCF file')
+    # parser.add_argument('--delly_vcf', required=True, help='Path to the Delly VCF file')
+    # parser.add_argument('--ismapper_vcf', required=True, help='Path to the ISMapper VCF file')
     parser.add_argument('--bed_file', required=True, help='Path to the BED file')
     parser.add_argument('--existing_json_file', required=True, help='Path to the existing JSON file')
     parser.add_argument('--cleaned_json_file', required=True, help='Path to the cleaned JSON file')
