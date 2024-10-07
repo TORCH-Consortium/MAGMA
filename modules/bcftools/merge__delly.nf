@@ -8,7 +8,7 @@ process BCFTOOLS_MERGE__DELLY {
 
     output:
         tuple val(params.vcf_name), path("${params.vcf_name}.delly.vcf.gz.csi"), path("${params.vcf_name}.delly.vcf.gz"), emit: joint_vcfs
-        path("interim/*sorted*"), emit: per_sample_vcfs
+        path("interim/*concat.vcf.gz"), emit: per_sample_vcfs
 
     script:
         """
