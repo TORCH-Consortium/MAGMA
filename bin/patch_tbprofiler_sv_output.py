@@ -7,12 +7,12 @@ import pandas as pd
 import pysam
 import json
 
-def concatenate_vcf_files(delly_vcf, ismapper_vcf, output_vcf):
-    bcftools_command = [
-        'bcftools', 'concat', '-o', output_vcf, '-O', 'v', delly_vcf, ismapper_vcf
-    ]
-    subprocess.run(bcftools_command, check=True)
-    print(f'Concatenated VCF file created at: {output_vcf}')
+# def concatenate_vcf_files(delly_vcf, ismapper_vcf, output_vcf):
+#     bcftools_command = [
+#         'bcftools', 'concat', '-o', output_vcf, '-O', 'v', delly_vcf, ismapper_vcf
+#     ]
+#     subprocess.run(bcftools_command, check=True)
+#     print(f'Concatenated VCF file created at: {output_vcf}')
 
 def load_bed_file(bed_file):
     bed_df = pd.read_csv(bed_file, sep='\t', header=None, names=['Chromosome', 'start', 'end', 'gene_code', 'gene_name', 'drug'])
@@ -161,13 +161,13 @@ def main():
     parser.add_argument('--bed_file', required=True, help='Path to the BED file')
     parser.add_argument('--existing_json_file', required=True, help='Path to the existing JSON file')
     parser.add_argument('--cleaned_json_file', required=True, help='Path to the cleaned JSON file')
-    parser.add_argument('--output_vcf', required=True, help='Path to the output concatenated VCF file')
+    parser.add_argument('--concat_vcf', required=True, help='Path to the concatenated VCF file')
 
     args = parser.parse_args()
 
-    concatenate_vcf_files(args.delly_vcf, args.ismapper_vcf, args.output_vcf)
+    #concatenate_vcf_files(args.delly_vcf, args.ismapper_vcf, args.output_vcf)
     bed_intervals = load_bed_file(args.bed_file)
-    json_output = process_vcf_file(args.output_vcf, bed_intervals)
+    json_output = process_vcf_file(args.concat_vcf, bed_intervals)
     update_json(args.existing_json_file, json_output, args.cleaned_json_file)
 
 if __name__ == "__main__":
