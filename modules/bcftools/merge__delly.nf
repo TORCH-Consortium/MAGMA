@@ -36,7 +36,7 @@ process BCFTOOLS_MERGE__DELLY {
 
     script:
         """
-        bcftools_merge__delly.sh
+        bcftools_merge__delly.py
         """
 
     stub:
