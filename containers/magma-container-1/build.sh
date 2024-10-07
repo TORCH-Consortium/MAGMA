@@ -28,7 +28,7 @@ set -uex
 
 # NOTE: Make sure you've set the environment correctly and are logged in to the registry.
 
-CONTAINER_TAG=2.0.0
+CONTAINER_TAG=2.1.0
 CONTAINER_DIR=magma-container-1
 DOCKER_NAMESPACE="ghcr.io/torch-consortium/magma"
 
