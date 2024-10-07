@@ -154,11 +154,11 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
         def resistanceDb =  []
 
-        TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out, resistanceDb)
+        TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out.joint_vcfs, resistanceDb)
 
         TBPROFILER_COLLATE__DELLY(params.vcf_name, TBPROFILER_VCF_PROFILE__DELLY.out, resistanceDb)
 
-        UTILS_PATCH_TBPROFILER_SV_OUTPUT( delly_and_ismapper_ch, TBPROFILER_COLLATE__DELLY.out.per_sample_results )
+        UTILS_PATCH_TBPROFILER_SV_OUTPUT( BCFTOOLS_MERGE__DELLY.out.per_sample_vcfs, TBPROFILER_COLLATE__DELLY.out.per_sample_results )
 
     emit:
         structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
