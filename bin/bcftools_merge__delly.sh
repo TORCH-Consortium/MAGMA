@@ -22,7 +22,7 @@ for prefix in "${prefixes[@]}"; do
         bcftools view "$concat_file" -Oz -o "$concat_file"
 
         # Sort and index the concatenated file
-        sorted_file="${tmp_dir}/${prefix}.sorted.vcf.gz"
+        sorted_file="${tmp_dir}/${prefix}.concat.sorted.vcf.gz"
         bcftools sort "$concat_file" -Oz -o "$sorted_file"
         bcftools index "$sorted_file"
 
