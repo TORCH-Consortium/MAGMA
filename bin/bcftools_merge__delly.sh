@@ -6,7 +6,7 @@ tmp_dir="interim"
 mkdir $tmp_dir
 
 # Extract unique sample prefixes from filenames
-prefixes=( $(for file in *.bcf.gz *.vcf.gz; do basename "$file" | cut -d '.' -f 2; done | sort -u) )
+prefixes=( $(for file in *.bcf.gz *.vcf.gz; do basename "$file" | cut -d '.' -f 1,2; done | sort -u) )
 
 # Process each sample prefix
 for prefix in "${prefixes[@]}"; do
