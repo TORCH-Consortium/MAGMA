@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # Create temporary directory
-tmp_dir=$(mktemp -d ./.bcftools-XXXXXX)
+tmp_dir="interim"
+
+mkdir $tmp_dir
 
 # Extract unique sample prefixes from filenames
 prefixes=( $(for file in *.bcf.gz *.vcf.gz; do basename "$file" | cut -d '.' -f 2; done | sort -u) )

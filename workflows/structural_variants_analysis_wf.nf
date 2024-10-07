@@ -37,6 +37,7 @@ include { BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/merge__delly.nf" add
 include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__DELLY } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__DELLY)
 include { ISMAPPER } from "../modules/ismapper/ismapper.nf" addParams ( params.ISMAPPER )
+include { UTILS_PATCH_TBPROFILER_SV_OUTPUT } from "../modules/utils/patch_tbprofiler_sv_output.nf" addParams ( params.UTILS_PATCH_TBPROFILER_SV_OUTPUT )
 
 
 workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
@@ -172,26 +173,17 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
 
 
-    //FIXME: Reenable the merged channel once the ISMAPPER branch is finalized
-        vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch ).unique().collect(sort: true).view { "vcfs_and_indexes_ch: $it"}
+        delly_and_ismapper_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch ).unique().collect(sort: true).view { "vcfs_and_indexes_ch: $it"}
 
-
-        //vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch
-
-
-
-        //TODO: Merge the ISMAPPER output
-        // vcfs_string_ch = delly_vcfs_string_ch.concat ( ismapper_vcfs_string_ch ).collect(sort: true).view { "vcfs_string_ch: $it"}
-        // vcfs_file = vcfs_string_ch.collectFile(name: "$params.outdir/structural_variant_vcfs.txt", newLine: true)
-        // delly_vcfs_and_indexes_ch, ismapper_vcfs_and_indexes_ch
-
-        BCFTOOLS_MERGE__DELLY( vcfs_and_indexes_ch )
+        BCFTOOLS_MERGE__DELLY( delly_and_ismapper_ch )
 
         def resistanceDb =  []
 
-        TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out, resistanceDb)
+        TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out.named_tuple, resistanceDb)
 
         TBPROFILER_COLLATE__DELLY(params.vcf_name, TBPROFILER_VCF_PROFILE__DELLY.out, resistanceDb)
+
+        //UTILS_PATCH_TBPROFILER_SV_OUTPUT( delly_and_ismapper_ch, TBPROFILER_COLLATE__DELLY )
 
     emit:
         structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
