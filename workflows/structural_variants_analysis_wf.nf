@@ -148,7 +148,10 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
 
 
-        delly_and_ismapper_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch ).unique().collect(sort: true).view { "vcfs_and_indexes_ch: $it"}
+        delly_and_ismapper_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch )
+            .unique()
+            .collect(sort: true)
+            //.view { "vcfs_and_indexes_ch: $it"}
 
         BCFTOOLS_MERGE__DELLY( delly_and_ismapper_ch )
 
