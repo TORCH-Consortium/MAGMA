@@ -7,7 +7,7 @@ process BCFTOOLS_MERGE__DELLY {
         path vcf_files
 
     output:
-        tuple val(params.vcf_name), path("*.vcf.gz.csi"), path("*.${params.file_format}.vcf.gz")
+        tuple val(params.vcf_name), path("${params.vcf_name}.delly.vcf.gz.csi"), path("${params.vcf_name}.delly.vcf.gz")
 
     script:
         """

@@ -36,5 +36,6 @@ if [[ ${#concat_files[@]} -gt 0 ]]; then
     bcftools index joint.delly.vcf.gz
 fi
 
+# NOTE For now commenting this for debugging.
 # Clean up temporary directory
-rm -rf "$tmp_dir"
+#rm -rf "$tmp_dir"
