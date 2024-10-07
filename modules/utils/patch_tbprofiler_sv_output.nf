@@ -3,7 +3,7 @@ process UTILS_PATCH_TBPROFILER_SV_OUTPUT {
 
     input:
         path("delly_and_ismapper/*") //path vcf_files
-        path("joint_vcfs/*") //tuple val(joint_name), path(joint_vcf_index), path(joint_vcf)
+        path("joint_vcfs") //tuple val(joint_name), path(joint_vcf_index), path(joint_vcf)
 
     shell:
 
