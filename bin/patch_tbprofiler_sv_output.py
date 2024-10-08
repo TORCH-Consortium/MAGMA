@@ -160,8 +160,8 @@ def main():
     # parser.add_argument('--ismapper_vcf', required=True, help='Path to the ISMapper VCF file')
     parser.add_argument('--bed_file', required=True, help='Path to the BED file')
     parser.add_argument('--existing_json_file', required=True, help='Path to the existing JSON file')
-    parser.add_argument('--cleaned_json_file', required=True, help='Path to the cleaned JSON file')
     parser.add_argument('--concat_vcf', required=True, help='Path to the concatenated VCF file')
+    parser.add_argument('--cleaned_json_file', required=True, help='Path to the cleaned JSON file')
 
     args = parser.parse_args()
 
