@@ -5,7 +5,6 @@ channels:
   - defaults
 dependencies:
   - PyVCF=0.6.8
-  - pysam=0.21.0
   - csvtk=0.30.0
   - datamash=1.1.0
   - delly=0.8.7
