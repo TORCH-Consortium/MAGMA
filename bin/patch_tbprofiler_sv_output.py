@@ -5,6 +5,8 @@ import argparse
 import subprocess
 import pandas as pd
 import pysam
+import os
+import glob
 import json
 
 # def concatenate_vcf_files(delly_vcf, ismapper_vcf, output_vcf):
@@ -13,6 +15,32 @@ import json
 #     ]
 #     subprocess.run(bcftools_command, check=True)
 #     print(f'Concatenated VCF file created at: {output_vcf}')
+
+
+
+def extract_unique_prefixes(file_list):
+  """Extracts unique prefixes from a list of file paths.
+
+  Args:
+    file_list: A list of file paths.
+
+  Returns:
+    A list of unique prefixes.
+  """
+
+  prefixes = set()
+  for file_path in file_list:
+    # Split the path based on "." (dot)
+    parts = file_path.split(".")
+
+    # Check if there are at least 3 parts (NICD, prefix, extension)
+    if len(parts) >= 3:
+      # The prefix is the second part (excluding the leading "NICD")
+      prefix = f"{parts[0]}.{parts[1]}"
+      prefixes.add(prefix)
+  return list(prefixes)  # Convert set back to a list
+
+# json_files = glob.glob(args['indir'] + "/" + "*.json")
 
 def load_bed_file(bed_file):
     bed_df = pd.read_csv(bed_file, sep='\t', header=None, names=['Chromosome', 'start', 'end', 'gene_code', 'gene_name', 'drug'])
@@ -121,7 +149,11 @@ def process_vcf_file(output_vcf, bed_intervals):
                     break
     return json_output
 
-def update_json(existing_json_file, json_output, cleaned_json_file):
+def update_json(processed_bed_file, existing_json_file, concat_vcf, output_json_file):
+
+
+    json_output= process_vcf_file(concat_vcf, processed_bed_file)
+
     try:
         with open(existing_json_file, 'r') as file:
             existing_data = json.load(file)
@@ -148,27 +180,33 @@ def update_json(existing_json_file, json_output, cleaned_json_file):
     existing_data["dr_variants"] = [v for k, v in unique_records.items()]
 
     try:
-        with open(cleaned_json_file, 'w') as file:
+        with open(output_json_file, 'w') as file:
             json.dump(existing_data, file, indent=4)
-        print(f"Cleaned JSON file saved: {cleaned_json_file}")
+        print(f"Cleaned JSON file saved: {output_json_file}")
     except IOError as e:
-        print(f"Error writing file {cleaned_json_file}: {e}")
+        print(f"Error writing file {output_json_file}: {e}")
 
 def main():
     parser = argparse.ArgumentParser(description='Process VCF and JSON files.')
     # parser.add_argument('--delly_vcf', required=True, help='Path to the Delly VCF file')
     # parser.add_argument('--ismapper_vcf', required=True, help='Path to the ISMapper VCF file')
     parser.add_argument('--bed_file', required=True, help='Path to the BED file')
-    parser.add_argument('--existing_json_file', required=True, help='Path to the existing JSON file')
-    parser.add_argument('--concat_vcf', required=True, help='Path to the concatenated VCF file')
-    parser.add_argument('--cleaned_json_file', required=True, help='Path to the cleaned JSON file')
+    parser.add_argument('--existing_json_dir', required=True, help='Path to the existing TBprofiler JSON output files')
+    parser.add_argument('--concat_vcf_dir', required=True, help='Path to the concatenated VCF files')
 
     args = parser.parse_args()
 
-    #concatenate_vcf_files(args.delly_vcf, args.ismapper_vcf, args.output_vcf)
-    bed_intervals = load_bed_file(args.bed_file)
-    json_output = process_vcf_file(args.concat_vcf, bed_intervals)
-    update_json(args.existing_json_file, json_output, args.cleaned_json_file)
+    unique_prefixes = extract_unique_prefixes(os.listdir(args.existing_json_dir))
+
+    processed_bed_file = load_bed_file(args.bed_file)
+
+    for p in unique_prefixes:
+        concat_vcf_file = glob.glob(args.concat_vcf_dir + "/" + p  + "*")[0]
+        existing_json_file = glob.glob(args.concat_vcf_dir + "/" + p  + "*")[0]
+        output_json_file = f"{p}.patched.json"
+
+        print(existing_json_file, concat_vcf_file, output_json_file)
+        update_json( processed_bed_file , concat_vcf_file, existing_json_file, output_json_file)
 
 if __name__ == "__main__":
     main()
