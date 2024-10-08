@@ -202,7 +202,7 @@ def main():
 
     for p in unique_prefixes:
         concat_vcf_file = glob.glob(args.concat_vcf_dir + "/" + p  + "*")[0]
-        existing_json_file = glob.glob(args.concat_vcf_dir + "/" + p  + "*")[0]
+        existing_json_file = glob.glob(args.existing_json_dir + "/" + p  + "*")[0]
         output_json_file = f"{p}.patched.json"
 
         print(existing_json_file, concat_vcf_file, output_json_file)
