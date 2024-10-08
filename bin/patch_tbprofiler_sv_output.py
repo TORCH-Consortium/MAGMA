@@ -206,7 +206,8 @@ def main():
         output_json_file = f"{p}.patched.json"
 
         print(existing_json_file, concat_vcf_file, output_json_file)
-        update_json( processed_bed_file , concat_vcf_file, existing_json_file, output_json_file)
+
+        update_json( processed_bed_file , existing_json_file, concat_vcf_file, output_json_file)
 
 if __name__ == "__main__":
     main()
