@@ -6,12 +6,16 @@ tmp_dir="interim"
 mkdir $tmp_dir
 
 # Extract unique sample prefixes from filenames
-prefixes=( $(for file in *.bcf.gz *.vcf.gz; do basename "$file" | cut -d '.' -f 1,2; done | sort -u) )
+prefixes=( $(ls *.vcf.gz | xargs -n 1 basename | cut -d '.' -f 1,2 | sort -u) )
+
+
+
+
 
 # Process each sample prefix
 for prefix in "${prefixes[@]}"; do
     # Find related files for the prefix
-    files=( "*${prefix}.[^.]*.bcf.gz" "*${prefix}.[^.]*.bcf.gz" )
+    files=( $(find . -maxdepth 1 -name "${prefix}.*.vcf.gz"  ! -name "*.csi" ) )
 
     echo $files
 
