@@ -28,24 +28,24 @@ process BCFTOOLS_VIEW__DELLY {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        tuple val(sampleName), path(bcf)
+        tuple val(sampleName), path(vcf)
 
     output:
-        tuple val(sampleName), path("*.bcf.gz"), path("*.bcf.gz.csi")
+        tuple val(sampleName), path("*.vcf.gz"), path("*.vcf.gz.csi")
 
     shell:
 
         '''
-        !{params.bcftools_path} view !{params.arguments}  !{sampleName}.delly.bcf -o !{sampleName}.filtered.delly.bcf
-        bgzip !{sampleName}.filtered.delly.bcf
-        !{params.bcftools_path} index !{sampleName}.filtered.delly.bcf.gz
+        !{params.bcftools_path} view !{params.arguments}  !{sampleName}.delly.vcf -o !{sampleName}.filtered.delly.vcf
+        bgzip !{sampleName}.filtered.delly.vcf
+        !{params.bcftools_path} index !{sampleName}.filtered.delly.vcf.gz
         '''
 
     stub:
 
         """
-        touch ${sampleName}.bcf.gz
-        touch ${sampleName}.bcf.gz.csi
+        touch ${sampleName}.vcf.gz
+        touch ${sampleName}.vcf.gz.csi
         """
 
 }
