@@ -187,5 +187,5 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
         UTILS_PATCH_TBPROFILER_SV_OUTPUT( BCFTOOLS_MERGE__DELLY.out.per_sample_vcfs, TBPROFILER_COLLATE__DELLY.out.per_sample_results )
 
     emit:
-        structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
+        structural_variants_results_ch = UTILS_PATCH_TBPROFILER_SV_OUTPUT.out.patched_results
 }

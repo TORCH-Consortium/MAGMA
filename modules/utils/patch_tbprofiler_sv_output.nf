@@ -5,6 +5,10 @@ process UTILS_PATCH_TBPROFILER_SV_OUTPUT {
         path("concat_vcfs/*") //path vcf_files
         path("tbprofiler_json") //tuple val(joint_name), path(joint_vcf_index), path(joint_vcf)
 
+    output:
+        path("results"), emit: patched_results //path patched JSON files
+
+
     shell:
 
         '''
