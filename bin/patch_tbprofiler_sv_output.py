@@ -11,6 +11,7 @@ import json
 
 # def concatenate_vcf_files(delly_vcf, ismapper_vcf, output_vcf):
 #     bcftools_command = [
+
 #         'bcftools', 'concat', '-o', output_vcf, '-O', 'v', delly_vcf, ismapper_vcf
 #     ]
 #     subprocess.run(bcftools_command, check=True)
@@ -150,8 +151,6 @@ def process_vcf_file(output_vcf, bed_intervals):
     return json_output
 
 def update_json(processed_bed_file, existing_json_file, concat_vcf, output_json_file):
-
-
     json_output= process_vcf_file(concat_vcf, processed_bed_file)
 
     try:
@@ -179,12 +178,17 @@ def update_json(processed_bed_file, existing_json_file, concat_vcf, output_json_
 
     existing_data["dr_variants"] = [v for k, v in unique_records.items()]
 
+    results_directory = 'results'
+    os.makedirs(results_directory, exist_ok=True)
+    output_json_file = os.path.join(results_directory, output_json_file)
+
     try:
         with open(output_json_file, 'w') as file:
             json.dump(existing_data, file, indent=4)
         print(f"Cleaned JSON file saved: {output_json_file}")
     except IOError as e:
         print(f"Error writing file {output_json_file}: {e}")
+
 
 def main():
     parser = argparse.ArgumentParser(description='Process VCF and JSON files.')
