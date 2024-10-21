@@ -22,8 +22,8 @@ for prefix in "${prefixes[@]}"; do
     if [[ ${#files[@]} -gt 0 ]]; then
         # Concatenate files
         concat_file="${tmp_dir}/${prefix}.concat.vcf.gz"
-        bcftools concat ${files[@]} -o "$concat_file"
-        bcftools view "$concat_file" -Oz -o "$concat_file"
+        bcftools concat -o "$concat_file" -O v ${files[@]}
+        #bcftools view "$concat_file" -Oz -o "$concat_file"
 
         # Sort and index the concatenated file
         sorted_file="${tmp_dir}/${prefix}.concat.sorted.vcf.gz"
