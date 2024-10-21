@@ -139,7 +139,7 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
             qual = '1000'  # Set QUAL to 1000
             filter_status = 'PASS'
             info = (
-                f"SVTYPE=INS;"
+                f"SVTYPE=INS;SVMETHOD=ISMAPPER;"
                 f"Orientation={orientation};"
                 f"Gap={row['gap']};"
                 f"Call={row['call']};"
