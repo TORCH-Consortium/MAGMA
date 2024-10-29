@@ -85,9 +85,53 @@ def process_vcf_file(output_vcf, bed_intervals):
                         source = "ISMapper"
                     else:
                         vcf_svlen = None
+                        type = None
+                        source = None
 
                     change_format = sv_type.lower() if sv_type in ['INS', 'DEL', 'DUP', 'INV'] else 'unknown'
+                    affected_drugs = bed_entry['drug'].split(',')
 
+                    annotations = []
+                    consequences = []
+                    antibiotics = []
+                    gene_associated_drugs = []
+    
+                    for drug in affected_drugs:
+                        annotation = {
+                            "type": "drug_resistance",
+                            "drug": drug,
+                            "original_mutation": type,
+                            "confidence": "Uncertain significance",
+                            "source": source,
+                            "comment": ""
+                        }
+    
+                        consequence = {
+                            "gene_id": bed_entry['gene_code'],
+                            "gene_name": bed_entry['gene_name'],
+                            "feature_id": None,
+                            "type": None,
+                            "nucleotide_change": f"c.{vcf_start + 1}_{vcf_end}{change_format}",
+                            "protein_change": None,
+                            "annotation": [annotation]
+                        }
+    
+                        antibiotic = {
+                            "type": "drug_resistance",
+                            "drug": drug,
+                            "original_mutation": type,
+                            "confidence": "Uncertain significance",
+                            "source": source,
+                            "comment": ""
+                        }
+    
+                        gene_associated_drug = drug
+    
+                        annotations.append(annotation)
+                        consequences.append(consequence)
+                        antibiotics.append(antibiotic)
+                        gene_associated_drugs.append(gene_associated_drug)
+                  
                     json_record = {
                         "chrom": vcf_chrom,
                         "pos": vcf_start + 1,
@@ -107,48 +151,11 @@ def process_vcf_file(output_vcf, bed_intervals):
                         "change": f"c.{vcf_start + 1}_{vcf_end}{change_format}",
                         "nucleotide_change": f"c.{vcf_start + 1}_{vcf_end}{change_format}",
                         "protein_change": None,
-                        "annotation": [
-                            {
-                                "type": "drug_resistance",
-                                "drug": bed_entry['drug'],
-                                "original_mutation": type,
-                                "confidence": "Uncertain significance",
-                                "source": source,
-                                "comment": ""
-                            }
-                        ],
-                        "consequences": [
-                            {
-                                "gene_id": bed_entry['gene_code'],
-                                "gene_name": bed_entry['gene_name'],
-                                "feature_id": None,
-                                "type": type,
-                                "nucleotide_change": f"c.{vcf_start + 1}_{vcf_end}{change_format}",
-                                "protein_change": None,
-                                "annotation": [
-                                    {
-                                        "type": "drug_resistance",
-                                        "drug": bed_entry['drug'],
-                                        "original_mutation": type,
-                                        "confidence": "Uncertain significance",
-                                        "source": source,
-                                        "comment": ""
-                                    }
-                                ]
-                            }
-                        ],
-                        "drugs": [
-                            {
-                                "type": "drug_resistance",
-                                "drug": bed_entry['drug'],
-                                "original_mutation": type,
-                                "confidence": "Uncertain significance",
-                                "source": source,
-                                "comment": ""
-                            }
-                        ],
+                        "annotation": [annotations],
+                        "consequences": [consequences],
+                        "drugs": antibiotics,
                         "locus_tag": bed_entry['gene_code'],
-                        "gene_associated_drugs": [bed_entry['drug']] if bed_entry['drug'] else []
+                        "gene_associated_drugs": gene_associated_drugs
                     }
 
                     json_output.append(json_record)
@@ -167,9 +174,6 @@ def update_json(processed_bed_file, existing_json_file, concat_vcf, output_json_
 
     for record in existing_data.get('dr_variants', []):
         record['source'] = 'TBprofiler'
-
-    for record in json_output:
-        record['source'] = 'Delly/Ismapper'
 
     combined_data = existing_data.get('dr_variants', []) + json_output
 
