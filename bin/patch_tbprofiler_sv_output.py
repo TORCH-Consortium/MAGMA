@@ -89,7 +89,7 @@ def process_vcf_file(output_vcf, bed_intervals):
                         "ref": record.ref,
                         "alt": record.alts[0],
                         "depth": None,
-                        "freq": 'NA',
+                        "freq": 1,
                         "sv": True,
                         "filter": list(record.filter.keys())[0] if record.filter else "PASS",
                         "forward_reads": None,
