@@ -76,8 +76,13 @@ def process_vcf_file(output_vcf, bed_intervals):
                     sv_type = record.info.get('SVTYPE', None)
                     if sv_type in ['DEL', 'DUP', 'INV']:
                         vcf_svlen = vcf_end - vcf_start + 1
+                        type = "structural_variant"
+                        source = "Delly"
+                      
                     elif sv_type == 'INS':
                         vcf_svlen = abs(record.info.get('SVLEN', record.info.get('INSLEN', 0)))
+                        type = "TE_insertion"
+                        source = "ISMapper"
                     else:
                         vcf_svlen = None
 
@@ -98,7 +103,7 @@ def process_vcf_file(output_vcf, bed_intervals):
                         "gene_id": bed_entry['gene_code'],
                         "gene_name": bed_entry['gene_name'],
                         "feature_id": None,
-                        "type": None,
+                        "type": type,
                         "change": f"c.{vcf_start + 1}_{vcf_end}{change_format}",
                         "nucleotide_change": f"c.{vcf_start + 1}_{vcf_end}{change_format}",
                         "protein_change": None,
@@ -106,9 +111,9 @@ def process_vcf_file(output_vcf, bed_intervals):
                             {
                                 "type": "drug_resistance",
                                 "drug": bed_entry['drug'],
-                                "original_mutation": "LoF",
-                                "confidence": " ",
-                                "source": "",
+                                "original_mutation": type,
+                                "confidence": "Uncertain significance",
+                                "source": source,
                                 "comment": ""
                             }
                         ],
@@ -117,16 +122,16 @@ def process_vcf_file(output_vcf, bed_intervals):
                                 "gene_id": bed_entry['gene_code'],
                                 "gene_name": bed_entry['gene_name'],
                                 "feature_id": None,
-                                "type": None,
+                                "type": type,
                                 "nucleotide_change": f"c.{vcf_start + 1}_{vcf_end}{change_format}",
                                 "protein_change": None,
                                 "annotation": [
                                     {
                                         "type": "drug_resistance",
                                         "drug": bed_entry['drug'],
-                                        "original_mutation": "TE_insertion",
-                                        "confidence": "",
-                                        "source": "",
+                                        "original_mutation": type,
+                                        "confidence": "Uncertain significance",
+                                        "source": source,
                                         "comment": ""
                                     }
                                 ]
@@ -136,9 +141,9 @@ def process_vcf_file(output_vcf, bed_intervals):
                             {
                                 "type": "drug_resistance",
                                 "drug": bed_entry['drug'],
-                                "original_mutation": "LoF",
-                                "confidence": "",
-                                "source": "",
+                                "original_mutation": type,
+                                "confidence": "Uncertain significance",
+                                "source": source,
                                 "comment": ""
                             }
                         ],
