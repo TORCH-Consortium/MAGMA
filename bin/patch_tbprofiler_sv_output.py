@@ -58,7 +58,7 @@ def process_vcf_file(output_vcf, bed_intervals):
     json_output = []
 
     for record in vcf_in:
-        vcf_chrom = record.chrom
+        vcf_chrom = 'Chromosome'
         vcf_start = record.start
         vcf_end = record.stop
 
@@ -124,7 +124,7 @@ def process_vcf_file(output_vcf, bed_intervals):
                                     {
                                         "type": "drug_resistance",
                                         "drug": bed_entry['drug'],
-                                        "original_mutation": "LoF",
+                                        "original_mutation": "TE_insertion",
                                         "confidence": "",
                                         "source": "",
                                         "comment": ""
@@ -147,7 +147,7 @@ def process_vcf_file(output_vcf, bed_intervals):
                     }
 
                     json_output.append(json_record)
-                    break
+                  
     return json_output
 
 def update_json(processed_bed_file, existing_json_file, concat_vcf, output_json_file):
