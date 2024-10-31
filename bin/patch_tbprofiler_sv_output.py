@@ -87,6 +87,10 @@ def process_vcf_file(output_vcf, bed_intervals):
                         vcf_svlen = None
                         type = None
                         source = None
+                    
+                    if vcf_svlen > 100000:
+                        continue
+
 
                     change_format = sv_type.lower() if sv_type in ['INS', 'DEL', 'DUP', 'INV'] else 'unknown'
                     affected_drugs = bed_entry['drug'].split(',')
@@ -179,7 +183,7 @@ def update_json(processed_bed_file, existing_json_file, concat_vcf, output_json_
 
     unique_records = {}
     for record in combined_data:
-        key = (record["chrom"], record["pos"], record["alt"], record["sv_len"], record["gene_id"])
+        key = ('Chromosome', record["pos"], record["gene_id"])
         if key in unique_records:
             if unique_records[key]['source'] == 'TBprofiler':
                 continue
