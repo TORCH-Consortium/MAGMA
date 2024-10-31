@@ -40,6 +40,8 @@ process ISMAPPER {
         tuple val(sampleName), path("ismapper"), emit: results_dir
 
     script:
+        def splitSampleName = sampleName.split("\\.")
+        def colName = "${splitSampleName[0]}.${splitSampleName[1]}"
 
         """
 
@@ -61,7 +63,8 @@ process ISMAPPER {
             --is_mapper_dir ismapper/IS6110/ \\
             --reference_file $ref_fasta \\
             --query_file $query_multifasta \\
-            --output_vcf_file ${sampleName}.ismapper.vcf
+            --output_vcf_file ${sampleName}.ismapper.vcf \\
+            --ismapper_column_name ${colName}
 
         """
 }
