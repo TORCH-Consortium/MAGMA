@@ -1,4 +1,6 @@
 # CHANGELOG FOR THE MAGMA PIPELINE VERSIONS
+<!-- https://keepachangelog.com/en/1.1.0/ -->
+
 
 ## v2.0.0
 

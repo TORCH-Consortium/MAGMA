@@ -23,42 +23,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-process {
+process SPOTYPING {
+    publishDir params.resultsDir, mode: params.saveMode
 
-    withName:
-    '.*SPOTYPING.*' {
-        container = "quay.io/biocontainers/spotyping:2.1--hdfd78af_4"
-    }
+    input:
+    tuple val(genomeName), val(meta), path(genomeReads)
 
-    withName:
-    '.*RDANALYZER.*' {
-        container = "quay.io/biocontainers/rd-analyzer:1.01--hdfd78af_0"
-    }
+    output:
+    path('*.txt')
+    path('SITVIT*.xls'),  optional:true
 
-    withName:
-    '.*TBPROFILER.*' {
-        container = "ghcr.io/torch-consortium/magma/biocontainer-tbprofiler:6.3.0--1"
-    }
+    script:
 
-    withName:
-    'NTMPROFILER.*' {
-        container = "ghcr.io/torch-consortium/magma/biocontainer-ntmprofiler:0.4.0"
-    }
+    """
+    SpoTyping.py  ${genomeReads} -o ${genomeName}.txt ${params.arguments}
+    """
 
-    withName:
-    'ISMAPPER.*|GATK.*|LOFREQ.*|DELLY.*|MULTIQC.*|FASTQC.*|UTILS.*|FASTQ.*|SAMPLESHEET.*' {
-        container = "ghcr.io/torch-consortium/magma/magma-container-1:2.0.0"
-    }
-
-    withName:
-    'BWA.*|IQTREE.*|SNPDISTS.*|SNPSITES.*|BCFTOOLS.*|BGZIP.*|SAMTOOLS.*|SNPEFF.*|CLUSTERPICKER.*' {
-        container = "ghcr.io/torch-consortium/magma/magma-container-2:1.1.1"
-    }
-
-}
-
-
-docker {
-    enabled = true
-    runOptions      = '-u $(id -u):$(id -g)'
 }

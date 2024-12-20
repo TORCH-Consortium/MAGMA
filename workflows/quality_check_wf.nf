@@ -27,6 +27,12 @@ include { FASTQC              } from '../modules/fastqc/fastqc.nf' addParams (pa
 include { NTMPROFILER_PROFILE } from '../modules/ntmprofiler/profile.nf' addParams (params.NTMPROFILER_PROFILE)
 include { NTMPROFILER_COLLATE } from '../modules/ntmprofiler/collate.nf' addParams (params.NTMPROFILER_COLLATE)
 
+include { TBPROFILER_FASTQ_PROFILE AS EXP_TBPROFILER_FASTQ_PROFILE } from '../modules/tbprofiler/fastq_profile.nf' addParams (params.EXP_TBPROFILER_FASTQ_PROFILE)
+include { TBPROFILER_COLLATE AS EXP_TBPROFILER_FASTQ_COLLATE } from '../modules/tbprofiler/collate.nf' addParams (params.EXP_TBPROFILER_FASTQ_COLLATE)
+
+include { SPOTYPING AS EXP_SPOTYPING } from '../modules/spotyping/main.nf' addParams (params.EXP_SPOTYPING)
+include { RDANALYZER AS EXP_RDANALYZER } from '../modules/rdanalyzer/main.nf' addParams (params.EXP_RDANALYZER)
+
 workflow QUALITY_CHECK_WF {
 
     take:
@@ -40,6 +46,25 @@ workflow QUALITY_CHECK_WF {
 
         NTMPROFILER_COLLATE( params.vcf_name,
                              NTMPROFILER_PROFILE.out.profile_json.collect() )
+
+        if (!params.skip_tbprofiler_fastq) {
+
+            EXP_TBPROFILER_FASTQ_PROFILE( reads_ch )
+
+            EXP_TBPROFILER_FASTQ_COLLATE( params.vcf_name,
+                                          EXP_TBPROFILER_FASTQ_PROFILE.out.profile_json.collect(),
+                                          [] )
+        }
+
+
+        if(!params.exp_skip_rdanalyzer) {
+            EXP_RDANALYZER( reads_ch )
+        }
+
+
+        if(!params.exp_skip_spotyping) {
+            EXP_SPOTYPING( reads_ch )
+        }
 
 
     emit:
