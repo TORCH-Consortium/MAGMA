@@ -24,7 +24,6 @@
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
 process RDANALYZER {
-    publishDir params.resultsDir, mode: params.saveMode
 
     input:
     tuple val(genomeFileName), val(meta), path(genomeReads)
