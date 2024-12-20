@@ -30,8 +30,8 @@ include { NTMPROFILER_COLLATE } from '../modules/ntmprofiler/collate.nf' addPara
 include { TBPROFILER_FASTQ_PROFILE } from '../modules/tbprofiler/fastq_profile.nf' addParams (params.TBPROFILER_FASTQ_PROFILE)
 include { TBPROFILER_COLLATE as TBPROFILER_FASTQ_COLLATE } from '../modules/tbprofiler/collate.nf' addParams (params.TBPROFILER_FASTQ_COLLATE)
 
-include { SPOTYPING as EXP_SPOTYPING } from '../modules/spotyping/main.nf' addParams (params.EXP_SPOTYPING)
-include { RDANALYZER as EXP_RDANALYZER } from '../modules/rdanalyzer/main.nf' addParams (params.EXP_RDANALYZER)
+include { SPOTYPING } from '../modules/spotyping/main.nf' addParams (params.SPOTYPING)
+include { RDANALYZER } from '../modules/rdanalyzer/main.nf' addParams (params.RDANALYZER)
 
 workflow QUALITY_CHECK_WF {
 
@@ -64,13 +64,13 @@ workflow QUALITY_CHECK_WF {
         }
 
 
-        if(!params.exp_skip_rdanalyzer) {
-            EXP_RDANALYZER( reads_ch, params.ref_fasta_rdanalyzer )
+        if(!params.skip_rdanalyzer) {
+            RDANALYZER( reads_ch, params.ref_fasta_rdanalyzer )
         }
 
 
-        if(!params.exp_skip_spotyping) {
-            EXP_SPOTYPING( reads_ch )
+        if(!params.skip_spotyping) {
+            SPOTYPING( reads_ch )
         }
 
 
