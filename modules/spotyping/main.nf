@@ -24,6 +24,8 @@
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
 process SPOTYPING {
+    tag "$sampleName"
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
     tuple val(genomeName), val(meta), path(genomeReads)

@@ -26,6 +26,7 @@
 process TBPROFILER_FASTQ_PROFILE {
     tag "$sampleName"
     label 'process_medium'
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
         tuple val(sampleName), val(meta), path(reads)

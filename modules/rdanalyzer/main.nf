@@ -25,8 +25,10 @@
  */
 process RDANALYZER {
 
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+
     input:
-    tuple val(genomeFileName), val(meta), path(genomeReads)
+    tuple val(genomeName), val(meta), path(genomeReads)
     path(ref_fasta_rdanalyzer)
 
     output:
@@ -34,9 +36,8 @@ process RDANALYZER {
 
 
     script:
-    genomeName = genomeFileName.split("\\_")[0]
 
     """
-    RD-Analyzer-extended.py ${ref_fasta_rdanalyzer}  -o ${genomeFileName} ${genomeReads}
+    RD-Analyzer-extended.py ${ref_fasta_rdanalyzer}  -o ${genomeName} ${genomeReads}
     """
 }
