@@ -65,7 +65,7 @@ workflow QUALITY_CHECK_WF {
 
 
         if(!params.exp_skip_rdanalyzer) {
-            EXP_RDANALYZER( reads_ch )
+            EXP_RDANALYZER( reads_ch, params.ref_fasta_rdanalyzer )
         }
 
 
