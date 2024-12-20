@@ -28,7 +28,7 @@ process TBPROFILER_FASTQ_PROFILE {
     label 'process_medium'
 
     input:
-        tuple val(sampleName), val(meta), path(sampleReads)
+        tuple val(sampleName), val(meta), path(reads)
 
     output:
         tuple val(meta), path("bam/*.bam")     , emit: bam
