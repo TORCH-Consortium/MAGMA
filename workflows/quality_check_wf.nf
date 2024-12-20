@@ -27,11 +27,11 @@ include { FASTQC              } from '../modules/fastqc/fastqc.nf' addParams (pa
 include { NTMPROFILER_PROFILE } from '../modules/ntmprofiler/profile.nf' addParams (params.NTMPROFILER_PROFILE)
 include { NTMPROFILER_COLLATE } from '../modules/ntmprofiler/collate.nf' addParams (params.NTMPROFILER_COLLATE)
 
-include { TBPROFILER_FASTQ_PROFILE AS EXP_TBPROFILER_FASTQ_PROFILE } from '../modules/tbprofiler/fastq_profile.nf' addParams (params.EXP_TBPROFILER_FASTQ_PROFILE)
-include { TBPROFILER_COLLATE AS EXP_TBPROFILER_FASTQ_COLLATE } from '../modules/tbprofiler/collate.nf' addParams (params.EXP_TBPROFILER_FASTQ_COLLATE)
+include { TBPROFILER_FASTQ_PROFILE as EXP_TBPROFILER_FASTQ_PROFILE } from '../modules/tbprofiler/fastq_profile.nf' addParams (params.EXP_TBPROFILER_FASTQ_PROFILE)
+include { TBPROFILER_COLLATE as EXP_TBPROFILER_FASTQ_COLLATE } from '../modules/tbprofiler/collate.nf' addParams (params.EXP_TBPROFILER_FASTQ_COLLATE)
 
-include { SPOTYPING AS EXP_SPOTYPING } from '../modules/spotyping/main.nf' addParams (params.EXP_SPOTYPING)
-include { RDANALYZER AS EXP_RDANALYZER } from '../modules/rdanalyzer/main.nf' addParams (params.EXP_RDANALYZER)
+include { SPOTYPING as EXP_SPOTYPING } from '../modules/spotyping/main.nf' addParams (params.EXP_SPOTYPING)
+include { RDANALYZER as EXP_RDANALYZER } from '../modules/rdanalyzer/main.nf' addParams (params.EXP_RDANALYZER)
 
 workflow QUALITY_CHECK_WF {
 
