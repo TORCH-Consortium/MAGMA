@@ -23,42 +23,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-process {
-
-    withName:
-    '.*SPOTYPING.*' {
-        container = "quay.io/biocontainers/spotyping:2.1--hdfd78af_4"
-    }
-
-    withName:
-    '.*RDANALYZER.*' {
-        container = "quay.io/biocontainers/rd-analyzer:1.01--hdfd78af_0"
-    }
-
-    withName:
-    '.*TBPROFILER.*' {
-        container = "ghcr.io/torch-consortium/magma/biocontainer-tbprofiler:6.3.0--1"
-    }
-
-    withName:
-    'NTMPROFILER.*' {
-        container = "ghcr.io/torch-consortium/magma/biocontainer-ntmprofiler:0.4.0"
-    }
-
-    withName:
-    'ISMAPPER.*|GATK.*|LOFREQ.*|DELLY.*|MULTIQC.*|FASTQC.*|UTILS.*|FASTQ.*|SAMPLESHEET.*' {
-        container = "ghcr.io/torch-consortium/magma/magma-container-1:2.0.0"
-    }
-
-    withName:
-    'BWA.*|IQTREE.*|SNPDISTS.*|SNPSITES.*|BCFTOOLS.*|BGZIP.*|SAMTOOLS.*|SNPEFF.*|CLUSTERPICKER.*' {
-        container = "ghcr.io/torch-consortium/magma/magma-container-2:1.1.1"
-    }
-
-}
 
 
-docker {
-    enabled = true
-    runOptions      = '-u $(id -u):$(id -g)'
+process UTILS_CAT_SPOTYPING {
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+
+    input:
+    path("results_text/*")
+
+    output:
+    path("*.cat.txt")
+    path("results_text")
+
+    script:
+
+    """
+    cat results_text/*txt >> spotyping.cat.txt
+    """
+
 }
