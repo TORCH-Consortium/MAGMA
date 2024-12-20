@@ -24,7 +24,7 @@
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
 process TBPROFILER_FASTQ_PROFILE {
-    tag "$meta.id"
+    tag "$sampleName"
     label 'process_medium'
 
     input:

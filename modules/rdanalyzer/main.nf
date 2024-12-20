@@ -28,6 +28,7 @@ process RDANALYZER {
 
     input:
     tuple val(genomeFileName), val(meta), path(genomeReads)
+    path(ref_fasta_rdanalyzer)
 
     output:
     tuple path("${genomeName}.result"), path("${genomeName}.depth")
@@ -37,6 +38,6 @@ process RDANALYZER {
     genomeName = genomeFileName.split("\\_")[0]
 
     """
-    RD-Analyzer.py  -o ./${genomeName} ${genomeReads}
+    RD-Analyzer-extended.py ${ref_fasta_rdanalyzer}  -o ${genomeFileName} ${genomeReads}
     """
 }
