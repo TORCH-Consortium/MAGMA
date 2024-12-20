@@ -64,14 +64,18 @@ workflow QUALITY_CHECK_WF {
         }
 
 
-        if(!params.skip_rdanalyzer) {
-            RDANALYZER( reads_ch, params.ref_fasta_rdanalyzer )
-        }
-
 
         if(!params.skip_spotyping) {
             SPOTYPING( reads_ch )
         }
+
+    /*
+    //FIXME: As of 20-DEC-2024, RD-Analyzer fails to complete even with bundled fasta file
+        if(!params.skip_rdanalyzer) {
+            RDANALYZER( reads_ch, params.ref_fasta_rdanalyzer )
+        }
+     */
+
 
 
 
