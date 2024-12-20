@@ -52,7 +52,7 @@ workflow QUALITY_CHECK_WF {
             EXP_TBPROFILER_FASTQ_PROFILE( reads_ch )
 
             EXP_TBPROFILER_FASTQ_COLLATE( params.vcf_name,
-                                          EXP_TBPROFILER_FASTQ_PROFILE.out.profile_json.collect(),
+                                          EXP_TBPROFILER_FASTQ_PROFILE.out.json.collect(),
                                           [] )
         }
 
