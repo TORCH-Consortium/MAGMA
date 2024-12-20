@@ -31,8 +31,8 @@ process SPOTYPING {
     tuple val(genomeName), val(meta), path(genomeReads)
 
     output:
-    path('*.txt')
-    path('SITVIT*.xls'),  optional:true
+    path("*.txt")
+    path("SITVIT*.xls"),  optional:true
 
     script:
 
