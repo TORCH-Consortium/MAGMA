@@ -33,7 +33,7 @@ The `java` version should NOT be an `internal jdk` release! You can check the re
 Notice the `LTS` next to `OpenJDK` line.
 
 
-```bash 
+```bash
 
 $ java -version
 openjdk version "17.0.7" 2023-04-18 LTS
@@ -90,7 +90,7 @@ S0002,/full_path_to_directory_of_fastq_files/S0002_01_R1.fastq.gz,full_path_to_d
 S0003,/full_path_to_directory_of_fastq_files/S0003_01_R1.fastq.gz,
 ```
 
-If you have the metadata from sequencing instrument, you can specify further information in the samplesheet 
+If you have the metadata from sequencing instrument, you can specify further information in the samplesheet
 
 ```csv
 Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
@@ -156,15 +156,15 @@ Which could be provided to the pipeline using `-params-file` parameter as shown 
 
 ```console
 nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
-		 -profile conda_local, server \ 
-		 -r v1.1.1 \
-		 -params-file  my_parameters_1.yml
+         -profile conda_local, server \
+         -r v1.1.1 \
+         -params-file  my_parameters_1.yml
 
 ```
 
 # Analysis
 
-## Running MAGMA using Nextflow Tower 
+## Running MAGMA using Nextflow Tower
 
 You can also use Seqera Platform (aka Nextflow Tower) to run the pipeline on any of the supported cloud platforms and monitoring the pipeline execution.
 
@@ -181,11 +181,11 @@ You can run the pipeline using Conda, Mamba or Micromamba package managers to in
 You can find out the location of conda environments using `conda env list`. [Here's](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) a useful cheatsheet for conda operations.
 
 
-You can use the `conda` based setup for the pipeline for running MAGMA 
+You can use the `conda` based setup for the pipeline for running MAGMA
 - On a local linux machine(e.g. your laptop or a university server)
-- On an HPC cluster (e.g. SLURM, PBS) in case you don't have access to container systems like Singularity, Podman or Docker 
+- On an HPC cluster (e.g. SLURM, PBS) in case you don't have access to container systems like Singularity, Podman or Docker
 
-All the requisite softwares have been provided as a `conda` recipe (i.e. `yml` files) 
+All the requisite softwares have been provided as a `conda` recipe (i.e. `yml` files)
 - [magma-env-1.yml](./conda_envs/magma-env-1.yml)
 - [magma-env-2.yml](./conda_envs/magma-env-2.yml)
 
@@ -208,7 +208,7 @@ $ conda env create -n magma-env-2 --file magma-env-2.yml
 
 Once the environments are created, you can make use of the pipeline parameter `conda_envs_location` to inform the pipeline of the names and location of the conda envs.
 
-Next, you need to load the WHO Resistance Catalog within `tb-profiler`; basically the [instructions](https://github.com/TORCH-Consortium/MAGMA/blob/master/conda_envs/setup_conda_envs.sh#L20-L23), which are used to build the necessary containers. 
+Next, you need to load the WHO Resistance Catalog within `tb-profiler`; basically the [instructions](https://github.com/TORCH-Consortium/MAGMA/blob/master/conda_envs/setup_conda_envs.sh#L20-L23), which are used to build the necessary containers.
 
 1. Download [magma_resistance_db_who_v1.zip](https://github.com/TORCH-Consortium/MAGMA/files/14559680/resistance_db_who_v1.zip)  and unzip it
 
@@ -250,7 +250,7 @@ We provide [two docker containers](https://github.com/orgs/TORCH-Consortium/pack
 
 > 🚧 **Container build script**: The script used to build these containers is provided [here](./containers/build.sh).
 
-Although, you don't need to pull the containers manually, but should you need to, you could use the following commands to pull the pre-built and provided containers 
+Although, you don't need to pull the containers manually, but should you need to, you could use the following commands to pull the pre-built and provided containers
 
 ```console
 docker pull ghcr.io/torch-consortium/magma/magma-container-1:1.1.1
@@ -262,13 +262,13 @@ docker pull ghcr.io/torch-consortium/magma/magma-container-2:1.1.1
 > :memo: **Have singularity or podman instead?**: <br>
 If you do have access to Singularity or Podman, then owing to their compatibility with Docker, you can still use the provided docker containers.
 
-Here's the command which should be used 
+Here's the command which should be used
 
 ```console
 nextflow run 'https://github.com/torch-consortium/magma' \
-		 -params-file my_parameters_2.yml \
-		 -profile docker,pbs \
-		 -r v1.1.1 
+         -params-file my_parameters_2.yml \
+         -profile docker,pbs \
+         -r v1.1.1
 ```
 
 > :bulb: **Hint**: <br>
@@ -307,7 +307,7 @@ errors. Including these is optional, if unknown or irrelevant,
 just fill in with a '1' as shown in example_MAGMA_samplesheet.csv)
 ```
 
-## (Optional) GVCF datasets 
+## (Optional) GVCF datasets
 
 We also provide some reference GVCF files which you could use for specific use-cases.
 
@@ -319,7 +319,7 @@ containing GVCF reference dataset for ~600 samples is provided for augmenting sm
 
 ```
 use_ref_gvcf = false
-ref_gvcf =  "/path/to/FILE.g.vcf.gz" 
+ref_gvcf =  "/path/to/FILE.g.vcf.gz"
 ref_gvcf_tbi =  "/path/to/FILE.g.vcf.gz.tbi"
 ```
 
@@ -335,7 +335,7 @@ Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of
 
 We have also included a presentation (in PDF format) of the logic and workflow of the MAGMA pipeline as well as posters that have been presented at conferences. Please refer the [docs](./docs) folder.
 
-# Interpretation 
+# Interpretation
 
 The results directory produced by MAGMA is as follows:
 
@@ -347,7 +347,7 @@ The results directory produced by MAGMA is as follows:
 └── vcf_files
 ```
 
-## QC Statistics Directory 
+## QC Statistics Directory
 
 In this directory you will find files related to the quality control carried out by the MAGMA pipeline. The structure is as follows:
 
@@ -412,7 +412,7 @@ MAGMA also notes the presence of all variants in in tier 1 and tier 2 drug resis
 
 - **Phylogeny**
 
-Contains the outputs of the IQTree phylogenetic tree construction. 
+Contains the outputs of the IQTree phylogenetic tree construction.
 
 > :memo: By default we recommend that you use the **ExDRIncComplex** files as MAGMA was optimized to be able to accurately call positions on the edges of complex regions in the *Mtb* genome
 
@@ -422,7 +422,7 @@ Contains the SNP distance tables.
 
 > :memo: By default we recommend that you use the **ExDRIncComplex** files as MAGMA was optimized to be able to accurately call positions on the edges of complex regions in the *Mtb* genome
 
-## `vcf_files` Directory 
+## `vcf_files` Directory
 
 ```bash
 /path/to/results_dir/vcf_files
@@ -463,7 +463,7 @@ Contains the SNP distance tables.
 
 > Unfiltered structural variants detected by the MAGMA pipeline
 
-## Libraries Directory 
+## Libraries Directory
 
 > Contains files related to FASTQ validation and FASTQC analysis
 
@@ -472,9 +472,9 @@ Contains the SNP distance tables.
 > Contains vcf files for major|minor|structural variants for each individual samples
 
 
-# Citations 
+# Citations
 
-The MAGMA paper has been published here: https://doi.org/10.1371/journal.pcbi.1011648 
+The MAGMA paper has been published here: https://doi.org/10.1371/journal.pcbi.1011648
 
 The XBS variant calling core was published here: https://doi.org/10.1099%2Fmgen.0.000689
 
