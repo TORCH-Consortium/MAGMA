@@ -14,10 +14,10 @@ process MULTIQC {
         def config = multiqc_config ? "--config $multiqc_config" : ''
 
         //FIXME @davi
-        def process_inputs = '' // !params.skip_merge_analysis ? 'preprocess.py --param 1 --param 2' : ''
+        def prepare_script_options =  !params.skip_merge_analysis ? '--skip_merge_analysis' : ''
 
         """
-        ${process_inputs} 
+        preprocess_multiqc_input.py ${prepare_script_options}
 
         ${params.multiqc_path} $config .
         """
