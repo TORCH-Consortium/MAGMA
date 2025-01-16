@@ -28,6 +28,7 @@ process MULTIQC {
     label 'cpu_4_memory_16'
 
     input:
+    	path(multiqc_config)
         path("*")
 
     output:
@@ -35,9 +36,15 @@ process MULTIQC {
 
 
     script:
+        def config = multiqc_config ? "--config $multiqc_config" : ''
+
+        //FIXME @davi
+        def prepare_script_options =  !params.skip_merge_analysis ? '--skip_merge_analysis' : ''
 
         """
-        ${params.multiqc_path} .
+        preprocess_multiqc_input.py ${prepare_script_options}
+
+        ${params.multiqc_path} $config .
         """
 
     stub:
