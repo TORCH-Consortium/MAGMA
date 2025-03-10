@@ -63,3 +63,4 @@ iqtree_standard_bootstrap: false
 iqtree_fast_ml_only: false
 iqtree_fast_bootstrapped_phylogeny: false
 iqtree_accurate_ml_only: false
+iqtree_custom_argument: false
