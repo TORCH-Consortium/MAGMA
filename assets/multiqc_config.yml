@@ -20,7 +20,12 @@ custom_data:
     pconfig:
       id: 'cohort_qc'
       namespace: "Cohort Quality Control"
-   
+    table_cond_formatting_rules:
+      all_columns:
+        pass:
+        - s_eq: "APPROVED"
+        - s_eq: "REJECTED"
+
   distance_matrix:
     section_name: "SNP Distance Matrix"
     plot_type: 'heatmap'

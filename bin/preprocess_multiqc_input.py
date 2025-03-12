@@ -33,12 +33,12 @@ def prepare_distance_matrix(matrix_file, output_file):
                         "MTB_L10.ERR2707158",
                         "Mcanettii.ERR5104570"]
     with open(matrix_file, "r") as f:
-        lines = [line.strip().split("\t") for line in f.readlines()]
-        header = lines[0]
+        tsv_reader = csv.reader(tsv_file, delimiter='\t')
+        header = "\t".join(next(tsv_reader, None)
         filtered_indices = [i for i, sample in enumerate(header) if sample not in samples_to_remove]
         filtered_matrix = [[header[i] for i in filtered_indices]]
 
-        for row in lines[1:]:
+        for row in lines:
             sample_name = row[0]
         if sample_name not in samples_to_remove:
             filtered_matrix.append([row[i] for i in filtered_indices])
