@@ -13,11 +13,13 @@ process MULTIQC {
     script:
         def config = multiqc_config ? "--config $multiqc_config" : ''
 
-        //FIXME @davi
         def prepare_script_options =  !params.skip_merge_analysis ? '--skip_merge_analysis' : ''
 
         """
-        preprocess_multiqc_input.py ${prepare_script_options}
+        preprocess_multiqc_input.py   \\
+        ${prepare_script_options} \\
+        --merged_cohort_stats joint.merged_cohort_stats.tsv \\
+	--distance_matrix joint.ExDR.ExComplex.snp_dists.tsv
 
         ${params.multiqc_path} $config .
         """

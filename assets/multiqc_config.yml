@@ -32,6 +32,6 @@ custom_data:
       tt_decimals: 0
 sp:
   cohort_qc:
-    fn: "joint.merged_cohort_stats.tsv"
+    fn: "prepared_joint.merged_cohort_stats.tsv"
   distance_matrix:
-    fn: "joint.ExDR.ExComplex.snp_dists.tsv"
+    fn: "prepared_joint.ExDR.ExComplex.snp_dists.tsv"
