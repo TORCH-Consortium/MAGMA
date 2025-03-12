@@ -13,7 +13,7 @@ process MULTIQC {
     script:
         def config = multiqc_config ? "--config $multiqc_config" : ''
 
-        def prepare_script_options =  !params.skip_merge_analysis ? '--skip_merge_analysis' : ''
+        def prepare_script_options =  !params.skip_merge_analysis ? '' : '--skip_merge_analysis'
 
         """
         preprocess_multiqc_input.py   \\

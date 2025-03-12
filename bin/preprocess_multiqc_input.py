@@ -11,9 +11,9 @@ def prepare_cohort_stats(merged_cohort_stats_file,output_name):
         cohort_stats_output.append("\t".join(next(tsv_reader, None)))
         for row in tsv_reader:
             # replace colums 25 - 30
-            for column in range(25,30):
+            for column in range(26,31):
                 # replace 1 by APPROVED in "*_MET" and 0 by REJECTED
-                row[column].replace("1","APPROVED").replace("0","REJECTED")
+                row[column] = row[column].replace("1","APPROVED").replace("0","REJECTED")
             cohort_stats_output.append("\t".join(row))
     with open(output_name, 'w') as f:
         f.write("\n".join(cohort_stats_output))
