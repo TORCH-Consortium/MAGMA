@@ -10,7 +10,7 @@ def prepare_cohort_stats(merged_cohort_stats_file,output_name):
         tsv_reader = csv.reader(tsv_file, delimiter='\t')
         cohort_stats_output.append("\t".join(next(tsv_reader, None)))
         for row in tsv_reader:
-            # replace colums 25 - 30
+            # replace colums 25 - 31
             for column in range(26,31):
                 # replace 1 by APPROVED in "*_MET" and 0 by REJECTED
                 row[column] = row[column].replace("1","APPROVED").replace("0","REJECTED")
@@ -32,16 +32,16 @@ def prepare_distance_matrix(matrix_file, output_file):
                         "MTb_L9.ERR4162024",
                         "MTB_L10.ERR2707158",
                         "Mcanettii.ERR5104570"]
-    with open(matrix_file, "r") as f:
-        tsv_reader = csv.reader(tsv_file, delimiter='\t')
-        header = "\t".join(next(tsv_reader, None)
-        filtered_indices = [i for i, sample in enumerate(header) if sample not in samples_to_remove]
-        filtered_matrix = [[header[i] for i in filtered_indices]]
 
-        for row in lines:
-            sample_name = row[0]
-        if sample_name not in samples_to_remove:
-            filtered_matrix.append([row[i] for i in filtered_indices])
+    with open(matrix_file, "r") as f:
+        lines = [line.strip().split("\t") for line in f.readlines()]
+        header = lines[0]
+        filtered_indices = [i for i, sample in enumerate(header) if sample not in samples_to_remove]
+        filtered_matrix = [[""]+[header[i] for i in filtered_indices]]
+        for line in lines[1::]:
+            sample_name = line[0]
+            if sample_name not in samples_to_remove:
+                filtered_matrix.append([line[0]]+[line[i+1] for i in filtered_indices])
 
     with open(output_file, "w", newline="") as f:
         writer = csv.writer(f, delimiter="\t")
