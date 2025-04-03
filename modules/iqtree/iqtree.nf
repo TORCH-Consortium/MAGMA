@@ -47,7 +47,9 @@ process IQTREE {
 
 
     script:
-        if(params.iqtree_standard_bootstrap) {
+        if(params.iqtree_custom_argument) {
+            arguments = params.iqtree_custom_argument
+        } else if(params.iqtree_standard_bootstrap) {
             arguments = '-b 1000'
         } else if(params.iqtree_fast_ml_only) {
             arguments = '-fast'
