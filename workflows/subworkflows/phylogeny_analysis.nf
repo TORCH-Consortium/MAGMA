@@ -88,5 +88,5 @@ workflow PHYLOGENY_ANALYSIS {
 
     emit:
         snpsites_tree_tuple = SNPSITES.out.join(IQTREE.out.tree_tuple)
-
+	snp_dists_ch = SNPDISTS.out.snp_dists_file
 }
