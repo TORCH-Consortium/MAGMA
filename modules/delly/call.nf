@@ -32,7 +32,7 @@ process DELLY_CALL {
         path(reference)
 
     output:
-        tuple val(sampleName), path("*.delly.bcf")
+        tuple val(sampleName), path("*.delly.vcf")
 
     script:
 
@@ -41,7 +41,7 @@ process DELLY_CALL {
             -g ${reference} \\
             ${recalibratedBam} \\
             ${params.arguments} \\
-            -o ${sampleName}.delly.bcf
+            -o ${sampleName}.delly.vcf
 
         """
 
@@ -52,9 +52,9 @@ process DELLY_CALL {
             -g ${reference} \\
             ${recalibratedBam} \\
             ${params.arguments} \\
-            -o ${sampleName}.delly.bcf"
+            -o ${sampleName}.delly.vcf"
 
-        touch ${sampleName}.delly.bcf
+        touch ${sampleName}.delly.vcf
         """
 
 }
