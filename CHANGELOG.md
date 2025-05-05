@@ -18,6 +18,8 @@
 
 7. Updates to the names of parameters for triggering partial/optional workflows
 
+8. Update the MULTIQC report
+
 
 ## v1.1.1
 

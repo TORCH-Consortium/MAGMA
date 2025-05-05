@@ -28,12 +28,39 @@
 import argparse
 import csv
 import glob
+import os
 from Bio import SeqIO
 
 # Define the VCF header
 vcf_header = """##fileformat=VCFv4.2
 ##source=ISMapper
+##FILTER=<ID=PASS,Description="All filters passed">
+##FILTER=<ID=LowQual,Description="Poor quality and insufficient number of PEs and SRs.">
+##ALT=<ID=DEL,Description="Deletion">
+##ALT=<ID=DUP,Description="Duplication">
+##ALT=<ID=INV,Description="Inversion">
+##ALT=<ID=BND,Description="Breakend">
+##ALT=<ID=INS,Description="Insertion">
+##INFO=<ID=CIEND,Number=2,Type=Integer,Description="PE confidence interval around END">
+##INFO=<ID=CIPOS,Number=2,Type=Integer,Description="PE confidence interval around POS">
+##INFO=<ID=CHR2,Number=1,Type=String,Description="Chromosome for POS2 coordinate in case of an inter-chromosomal translocation">
+##INFO=<ID=POS2,Number=1,Type=Integer,Description="Genomic position for CHR2 in case of an inter-chromosomal translocation">
+##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the structural variant">
+##INFO=<ID=PE,Number=1,Type=Integer,Description="Paired-end support of the structural variant">
+##INFO=<ID=MAPQ,Number=1,Type=Integer,Description="Median mapping quality of paired-ends">
+##INFO=<ID=SRMAPQ,Number=1,Type=Integer,Description="Median mapping quality of split-reads">
+##INFO=<ID=SR,Number=1,Type=Integer,Description="Split-read support">
+##INFO=<ID=SRQ,Number=1,Type=Float,Description="Split-read consensus alignment quality">
+##INFO=<ID=CONSENSUS,Number=1,Type=String,Description="Split-read consensus sequence">
+##INFO=<ID=CE,Number=1,Type=Float,Description="Consensus sequence entropy">
+##INFO=<ID=CT,Number=1,Type=String,Description="Paired-end signature induced connection type">
+##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Insertion length for SVTYPE=INS">
+##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description="Imprecise structural variation">
+##INFO=<ID=PRECISE,Number=0,Type=Flag,Description="Precise structural variation">
 ##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=SVMETHOD,Number=1,Type=String,Description="Type of approach used to detect SV">
+##INFO=<ID=INSLEN,Number=1,Type=Integer,Description="Predicted length of the insertion">
+##INFO=<ID=HOMLEN,Number=1,Type=Integer,Description="Predicted microhomology length using a max. edit distance of 2">
 ##INFO=<ID=Orientation,Number=1,Type=String,Description="Orientation of the transposable element">
 ##INFO=<ID=Gap,Number=1,Type=Integer,Description="Gap between sequences">
 ##INFO=<ID=Call,Number=1,Type=String,Description="Call information">
@@ -48,12 +75,21 @@ vcf_header = """##fileformat=VCFv4.2
 ##INFO=<ID=Right_strand,Number=1,Type=String,Description="Strand of the right gene">
 ##INFO=<ID=Right_distance,Number=1,Type=Integer,Description="Distance to the right gene">
 ##INFO=<ID=Gene_interruption,Number=1,Type=String,Description="Gene interruption status">
-##FORMAT=<ID=AD,Number=R,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed">
-##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth (reads with MQ=255 or with bad mates are filtered)">
-##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##INFO=<ID=Insertion,Number=1,Type=String,Description="Details of the insertion">
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
-##FORMAT=<ID=PL,Number=G,Type=Integer,Description="Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification">
-#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tSAMPLE
+##FORMAT=<ID=GL,Number=G,Type=Float,Description="Log10-scaled genotype likelihoods for RR,RA,AA genotypes">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=FT,Number=1,Type=String,Description="Per-sample genotype filter">
+##FORMAT=<ID=RC,Number=1,Type=Integer,Description="Raw high-quality read counts or base counts for the SV">
+##FORMAT=<ID=RCL,Number=1,Type=Integer,Description="Raw high-quality read counts or base counts for the left control region">
+##FORMAT=<ID=RCR,Number=1,Type=Integer,Description="Raw high-quality read counts or base counts for the right control region">
+##FORMAT=<ID=RDCN,Number=1,Type=Integer,Description="Read-depth based copy-number estimate for autosomal sites">
+##FORMAT=<ID=DR,Number=1,Type=Integer,Description="# high-quality reference pairs">
+##FORMAT=<ID=DV,Number=1,Type=Integer,Description="# high-quality variant pairs">
+##FORMAT=<ID=RR,Number=1,Type=Integer,Description="# high-quality reference junction reads">
+##FORMAT=<ID=RV,Number=1,Type=Integer,Description="# high-quality variant junction reads">
+##reference=NC-000962-3-H37Rv.fa
+##contig=<ID=NC-000962-3-H37Rv,length=4411532>
 """
 
 # Function to read the reference genome
@@ -76,22 +112,17 @@ def read_transposable_elements(query_file):
             te_name = record.id
             te_info[te_name] = len(record.seq)
 
-        # NOTE: Renable in case we need to dump this on disk.
-        # with open("temp_transposable_elements.csv", mode='w', newline='') as file:
-        #     writer = csv.writer(file)
-        #     writer.writerow(["name", "length"])
-        #     for te_name, te_length in te_info.items():
-        #         writer.writerow([te_name, te_length])
     return te_info
 
 # Function to convert ISMapper data to VCF format
-def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_info):
+def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_info, ismapper_column_name):
 
     is_mapper_txt_file = glob.glob(is_mapper_dir + "*.txt")[0]
+    sample_name = ismapper_column_name
 
     with open(is_mapper_txt_file, 'r') as infile_is_mapper, open(vcf_file, 'w') as outfile:
-        # Write the VCF header
-        outfile.write(vcf_header)
+        # Write the VCF header with the correct sample name
+        outfile.write(vcf_header + f"#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t{sample_name}\n")
 
         # Read the ISMapper TSV file
         reader_is_mapper = csv.DictReader(infile_is_mapper, delimiter='\t')
@@ -99,17 +130,16 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
         for row in reader_is_mapper:
             chrom = "NC-000962-3-H37Rv"  # Using the specified chromosome
             pos = int(row['x'])  # Convert position to integer
+            end = int(row['y'])  # Convert end position to integer
             region_id = row['region']
             ref = reference_sequences[chrom][pos - 1]  # Extract the reference allele from the reference sequence
             orientation = row['orientation']
-            # FIXME Hard-code the name of this specific element
             te_name = 'IS6110'
             te_length = te_info.get(te_name, 'NA')
-            alt = f"{ref}[<{te_name},{orientation}>:{te_length}["  # Use transposable element, orientation, and its length
-            qual = '.'
+            qual = '1000'  # Set QUAL to 1000
             filter_status = 'PASS'
             info = (
-                f"SVTYPE=BND;"
+                f"SVTYPE=INS;SVMETHOD=ISMAPPER;"
                 f"Orientation={orientation};"
                 f"Gap={row['gap']};"
                 f"Call={row['call']};"
@@ -123,13 +153,29 @@ def convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, te_in
                 f"Right_description={row['right_description']};"
                 f"Right_strand={row['right_strand']};"
                 f"Right_distance={row['right_distance']};"
-                f"Gene_interruption={row['gene_interruption']}"
+                f"Gene_interruption={row['gene_interruption']};"
+                f"SVLEN={te_length};"
+                f"END={end};"
+                f"Insertion=<{te_name},{orientation}>:{te_length}"
             )
-            format_field = "GT:AD:DP:GQ:PL"
-            sample_field = "1:10,10:10:99:1800"
+            format_field = "GT:GL:GQ:FT:RCL:RC:RCR:RDCN:DR:DV:RR:RV"
+            gl_value = "-665.375,-56.2674,0" # Example values for GL
+            gq_value = "10000"     # Genotype Quality
+            ft_value = "PASS"      # Per-sample genotype filter
+            rcl_value = "60468"    # Raw high-quality read counts or base counts for the left control region
+            rc_value = "122933"    # Raw high-quality read counts or base counts for the SV
+            rcr_value = "62465"    # Raw high-quality read counts or base counts for the right control region
+            rdcn_value = "2"       # Read-depth based copy-number estimate for autosomal sites
+            dr_value = "0"         # High-quality reference pairs
+            dv_value = "0"         # High-quality variant pairs
+            rr_value = "0"         # High-quality reference junction reads
+            rv_value = "187"       # High-quality variant junction reads
+            gt_value = "1/1"       # Genotype for homozygous alternate allele
+
+            sample_field = f"{gt_value}:{gl_value}:{gq_value}:{ft_value}:{rcl_value}:{rc_value}:{rcr_value}:{rdcn_value}:{dr_value}:{dv_value}:{rr_value}:{rv_value}"
 
             # Write the VCF entry
-            vcf_entry = f"{chrom}\t{pos}\t{region_id}\t{ref}\t{alt}\t{qual}\t{filter_status}\t{info}\t{format_field}\t{sample_field}\n"
+            vcf_entry = f"{chrom}\t{pos}\t{region_id}\t{ref}\t<INS>\t{qual}\t{filter_status}\t{info}\t{format_field}\t{sample_field}\n"
             outfile.write(vcf_entry)
 
 if __name__ == '__main__':
@@ -138,6 +184,7 @@ if __name__ == '__main__':
     parser.add_argument('--reference_file', required=True, help='Path to the reference genome file.')
     parser.add_argument('--query_file', required=True, help='Path to the transposable elements multifasta file.')
     parser.add_argument('--output_vcf_file', required=True, help='Path to the output VCF file.')
+    parser.add_argument('--ismapper_column_name', required=True, help='Explicit name of the ISMAPPER column.')
 
     # Step 3: Parse the command-line arguments
     args = parser.parse_args()
@@ -147,6 +194,7 @@ if __name__ == '__main__':
     vcf_file = args.output_vcf_file
     reference_file = args.reference_file
     query_file = args.query_file
+    ismapper_column_name = args.ismapper_column_name
 
     # Read the reference genome sequence
     reference_sequences, _ = read_reference_genome(reference_file)
@@ -155,4 +203,4 @@ if __name__ == '__main__':
     query_info = read_transposable_elements(query_file)
 
     # Run the conversion function
-    convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, query_info)
+    convert_is_mapper_to_vcf(is_mapper_dir, vcf_file, reference_sequences, query_info, ismapper_column_name)
