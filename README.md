@@ -333,7 +333,7 @@ Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of
 [![Video](https://img.youtube.com/vi/Kic2ItrJHj0/maxresdefault.jpg)](https://www.youtube.com/watch?v=Kic2ItrJHj0)
 
 
-We have also included a presentation (in PDF format) of the logic and workflow of the MAGMA pipeline as well as posters that have been presented at conferences. Please refer the [docs](./docs) folder.
+We have also included a presentation (in PDF format) of the logic and workflow of the MAGMA pipeline as well as posters that have been presented at conferences. Please refer the Zenodo record, https://zenodo.org/records/12633898.
 
 # Interpretation
 
