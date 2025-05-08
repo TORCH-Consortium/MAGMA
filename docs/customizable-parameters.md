@@ -1,784 +1,304 @@
-
 # Input and Output
-
 The input CSV sample file (the study id cannot start with 'XBS_REF_')
 > :bulb: **Hint**: <br>
-The samplesheet should have the following fields [Sample, R1, R2], optionally you could add other fields [study, library, attempt, flowcell, lane, index_sequence]
+> The samplesheet should have the following fields [Sample, R1, R2], optionally you could add other fields [study, library, attempt, flowcell, lane, index_sequence]
 
 > :bulb: **NOTE**: <br>
-Most of these parameters are used to create unique_id in XBS_main.py
+> Most of these parameters are used to create unique_id in XBS_main.py
 
 `input_samplesheet`: "samplesheet.magma.csv"
+
 The directory to which all output files should be written
 
 `outdir`: "magma-results"
 
- The name of the output folder where all results will be allocated
+The name of the output folder where all results will be allocated
 
 `vcf_name`: "joint"
-> :bulb: **NOTE**: <br>
-
-This parameter is used to derive the JOINT_NAME in XBS_main.py
+> :bulb: **NOTE**: <br> This parameter is used to derive the JOINT_NAME in XBS_main.py
 
 # Additional samples addition
 
-> :bulb: **Hint**: <br>
-Got little genetic diveristy in your dataset? (.e.g clonal or <20 samples) - use the EXIT-RIF GVCF file to include additional samples.
+> :bulb: **Hint**: <br> Got little genetic diversity in your dataset? (.e.g clonal or <20 samples) - use the EXIT-RIF GVCF file to include additional samples.
 
-`use_ref_gvcf`: true
-`ref_gvcf`:  "${projectDir}/resources/ref_gvcfs/LineagesAndOutgroupV2.g.vcf.gz"
+`use_ref_gvcf`: true  
+`ref_gvcf`:  "${projectDir}/resources/ref_gvcfs/LineagesAndOutgroupV2.g.vcf.gz"  
 `ref_gvcf_tbi`:  "${projectDir}/resources/ref_gvcfs/LineagesAndOutgroupV2.g.vcf.gz.tbi"
 
 # Optional parameters
 
 ## Adjusting Quality control parameters
+`cutoff_median_coverage`: 10  
 
-`cutoff_median_coverage`: 10
-The minimal median coverage required to process the sample
+The minimal median coverage required to process the sample.
 
-`cutoff_breadth_of_coverage`: 0.90
-The minimal breadth of coverage required to process the sample
+`cutoff_breadth_of_coverage`: 0.90  
 
-`cutoff_rel_abundance`: 0.70
-The minimal relative abundunce of the majority strain required to process the sample
+The minimal breadth of coverage required to process the sample.
 
-`cutoff_ntm_fraction`: 0.20
-The maximum fraction of NTM DNA allowed to process the sample
+`cutoff_rel_abundance`: 0.70  
+The minimal relative abundance of the majority strain required to process the sample.
 
-`cutoff_site_representation`: 0.95
-The minimum fraction of samples that need to have a call at a site before the site is considered in phylogeny
+`cutoff_ntm_fraction`: 0.20  
 
-`cutoff_strand_bias`: 0
-The p-value below which binominal strand bias is considered significant (switched to zero due to FP mixed infection issues)
+The maximum fraction of NTM DNA allowed to process the sample.
 
+`cutoff_site_representation`: 0.95  
 
- ##### Partial workflows #####
+The minimum fraction of samples that need to have a call at a site before the site is considered in phylogeny.
 
- Set this to true if you'd like to only validate input fastqs and check their FASTQC reports
-only_validate_fastqs = false  OR true
+`cutoff_strand_bias`: 0  
 
+The p-value below which binomial strand bias is considered significant (switched to zero due to FP mixed infection issues).
 
-Use this flag to skip the final merge analysis
-skip_merge_analysis = false  OR true
+## Skipping pipeline steps
 
+`only_validate_fastqs`: false OR true  
 
- NOTE: This is supposed to be on by default.
- MAGMA optimises VQSR, if this messes up use the default settings for VQSR.
-skip_variant_recalibration = false OR true
+Set this to true if you'd like to only validate input FASTQs and check their FASTQC reports.
 
+`skip_merge_analysis`: false OR true  
 
-NOTE: BQSR recalibration (XBS_call#L48)
- 1. BQSR corrects for systematic base calling errors that occur during NGS sequencing. These errors occur at low background frequencies and are therefore swamped out by proper quality reads.
- 2. BQSR is therefore more interesting at lower coverages where it remove false positives, but in the case of a low coverage Mtb genome there are not enough reads to properly calibrate the BQSR model, this is more suitable for large (human) genomes.
- 3. BQSR does not perform well when contamination is present amongst the mapped sequences, resulting in the interpreting of genuine variants as errors.
- 4. BQSR conclusion: do not use BQSR for Mtb. This may only be of interest if doing deep sequencing and investigating very low frequency variants -warning- this would require validating + we are talking about very low frequency variants which should not affect clinical decisions.
+Use this flag to skip the final merge analysis.
 
-skip_base_recalibration = true  Do NOT enable for BQSR Mtb
+`skip_variant_recalibration`: false OR true  
 
-NOTE: Output file for minor variants detection from bam with GATK XBS_call#L82. Lofreq does a better job for most purposes.
-skip_minor_variants_gatk = true
+MAGMA optimizes VQSR. If this messes up, use the default settings for VQSR.
 
- Use this flag to disable downstream phylogenetic of merged GVCF
-skip_phylogeny_and_clustering = false OR true
+`skip_base_recalibration`: true  
+Do NOT enable for BQSR Mtb. BQSR is not suitable for low-coverage Mtb genomes or when contamination is present.
 
- Use this flag to enable downstream complex region analysis of merged GVCF
-skip_complex_regions = false OR true
+`skip_minor_variants_gatk`: true  
+Output file for minor variants detection from BAM with GATK. LoFreq does a better job for most purposes.
 
+`skip_phylogeny_and_clustering`: false OR true  
+Use this flag to disable downstream phylogenetic analysis of merged GVCF.
 
+`skip_complex_regions`: false OR true  
+Use this flag to enable downstream complex region analysis of merged GVCF.
 
- Enable execution of MAGMA's tbprofiler container (with who+ database) on
- FASTQ files
+`skip_ntmprofiler`: false OR true  
+Enable execution of ntmprofiller on FASTQ files.
 
-skip_ntmprofiler = false  OR true
+`skip_tbprofiler_fastq`: true OR false  
+Enable or disable tbprofiler analysis on FASTQ files (with WHO+ database) on FASTQ files.
 
-skip_tbprofiler_fastq = true  OR false
+`skip_spotyping`: false OR true  
+Enable or disable spoligotyping analysis.
 
-skip_spotyping = true
+## Flags for experimental features
 
- Flags for experimental features
+### RDAnalyzer
+`skip_rdanalyzer`: true  
+Enable or disable RDAnalyzer analysis for Region of Difference identification (*NOT working yet*).  
 
-NOTE: NOT working yet
-skip_rdanalyzer = true
-ref_fasta_rdanalyzer = "${projectDir}/resources/rdanalyzer/RDs30.fasta"
+`ref_fasta_rdanalyzer`: "${projectDir}/resources/rdanalyzer/RDs30.fasta"  
+Reference FASTA file for RDAnalyzer.
 
+## IQTREE Parameters
 
+> :bulb: **NOTE**: PICK ONE of the following parameters related to IQTREE.
 
-NOTE: PICK ONE of the following parameters related to IQTREE.
-iqtree_standard_bootstrap= true
-iqtree_fast_ml_only= false
-iqtree_fast_bootstrapped_phylogeny= false
-iqtree_accurate_ml_only= false
+`iqtree_standard_bootstrap`: true  
+Enable standard bootstrap analysis.  
 
- ##### SPECIFIC PATHS AND PARAMETERS #####
+`iqtree_fast_ml_only`: false  
+Enable fast maximum likelihood analysis only.  
 
-NOTE: It is best not to change this parameters and to rely upon the provided reference files
-ref_fasta_basename = "NC-000962-3-H37Rv"
-ref_fasta_dir = "${projectDir}/resources/genome"
-ref_fasta_gb = "${params.ref_fasta_dir}/${params.ref_fasta_basename}.gb"
-ref_fasta_dict = "${params.ref_fasta_dir}/${params.ref_fasta_basename}.dict"
-ref_fasta = "${params.ref_fasta_dir}/${params.ref_fasta_basename}.fa"
-ref_fasta_amb = "${params.ref_fasta}.amb"
-ref_fasta_ann = "${params.ref_fasta}.ann"
-ref_fasta_bwt = "${params.ref_fasta}.bwt"
-ref_fasta_fai = "${params.ref_fasta}.fai"
-ref_fasta_pac = "${params.ref_fasta}.pac"
-ref_fasta_sa = "${params.ref_fasta}.sa"
+`iqtree_fast_bootstrapped_phylogeny`: false  
+Enable fast bootstrapped phylogeny analysis.  
 
-queries_multifasta = "${projectDir}/resources/regions/IS_Queries_Mtb.multi.fasta"
+`iqtree_accurate_ml_only`: false  
+Enable accurate maximum likelihood analysis only.  
 
-NOTE: Enable this when the file is actually used
+`iqtree_custom_argument`:  
+Custom arguments for IQTREE can be specified here.  
 
-drgenes_list = "${projectDir}/resources/regions/WHO_Tier1_Tier2_DR.list"
+# Specific paths to reference files
 
-rrna_list = "${projectDir}/resources/regions/rRNA.list"
+> :bulb: **NOTE**: You can customize reference files used to the reads mapping
+> :warn: **WARN**: It is best not to change this parameters and to rely upon the provided reference files that are packed within the pipeline
 
-dbsnp_vcf = "${projectDir}/resources/known/Benavente2015.UVPapproved.rRNAexcluded.vcf.gz"
-dbsnp_vcf_tbi =  "${params.dbsnp_vcf}.tbi"
 
-excluded_loci_list = "${projectDir}/resources/regions/UVP_List_of_Excluded_loci.list"
+`ref_fasta_basename`: "NC-000962-3-H37Rv"
+`ref_fasta_dir`: "${projectDir}/resources/genome"
+`ref_fasta_gb`: "${params.ref_fasta_dir}/${params.ref_fasta_basename}.gb"
+`ref_fasta_dict`: "${params.ref_fasta_dir}/${params.ref_fasta_basename}.dict"
+`ref_fasta`: "${params.ref_fasta_dir}/${params.ref_fasta_basename}.fa"
+`ref_fasta_amb`: "${params.ref_fasta}.amb"
+`ref_fasta_ann`: "${params.ref_fasta}.ann"
+`ref_fasta_bwt`: "${params.ref_fasta}.bwt"
+`ref_fasta_fai`: "${params.ref_fasta}.fai"
+`ref_fasta_pac`: "${params.ref_fasta}.pac"
+`ref_fasta_sa`: "${params.ref_fasta}.sa"
 
-benavente2015_vcf = "${projectDir}/resources/known/Benavente2015.UVPapproved.rRNAexcluded.vcf.gz"
-benavente2015_vcf_tbi = "${params.benavente2015_vcf}.tbi"
+`queries_multifasta` = "${projectDir}/resources/regions/IS_Queries_Mtb.multi.fasta"
 
-coll2014_vcf = "${projectDir}/resources/truth/Coll2014.UVPapproved.rRNAexcluded.vcf.gz"
-coll2014_vcf_tbi = "${params.coll2014_vcf}.tbi"
 
-coll2018_vcf = "${projectDir}/resources/truth/Coll2018.UVPapproved.rRNAexcluded.vcf.gz"
-coll2018_vcf_tbi = "${params.coll2018_vcf}.tbi"
+`drgenes_list`: "${projectDir}/resources/regions/WHO_Tier1_Tier2_DR.list"
 
-napier2020_vcf = "${projectDir}/resources/truth/Napier2020.UVPapproved.rRNAexcluded.vcf.gz"
-napier2020_vcf_tbi = "${params.napier2020_vcf}.tbi"
+`rrna_list`: "${projectDir}/resources/regions/rRNA.list"
 
-walker2015_vcf = "${projectDir}/resources/truth/Walker2015.UVPapproved.rRNAexcluded.vcf.gz"
-walker2015_vcf_tbi = "${params.walker2015_vcf}.tbi"
+`dbsnp_vcf`: "${projectDir}/resources/known/Benavente2015.UVPapproved.rRNAexcluded.vcf.gz"
 
-zeng2018_vcf = "${projectDir}/resources/truth/Zeng2018.UVPapproved.rRNAexcluded.vcf.gz"
-zeng2018_vcf_tbi = "${params.zeng2018_vcf}.tbi"
+`dbsnp_vcf_tbi`:  "${params.dbsnp_vcf}.tbi"
 
+`excluded_loci_list`: "${projectDir}/resources/regions/UVP_List_of_Excluded_loci.list"
 
 
 
------------------------
- Custom tool paths
------------------------
+# Process level configuration
 
-fastqc_path = "fastqc"
-multiqc_path = "multiqc"
-samtools_path = "samtools"
-bwa_path = "bwa"
-clusterpicker_path = "cluster-picker"
-gatk_path = "gatk"
-lofreq_path = "lofreq"
-delly_path = "delly"
-bcftools_path = "bcftools"
-snpeff_path = "snpEff"
-datamash_path = "datamash"
-snpdists_path = "snp-dists"
-snpsites_path = "snp-sites"
-bgzip_path = "bgzip"
-tbprofiler_path = "tb-profiler"
-ntmprofiler_path = "ntm-profiler"
-iqtree_path = "iqtree"
-fastq_validator_path = "fastq_validator.sh"
+> :bulb: **NOTE**: You can customize parameters specific to process, modifying the standard behavior of a tool
+> :warn: **WARN**: Advanced parameters
 
 
------------------------
- Process level configs
------------------------
+### BWA_MEM
+`BWA_MEM.arguments`: "-k 100"  
 
+### BWA_MEM__DELLY
+  
+`BWA_MEM__DELLY.arguments`: ""  
 
-NOTE:Control the global publishing behavior, which is used as default in case there is no process specific config provided
-save_mode = 'symlink'  'copy'
-should_publish = true
+### GATK_HAPLOTYPE_CALLER
 
-NOTE: If enabled, the BAM results from HaplotypeCaller processes would be published
-should_publish_bam = false
+`GATK_HAPLOTYPE_CALLER.arguments`: "-ploidy 1 --dont-use-soft-clipped-bases --read-filter MappingQualityNotZeroReadFilter -G StandardAnnotation -G AS_StandardAnnotation"  
 
------------------------
- Initial processes
------------------------
+### GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS
 
-SAMPLESHEET_VALIDATION {
-    results_dir = "${params.outdir}/"
-    should_publish = false
-}
+`GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS.arguments`: "-ploidy 1 \
+  --minimum-mapping-quality 60 \
+  --min-base-quality-score 20 \
+  --read-filter MappingQualityNotZeroReadFilter \
+  -G StandardAnnotation \
+  --dont-use-soft-clipped-bases \
+  --output-mode EMIT_ALL_ACTIVE_SITES"  
 
+### LOFREQ_CALL__NTM
+`LOFREQ_CALL__NTM.region`: "1472307-1472307"  
+`LOFREQ_CALL__NTM.arguments`: "-m 60 -Q 20 -a 1"  
 
-FASTQ_VALIDATOR {
-    results_dir = "${params.outdir}/QC_statistics/per_sample/fastq_validation/"
-    should_publish = false
-}
+### LOFREQ_INDELQUAL
+`LOFREQ_INDELQUAL.arguments`: "-m 60"  
 
-UTILS_FASTQ_COHORT_VALIDATION {
-    results_dir = "${params.outdir}/QC_statistics/cohort/fastq_validation/"
-    should_publish = true
-}
+### LOFREQ_CALL 
+`LOFREQ_CALL.arguments`: "-m 60 --call-indels -Q 30"  
 
-UTILS_MULTIPLE_INFECTION_FILTER {
-    results_dir = "${params.outdir}/QC_statistics/cohort/multiple_infection_filter"
-    should_publish = false
-}
+### LOFREQ_FILTER
+`LOFREQ_FILTER.arguments`: "-a 0.20"  
 
+### DELLY_CALL
+`DELLY_CALL.arguments`: "-u 30"  
 
-FASTQC {
-    results_dir = "${params.outdir}/QC_statistics/per_sample/fastqc/"
-}
+### BCFTOOLS_VIEW__DELLY 
+`BCFTOOLS_VIEW__DELLY.arguments`: """-i 'GT="1/1"'"""  
 
-MULTIQC {
-    results_dir = "${params.outdir}/QC_statistics/cohort/multiqc/"
-}
+### SAMTOOLS_STATS
+`SAMTOOLS_STATS.arguments`: "-F DUP,SUPPLEMENTARY,SECONDARY,UNMAP,QCFAIL"  
 
+### GATK_COLLECT_WGS_METRICS
+`GATK_COLLECT_WGS_METRICS.arguments`: "--READ_LENGTH 0 --COVERAGE_CAP 10000 --COUNT_UNPAIRED"  
 
-BWA_MEM {
-    NOTE: The BWA -k parameter needs to be set at about 2/3 of the read length to ensure optimal contaminant removal
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/mapped_libraries/"
-    arguments = "-k 100"
-    should_publish = false
-}
+### GATK_SELECT_VARIANTS__SNP
+`GATK_SELECT_VARIANTS__SNP.arguments`: "--remove-unused-alternates --exclude-non-variants"  
 
+### GATK_SELECT_VARIANTS__INDEL
+`GATK_SELECT_VARIANTS__INDEL.arguments`: "--remove-unused-alternates --exclude-non-variants --select-type-to-include MNP --select-type-to-include MIXED"  
 
-BWA_MEM__DELLY {
-    NOTE: Use the default (-k 19) for BWA_MEM and downstream DELLY based SV analysis
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/mapped_libraries/delly"
-    arguments = ""
-    should_publish = false
-}
+### GATK_VARIANT_RECALIBRATOR__SNP
+`GATK_VARIANT_RECALIBRATOR__SNP.arguments`: "--use-allele-specific-annotations \
+  -AS \
+  --target-titv 1.7 \
+  --truth-sensitivity-tranche 100.0 \
+  --truth-sensitivity-tranche 99.9 \
+  --truth-sensitivity-tranche 99.8 \
+  --truth-sensitivity-tranche 99.7 \
+  --truth-sensitivity-tranche 99.6 \
+  --truth-sensitivity-tranche 99.5 \
+  --truth-sensitivity-tranche 99.4 \
+  --truth-sensitivity-tranche 99.3 \
+  --truth-sensitivity-tranche 99.2 \
+  --truth-sensitivity-tranche 99.1 \
+  --truth-sensitivity-tranche 99.0 \
+  --max-gaussians 4 \
+  -mq-cap 60"  
 
+### GATK_VARIANT_RECALIBRATOR__INDEL
+`GATK_VARIANT_RECALIBRATOR__INDEL.arguments`: "-AS \
+  --target-titv 1.8 \
+  --truth-sensitivity-tranche 100.0 \
+  --truth-sensitivity-tranche 99.9 \
+  --truth-sensitivity-tranche 99.8 \
+  --truth-sensitivity-tranche 99.7 \
+  --truth-sensitivity-tranche 99.6 \
+  --truth-sensitivity-tranche 99.5 \
+  --truth-sensitivity-tranche 99.4 \
+  --truth-sensitivity-tranche 99.3 \
+  --truth-sensitivity-tranche 99.2 \
+  --truth-sensitivity-tranche 99.1 \
+  --truth-sensitivity-tranche 99.0 \
+  --max-gaussians 4 \
+  -mq-cap 60"  
 
------------------------
- Processes used in CALL_WF
------------------------
+### GATK_APPLY_VQSR__SNP
+`GATK_APPLY_VQSR__SNP.arguments`: "--ts-filter-level 99.90 -AS --exclude-filtered"  
 
-SAMTOOLS_MERGE {
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/merged_libraries/"
-    should_publish = false
-}
+### GATK_APPLY_VQSR__INDEL
+`GATK_APPLY_VQSR__INDEL.arguments`: ""  
 
-SAMTOOLS_MERGE__DELLY {
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/merged_libraries/delly/"
-    should_publish = false
-}
+### GATK_SELECT_VARIANTS__EXCLUSION__SNP
+`GATK_SELECT_VARIANTS__EXCLUSION__SNP.arguments`: ""  
 
-GATK_MARK_DUPLICATES {
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/marked_duplicates/"
-    should_publish = false
+### GATK_SELECT_VARIANTS__EXCLUSION__INDEL
+`GATK_SELECT_VARIANTS__EXCLUSION__INDEL.arguments`: "--select-type-to-include MNP --select-type-to-include MIXED"  
 
-}
+### BCFTOOLS_MERGE__LOFREQ
+`BCFTOOLS_MERGE__LOFREQ.file_format`: "lofreq"  
 
-GATK_MARK_DUPLICATES__DELLY {
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/marked_duplicates/delly"
-    should_publish = false
-}
+### BCFTOOLS_MERGE__DELLY
+`BCFTOOLS_MERGE__DELLY.file_format`: "delly"  
 
-GATK_BASE_RECALIBRATOR {
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/base_recalibrated/"
-    should_publish = false
-}
+### TBPROFILER_VCF_PROFILE__COHORT 
+`TBPROFILER_VCF_PROFILE__COHORT.arguments`: "--depth 0,0 --af 0,0 --strand 0 --sv_depth 0,0 --sv_af 0,0 --sv_len 100000,50000"  
 
-GATK_BASE_RECALIBRATOR__DELLY {
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/base_recalibrated/delly"
-    should_publish = false
-}
+### TBPROFILER_COLLATE__COHORT
+`TBPROFILER_COLLATE__COHORT.prefix`: "major_variants"  
 
-GATK_APPLY_BQSR {
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/base_recalibrated/"
-    should_publish = false
-}
+### TBPROFILER_FASTQ_PROFILE
+`TBPROFILER_FASTQ_PROFILE.arguments`: "--csv"  
 
-GATK_APPLY_BQSR__DELLY {
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/base_recalibrated/delly"
-    should_publish = false
-}
+### TBPROFILER_FASTQ_COLLATE
+`TBPROFILER_FASTQ_COLLATE.prefix`: "fastq"  
 
+### SPOTYPING
+`SPOTYPING.arguments`: "" OR "--noQuery"  
 
+### UTILS_CAT_SPOTYPING 
+`UTILS_CAT_SPOTYPING.arguments`: ""  
 
-SAMTOOLS_INDEX {
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/marked_duplicates/"
-    should_publish = false
+### RDANALYZER
+`RDANALYZER.arguments`: ""  
 
-}
+### TBPROFILER_VCF_PROFILE__LOFREQ 
+`TBPROFILER_VCF_PROFILE__LOFREQ.arguments`: "--depth 0,0 --af 0,0 --strand 0 --sv_depth 0,0 --sv_af 0,0 --sv_len 100000,50000"  
 
-SAMTOOLS_INDEX__DELLY {
-    results_dir = "${params.outdir}/extra/per_sample/mapped_sequences/marked_duplicates/delly"
-    should_publish = false
-}
+### TBPROFILER_COLLATE__LOFREQ
+`TBPROFILER_COLLATE__LOFREQ.prefix`: "minor_variants"  
 
-GATK_HAPLOTYPE_CALLER {
-    results_dir = "${params.outdir}/extra/per_sample/major_variants/haplotype_caller/"
-    should_publish = false
+### TBPROFILER_VCF_PROFILE__DELLY 
+`TBPROFILER_VCF_PROFILE__DELLY.arguments`: "--depth 0,0 --af 0,0 --strand 0 --sv_depth 0,0 --sv_af 0,0 --sv_len 100000,50000"  
 
-    NOTE: Uncomment use this to publish BAMs from this process
-    should_publish_bam = false
+### TBPROFILER_COLLATE__DELLY 
+`TBPROFILER_COLLATE__DELLY.prefix`: "structural_variants"  
 
-    arguments = " -ploidy 1 --dont-use-soft-clipped-bases --read-filter MappingQualityNotZeroReadFilter -G StandardAnnotation -G AS_StandardAnnotation "
-}
+### GATK_SELECT_VARIANTS__PHYLOGENY
+`GATK_SELECT_VARIANTS__PHYLOGENY.arguments`: "--remove-unused-alternates --exclude-non-variants"   
 
-GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS {
-    results_dir = "${params.outdir}/extra/per_sample/minor_variants/haplotype_caller/"
-    should_publish = false
+### GATK_VARIANTS_TO_TABLE
+`GATK_VARIANTS_TO_TABLE.arguments`: "-GF GT"   
 
-    NOTE: Uncomment use this to publish BAMs from this process
-    should_publish_bam = false
-
-    arguments = " -ploidy 1 \
-                    --minimum-mapping-quality 60 \
-                    --min-base-quality-score 20 \
-                    --read-filter MappingQualityNotZeroReadFilter \
-                    -G StandardAnnotation \
-                    --dont-use-soft-clipped-bases \
-                    --output-mode EMIT_ALL_ACTIVE_SITES "
-}
-
-LOFREQ_CALL__NTM {
-    results_dir = "${params.outdir}/non-tuberculous_mycobacteria/vcf_files/variants"
-
-    region = "1472307-1472307"
-    arguments = " -m 60 -Q 20 -a 1 "
-
-    should_publish = false
-}
-
-LOFREQ_INDELQUAL {
-    results_dir = "${params.outdir}/vcf_files/per_sample/minor_variants/"
-
-    arguments = "-m 60"
-
-    should_publish = false
-}
-
-SAMTOOLS_INDEX__LOFREQ {
-    results_dir = "${params.outdir}/vcf_files/per_sample/minor_variants/"
-    should_publish = false
-}
-
-LOFREQ_CALL {
-    results_dir = "${params.outdir}/vcf_files/per_sample/minor_variants/"
-    should_publish = false
-
-    NOTE: Curretly using default p-value for filtering. Use '-a 1' to get all minor variants
-    arguments = "-m 60 --call-indels -Q 30"
-}
-
-LOFREQ_FILTER {
-    results_dir = "${params.outdir}/vcf_files/per_sample/minor_variants/"
-
-    Note: this is to filter the LoFreq output to an Allele Frequency of choice.
-    arguments = "-a 0.20"
-}
-
-DELLY_CALL {
-    results_dir = "${params.outdir}/vcf_files/per_sample/structural_variants/delly"
-
-    arguments = "-u 30"
-}
-
-NTMPROFILER_PROFILE {
-    results_dir = "${params.outdir}/analyses/non-tuberculous_mycobacteria/per_sample/"
-}
-
-
-BCFTOOLS_VIEW__ISMAPPER {
-    results_dir = "${params.outdir}/vcf_files/per_sample/structural_variants/ismapper"
-}
-
-BCFTOOLS_VIEW__GATK {
-    results_dir = "${params.outdir}/vcf_files/per_sample/structural_variants/gatk"
-}
-
-BCFTOOLS_VIEW__DELLY {
-    results_dir = "${params.outdir}/vcf_files/per_sample/structural_variants/delly"
-    arguments = """-i 'GT="1/1"'"""
-}
-
-GATK_INDEX_FEATURE_FILE__SV {
-    results_dir = "${params.outdir}/vcf_files/per_sample/structural_variants/delly"
-
-}
-
-GATK_SELECT_VARIANTS__INCLUSION {
-    results_dir = "${params.outdir}/vcf_files/per_sample/structural_variants/delly"
-
-}
-
-
-ISMAPPER {
-    results_dir = "${params.outdir}/vcf_files/per_sample/structural_variants/ismapper"
-    should_publish = false
-}
-
-
-SAMTOOLS_STATS {
-    results_dir = "${params.outdir}/QC_statistics/per_sample/mapping/"
-
-    arguments = "-F DUP,SUPPLEMENTARY,SECONDARY,UNMAP,QCFAIL"
-}
-
-GATK_COLLECT_WGS_METRICS {
-    results_dir = "${params.outdir}/QC_statistics/per_sample/coverage/"
-
-    arguments = " --READ_LENGTH 0 --COVERAGE_CAP 10000 --COUNT_UNPAIRED"
-}
-
-GATK_FLAG_STAT {
-    results_dir = "${params.outdir}/QC_statistics/per_sample/mapping/"
-
-}
-
-UTILS_SAMPLE_STATS {
-    results_dir = "${params.outdir}/QC_statistics/samples_thresholds/"
-    should_publish = false
-}
-
-UTILS_COHORT_STATS {
-    results_dir = "${params.outdir}/QC_statistics/cohort/"
-    should_publish = false
-}
-
-UTILS_MERGE_COHORT_STATS {
-    results_dir = "${params.outdir}/QC_statistics/cohort/"
-    should_publish = true
-}
-
-
------------------------
- Processes used in MERGE_WF
------------------------
-
-NTMPROFILER_COLLATE {
-    results_dir = "${params.outdir}/analyses/non-tuberculous_mycobacteria/cohort"
-
-    prefix = "ntmprofiler.collate"
-}
-
-GATK_COMBINE_GVCFS {
-    results_dir = "${params.outdir}/vcf_files/cohort/raw_variant_files/combined"
-
-    arguments = " -G StandardAnnotation -G AS_StandardAnnotation "
-
-    should_publish = false
-}
-
-GATK_GENOTYPE_GVCFS {
-    results_dir = "${params.outdir}/vcf_files/cohort/raw_variant_files/genotyped"
-
-    arguments = " -G StandardAnnotation -G AS_StandardAnnotation --sample-ploidy 1 "
-
-    should_publish = true
-}
-
-
-SNPEFF {
-    results_dir = "${params.outdir}/vcf_files/cohort/raw_variant_files/annotated"
-
-    arguments = " -nostats -ud 100 Mycobacterium_tuberculosis_h37rv "
-
-    should_publish = true
-}
-
-
-BGZIP {
-    results_dir = "${params.outdir}/vcf_files/cohort/raw_variant_files/"
-    arguments = " "
-}
-
-
-UTILS_REFORMAT_LOFREQ {
-    results_dir = "${params.outdir}/vcf_files/per_sample/minor_variants/"
-}
-
-BGZIP__LOFREQ {
-    results_dir = "${params.outdir}/vcf_files/per_sample/minor_variants/"
-    arguments = "-f"
-}
-
-
-BGZIP__MINOR_VARIANTS {
-    results_dir = "${params.outdir}/vcf_files/cohort/minor_variants/combined_variant_files/"
-    arguments = "-f"
-    should_publish = true
-}
-
-
-GATK_INDEX_FEATURE_FILE__LOFREQ {
-    results_dir = "${params.outdir}/vcf_files/per_sample/minor_variants/"
-}
-
-
-GATK_INDEX_FEATURE_FILE__COHORT {
-    results_dir = "${params.outdir}/vcf_files/cohort/raw_variant_files/"
-
-}
-
-GATK_SELECT_VARIANTS__SNP {
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/"
-
-    arguments = " --remove-unused-alternates --exclude-non-variants "
-
-    should_publish = false
-}
-
-GATK_SELECT_VARIANTS__INDEL {
-    results_dir = "${params.outdir}/vcf_files/cohort/indel_variant_files/"
-
-    arguments = " --remove-unused-alternates --exclude-non-variants --select-type-to-include MNP --select-type-to-include MIXED"
-
-    should_publish = false
-}
-
-
-GATK_VARIANT_RECALIBRATOR__SNP {
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr/"
-
-    arguments = " --use-allele-specific-annotations \
-                    -AS \
-                    --target-titv 1.7 \
-                    --truth-sensitivity-tranche 100.0 \
-                    --truth-sensitivity-tranche 99.9 \
-                    --truth-sensitivity-tranche 99.8 \
-                    --truth-sensitivity-tranche 99.7 \
-                    --truth-sensitivity-tranche 99.6 \
-                    --truth-sensitivity-tranche 99.5 \
-                    --truth-sensitivity-tranche 99.4 \
-                    --truth-sensitivity-tranche 99.3 \
-                    --truth-sensitivity-tranche 99.2 \
-                    --truth-sensitivity-tranche 99.1 \
-                    --truth-sensitivity-tranche 99.0 \
-                    --max-gaussians 4 \
-                    -mq-cap 60"
-}
-
-UTILS_ELIMINATE_ANNOTATION__ANN7 {
-    This can later be unpublished, as well as other ANN outputs)
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann7/"
-}
-
-UTILS_ELIMINATE_ANNOTATION__ANN6 {
-    This can later be unpublished, as well as other ANN outputs)
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann6/"
-}
-
-UTILS_ELIMINATE_ANNOTATION__ANN5 {
-    This can later be unpublished, as well as other ANN outputs)
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann5/"
-}
-
-UTILS_ELIMINATE_ANNOTATION__ANN4 {
-    This can later be unpublished, as well as other ANN outputs)
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann4/"
-}
-
-UTILS_ELIMINATE_ANNOTATION__ANN3 {
-    This can later be unpublished, as well as other ANN outputs)
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann3/"
-}
-
-UTILS_ELIMINATE_ANNOTATION__ANN2 {
-    This can later be unpublished, as well as other ANN outputs)
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann2/"
-}
-
-UTILS_SELECT_BEST_ANNOTATIONS {
-    This can later be unpublished, as well as other ANN outputs)
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr/best_annotations"
-}
-
-GATK_VARIANT_RECALIBRATOR__ANN2 {
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann2/"
-}
-
-GATK_VARIANT_RECALIBRATOR__ANN3 {
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann3/"
-}
-
-GATK_VARIANT_RECALIBRATOR__ANN4 {
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann4/"
-}
-
-GATK_VARIANT_RECALIBRATOR__ANN5 {
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann5/"
-}
-
-GATK_VARIANT_RECALIBRATOR__ANN6 {
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann6/"
-}
-
-GATK_VARIANT_RECALIBRATOR__ANN7 {
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/vqsr__ann7/"
-}
-
-GATK_VARIANT_RECALIBRATOR__INDEL {
-    results_dir = "${params.outdir}/vcf_files/cohort/indel_variant_files/vqsr/"
-
-
-    arguments = " -AS \
-                    --target-titv 1.8 \
-                    --truth-sensitivity-tranche 100.0 \
-                    --truth-sensitivity-tranche 99.9 \
-                    --truth-sensitivity-tranche 99.8 \
-                    --truth-sensitivity-tranche 99.7 \
-                    --truth-sensitivity-tranche 99.6 \
-                    --truth-sensitivity-tranche 99.5 \
-                    --truth-sensitivity-tranche 99.4 \
-                    --truth-sensitivity-tranche 99.3 \
-                    --truth-sensitivity-tranche 99.2 \
-                    --truth-sensitivity-tranche 99.1 \
-                    --truth-sensitivity-tranche 99.0 \
-                    --max-gaussians 4 \
-                    -mq-cap 60"
-}
-
-GATK_APPLY_VQSR__SNP {
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/"
-
-    arguments = " --ts-filter-level 99.90 -AS --exclude-filtered "
-}
-
-GATK_APPLY_VQSR__INDEL {
-    results_dir = "${params.outdir}/vcf_files/cohort/indel_variant_files/"
-
-    arguments = ""
-}
-
-
-GATK_SELECT_VARIANTS__EXCLUSION__SNP {
-    results_dir = "${params.outdir}/vcf_files/cohort/snp_variant_files/"
-
-    arguments = "  "
-}
-
-
-GATK_SELECT_VARIANTS__EXCLUSION__INDEL {
-    results_dir = "${params.outdir}/vcf_files/cohort/indel_variant_files/"
-
-    arguments = " --select-type-to-include MNP --select-type-to-include MIXED "
-}
-
-BCFTOOLS_MERGE__LOFREQ {
-    results_dir = "${params.outdir}/vcf_files/cohort/minor_variants/"
-    should_publish = true
-    file_format = "lofreq"
-}
-
-BCFTOOLS_MERGE__DELLY {
-    results_dir = "${params.outdir}/vcf_files/cohort/structural_variants/"
-    should_publish = true
-    file_format = "delly"
-}
-
-GATK_MERGE_VCFS {
-    results_dir = "${params.outdir}/vcf_files/cohort/major_variants/"
-}
-
-TBPROFILER_VCF_PROFILE__COHORT {
-    results_dir = "${params.outdir}/analyses/drug_resistance/major_variants_xbs/"
-    arguments = " --depth 0,0 --af 0,0 --strand 0 --sv_depth 0,0 --sv_af 0,0 --sv_len 100000,50000 "
-}
-
-TBPROFILER_COLLATE__COHORT {
-    results_dir = "${params.outdir}/analyses/drug_resistance/major_variants_xbs/"
-
-    prefix = "major_variants"
-}
-
-
-TBPROFILER_FASTQ_PROFILE {
-    results_dir = "${params.outdir}/analyses/others/per_sample/tbprofiler_fastq/"
-    arguments = "--csv"
-    should_publish = false
-}
-
-TBPROFILER_FASTQ_COLLATE {
-    results_dir = "${params.outdir}/analyses/drug_resistance/tbprofiler_fastq/"
-    prefix = "fastq"
-}
-
-
-SPOTYPING {
-    results_dir = "${params.outdir}/analyses/spotyping/results_excel"
-    arguments = ""  Or "--noQuery"
-}
-
-UTILS_CAT_SPOTYPING {
-    results_dir = "${params.outdir}/analyses/spotyping/"
-    arguments = ""
-}
-
-
-RDANALYZER {
-    results_dir = "${params.outdir}/analyses/others/per_sample/rdanalyzer/"
-    arguments = ""
-}
-
-
-TBPROFILER_VCF_PROFILE__LOFREQ {
-    results_dir = "${params.outdir}/analyses/drug_resistance/minor_variants_lofreq/"
-    arguments = " --depth 0,0 --af 0,0 --strand 0 --sv_depth 0,0 --sv_af 0,0 --sv_len 100000,50000 "
-}
-
-TBPROFILER_COLLATE__LOFREQ {
-    results_dir = "${params.outdir}/analyses/drug_resistance/minor_variants_lofreq/"
-
-    prefix = "minor_variants"
-}
-
-TBPROFILER_VCF_PROFILE__DELLY {
-    results_dir = "${params.outdir}/analyses/drug_resistance/structural_variants_delly/"
-    arguments = " --depth 0,0 --af 0,0 --strand 0 --sv_depth 0,0 --sv_af 0,0 --sv_len 100000,50000 "
-}
-
-TBPROFILER_COLLATE__DELLY {
-    results_dir = "${params.outdir}/analyses/drug_resistance/structural_variants_delly/"
-
-    prefix = "structural_variants"
-}
-
-UTILS_SUMMARIZE_RESISTANCE_RESULTS {
-    results_dir = "${params.outdir}/analyses/drug_resistance/"
-}
-
-UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION {
-    results_dir = "${params.outdir}/analyses/drug_resistance/"
-}
-
-GATK_SELECT_VARIANTS__PHYLOGENY {
-    results_dir = "${params.outdir}/analyses/phylogeny/"
-
-    arguments = " --remove-unused-alternates --exclude-non-variants "
-    should_publish = false
-}
-
-GATK_VARIANTS_TO_TABLE {
-    results_dir = "${params.outdir}/vcf_files/cohort/multiple_alignment_files/"
-
-    arguments = " -GF GT "
-
-    should_publish = false
-}
-
-SNPSITES {
-    results_dir = "${params.outdir}/vcf_files/cohort/multiple_alignment_files/"
-
-}
-
-SNPDISTS {
-    results_dir = "${params.outdir}/analyses/snp_distances/"
-
-}
-
-
-IQTREE {
-    results_dir = "${params.outdir}/analyses/phylogeny/"
-
-    NOTE: The arguments of IQTREE are decided within the process
-     as per the discussion here https:github.com/TORCH-Consortium/MAGMA/discussions/164#discussioncomment-6839547
-}
-
-CLUSTERPICKER {
-    results_dir = "${params.outdir}/analyses/cluster_analysis/"
-
-    bootstrap_1 = 0
-    bootstrap_2 = 0
-    max_cluster_size = 0
-    algorithm = 'gap'
-
-}
+### CLUSTERPICKER
+`CLUSTERPICKER.bootstrap_1`: 0  
+`CLUSTERPICKER.bootstrap_2`: 0  
+`CLUSTERPICKER.max_cluster_size`: 0  
+`CLUSTERPICKER.algorithm`: "gap"
