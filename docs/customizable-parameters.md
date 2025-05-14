@@ -1,4 +1,5 @@
-# Input and Output
+# Common Parameters
+
 The input CSV sample file (the study id cannot start with 'XBS_REF_')
 > :bulb: **Hint**: <br>
 > The samplesheet should have the following fields [Sample, R1, R2], optionally you could add other fields [study, library, attempt, flowcell, lane, index_sequence]
