@@ -42,7 +42,7 @@ if __name__ == '__main__':
     parser.add_argument('--ntmfraction_file', dest='ntmfraction_file', required=True, metavar='ntmfraction_file', type=str, help='The NTM fraction file')
 
     parser.add_argument('--cutoff_median_coverage', metavar='cutoff_median_coverage', default=10, type=float, help='The median coverage cutoff threshold')
-    parser.add_argument('--cutoff_breadth_of_coverage', metavar='cutoff_breadth_of_coverage', default=0.9, type=float, help='The breadth of coverage cutoff threshold')
+    parser.add_argument('--cutoff_breadth_of_coverage', metavar='cutoff_breadth_of_coverage', default=0.8, type=float, help='The breadth of coverage cutoff threshold')
     parser.add_argument('--cutoff_ntm_fraction', metavar='cutoff_ntm_fraction', default=0.2, type=float, help='The NTM fraction cutoff threshold')
 
 ## NOTE: This is computed by the multiple_infection_filter script
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     else:
         coverage_threshold_met = 0
 
-    if float(wgsmetrics.loc[0, 'PCT_1X']) >= args['cutoff_breadth_of_coverage']:
+    if float(wgsmetrics.loc[0, 'PCT_10X']) >= args['cutoff_breadth_of_coverage']:
         breadth_of_coverage_threshold_met = 1
     else:
         breadth_of_coverage_threshold_met = 0
