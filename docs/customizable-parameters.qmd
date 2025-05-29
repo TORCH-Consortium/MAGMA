@@ -3,6 +3,8 @@
 
 This document provides an overview of the customizable parameters for the MAGMA pipeline. Each parameter is listed with its default value, description.
 
+> 💡 **Hint**: you may check a full parameters [reference file](https://github.com/TORCH-Consortium/MAGMA/blob/master/params/params.yaml).
+
 ---
 
 ## Common Parameters

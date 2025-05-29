@@ -202,9 +202,11 @@ The `conda` environments are expected by the `conda_local` profile of the pipeli
 
 ```sh
 $ conda env create -n magma-env-1 --file magma-env-1.yml
-
 $ conda env create -n magma-env-2 --file magma-env-2.yml
+$ conda env create -n magma-tbprofiler-env --file magma-tbprofiler-env.yaml
+$ conda env create -n magma-ntmprofiler-env --file magma-ntmprofiler-env.yaml
 ```
+Optionally, you can run `bash ./conda/setup_conda_envs.sh` to build all the necessary conda environments.
 
 Once the environments are created, you can make use of the pipeline parameter `conda_envs_location` to inform the pipeline of the names and location of the conda envs.
 
@@ -248,7 +250,7 @@ Success, would look like this
 
 We provide [two docker containers](https://github.com/orgs/TORCH-Consortium/packages?repo_name=MAGMA) with the pipeline so that you could just download and run the pipeline with them. There is **NO** need to create any docker containers, just download and enable the `docker` profile.
 
-> 🚧 **Container build script**: The script used to build these containers is provided [here](./containers/build.sh).
+> 🚧 **Container build script**: The script used to build these containers is provided [here](https://github.com/TORCH-Consortium/MAGMA/tree/master/containers).
 
 Although, you don't need to pull the containers manually, but should you need to, you could use the following commands to pull the pre-built and provided containers
 
