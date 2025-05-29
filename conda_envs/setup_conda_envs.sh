@@ -12,9 +12,11 @@ resolverCondaBinary="conda" # pick either conda OR mamba
 
 $resolverCondaBinary env create -p magma-env-1 --file magma-env-1.yml 
 
-$resolverCondaBinary env create -p magma-env-1 --file magma-env-1.yml 
+$resolverCondaBinary env create -p magma-env-2 --file magma-env-2.yml 
 
 $resolverCondaBinary env create -p magma-ntmprofiler-env --file magma-ntmprofiler-env.yml
+
+$resolverCondaBinary env create -p magma-tbprofiler-env --file magma-tbprofiler-env.yml
 
 #===========================================================
 

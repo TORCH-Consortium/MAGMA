@@ -1,0 +1,23 @@
+project:
+  type: website
+
+website:
+  title: "MAGMA"
+
+  sidebar:
+      style: "docked"
+      search: true
+      contents:
+        - text: "Usage"
+          href: usage.qmd
+        - text: "Customizable Parameters"
+          href: customizable-parameters.qmd
+        - text: "Output"
+          href: output.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
