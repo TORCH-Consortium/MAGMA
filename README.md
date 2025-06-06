@@ -9,7 +9,9 @@ Usage: https://torch-consortium.github.io/MAGMA/usage.html
 
 > [!IMPORTANT]  
 > Usage: https://torch-consortium.github.io/MAGMA/usage.html
-> Customizable parameters: https://torch-consortium.github.io/MAGMA/customizable-parameters.html 
+> 
+> Customizable parameters: https://torch-consortium.github.io/MAGMA/customizable-parameters.html
+> 
 > Output: https://torch-consortium.github.io/MAGMA/output.html
 
 
