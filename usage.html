@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.53">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,15 +65,16 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7b1b06e26e1e2798ccde3208f86b5bbd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -71,7 +107,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-sidebar docked">
+<body class="nav-sidebar docked quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -113,6 +149,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./customizable-parameters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customizable Parameters</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./output.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Output</span></a>
   </div>
@@ -122,8 +164,38 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#magma" id="toc-magma" class="nav-link active" data-scroll-target="#magma">MAGMA</a>
+  <ul class="collapse">
+  <li><a href="#go-to" id="toc-go-to" class="nav-link" data-scroll-target="#go-to">Go to</a></li>
+  </ul></li>
+  <li><a href="#salient-features-of-the-implementation" id="toc-salient-features-of-the-implementation" class="nav-link" data-scroll-target="#salient-features-of-the-implementation">Salient features of the implementation</a>
+  <ul class="collapse">
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a>
+  <ul class="collapse">
+  <li><a href="#nextflow" id="toc-nextflow" class="nav-link" data-scroll-target="#nextflow">Nextflow</a></li>
+  </ul></li>
+  <li><a href="#samplesheet" id="toc-samplesheet" class="nav-link" data-scroll-target="#samplesheet">Samplesheet</a></li>
+  <li><a href="#customization" id="toc-customization" class="nav-link" data-scroll-target="#customization">Customization</a></li>
+  </ul></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
+  <ul class="collapse">
+  <li><a href="#running-magma-using-nextflow-tower" id="toc-running-magma-using-nextflow-tower" class="nav-link" data-scroll-target="#running-magma-using-nextflow-tower">Running MAGMA using Nextflow Tower</a></li>
+  <li><a href="#running-magma-using-conda" id="toc-running-magma-using-conda" class="nav-link" data-scroll-target="#running-magma-using-conda">Running MAGMA using conda</a></li>
+  <li><a href="#running-magma-using-docker" id="toc-running-magma-using-docker" class="nav-link" data-scroll-target="#running-magma-using-docker">Running MAGMA using docker</a></li>
+  <li><a href="#running-magma-on-hpc-and-cloud-executors" id="toc-running-magma-on-hpc-and-cloud-executors" class="nav-link" data-scroll-target="#running-magma-on-hpc-and-cloud-executors">Running MAGMA on HPC and cloud executors</a></li>
+  <li><a href="#magma-samplesheets" id="toc-magma-samplesheets" class="nav-link" data-scroll-target="#magma-samplesheets">MAGMA samplesheets</a></li>
+  <li><a href="#optional-gvcf-datasets" id="toc-optional-gvcf-datasets" class="nav-link" data-scroll-target="#optional-gvcf-datasets">(Optional) GVCF datasets</a></li>
+  </ul></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations">Citations</a></li>
+  <li><a href="#contributions-and-interactions-with-us" id="toc-contributions-and-interactions-with-us" class="nav-link" data-scroll-target="#contributions-and-interactions-with-us">Contributions and interactions with us</a></li>
+  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -147,245 +219,580 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>About this site</p>
+<section id="magma" class="level1">
+<h1>MAGMA</h1>
+<p>MAGMA (<strong>M</strong>aximum <strong>A</strong>ccessible <strong>G</strong>enome for <strong>M</strong>tb <strong>A</strong>nalysis) is a pipeline for comprehensive genomic analyses of Mycobacterium tuberculosis with a focus on clinical decision making as well as research.</p>
+<section id="go-to" class="level2">
+<h2 class="anchored" data-anchor-id="go-to">Go to</h2>
+<ul>
+<li><p><a href="#Prerequisites">Prerequisites</a></p></li>
+<li><p><a href="#Customization">Customization</a></p></li>
+<li><p><a href="#Citation">Citation</a></p></li>
+</ul>
+</section>
+</section>
+<section id="salient-features-of-the-implementation" class="level1">
+<h1>Salient features of the implementation</h1>
+<ul>
+<li>Fine-grained control over resource allocation (CPU/Memory/Storage)</li>
+<li>Reliance of bioconda for installing packages for reproducibility</li>
+<li>Ease of use on a range of infrastructure (cloud/on-prem HPC clusters/ servers (or local machines))</li>
+<li>Resumability for failed processes</li>
+<li>Centralized locations for specifying analysis parameters and hardware requirements
+<ul>
+<li>MAGMA parameters (<code>default_parameters.config</code> which can overridden using a params.yaml file)</li>
+<li>Hardware requirements (<code>conf/server.config</code> or <code>conf/pbs.config</code> or <code>conf/low_memory.config</code>)</li>
+<li>Execution (software) requirements (<code>conf/docker.config</code> or <code>conf/conda_local.config</code> or <code>conf/podman.config</code>)</li>
+</ul></li>
+</ul>
+<section id="prerequisites" class="level2">
+<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
+<section id="nextflow" class="level3">
+<h3 class="anchored" data-anchor-id="nextflow">Nextflow</h3>
+<ul>
+<li><code>git</code> : The version control in the pipeline.</li>
+<li><code>Java-11</code> or <code>Java-17</code> LTS release (preferred)</li>
+</ul>
+<blockquote class="blockquote">
+<p>:warning: <strong>Check <code>java</code> version!</strong>: The <code>java</code> version should NOT be an <code>internal jdk</code> release! You can check the release via <code>java --version</code> Notice the <code>LTS</code> next to <code>OpenJDK</code> line.</p>
+</blockquote>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> java <span class="at">-version</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">openjdk</span> version <span class="st">"17.0.7"</span> 2023-04-18 LTS</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">OpenJDK</span> Runtime Environment <span class="er">(</span><span class="ex">build</span> 17.0.7+7-LTS<span class="kw">)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">OpenJDK</span> 64-Bit Server VM <span class="er">(</span><span class="ex">build</span> 17.0.7+7-LTS, mixed mode, sharing<span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Download Nextflow</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl <span class="at">-s</span> https://get.nextflow.io <span class="kw">|</span> <span class="fu">bash</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Make Nextflow executable</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> chmod +x nextflow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Add <code>nextflow</code> to your <code>path</code> (for example <code>/usr/local/bin/</code>)</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mv nextflow /usr/local/bin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Sanity check for <code>nextflow</code> installation</li>
+</ul>
+<pre class="console"><code>$ nextflow info
+
+  Version: 23.04.1 build 5866
+  Created: 15-04-2023 06:51 UTC (08:51 SAST)
+  System: Mac OS X 12.6.5
+  Runtime: Groovy 3.0.16 on OpenJDK 64-Bit Server VM 17.0.7+7-LTS
+  Encoding: UTF-8 (UTF-8)
+</code></pre>
+<blockquote class="blockquote">
+<p>:heavy_check_mark: <strong>With this you’re all set with Nextflow. Next stop, conda or docker - pick one!</strong>: <br></p>
+</blockquote>
+</section>
+</section>
+<section id="samplesheet" class="level2">
+<h2 class="anchored" data-anchor-id="samplesheet">Samplesheet</h2>
+<p>A dummy <code>samplesheet</code> is provided <a href="https://github.com/TORCH-Consortium/MAGMA/blob/master/samplesheet/example_MAGMA_samplesheet.csv">here</a></p>
+<p>The minimal samplesheet structure should have the following fields.</p>
+<pre class="csv"><code>Sample,R1,R2
+S0001,/full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz
+S0002,/full_path_to_directory_of_fastq_files/S0002_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0002_01_R2.fastq.gz
+S0003,/full_path_to_directory_of_fastq_files/S0003_01_R1.fastq.gz,</code></pre>
+<p>If you have the metadata from sequencing instrument, you can specify further information in the samplesheet</p>
+<pre class="csv"><code>Study,Sample,Library,Attempt,R1,R2,Flowcell,Lane,Index Sequence
+Study_Name,S0001,1,1,full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz,1,1,1
+Study_Name,S0002,1,1,full_path_to_directory_of_fastq_files/S0002_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0002_01_R2.fastq.gz,1,1,1
+Study_Name,S0003,1,1,full_path_to_directory_of_fastq_files/S0003_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0003_01_R2.fastq.gz,1,1,1
+Study_Name,S0004,1,1,full_path_to_directory_of_fastq_files/S0004_01_R1.fastq.gz,full_path_to_directory_of_fastq_files/S0004_01_R2.fastq.gz,1,1,1</code></pre>
+<p>Here’s a formatted version of the CSV above, including all optional fields</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 4%">
+<col style="width: 2%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Study</th>
+<th>Sample</th>
+<th>Library</th>
+<th>Attempt</th>
+<th>R1</th>
+<th>R2</th>
+<th>Flowcell</th>
+<th>Lane</th>
+<th>Index Sequence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Study_Name</td>
+<td>S0001</td>
+<td>1</td>
+<td>1</td>
+<td>full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz</td>
+<td>full_path_to_directory_of_fastq_files/S0001_01_R1.fastq.gz</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Study_Name</td>
+<td>S0002</td>
+<td>1</td>
+<td>1</td>
+<td>full_path_to_directory_of_fastq_files/S0002_01_R1.fastq.gz</td>
+<td>full_path_to_directory_of_fastq_files/S0002_01_R2.fastq.gz</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>Study_Name</td>
+<td>S0003</td>
+<td>1</td>
+<td>1</td>
+<td>full_path_to_directory_of_fastq_files/S0003_01_R1.fastq.gz</td>
+<td>full_path_to_directory_of_fastq_files/S0003_01_R2.fastq.gz</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Study_Name</td>
+<td>S0004</td>
+<td>1</td>
+<td>1</td>
+<td>full_path_to_directory_of_fastq_files/S0004_01_R1.fastq.gz</td>
+<td>full_path_to_directory_of_fastq_files/S0004_01_R2.fastq.gz</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="customization" class="level2">
+<h2 class="anchored" data-anchor-id="customization">Customization</h2>
+<blockquote class="blockquote">
+<p><strong>Note</strong> We are currently working on the transition to nf-core standard (see https://github.com/TORCH-Consortium/MAGMA/issues/188), which would add standardized configurations and pipeline structure to benefit from the nf-core <a href="https://github.com/nf-core/modules">nf-core/modules</a> and <a href="https://github.com/nf-core/configs">nf-core/configs</a> projects.</p>
+</blockquote>
+<p>The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a <code>yml</code> file as shown below</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample contents of my_parameters_1.yml file</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">input_samplesheet</span><span class="kw">:</span><span class="at"> /path/to/your_samplesheet.csv</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">only_validate_fastqs</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">conda_envs_location</span><span class="kw">:</span><span class="at"> /path/to/folder/with/conda_envs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When running the pipeline, use profiles to ensure smooth execution on your computing system. The two types of profiles employed by the pipeline are: execution environment + memory/computing requirements</p>
+<p><em>Execution environment profiles:</em></p>
+<ul>
+<li><strong>conda_local</strong></li>
+<li><strong>docker</strong></li>
+<li><strong>podman</strong></li>
+</ul>
+<p><em>Memory/computing profiles:</em></p>
+<ul>
+<li><strong>pbs</strong> (good for high performance computing clusters)</li>
+<li><strong>server</strong> (good for local servers)</li>
+<li><strong>low_memory</strong> (this can be run on a laptop, even limited to 8 cores and 8 GB of RAM)</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Advanced Users</strong> The MAGMA pipeline has default parameters related to minimum QC thresholds that must be reached for samples to be included in the cohort analysis. These default parameters are listed in default_params.config. Users wishing to adjust these parameters should specify these adjustments in the params.yml file supplied when launching the pipeline. An example of adjusted parameters is shown below: <strong>Note</strong> The <code>-profile</code> mechanism is used to enable infrastructure specific settings of the pipeline. The example below, assumes you are using <code>conda</code> based setup.</p>
+</blockquote>
+<p>Which could be provided to the pipeline using <code>-params-file</code> parameter as shown below</p>
+<pre class="console"><code>nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
+         -profile conda_local, server \
+         -r v1.1.1 \
+         -params-file  my_parameters_1.yml
+</code></pre>
+</section>
+</section>
+<section id="analysis" class="level1">
+<h1>Analysis</h1>
+<section id="running-magma-using-nextflow-tower" class="level2">
+<h2 class="anchored" data-anchor-id="running-magma-using-nextflow-tower">Running MAGMA using Nextflow Tower</h2>
+<p>You can also use Seqera Platform (aka Nextflow Tower) to run the pipeline on any of the supported cloud platforms and monitoring the pipeline execution.</p>
+<p>Please refer the <a href="https://help.tower.nf/">Tower docs</a> for further information.</p>
+</section>
+<section id="running-magma-using-conda" class="level2">
+<h2 class="anchored" data-anchor-id="running-magma-using-conda">Running MAGMA using conda</h2>
+<blockquote class="blockquote">
+<p>:warning::warning::warning: <strong>We discourage running MAGMA via conda, it is prone to challenging-to-reproduce errors</strong></p>
+</blockquote>
+<p>You can run the pipeline using Conda, Mamba or Micromamba package managers to install all the prerequisite softwares from popular repositories such as bioconda and conda-forge.</p>
+<blockquote class="blockquote">
+<p>:information_source: <strong>Conda environments and cheatsheet</strong>: <br> You can find out the location of conda environments using <code>conda env list</code>. <a href="https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf">Here’s</a> a useful cheatsheet for conda operations.</p>
+</blockquote>
+<p>You can use the <code>conda</code> based setup for the pipeline for running MAGMA - On a local linux machine(e.g.&nbsp;your laptop or a university server) - On an HPC cluster (e.g.&nbsp;SLURM, PBS) in case you don’t have access to container systems like Singularity, Podman or Docker</p>
+<p>All the requisite softwares have been provided as a <code>conda</code> recipe (i.e.&nbsp;<code>yml</code> files) - <a href="./conda_envs/magma-env-1.yml">magma-env-1.yml</a> - <a href="./conda_envs/magma-env-2.yml">magma-env-2.yml</a></p>
+<p>These files can be downloaded using the following commands</p>
+<pre class="console"><code>wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-env-2.yml
+wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-env-1.yml
+</code></pre>
+<p>The <code>conda</code> environments are expected by the <code>conda_local</code> profile of the pipeline, it is recommended that it should be created <strong>prior</strong> to the use of the pipeline, using the following commands. Note that if you have <code>mamba</code> (or <code>micromamba</code>) available you can rely upon that instead of <code>conda</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-env-1 <span class="at">--file</span> magma-env-1.yml</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-env-2 <span class="at">--file</span> magma-env-2.yml</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-tbprofiler-env <span class="at">--file</span> magma-tbprofiler-env.yaml</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-ntmprofiler-env <span class="at">--file</span> magma-ntmprofiler-env.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Optionally, you can run <code>bash ./conda/setup_conda_envs.sh</code> to build all the necessary conda environments.</p>
+<p>Once the environments are created, you can make use of the pipeline parameter <code>conda_envs_location</code> to inform the pipeline of the names and location of the conda envs.</p>
+<p>Next, you need to load the WHO Resistance Catalog within <code>tb-profiler</code>; basically the <a href="https://github.com/TORCH-Consortium/MAGMA/blob/master/conda_envs/setup_conda_envs.sh#L20-L23">instructions</a>, which are used to build the necessary containers.</p>
+<ol type="1">
+<li>Download <a href="https://github.com/TORCH-Consortium/MAGMA/files/14559680/resistance_db_who_v1.zip">magma_resistance_db_who_v1.zip</a> and unzip it</li>
+</ol>
+<pre class="console"><code>wget https://github.com/TORCH-Consortium/MAGMA/files/14559680/resistance_db_who_v1.zip
+
+unzip resistance_db_who
+</code></pre>
+<ol start="2" type="1">
+<li>Activate <code>magma-env-1</code>, which has <code>tb-profiler</code></li>
+</ol>
+<pre class="console"><code>conda activate magma-env-1
+</code></pre>
+<ol start="3" type="1">
+<li>Move inside that folder and use <code>tb-profiler load_library</code> functionality to load the database</li>
+</ol>
+<pre class="console"><code>
+cd resistance_db_who
+
+tb-profiler load_library ./resistance_db_who
+</code></pre>
+<p>Success, would look like this <img width="1060" alt="image" src="https://github.com/TORCH-Consortium/MAGMA/assets/12799326/de5eb0fc-c636-44f6-a787-39bbbf8bc8c7"></p>
+</section>
+<section id="running-magma-using-docker" class="level2">
+<h2 class="anchored" data-anchor-id="running-magma-using-docker">Running MAGMA using docker</h2>
+<blockquote class="blockquote">
+<p>:heavy_check_mark::heavy_check_mark::heavy_check_mark:<strong>This is the recommended execution strategy</strong></p>
+</blockquote>
+<p>We provide <a href="https://github.com/orgs/TORCH-Consortium/packages?repo_name=MAGMA">two docker containers</a> with the pipeline so that you could just download and run the pipeline with them. There is <strong>NO</strong> need to create any docker containers, just download and enable the <code>docker</code> profile.</p>
+<blockquote class="blockquote">
+<p>🚧 <strong>Container build script</strong>: The script used to build these containers is provided <a href="./containers/build.sh">here</a>.</p>
+</blockquote>
+<p>Although, you don’t need to pull the containers manually, but should you need to, you could use the following commands to pull the pre-built and provided containers</p>
+<pre class="console"><code>docker pull ghcr.io/torch-consortium/magma/magma-container-1:1.1.1
+
+docker pull ghcr.io/torch-consortium/magma/magma-container-2:1.1.1</code></pre>
+<blockquote class="blockquote">
+<p>:memo: <strong>Have singularity or podman instead?</strong>: <br> If you do have access to Singularity or Podman, then owing to their compatibility with Docker, you can still use the provided docker containers.</p>
+</blockquote>
+<p>Here’s the command which should be used</p>
+<pre class="console"><code>nextflow run 'https://github.com/torch-consortium/magma' \
+         -params-file my_parameters_2.yml \
+         -profile docker,pbs \
+         -r v1.1.1</code></pre>
+<blockquote class="blockquote">
+<p>:bulb: <strong>Hint</strong>: <br> You could use <code>-r</code> option of Nextflow for working with any specific version/branch of the pipeline.</p>
+</blockquote>
+</section>
+<section id="running-magma-on-hpc-and-cloud-executors" class="level2">
+<h2 class="anchored" data-anchor-id="running-magma-on-hpc-and-cloud-executors">Running MAGMA on HPC and cloud executors</h2>
+<ol type="1">
+<li>HPC based execution for MAGMA, please refer <a href="./docs/hpc_execution.qmd">this doc</a>.</li>
+<li>Cloud batch (AWS/Google/Azure) based execution for MAGMA, please refer <a href="./docs/cloud_batch_execution.qmd">this doc</a></li>
+</ol>
+</section>
+<section id="magma-samplesheets" class="level2">
+<h2 class="anchored" data-anchor-id="magma-samplesheets">MAGMA samplesheets</h2>
+<p>In order to run the MAGMA pipeline, you must provide a samplesheet as input. The structure of the samplesheet should be that located in <a href="./samplesheet/example_MAGMA_samplesheet.csv">samplesheet</a></p>
+<blockquote class="blockquote">
+<p>:warning: <strong>Make sure to use full paths!!!</strong>:</p>
+</blockquote>
+<ul>
+<li>Library</li>
+</ul>
+<pre><code>Certain samples may have had multiple libraries prepared.
+This row allows the pipeline to distinguish between
+different libraries of the same sample.</code></pre>
+<ul>
+<li>Attempt</li>
+</ul>
+<pre><code>Certain libraries may need to be sequenced multiple times.
+This row allows the pipeline to distinguish between
+different attempts of the same library.</code></pre>
+<ul>
+<li>Flowcell/Lane/Index Sequence</li>
+</ul>
+<pre><code>Providing this information may allow the VQSR filtering step
+to better distinguish between true variants and sequencing
+errors. Including these is optional, if unknown or irrelevant,
+just fill in with a '1' as shown in example_MAGMA_samplesheet.csv)</code></pre>
+</section>
+<section id="optional-gvcf-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="optional-gvcf-datasets">(Optional) GVCF datasets</h2>
+<p>We also provide some reference GVCF files which you could use for specific use-cases.</p>
+<ul>
+<li><p>For <strong>small datasets (20 samples or less)</strong>, we recommend that you download the <code>EXIT_RIF GVCF</code> files from https://zenodo.org/record/8054182 containing GVCF reference dataset for ~600 samples is provided for augmenting smaller datasets</p></li>
+<li><p>For including <strong>Mtb lineages and outgroup (M. canettii) in the phylogenetic tree</strong>, you can download the <code>LineagesAndOutgroup</code> files from https://zenodo.org/record/8233518</p></li>
+</ul>
+<pre><code>use_ref_gvcf = false
+ref_gvcf =  "/path/to/FILE.g.vcf.gz"
+ref_gvcf_tbi =  "/path/to/FILE.g.vcf.gz.tbi"</code></pre>
+<blockquote class="blockquote">
+<p>:bulb: <strong>Custom GVCF dataset</strong>: <br> For creating a custom GVCF dataset, you can refer the discussion <a href="https://github.com/TORCH-Consortium/MAGMA/issues/162">here</a>.</p>
+</blockquote>
+</section>
+</section>
+<section id="citations" class="level1">
+<h1>Citations</h1>
+<p>The MAGMA paper has been published here: https://doi.org/10.1371/journal.pcbi.1011648</p>
+<p>The XBS variant calling core was published here: https://doi.org/10.1099%2Fmgen.0.000689</p>
+</section>
+<section id="contributions-and-interactions-with-us" class="level1">
+<h1>Contributions and interactions with us</h1>
+<p>Contributions are warmly accepted! We encourage you to interact with us using <a href="https://github.com/TORCH-Consortium/MAGMA/discussions">Discussions</a> and <a href="https://github.com/TORCH-Consortium/MAGMA/issues">Issues</a> feature of Github.</p>
+</section>
+<section id="license" class="level1">
+<h1>License</h1>
+<p>Please refer the <a href="https://github.com/TORCH-Consortium/MAGMA/blob/master/LICENSE">GPL 3.0 LICENSE</a> file.</p>
+<p><a href="https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3#:~:text=You%20may%20copy%2C%20distribute%20and,along%20with%20build%20%26%20install%20instructions.">Here’s</a> a quick TLDR for the license terms.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/TORCH-Consortium\.github\.io\/MAGMA\/");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
       }
+      return false;
     }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/TORCH-Consortium\.github\.io\/MAGMA\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
         }
-        return container.innerHTML
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -393,185 +800,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
 
 

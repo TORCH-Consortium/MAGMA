@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>MAGMA</title>
+<title>customizable-parameters – MAGMA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,41 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -116,7 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./output.html">Output</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./customizable-parameters.html">Customizable Parameters</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -149,13 +114,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./customizable-parameters.html" class="sidebar-item-text sidebar-link">
+  <a href="./customizable-parameters.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Customizable Parameters</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./output.html" class="sidebar-item-text sidebar-link active">
+  <a href="./output.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Output</span></a>
   </div>
 </li>
@@ -169,206 +134,299 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#tutorials-and-presentations" id="toc-tutorials-and-presentations" class="nav-link active" data-scroll-target="#tutorials-and-presentations">Tutorials and Presentations</a></li>
-  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a>
+  <li><a href="#magma-customizable-parameters" id="toc-magma-customizable-parameters" class="nav-link active" data-scroll-target="#magma-customizable-parameters">MAGMA Customizable Parameters</a>
   <ul class="collapse">
-  <li><a href="#qc-statistics-directory" id="toc-qc-statistics-directory" class="nav-link" data-scroll-target="#qc-statistics-directory">QC Statistics Directory</a></li>
-  <li><a href="#analysis-directory" id="toc-analysis-directory" class="nav-link" data-scroll-target="#analysis-directory">Analysis Directory</a></li>
-  <li><a href="#vcf_files-directory" id="toc-vcf_files-directory" class="nav-link" data-scroll-target="#vcf_files-directory"><code>vcf_files</code> Directory</a></li>
-  <li><a href="#libraries-directory" id="toc-libraries-directory" class="nav-link" data-scroll-target="#libraries-directory">Libraries Directory</a></li>
-  <li><a href="#samples-directory" id="toc-samples-directory" class="nav-link" data-scroll-target="#samples-directory">Samples Directory</a></li>
+  <li><a href="#common-parameters" id="toc-common-parameters" class="nav-link" data-scroll-target="#common-parameters">Common Parameters</a>
+  <ul class="collapse">
+  <li><a href="#input-samplesheet" id="toc-input-samplesheet" class="nav-link" data-scroll-target="#input-samplesheet">Input Samplesheet</a></li>
+  <li><a href="#output-directory" id="toc-output-directory" class="nav-link" data-scroll-target="#output-directory">Output Directory</a></li>
+  </ul></li>
+  <li><a href="#additional-samples-addition" id="toc-additional-samples-addition" class="nav-link" data-scroll-target="#additional-samples-addition">Additional Samples Addition</a></li>
+  <li><a href="#quality-control-parameters" id="toc-quality-control-parameters" class="nav-link" data-scroll-target="#quality-control-parameters">Quality Control Parameters</a></li>
+  <li><a href="#skipping-pipeline-steps" id="toc-skipping-pipeline-steps" class="nav-link" data-scroll-target="#skipping-pipeline-steps">Skipping Pipeline Steps</a></li>
+  <li><a href="#reference-files" id="toc-reference-files" class="nav-link" data-scroll-target="#reference-files">Reference Files</a></li>
   </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">MAGMA</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p>Here we briefly introduce the main outputs from MAGMA pipeline execution, please note that some outputs are optional and depends mainly on specific parameters to be generated.</p>
-<ul>
-<li><a href="#Interpretation">Interpretation</a></li>
-</ul>
-<section id="tutorials-and-presentations" class="level1">
-<h1>Tutorials and Presentations</h1>
-<p>Tim Huepink and Lennert Verboven created an in-depth tutorial of the features of the variant calling in MAGMA:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.youtube.com/watch?v=Kic2ItrJHj0"><img src="https://img.youtube.com/vi/Kic2ItrJHj0/maxresdefault.jpg" class="img-fluid figure-img"></a></p>
-<figcaption>Video</figcaption>
-</figure>
-</div>
-<p>We have also included a presentation (in PDF format) of the logic and workflow of the MAGMA pipeline as well as posters that have been presented at conferences. Please refer the <a href="./docs">docs</a> folder.</p>
+<section id="magma-customizable-parameters" class="level1">
+<h1>MAGMA Customizable Parameters</h1>
+<p>This document provides an overview of the customizable parameters for the MAGMA pipeline. Each parameter is listed with its default value, description.</p>
+<blockquote class="blockquote">
+<p>💡 <strong>Hint</strong>: you may check a full parameters <a href="https://github.com/TORCH-Consortium/MAGMA/blob/master/params/params.yaml">reference file</a>.</p>
+</blockquote>
+<hr>
+<section id="common-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="common-parameters">Common Parameters</h2>
+<section id="input-samplesheet" class="level3">
+<h3 class="anchored" data-anchor-id="input-samplesheet">Input Samplesheet</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 18%">
+<col style="width: 65%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>input_samplesheet</code></td>
+<td><code>"samplesheet.magma.csv"</code></td>
+<td>The input CSV file containing sample information. The study ID cannot start with <code>XBS_REF_</code>.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>💡 <strong>Hint</strong>: The samplesheet should include the fields <code>[Sample, R1, R2]</code>. Optionally, you can add <code>[study, library, attempt, flowcell, lane, index_sequence]</code>.</p>
+</blockquote>
+<hr>
 </section>
-<section id="interpretation" class="level1">
-<h1>Interpretation</h1>
-<p>The results directory produced by MAGMA is as follows:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/path/to/results_dir/</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> QC_statistics</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> analyses</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> vcf_files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<section id="qc-statistics-directory" class="level2">
-<h2 class="anchored" data-anchor-id="qc-statistics-directory">QC Statistics Directory</h2>
-<p>In this directory you will find files related to the quality control carried out by the MAGMA pipeline. The structure is as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/path/to/results_dir/QC_statistics</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> cohort</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span>   <span class="ex">└──</span> fastq_validation</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── multiqc</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span>     └── multiqc_data</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> per_sample</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> coverage</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> fastqc</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> mapping</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><strong>cohort</strong></li>
-</ul>
-<p>Here you will find the <code>joint.merged_cohort_stats.tsv</code> which contains the QC statistics for all samples in the samplesheet and allows users to determine why certain samples failed to be incorporated in the cohort analysis steps</p>
-<p>In addition, you’ll find the cohort-level MultiQC report generated by <code>per_sample/fastqc</code> analysis and the fastq validation report in <code>json</code> format.</p>
-<ul>
-<li><strong>per_sample/coverage</strong></li>
-</ul>
-<p>Contains the GATK WGSMetrics outputs for each of the samples in the samplesheet</p>
-<ul>
-<li><strong>per_sample/mapping</strong></li>
-</ul>
+<section id="output-directory" class="level3">
+<h3 class="anchored" data-anchor-id="output-directory">Output Directory</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 20%">
+<col style="width: 68%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>outdir</code></td>
+<td><code>"magma-results"</code></td>
+<td>The directory where all output files will be written.</td>
+</tr>
+<tr class="even">
+<td><code>vcf_name</code></td>
+<td><code>"joint"</code></td>
+<td>The name of the output folder for results. Used to derive <code>JOINT_NAME</code>.</td>
+</tr>
+</tbody>
+</table>
 <blockquote class="blockquote">
-<p>Contains the FlagStat and samtools stats for each of the samples in the samplesheet</p>
+<p>💡 <strong>Note</strong>: The <code>vcf_name</code> parameter is critical for naming conventions in downstream processes.</p>
 </blockquote>
+<hr>
 </section>
-<section id="analysis-directory" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-directory">Analysis Directory</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/path/to/results_dir/analysis</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> cluster_analysis</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> drug_resistance</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> non-tuberculous_mycobacteria</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> phylogeny</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> spotyping</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> snp_distances</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><strong>Cluster Analysis</strong></li>
-</ul>
-<blockquote class="blockquote">
-<p>Contains files related to clustering based on 5SNP and 12SNP cutoffs and inclunding and excluding complex regions <strong>.figtree files</strong>: These can be imported directly into Figtree for visualisation</p>
-</blockquote>
-<ul>
-<li><strong>Drug Resistance</strong></li>
-</ul>
-<p>Organised based on the different types of variants as well as combined results:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/path/to/results_dir/analysis/drug_resistance</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> combined_resistance_summaries</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> combined_resistance_summaries_mixed_infection_samples</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> major_variants_xbs</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> minor_variants_lofreq</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> structural_variants_delly</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> tbprofiler_fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Each of the directories containing results related to the different variants (major | minor | structural) have text files that can be used to annotate the .treefiles produced by MAGMA in iToL (https://itol.embl.de)</p>
-<p>The combined resistance results file contains a per-sample drug resistance summary based on the WHO Catalogue of <em>Mtb</em> mutations (https://www.who.int/publications/i/item/9789240082410)</p>
-<p>MAGMA also notes the presence of all variants in in tier 1 and tier 2 drug resistance genes.</p>
-<p>MAGMA will generated mixed infection reports and also optionally run tbprofiler from the fastq files for comparison purposes.</p>
-<ul>
-<li><strong>Non-Tuberculous Mycobacteria (NTM)</strong></li>
-</ul>
-<p>Contains a brief report of NTM presence on the submitted samples, in cohort and per_sample structure.</p>
-<ul>
-<li><strong>Phylogeny</strong></li>
-</ul>
-<p>Contains the outputs of the IQTree phylogenetic tree construction.</p>
-<blockquote class="blockquote">
-<p>:memo: By default we recommend that you use the <strong>ExDRIncComplex</strong> files as MAGMA was optimized to be able to accurately call positions on the edges of complex regions in the <em>Mtb</em> genome</p>
-</blockquote>
-<ul>
-<li><strong>SNP distances</strong></li>
-</ul>
-<p>Contains the SNP distance tables in tsv format.</p>
-<blockquote class="blockquote">
-<p>:memo: By default we recommend that you use the <strong>ExDRIncComplex</strong> files as MAGMA was optimized to be able to accurately call positions on the edges of complex regions in the <em>Mtb</em> genome</p>
-</blockquote>
-<ul>
-<li><strong>Spotyping</strong></li>
-</ul>
-<p>Contains a spoligotyping pattern prediction using <a href="https://github.com/xiaeryu/SpoTyping-v2.0/tree/master/SpoTyping-v2.0-commandLine">SpoTyping</a>.</p>
 </section>
-<section id="vcf_files-directory" class="level2">
-<h2 class="anchored" data-anchor-id="vcf_files-directory"><code>vcf_files</code> Directory</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/path/to/results_dir/vcf_files</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> cohort</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── combined_variant_files</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── minor_variants</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── multiple_alignment_files</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── raw_variant_files</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── snp_variant_files</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── structural_variants</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> per_sample</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> minor_variants</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> raw_variant_files</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> structural_variants</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><strong>Combined variant files</strong></li>
-</ul>
+<section id="additional-samples-addition" class="level2">
+<h2 class="anchored" data-anchor-id="additional-samples-addition">Additional Samples Addition</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 40%">
+<col style="width: 49%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>use_ref_gvcf</code></td>
+<td><code>true</code></td>
+<td>Whether to use a reference GVCF file to include additional samples.</td>
+</tr>
+<tr class="even">
+<td><code>ref_gvcf</code></td>
+<td><code>"${projectDir}/resources/ref_gvcfs/LineagesAndOutgroupV2.g.vcf.gz"</code></td>
+<td>Path to the reference GVCF file.</td>
+</tr>
+<tr class="odd">
+<td><code>ref_gvcf_tbi</code></td>
+<td><code>"${projectDir}/resources/ref_gvcfs/LineagesAndOutgroupV2.g.vcf.gz.tbi"</code></td>
+<td>Path to the index file for the reference GVCF.</td>
+</tr>
+</tbody>
+</table>
 <blockquote class="blockquote">
-<p>Contains the cohort gvcfs based on major variants detected by the MAGMA pipeline</p>
+<p>💡 <strong>Hint</strong>: Use this feature if your dataset has low genetic diversity (e.g., clonal or fewer than 20 samples).</p>
 </blockquote>
-<ul>
-<li><strong>Minor variants</strong></li>
-</ul>
-<blockquote class="blockquote">
-<p>Merged vcfs of all samples, generated by LoFreq</p>
-</blockquote>
-<ul>
-<li><strong>Multiple alignment files</strong></li>
-</ul>
-<blockquote class="blockquote">
-<p>FASTA files for the generation of phylogenetic trees by IQTree</p>
-</blockquote>
-<ul>
-<li><strong>Raw variant files</strong></li>
-</ul>
-<blockquote class="blockquote">
-<p>Unfiltered indel and SNPs detected by the MAGMA pipeline</p>
-</blockquote>
-<ul>
-<li><strong>SNP variant files</strong></li>
-</ul>
-<blockquote class="blockquote">
-<p>Filtered SNPs detected by the MAGMA pipeline</p>
-</blockquote>
-<ul>
-<li><strong>Structural variant files</strong></li>
-</ul>
-<blockquote class="blockquote">
-<p>Unfiltered structural variants detected by the MAGMA pipeline</p>
-</blockquote>
+<hr>
 </section>
-<section id="libraries-directory" class="level2">
-<h2 class="anchored" data-anchor-id="libraries-directory">Libraries Directory</h2>
+<section id="quality-control-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="quality-control-parameters">Quality Control Parameters</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 10%">
+<col style="width: 67%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cutoff_median_coverage</code></td>
+<td><code>10</code></td>
+<td>The minimal median coverage required to process the sample.</td>
+</tr>
+<tr class="even">
+<td><code>cutoff_breadth_of_coverage</code></td>
+<td><code>0.90</code></td>
+<td>The minimal breadth of coverage required to process the sample.</td>
+</tr>
+<tr class="odd">
+<td><code>cutoff_rel_abundance</code></td>
+<td><code>0.70</code></td>
+<td>The minimal relative abundance of the majority strain required to process the sample.</td>
+</tr>
+<tr class="even">
+<td><code>cutoff_ntm_fraction</code></td>
+<td><code>0.20</code></td>
+<td>The maximum fraction of NTM DNA allowed to process the sample.</td>
+</tr>
+</tbody>
+</table>
 <blockquote class="blockquote">
-<p>Contains files related to FASTQ validation and FASTQC analysis</p>
+<p>⚠️ <strong>Attention</strong>: Ensure these values are adjusted based on the quality of your input data to avoid processing errors.</p>
 </blockquote>
+<hr>
 </section>
-<section id="samples-directory" class="level2">
-<h2 class="anchored" data-anchor-id="samples-directory">Samples Directory</h2>
+<section id="skipping-pipeline-steps" class="level2">
+<h2 class="anchored" data-anchor-id="skipping-pipeline-steps">Skipping Pipeline Steps</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 10%">
+<col style="width: 66%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>only_validate_fastqs</code></td>
+<td><code>false</code></td>
+<td>Set to <code>true</code> to only validate input FASTQs and check their FASTQC reports.</td>
+</tr>
+<tr class="even">
+<td><code>skip_merge_analysis</code></td>
+<td><code>false</code></td>
+<td>Skip the final merge analysis step.</td>
+</tr>
+<tr class="odd">
+<td><code>skip_variant_recalibration</code></td>
+<td><code>false</code></td>
+<td>Skip variant quality score recalibration (VQSR).</td>
+</tr>
+<tr class="even">
+<td><code>skip_base_recalibration</code></td>
+<td><code>true</code></td>
+<td>Skip base quality score recalibration (BQSR). Not suitable for low-coverage Mtb genomes.</td>
+</tr>
+<tr class="odd">
+<td><code>skip_minor_variants_gatk</code></td>
+<td><code>true</code></td>
+<td>Skip minor variants detection with GATK. LoFreq is recommended for most purposes.</td>
+</tr>
+<tr class="even">
+<td><code>skip_phylogeny_and_clustering</code></td>
+<td><code>false</code></td>
+<td>Disable downstream phylogenetic analysis of merged GVCF.</td>
+</tr>
+<tr class="odd">
+<td><code>skip_complex_regions</code></td>
+<td><code>false</code></td>
+<td>Disable downstream complex region analysis of merged GVCF.</td>
+</tr>
+<tr class="even">
+<td><code>skip_ntmprofiler</code></td>
+<td><code>false</code></td>
+<td>Disable execution of <code>ntmprofiler</code> on FASTQ files.</td>
+</tr>
+<tr class="odd">
+<td><code>skip_tbprofiler_fastq</code></td>
+<td><code>true</code></td>
+<td>Disable <code>tbprofiler</code> analysis on FASTQ files.</td>
+</tr>
+<tr class="even">
+<td><code>skip_spotyping</code></td>
+<td><code>false</code></td>
+<td>Disable spoligotyping analysis.</td>
+</tr>
+</tbody>
+</table>
 <blockquote class="blockquote">
-<p>Contains vcf files for major|minor|structural variants for each individual samples</p>
+<p>💡 <strong>Hint</strong>: Use these flags to customize the pipeline execution based on your specific requirements.</p>
 </blockquote>
+<hr>
+</section>
+<section id="reference-files" class="level2">
+<h2 class="anchored" data-anchor-id="reference-files">Reference Files</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 32%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ref_fasta_basename</code></td>
+<td><code>"NC-000962-3-H37Rv"</code></td>
+<td>Basename of the reference FASTA file.</td>
+</tr>
+<tr class="even">
+<td><code>ref_fasta_dir</code></td>
+<td><code>"${projectDir}/resources/genome"</code></td>
+<td>Directory containing the reference FASTA file.</td>
+</tr>
+<tr class="odd">
+<td><code>ref_fasta</code></td>
+<td><code>"${params.ref_fasta_dir}/${params.ref_fasta_basename}.fa"</code></td>
+<td>Full path to the reference FASTA file.</td>
+</tr>
+<tr class="even">
+<td><code>ref_fasta_dict</code></td>
+<td><code>"${params.ref_fasta_dir}/${params.ref_fasta_basename}.dict"</code></td>
+<td>Path to the reference FASTA dictionary file.</td>
+</tr>
+<tr class="odd">
+<td><code>ref_fasta_gb</code></td>
+<td><code>"${params.ref_fasta_dir}/${params.ref_fasta_basename}.gb"</code></td>
+<td>Path to the reference GenBank file.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>⚠️ <strong>Warning</strong>: It is recommended to use the provided reference files to ensure compatibility with the pipeline.</p>
+</blockquote>
+<hr>
 
 
 </section>
