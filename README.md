@@ -5,7 +5,7 @@ MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipe
 
 # DOCUMENTATION 
 
-Usage: https://torch-consortium.github.io/MAGMA/usage.html
+We are actively working on improving the documentation based on user-feedback. Please refer the following links for principal pages.
 
 > [!IMPORTANT]  
 > Usage: https://torch-consortium.github.io/MAGMA/usage.html
