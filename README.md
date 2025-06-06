@@ -2,6 +2,17 @@
 
 MAGMA (**M**aximum **A**ccessible **G**enome for **M**tb **A**nalysis) is a pipeline for comprehensive genomic analyses of Mycobacterium tuberculosis with a focus on clinical decision making as well as research.
 
+
+# DOCUMENTATION 
+
+Usage: https://torch-consortium.github.io/MAGMA/usage.html
+
+> [!IMPORTANT]  
+> Usage: https://torch-consortium.github.io/MAGMA/usage.html
+> Customizable parameters: https://torch-consortium.github.io/MAGMA/customizable-parameters.html 
+> Output: https://torch-consortium.github.io/MAGMA/output.html
+
+
 ## Go to
 
 - [Prerequisites](#Prerequisites)
