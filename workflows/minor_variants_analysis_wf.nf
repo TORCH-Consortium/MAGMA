@@ -23,11 +23,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { BCFTOOLS_MERGE__LOFREQ } from "../modules/bcftools/merge__lofreq.nf" addParams ( params.BCFTOOLS_MERGE__LOFREQ )
-include { BGZIP } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
-include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../modules/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__LOFREQ)
-include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
-include { UTILS_MULTIPLE_INFECTION_FILTER } from "../modules/utils/multiple_infection_filter.nf" addParams (params.UTILS_MULTIPLE_INFECTION_FILTER)
+include { BCFTOOLS_MERGE__LOFREQ } from "../modules/local/bcftools/merge__lofreq.nf" addParams ( params.BCFTOOLS_MERGE__LOFREQ )
+include { BGZIP } from "../modules/local/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
+include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../modules/local/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__LOFREQ)
+include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../modules/local/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
+include { UTILS_MULTIPLE_INFECTION_FILTER } from "../modules/local/utils/multiple_infection_filter.nf" addParams (params.UTILS_MULTIPLE_INFECTION_FILTER)
 
 workflow MINOR_VARIANTS_ANALYSIS_WF {
 

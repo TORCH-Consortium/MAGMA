@@ -39,9 +39,9 @@ include { MINOR_VARIANTS_ANALYSIS_WF } from './workflows/minor_variants_analysis
 //include { MULTIQC AS MULTIQC_FASTQS } from '../modules/multiqc/multiqc.nf' addParams (params.MULTIQC_FASTQS)
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
 include { REPORTS_WF } from './workflows/reports_wf.nf'
-include { SAMPLESHEET_VALIDATION } from './modules/utils/samplesheet_validation.nf'  addParams ( params.SAMPLESHEET_VALIDATION )
+include { SAMPLESHEET_VALIDATION } from './modules/local/utils/samplesheet_validation.nf'  addParams ( params.SAMPLESHEET_VALIDATION )
 include { STRUCTURAL_VARIANTS_ANALYSIS_WF } from './workflows/structural_variants_analysis_wf.nf'
-include { UTILS_MERGE_COHORT_STATS } from "./modules/utils/merge_cohort_stats.nf" addParams ( params.UTILS_MERGE_COHORT_STATS )
+include { UTILS_MERGE_COHORT_STATS } from "./modules/local/utils/merge_cohort_stats.nf" addParams ( params.UTILS_MERGE_COHORT_STATS )
 
 //================================================================================
 // Main workflow
@@ -118,10 +118,10 @@ workflow {
                         UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch,
                         MERGE_WF.out.major_variants_results_ch,
                         MINOR_VARIANTS_ANALYSIS_WF.out.minor_variants_results_ch,
-                        STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch, 
+                        STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch,
 			MERGE_WF.out.snps_dists_ch
 			)
-	
+
         }
     }
 }

@@ -23,20 +23,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { BGZIP } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
-include { DELLY_CALL } from "../modules/delly/call.nf" addParams ( params.DELLY_CALL )
-include { BWA_MEM as  BWA_MEM__DELLY } from '../modules/bwa/mem.nf' addParams (params.BWA_MEM__DELLY)
-include { SAMTOOLS_MERGE as SAMTOOLS_MERGE__DELLY } from "../modules/samtools/merge.nf" addParams ( params.SAMTOOLS_MERGE__DELLY )
-include { GATK_MARK_DUPLICATES as  GATK_MARK_DUPLICATES__DELLY } from "../modules/gatk/mark_duplicates.nf" addParams ( params.GATK_MARK_DUPLICATES )
-include { GATK_BASE_RECALIBRATOR as GATK_BASE_RECALIBRATOR__DELLY } from "../modules/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR__DELLY )
-include { GATK_APPLY_BQSR as GATK_APPLY_BQSR__DELLY } from "../modules/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR__DELLY )
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__DELLY } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__DELLY )
-include { BCFTOOLS_VIEW__DELLY } from "../modules/bcftools/view__delly.nf" addParams ( params.BCFTOOLS_VIEW__DELLY )
-include { BCFTOOLS_VIEW__ISMAPPER } from "../modules/bcftools/view__ismapper.nf" addParams ( params.BCFTOOLS_VIEW__ISMAPPER )
-include { BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/merge__delly.nf" addParams ( params.BCFTOOLS_MERGE__DELLY )
-include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
-include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__DELLY } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__DELLY)
-include { ISMAPPER } from "../modules/ismapper/ismapper.nf" addParams ( params.ISMAPPER )
+include { BGZIP } from "../modules/local/bgzip/bgzip.nf" addParams( params.BGZIP__MINOR_VARIANTS )
+include { DELLY_CALL } from "../modules/local/delly/call.nf" addParams ( params.DELLY_CALL )
+include { BWA_MEM as  BWA_MEM__DELLY } from '../modules/local/bwa/mem.nf' addParams (params.BWA_MEM__DELLY)
+include { SAMTOOLS_MERGE as SAMTOOLS_MERGE__DELLY } from "../modules/local/samtools/merge.nf" addParams ( params.SAMTOOLS_MERGE__DELLY )
+include { GATK_MARK_DUPLICATES as  GATK_MARK_DUPLICATES__DELLY } from "../modules/local/gatk/mark_duplicates.nf" addParams ( params.GATK_MARK_DUPLICATES )
+include { GATK_BASE_RECALIBRATOR as GATK_BASE_RECALIBRATOR__DELLY } from "../modules/local/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR__DELLY )
+include { GATK_APPLY_BQSR as GATK_APPLY_BQSR__DELLY } from "../modules/local/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR__DELLY )
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__DELLY } from "../modules/local/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX__DELLY )
+include { BCFTOOLS_VIEW__DELLY } from "../modules/local/bcftools/view__delly.nf" addParams ( params.BCFTOOLS_VIEW__DELLY )
+include { BCFTOOLS_VIEW__ISMAPPER } from "../modules/local/bcftools/view__ismapper.nf" addParams ( params.BCFTOOLS_VIEW__ISMAPPER )
+include { BCFTOOLS_MERGE__DELLY } from "../modules/local/bcftools/merge__delly.nf" addParams ( params.BCFTOOLS_MERGE__DELLY )
+include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/local/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
+include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__DELLY } from "../modules/local/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__DELLY)
+include { ISMAPPER } from "../modules/local/ismapper/ismapper.nf" addParams ( params.ISMAPPER )
 
 
 workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {

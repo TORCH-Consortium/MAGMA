@@ -23,8 +23,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { CLUSTERPICKER as CLUSTERPICKER__5SNP  } from "../../modules/clusterpicker/clusterpicker.nf" addParams ( params.CLUSTERPICKER )
-include { CLUSTERPICKER as CLUSTERPICKER__12SNP  } from "../../modules/clusterpicker/clusterpicker.nf" addParams ( params.CLUSTERPICKER )
+include { CLUSTERPICKER as CLUSTERPICKER__5SNP  } from "../../modules/local/clusterpicker/clusterpicker.nf" addParams ( params.CLUSTERPICKER )
+include { CLUSTERPICKER as CLUSTERPICKER__12SNP  } from "../../modules/local/clusterpicker/clusterpicker.nf" addParams ( params.CLUSTERPICKER )
 
 workflow CLUSTER_ANALYSIS {
 
