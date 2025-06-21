@@ -10,6 +10,8 @@ website:
       contents:
         - text: "Usage"
           href: usage.qmd
+        - text: "Customizable Parameters"
+          href: customizable-parameters.qmd
         - text: "Output"
           href: output.qmd
 
