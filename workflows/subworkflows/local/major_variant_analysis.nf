@@ -23,8 +23,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { TBPROFILER_VCF_PROFILE__COHORT } from "../../modules/local/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__COHORT)
-include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__COHORT } from "../../modules/local/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__COHORT)
+include { TBPROFILER_VCF_PROFILE__COHORT } from "../../../modules/local/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__COHORT)
+include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__COHORT } from "../../../modules/local/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__COHORT)
 
 workflow MAJOR_VARIANT_ANALYSIS {
     take:
