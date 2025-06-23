@@ -28,6 +28,7 @@
 import argparse
 import pandas as pd
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Summarize the CALL_WF and MINOR_VARIANTS_ANALYSIS_WF analysis results')
     parser.add_argument('--relabundance_approved_tsv', default="approved_samples.relabundance.tsv", metavar='relabundance_approved_tsv', type=str, help='File enlisting the approved samples from MINOR_VARIANTS_ANALYSIS_WF')
@@ -69,6 +70,7 @@ if __name__ == '__main__':
     df_final_cohort_stats['COVERAGE_THRESHOLD_MET'] = df_final_cohort_stats['COVERAGE_THRESHOLD_MET'].fillna(0).astype('Int64')
     df_final_cohort_stats['BREADTH_OF_COVERAGE_THRESHOLD_MET'] = df_final_cohort_stats['BREADTH_OF_COVERAGE_THRESHOLD_MET'].fillna(0).astype('Int64')
     df_final_cohort_stats['RELABUNDANCE_THRESHOLD_MET'] = df_final_cohort_stats['RELABUNDANCE_THRESHOLD_MET'].fillna(0).astype('Int64')
+
 
     # Derive the final threshold using Boolean operations
     df_final_cohort_stats['ALL_THRESHOLDS_MET'] = (

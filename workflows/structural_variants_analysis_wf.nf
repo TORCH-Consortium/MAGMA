@@ -37,6 +37,7 @@ include { BCFTOOLS_MERGE__DELLY } from "../modules/bcftools/merge__delly.nf" add
 include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/tbprofiler/vcf_profile__cohort.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__DELLY } from "../modules/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__DELLY)
 include { ISMAPPER } from "../modules/ismapper/ismapper.nf" addParams ( params.ISMAPPER )
+include { UTILS_PATCH_TBPROFILER_SV_OUTPUT } from "../modules/utils/patch_tbprofiler_sv_output.nf" addParams ( params.UTILS_PATCH_TBPROFILER_SV_OUTPUT )
 
 
 workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
@@ -47,7 +48,6 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
     main:
 
-    /*
 
         //FIXME: For now we look for a single element, but we need to adapt the
         //flow for adding other queries
@@ -78,8 +78,6 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
                                 .dump(tag:'STRUCTURAL_VARIANTS_WF: ismapper_vcfs_string_ch', pretty: true)
                                 //.view { "ismapper_vcfs_string_ch: $it"  }
                                 //.reduce { a, b -> "$a $b " }
-*/
-
 
 
 
@@ -95,6 +93,8 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
 
 
+    //NOTE Merge different samples corresponding to library names.
+
         normalize_libraries_ch = BWA_MEM__DELLY.out
                                         .map { it -> {
                                                 def splittedNameArray = it[0].split("\\.")
@@ -104,7 +104,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
             }
         }
         .groupTuple()
-        //.dump(tag: "STRUCTURAL_VARIANTS_WF normalize_libraries_ch : ", pretty: true)
+        .dump(tag: "STRUCTURAL_VARIANTS_WF.normalize_libraries_ch", pretty: true)
 
         normalize_filtered_ch = samples_ch.join(normalize_libraries_ch)
 
@@ -172,27 +172,20 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
 
 
-    //FIXME: Reenable the merged channel once the ISMAPPER branch is finalized
-    // vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch ).unique().collect(sort: true).view { "vcfs_and_indexes_ch: $it"}
+        delly_and_ismapper_ch = delly_vcfs_and_indexes_ch.concat ( ismapper_vcfs_and_indexes_ch )
+                                                        .unique()
+                                                        .collect(sort: true) //.view { "vcfs_and_indexes_ch: $it"}
 
-
-        vcfs_and_indexes_ch = delly_vcfs_and_indexes_ch
-
-
-
-        //TODO: Merge the ISMAPPER output
-        //vcfs_string_ch = delly_vcfs_string_ch.concat ( ismapper_vcfs_string_ch ).collect(sort: true).view { "vcfs_string_ch: $it"}
-        //vcfs_file = vcfs_string_ch.collectFile(name: "$params.outdir/structural_variant_vcfs.txt", newLine: true)
-        // delly_vcfs_and_indexes_ch, ismapper_vcfs_and_indexes_ch
-
-        BCFTOOLS_MERGE__DELLY( vcfs_and_indexes_ch )
+        BCFTOOLS_MERGE__DELLY( delly_and_ismapper_ch )
 
         def resistanceDb =  []
 
-        TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out, resistanceDb)
+        TBPROFILER_VCF_PROFILE__DELLY(BCFTOOLS_MERGE__DELLY.out.joint_vcfs, resistanceDb)
 
         TBPROFILER_COLLATE__DELLY(params.vcf_name, TBPROFILER_VCF_PROFILE__DELLY.out, resistanceDb)
 
+        UTILS_PATCH_TBPROFILER_SV_OUTPUT( BCFTOOLS_MERGE__DELLY.out.per_sample_vcfs, TBPROFILER_COLLATE__DELLY.out.per_sample_results )
+
     emit:
-        structural_variants_results_ch = TBPROFILER_COLLATE__DELLY.out.per_sample_results
+        structural_variants_results_ch = UTILS_PATCH_TBPROFILER_SV_OUTPUT.out.patched_results
 }
