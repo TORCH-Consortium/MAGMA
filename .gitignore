@@ -30,3 +30,5 @@ magma.sh
 .Rproj.user
 
 docs/_site
+
+.DS_Store
