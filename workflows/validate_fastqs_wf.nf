@@ -23,8 +23,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { FASTQ_VALIDATOR } from '../modules/local/fastq_utils/validator.nf' addParams ( params.FASTQ_VALIDATOR  )
-include { UTILS_FASTQ_COHORT_VALIDATION } from '../modules/local/utils/fastq_cohort_validation.nf' addParams ( params.UTILS_FASTQ_COHORT_VALIDATION  )
+include { FASTQ_VALIDATOR } from '../../modules/local/fastq_utils/validator.nf' addParams ( params.FASTQ_VALIDATOR  )
+include { UTILS_FASTQ_COHORT_VALIDATION } from '../../modules/local/utils/fastq_cohort_validation.nf' addParams ( params.UTILS_FASTQ_COHORT_VALIDATION  )
 
 workflow VALIDATE_FASTQS_WF {
     take:

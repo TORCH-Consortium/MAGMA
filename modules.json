@@ -35,12 +35,27 @@
             "git_sha": "08108058ea36a63f141c25c4e75f9f872a5b2296",
             "installed_by": ["modules"]
           },
+          "fastqutils/info": {
+            "branch": "master",
+            "git_sha": "92168db7097574f7407062f26e901f2d2fb96135",
+            "installed_by": ["modules"]
+          },
           "gatk4/applybqsr": {
             "branch": "master",
             "git_sha": "8a7e6e269f4044d922ce84bbe5717a8c07de8834",
             "installed_by": ["modules"]
           },
           "gatk4/applyvqsr": {
+            "branch": "master",
+            "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+            "installed_by": ["modules"]
+          },
+          "gatk4/baserecalibrator": {
+            "branch": "master",
+            "git_sha": "f63c350bc9dc0b0a934d14d3a85298002c15adc1",
+            "installed_by": ["modules"]
+          },
+          "gatk4/combinegvcfs": {
             "branch": "master",
             "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
             "installed_by": ["modules"]
@@ -80,6 +95,11 @@
             "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
             "installed_by": ["modules"]
           },
+          "gatk4/variantstotable": {
+            "branch": "master",
+            "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+            "installed_by": ["modules"]
+          },
           "iqtree": {
             "branch": "master",
             "git_sha": "2ae11ef01a83c7330c09d08d14d21ff445e32141",
@@ -93,6 +113,11 @@
           "lofreq/call": {
             "branch": "master",
             "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
+            "installed_by": ["modules"]
+          },
+          "lofreq/filter": {
+            "branch": "master",
+            "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
             "installed_by": ["modules"]
           },
           "lofreq/indelqual": {
