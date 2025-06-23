@@ -23,21 +23,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN7 } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN7 )
-include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN6 } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN6 )
-include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN5 } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN5 )
-include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN4 } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN4 )
-include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN3 } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN3 )
-include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN2 } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN2 )
+include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN7 } from "../../modules/local/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN7 )
+include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN6 } from "../../modules/local/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN6 )
+include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN5 } from "../../modules/local/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN5 )
+include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN4 } from "../../modules/local/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN4 )
+include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN3 } from "../../modules/local/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN3 )
+include { GATK_VARIANT_RECALIBRATOR as  GATK_VARIANT_RECALIBRATOR__ANN2 } from "../../modules/local/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__ANN2 )
 
-include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN7 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN7 )
-include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN6 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN6 )
-include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN5 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN5 )
-include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN4 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN4 )
-include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN3 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN3 )
-include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN2 } from "../../modules/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN2 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN7 } from "../../modules/local/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN7 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN6 } from "../../modules/local/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN6 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN5 } from "../../modules/local/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN5 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN4 } from "../../modules/local/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN4 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN3 } from "../../modules/local/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN3 )
+include { UTILS_ELIMINATE_ANNOTATION as  UTILS_ELIMINATE_ANNOTATION__ANN2 } from "../../modules/local/utils/eliminate_annotation.nf" addParams ( params.UTILS_ELIMINATE_ANNOTATION__ANN2 )
 
-include { UTILS_SELECT_BEST_ANNOTATIONS } from "../../modules/utils/select_best_annotations.nf" addParams ( params.UTILS_SELECT_BEST_ANNOTATIONS )
+include { UTILS_SELECT_BEST_ANNOTATIONS } from "../../modules/local/utils/select_best_annotations.nf" addParams ( params.UTILS_SELECT_BEST_ANNOTATIONS )
 
 workflow OPTIMIZE_VARIANT_RECALIBRATION {
     take:

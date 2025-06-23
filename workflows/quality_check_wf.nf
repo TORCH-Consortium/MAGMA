@@ -23,15 +23,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { FASTQC              } from '../modules/fastqc/fastqc.nf' addParams (params.FASTQC)
-include { NTMPROFILER_PROFILE } from '../modules/ntmprofiler/profile.nf' addParams (params.NTMPROFILER_PROFILE)
-include { NTMPROFILER_COLLATE } from '../modules/ntmprofiler/collate.nf' addParams (params.NTMPROFILER_COLLATE)
+include { FASTQC              } from '../modules/local/fastqc/fastqc.nf' addParams (params.FASTQC)
+include { NTMPROFILER_PROFILE } from '../modules/local/ntmprofiler/profile.nf' addParams (params.NTMPROFILER_PROFILE)
+include { NTMPROFILER_COLLATE } from '../modules/local/ntmprofiler/collate.nf' addParams (params.NTMPROFILER_COLLATE)
 
-include { TBPROFILER_FASTQ_PROFILE } from '../modules/tbprofiler/fastq_profile.nf' addParams (params.TBPROFILER_FASTQ_PROFILE)
-include { TBPROFILER_COLLATE as TBPROFILER_FASTQ_COLLATE } from '../modules/tbprofiler/collate.nf' addParams (params.TBPROFILER_FASTQ_COLLATE)
+include { TBPROFILER_FASTQ_PROFILE } from '../modules/local/tbprofiler/fastq_profile.nf' addParams (params.TBPROFILER_FASTQ_PROFILE)
+include { TBPROFILER_COLLATE as TBPROFILER_FASTQ_COLLATE } from '../modules/local/tbprofiler/collate.nf' addParams (params.TBPROFILER_FASTQ_COLLATE)
 
-include { SPOTYPING } from '../modules/spotyping/main.nf' addParams (params.SPOTYPING)
-include { UTILS_CAT_SPOTYPING } from '../modules/utils/cat_spotyping.nf' addParams (params.UTILS_CAT_SPOTYPING)
+include { SPOTYPING } from '../modules/local/spotyping/main.nf' addParams (params.SPOTYPING)
+include { UTILS_CAT_SPOTYPING } from '../modules/local/utils/cat_spotyping.nf' addParams (params.UTILS_CAT_SPOTYPING)
 
 //FIXME Enable this once it is working
 //include { RDANALYZER } from '../modules/rdanalyzer/main.nf' addParams (params.RDANALYZER)

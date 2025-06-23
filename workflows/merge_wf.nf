@@ -23,22 +23,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { PREPARE_COHORT_VCF } from "./subworkflows/prepare_cohort_vcf.nf"
-include { SNP_ANALYSIS } from "./subworkflows/snp_analysis.nf"
-include { INDEL_ANALYSIS } from "./subworkflows/indel_analysis.nf"
-include { GATK_MERGE_VCFS as GATK_MERGE_VCFS__INC } from "../modules/gatk/merge_vcfs.nf" addParams ( params.GATK_MERGE_VCFS )
-include { MAJOR_VARIANT_ANALYSIS } from "./subworkflows/major_variant_analysis.nf"
-include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__INCCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
-include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__EXCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
-include { CLUSTER_ANALYSIS as CLUSTER_ANALYSIS__INCCOMPLEX } from "./subworkflows/cluster_analysis.nf"
-include { CLUSTER_ANALYSIS as  CLUSTER_ANALYSIS__EXCOMPLEX } from "./subworkflows/cluster_analysis.nf"
+include { PREPARE_COHORT_VCF } from "../subworkflows/local/prepare_cohort_vcf.nf"
+include { SNP_ANALYSIS } from "../subworkflows/local/snp_analysis.nf"
+include { INDEL_ANALYSIS } from "../subworkflows/local/indel_analysis.nf"
+include { GATK_MERGE_VCFS as GATK_MERGE_VCFS__INC } from "../modules/local/gatk/merge_vcfs.nf" addParams ( params.GATK_MERGE_VCFS )
+include { MAJOR_VARIANT_ANALYSIS } from "../subworkflows/local/major_variant_analysis.nf"
+include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__INCCOMPLEX } from "../subworkflows/local/phylogeny_analysis.nf"
+include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__EXCOMPLEX } from "../subworkflows/local/phylogeny_analysis.nf"
+include { CLUSTER_ANALYSIS as CLUSTER_ANALYSIS__INCCOMPLEX } from "../subworkflows/local/cluster_analysis.nf"
+include { CLUSTER_ANALYSIS as  CLUSTER_ANALYSIS__EXCOMPLEX } from "../subworkflows/local/cluster_analysis.nf"
 
 
 workflow MERGE_WF {
     take:
         gvcf_ch
         reformatted_lofreq_vcfs_tuple_ch
-        approved_samples_ch 
+        approved_samples_ch
 
     main:
 
@@ -53,7 +53,7 @@ workflow MERGE_WF {
                                 .dump(tag:'MERGE_WF: collated_gvcfs_ch', pretty: true)
                                 //.collectFile(name: "$params.outdir/collated_gvcfs_ch.txt")
 
-        //NOTE: Join the fully approved samples with the gvcf channel 
+        //NOTE: Join the fully approved samples with the gvcf channel
         selected_gvcfs_ch = collated_gvcfs_ch.join(approved_samples_ch)
                                         .flatten()
                                         .dump(tag:'MERGE_WF: selected_gvcfs_ch', pretty: true)
@@ -144,5 +144,5 @@ workflow MERGE_WF {
 
     emit:
         major_variants_results_ch =  MAJOR_VARIANT_ANALYSIS.out.major_variants_results_ch
-	snps_dists_ch = PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snp_dists_ch
+  snps_dists_ch = PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snp_dists_ch
 }

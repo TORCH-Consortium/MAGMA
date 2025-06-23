@@ -23,7 +23,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { BWA_MEM } from '../modules/bwa/mem.nf' addParams (params.BWA_MEM)
+include { BWA_MEM } from '../modules/local/bwa/mem.nf' addParams (params.BWA_MEM)
 
 workflow MAP_WF {
     take:

@@ -23,10 +23,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { GATK_SELECT_VARIANTS as  GATK_SELECT_VARIANTS__INDEL } from "../../modules/gatk/select_variants.nf" addParams ( params.GATK_SELECT_VARIANTS__INDEL  )
-include { GATK_VARIANT_RECALIBRATOR as GATK_VARIANT_RECALIBRATOR__INDEL  } from "../../modules/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__INDEL  )
-include { GATK_APPLY_VQSR as GATK_APPLY_VQSR__INDEL  } from "../../modules/gatk/apply_vqsr.nf" addParams ( params.GATK_APPLY_VQSR__INDEL  )
-include { GATK_SELECT_VARIANTS__EXCLUSION as  GATK_SELECT_VARIANTS__EXCLUSION__INDEL  } from "../../modules/gatk/select_variants__exclusion.nf" addParams ( params.GATK_SELECT_VARIANTS__EXCLUSION__INDEL  )
+include { GATK_SELECT_VARIANTS as  GATK_SELECT_VARIANTS__INDEL } from "../../modules/local/gatk/select_variants.nf" addParams ( params.GATK_SELECT_VARIANTS__INDEL  )
+include { GATK_VARIANT_RECALIBRATOR as GATK_VARIANT_RECALIBRATOR__INDEL  } from "../../modules/local/gatk/variant_recalibrator.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__INDEL  )
+include { GATK_APPLY_VQSR as GATK_APPLY_VQSR__INDEL  } from "../../modules/local/gatk/apply_vqsr.nf" addParams ( params.GATK_APPLY_VQSR__INDEL  )
+include { GATK_SELECT_VARIANTS__EXCLUSION as  GATK_SELECT_VARIANTS__EXCLUSION__INDEL  } from "../../modules/local/gatk/select_variants__exclusion.nf" addParams ( params.GATK_SELECT_VARIANTS__EXCLUSION__INDEL  )
 include { OPTIMIZE_VARIANT_RECALIBRATION } from "./optimize_variant_recalibration.nf" addParams ( params.GATK_VARIANT_RECALIBRATOR__INDEL )
 
 
