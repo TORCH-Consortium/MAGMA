@@ -23,11 +23,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { GATK_COMBINE_GVCFS } from "../../../modules/local/gatk/combine_gvcfs.nf" addParams ( params.GATK_COMBINE_GVCFS )
-include { GATK_GENOTYPE_GVCFS } from "../../../modules/local/gatk/genotype_gvcfs.nf" addParams ( params.GATK_GENOTYPE_GVCFS )
-include { SNPEFF } from "../../../modules/local/snpeff/snpeff.nf" addParams ( params.SNPEFF )
-include { BGZIP } from "../../../modules/local/bgzip/bgzip.nf" addParams( params.BGZIP )
-include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__COHORT } from "../../../modules/local/gatk/index_feature_file" addParams( params.GATK_INDEX_FEATURE_FILE__COHORT )
+include { GATK_COMBINE_GVCFS } from "../../modules/local/gatk/combine_gvcfs.nf" addParams ( params.GATK_COMBINE_GVCFS )
+include { GATK_GENOTYPE_GVCFS } from "../../modules/local/gatk/genotype_gvcfs.nf" addParams ( params.GATK_GENOTYPE_GVCFS )
+include { SNPEFF } from "../../modules/local/snpeff/snpeff.nf" addParams ( params.SNPEFF )
+include { BGZIP } from "../../modules/local/bgzip/bgzip.nf" addParams( params.BGZIP )
+include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__COHORT } from "../../modules/local/gatk/index_feature_file" addParams( params.GATK_INDEX_FEATURE_FILE__COHORT )
 
 
 workflow PREPARE_COHORT_VCF {

@@ -23,11 +23,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { GATK_SELECT_VARIANTS as GATK_SELECT_VARIANTS__PHYLOGENY } from "../../../modules/local/gatk/select_variants.nf" addParams( params.GATK_SELECT_VARIANTS__PHYLOGENY )
-include { GATK_VARIANTS_TO_TABLE } from "../../../modules/local/gatk/variants_to_table.nf" addParams( params.GATK_VARIANTS_TO_TABLE )
-include { SNPSITES } from "../../../modules/local/snpsites/snpsites.nf" addParams( params.SNPSITES )
-include { SNPDISTS } from "../../../modules/local/snpdists/snpdists.nf" addParams( params.SNPDISTS )
-include { IQTREE } from "../../../modules/local/iqtree/iqtree.nf" addParams( params.IQTREE )
+include { GATK_SELECT_VARIANTS as GATK_SELECT_VARIANTS__PHYLOGENY } from "../../modules/local/gatk/select_variants.nf" addParams( params.GATK_SELECT_VARIANTS__PHYLOGENY )
+include { GATK_VARIANTS_TO_TABLE } from "../../modules/local/gatk/variants_to_table.nf" addParams( params.GATK_VARIANTS_TO_TABLE )
+include { SNPSITES } from "../../modules/local/snpsites/snpsites.nf" addParams( params.SNPSITES )
+include { SNPDISTS } from "../../modules/local/snpdists/snpdists.nf" addParams( params.SNPDISTS )
+include { IQTREE } from "../../modules/local/iqtree/iqtree.nf" addParams( params.IQTREE )
 
 workflow PHYLOGENY_ANALYSIS {
 
