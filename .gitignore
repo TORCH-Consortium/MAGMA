@@ -28,3 +28,7 @@ containers/**/*yml
 samplesheet.csv
 magma.sh
 .Rproj.user
+
+docs/.quarto
+
+docs/_site
