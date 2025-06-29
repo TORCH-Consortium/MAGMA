@@ -1,3 +1,28 @@
+/*
+ * Copyright (c) 2021-2024 MAGMA pipeline authors, see https://doi.org/10.1371/journal.pcbi.1011648
+ *
+ * This file is part of MAGMA pipeline, see https://github.com/TORCH-Consortium/MAGMA
+ *
+ * For quick overview of GPL-3 license, please refer
+ * https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3
+ *
+ * - You MUST keep this license with original authors in your copy
+ * - You MUST acknowledge the original source of this software
+ * - You MUST state significant changes made to the original software
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program . If not, see <http://www.gnu.org/licenses/>.
+ */
 nextflow.enable.dsl = 2
 
 
@@ -14,9 +39,9 @@ include { MINOR_VARIANTS_ANALYSIS_WF } from './workflows/minor_variants_analysis
 //include { MULTIQC AS MULTIQC_FASTQS } from '../modules/multiqc/multiqc.nf' addParams (params.MULTIQC_FASTQS)
 include { QUALITY_CHECK_WF } from './workflows/quality_check_wf.nf'
 include { REPORTS_WF } from './workflows/reports_wf.nf'
-include { SAMPLESHEET_VALIDATION } from './modules/utils/samplesheet_validation.nf'  addParams ( params.SAMPLESHEET_VALIDATION )
+include { SAMPLESHEET_VALIDATION } from './modules/local/utils/samplesheet_validation.nf'  addParams ( params.SAMPLESHEET_VALIDATION )
 include { STRUCTURAL_VARIANTS_ANALYSIS_WF } from './workflows/structural_variants_analysis_wf.nf'
-include { UTILS_MERGE_COHORT_STATS } from "./modules/utils/merge_cohort_stats.nf" addParams ( params.UTILS_MERGE_COHORT_STATS )
+include { UTILS_MERGE_COHORT_STATS } from "./modules/local/utils/merge_cohort_stats.nf" addParams ( params.UTILS_MERGE_COHORT_STATS )
 
 //================================================================================
 // Main workflow
@@ -93,7 +118,9 @@ workflow {
                         UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch,
                         MERGE_WF.out.major_variants_results_ch,
                         MINOR_VARIANTS_ANALYSIS_WF.out.minor_variants_results_ch,
-                        STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch )
+                        STRUCTURAL_VARIANTS_ANALYSIS_WF.out.structural_variants_results_ch,
+			MERGE_WF.out.snps_dists_ch
+			)
 
         }
     }

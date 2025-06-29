@@ -1,12 +1,37 @@
-include { PREPARE_COHORT_VCF } from "./subworkflows/prepare_cohort_vcf.nf"
-include { SNP_ANALYSIS } from "./subworkflows/snp_analysis.nf"
-include { INDEL_ANALYSIS } from "./subworkflows/indel_analysis.nf"
-include { GATK_MERGE_VCFS as GATK_MERGE_VCFS__INC } from "../modules/gatk/merge_vcfs.nf" addParams ( params.GATK_MERGE_VCFS )
-include { MAJOR_VARIANT_ANALYSIS } from "./subworkflows/major_variant_analysis.nf"
-include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__INCCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
-include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__EXCOMPLEX } from "./subworkflows/phylogeny_analysis.nf"
-include { CLUSTER_ANALYSIS as CLUSTER_ANALYSIS__INCCOMPLEX } from "./subworkflows/cluster_analysis.nf"
-include { CLUSTER_ANALYSIS as  CLUSTER_ANALYSIS__EXCOMPLEX } from "./subworkflows/cluster_analysis.nf"
+/*
+ * Copyright (c) 2021-2024 MAGMA pipeline authors, see https://doi.org/10.1371/journal.pcbi.1011648
+ *
+ * This file is part of MAGMA pipeline, see https://github.com/TORCH-Consortium/MAGMA
+ *
+ * For quick overview of GPL-3 license, please refer
+ * https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3
+ *
+ * - You MUST keep this license with original authors in your copy
+ * - You MUST acknowledge the original source of this software
+ * - You MUST state significant changes made to the original software
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program . If not, see <http://www.gnu.org/licenses/>.
+ */
+include { PREPARE_COHORT_VCF } from "../subworkflows/local/prepare_cohort_vcf.nf"
+include { SNP_ANALYSIS } from "../subworkflows/local/snp_analysis.nf"
+include { INDEL_ANALYSIS } from "../subworkflows/local/indel_analysis.nf"
+include { GATK_MERGE_VCFS as GATK_MERGE_VCFS__INC } from "../modules/local/gatk/merge_vcfs.nf" addParams ( params.GATK_MERGE_VCFS )
+include { MAJOR_VARIANT_ANALYSIS } from "../subworkflows/local/major_variant_analysis.nf"
+include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__INCCOMPLEX } from "../subworkflows/local/phylogeny_analysis.nf"
+include { PHYLOGENY_ANALYSIS as PHYLOGENY_ANALYSIS__EXCOMPLEX } from "../subworkflows/local/phylogeny_analysis.nf"
+include { CLUSTER_ANALYSIS as CLUSTER_ANALYSIS__INCCOMPLEX } from "../subworkflows/local/cluster_analysis.nf"
+include { CLUSTER_ANALYSIS as  CLUSTER_ANALYSIS__EXCOMPLEX } from "../subworkflows/local/cluster_analysis.nf"
 
 
 workflow MERGE_WF {
@@ -145,6 +170,5 @@ workflow MERGE_WF {
 
     emit:
         major_variants_results_ch =  MAJOR_VARIANT_ANALYSIS.out.major_variants_results_ch
-
-
-    }
+        snps_dists_ch = PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snp_dists_ch
+}

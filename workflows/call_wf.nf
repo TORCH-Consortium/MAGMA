@@ -1,23 +1,48 @@
-include { BGZIP as BGZIP__LOFREQ } from "../modules/bgzip/bgzip.nf" addParams( params.BGZIP__LOFREQ )
-include { SAMTOOLS_MERGE } from "../modules/samtools/merge.nf" addParams ( params.SAMTOOLS_MERGE )
-include { GATK_MARK_DUPLICATES } from "../modules/gatk/mark_duplicates.nf" addParams ( params.GATK_MARK_DUPLICATES )
-include { GATK_BASE_RECALIBRATOR } from "../modules/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR )
-include { GATK_APPLY_BQSR } from "../modules/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR )
-include { GATK_HAPLOTYPE_CALLER } from "../modules/gatk/haplotype_caller.nf" addParams ( params.GATK_HAPLOTYPE_CALLER )
-include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/gatk/haplotype_caller__minor_variants.nf" addParams ( params.GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS )
-include { LOFREQ_CALL__NTM } from "../modules/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
-include { LOFREQ_INDELQUAL } from "../modules/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
-include { SAMTOOLS_INDEX } from "../modules/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
-include { SAMTOOLS_INDEX__LOFREQ } from "../modules/samtools/index__lofreq.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
-include { LOFREQ_CALL } from "../modules/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
-include { LOFREQ_FILTER } from "../modules/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
-include { SAMTOOLS_STATS } from "../modules/samtools/stats.nf" addParams ( params.SAMTOOLS_STATS )
-include { GATK_COLLECT_WGS_METRICS } from "../modules/gatk/collect_wgs_metrics.nf" addParams ( params.GATK_COLLECT_WGS_METRICS )
-include { GATK_FLAG_STAT } from "../modules/gatk/flag_stat.nf" addParams ( params.GATK_FLAG_STAT )
-include { UTILS_SAMPLE_STATS } from "../modules/utils/sample_stats.nf" addParams ( params.UTILS_SAMPLE_STATS )
-include { UTILS_COHORT_STATS } from "../modules/utils/cohort_stats.nf" addParams ( params.UTILS_COHORT_STATS )
-include { UTILS_REFORMAT_LOFREQ } from "../modules/utils/reformat_lofreq.nf" addParams ( params.UTILS_REFORMAT_LOFREQ )
-include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__LOFREQ } from "../modules/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE__LOFREQ )
+/*
+ * Copyright (c) 2021-2024 MAGMA pipeline authors, see https://doi.org/10.1371/journal.pcbi.1011648
+ *
+ * This file is part of MAGMA pipeline, see https://github.com/TORCH-Consortium/MAGMA
+ *
+ * For quick overview of GPL-3 license, please refer
+ * https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3
+ *
+ * - You MUST keep this license with original authors in your copy
+ * - You MUST acknowledge the original source of this software
+ * - You MUST state significant changes made to the original software
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program . If not, see <http://www.gnu.org/licenses/>.
+ */
+include { BGZIP as BGZIP__LOFREQ } from "../modules/local/bgzip/bgzip.nf" addParams( params.BGZIP__LOFREQ )
+include { SAMTOOLS_MERGE } from "../modules/local/samtools/merge.nf" addParams ( params.SAMTOOLS_MERGE )
+include { GATK_MARK_DUPLICATES } from "../modules/local/gatk/mark_duplicates.nf" addParams ( params.GATK_MARK_DUPLICATES )
+include { GATK_BASE_RECALIBRATOR } from "../modules/local/gatk/base_recalibrator.nf" addParams ( params.GATK_BASE_RECALIBRATOR )
+include { GATK_APPLY_BQSR } from "../modules/local/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR )
+include { GATK_HAPLOTYPE_CALLER } from "../modules/local/gatk/haplotype_caller.nf" addParams ( params.GATK_HAPLOTYPE_CALLER )
+include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/local/gatk/haplotype_caller__minor_variants.nf" addParams ( params.GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS )
+include { LOFREQ_CALL__NTM } from "../modules/local/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
+include { LOFREQ_INDELQUAL } from "../modules/local/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
+include { SAMTOOLS_INDEX } from "../modules/local/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
+include { SAMTOOLS_INDEX__LOFREQ } from "../modules/local/samtools/index__lofreq.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
+include { LOFREQ_CALL } from "../modules/local/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
+include { LOFREQ_FILTER } from "../modules/local/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
+include { SAMTOOLS_STATS } from "../modules/local/samtools/stats.nf" addParams ( params.SAMTOOLS_STATS )
+include { GATK_COLLECT_WGS_METRICS } from "../modules/local/gatk/collect_wgs_metrics.nf" addParams ( params.GATK_COLLECT_WGS_METRICS )
+include { GATK_FLAG_STAT } from "../modules/local/gatk/flag_stat.nf" addParams ( params.GATK_FLAG_STAT )
+include { UTILS_SAMPLE_STATS } from "../modules/local/utils/sample_stats.nf" addParams ( params.UTILS_SAMPLE_STATS )
+include { UTILS_COHORT_STATS } from "../modules/local/utils/cohort_stats.nf" addParams ( params.UTILS_COHORT_STATS )
+include { UTILS_REFORMAT_LOFREQ } from "../modules/local/utils/reformat_lofreq.nf" addParams ( params.UTILS_REFORMAT_LOFREQ )
+include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__LOFREQ } from "../modules/local/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE__LOFREQ )
 
 
 
@@ -143,6 +168,6 @@ workflow CALL_WF {
         cohort_stats_tsv = UTILS_COHORT_STATS.out
         gvcf_ch = GATK_HAPLOTYPE_CALLER.out.gvcf_ch.collect()
         reformatted_lofreq_vcfs_tuple_ch = GATK_INDEX_FEATURE_FILE__LOFREQ.out.vcf_tuple.collect(sort:true)
-        bgzip_ch = BGZIP__LOFREQ.out.collect() 
-        samtools_bam_ch = SAMTOOLS_INDEX.out 
+        bgzip_ch = BGZIP__LOFREQ.out.collect()
+        samtools_bam_ch = SAMTOOLS_INDEX.out
 }
