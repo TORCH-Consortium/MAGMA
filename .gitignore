@@ -29,6 +29,6 @@ samplesheet.csv
 magma.sh
 .Rproj.user
 
-docs/_site
+docs/.quarto
 
-.DS_Store
+docs/_site
