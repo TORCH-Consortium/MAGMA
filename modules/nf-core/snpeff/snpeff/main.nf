@@ -1,5 +1,5 @@
 process SNPEFF_SNPEFF {
-    tag "$meta.id"
+    tag "FIXME"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -29,7 +29,7 @@ process SNPEFF_SNPEFF {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = "" //task.ext.prefix ?: "${meta.id}"
     def cache_command = "" //cache ? "-dataDir \${PWD}/${cache}" : ""
     """
     snpEff \\
@@ -48,7 +48,7 @@ process SNPEFF_SNPEFF {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = "" //task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.ann.vcf
     touch ${prefix}.csv
