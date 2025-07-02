@@ -1,5 +1,5 @@
 process SNPEFF_DOWNLOAD {
-    tag "$meta.id"
+    tag "FIXME"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
