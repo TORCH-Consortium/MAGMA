@@ -10,7 +10,6 @@ process SNPEFF_SNPEFF {
     input:
     tuple val(meta), path(vcf)
     val   db
-    tuple val(meta2), path(cache)
 
     output:
     tuple val(meta), path("*.ann.vcf"),   emit: vcf
@@ -31,7 +30,7 @@ process SNPEFF_SNPEFF {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def cache_command = cache ? "-dataDir \${PWD}/${cache}" : ""
+    def cache_command = "" //cache ? "-dataDir \${PWD}/${cache}" : ""
     """
     snpEff \\
         -Xmx${avail_mem}M \\
