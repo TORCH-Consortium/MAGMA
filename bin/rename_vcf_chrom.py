@@ -71,7 +71,7 @@ parser = argparse.ArgumentParser(description='tbprofiler script',formatter_class
 parser.add_argument('--vcf',type=str,help='')
 parser.add_argument('--source',nargs="+",type=str,help='')
 parser.add_argument('--target',nargs="+",type=str,help='')
-parser.add_argument('--outfile', type=str, required=True, help='Output VCF file')
+parser.add_argument('--outfile', type=str, required=False, help='Output VCF file')
 parser.set_defaults(func=main)
 args = parser.parse_args()
 args.func(args)
