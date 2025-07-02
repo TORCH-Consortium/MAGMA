@@ -77,8 +77,8 @@ workflow PREPARE_COHORT_VCF {
         BGZIP(SNPEFF.out)
         GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out, '')
 
-        SNPEFF_DOWNLOAD__NFCORE([[ id:"Mycobacterium_bovis_bcg" ], "Mycobacterium_bovis_bcg" ])
-        SNPEFF__NFCORE(GATK_GENOTYPE_GVCFS.out, "Mycobacterium_bovis_bcg", SNPEFF_DOWNLOAD__NFCORE.out.cache)
+        SNPEFF_DOWNLOAD__NFCORE([[ id:"Mycobacterium_bovis_gca_000729755" ], "Mycobacterium_bovis_gca_000729755" ])
+        SNPEFF__NFCORE(GATK_GENOTYPE_GVCFS.out, "Mycobacterium_bovis_gca_000729755", SNPEFF_DOWNLOAD__NFCORE.out.cache)
 
     emit:
         cohort_vcf_and_index_ch = GATK_INDEX_FEATURE_FILE__COHORT.out.sample_vcf_tuple
