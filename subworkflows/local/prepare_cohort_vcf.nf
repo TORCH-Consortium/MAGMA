@@ -27,7 +27,7 @@ include { GATK_COMBINE_GVCFS } from "../../modules/local/gatk/combine_gvcfs.nf" 
 include { GATK_GENOTYPE_GVCFS } from "../../modules/local/gatk/genotype_gvcfs.nf" addParams ( params.GATK_GENOTYPE_GVCFS )
 include { SNPEFF } from "../../modules/local/snpeff/snpeff.nf" addParams ( params.SNPEFF )
 include { SNPEFF as SNPEFF__NFCORE } from "../../modules/local/snpeff/snpeff.nf"
-include { SNPEFF_DOWNLOAD as SNPEFF_DOWNLOAD__NFCORE } from "../../modules/local/snpeff/download.nf"
+//include { SNPEFF_DOWNLOAD as SNPEFF_DOWNLOAD__NFCORE } from "../../modules/local/snpeff/download.nf"
 include { BGZIP } from "../../modules/local/bgzip/bgzip.nf" addParams( params.BGZIP )
 include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__COHORT } from "../../modules/local/gatk/index_feature_file" addParams( params.GATK_INDEX_FEATURE_FILE__COHORT )
 
