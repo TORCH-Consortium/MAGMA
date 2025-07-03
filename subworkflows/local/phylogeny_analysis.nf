@@ -49,30 +49,30 @@ workflow PHYLOGENY_ANALYSIS {
                     }
                 }
             }
-            //.dump(tag: "PHYLOGENY_ANALYSIS args_ch: ", pretty: true)
+            .dump(tag: "PHYLOGENY_ANALYSIS args_ch: ", pretty: true)
 
 
         resources_files_ch = arg_files_ch
             .filter {  (it.getExtension()  == "gz") || (it.getExtension()  == "list") }
             .collect()
             .ifEmpty([])
-            //.dump(tag: "PHYLOGENY_ANALYSIS resources_files_ch: ", pretty: true)
+            .dump(tag: "PHYLOGENY_ANALYSIS resources_files_ch: ", pretty: true)
 
 
         resources_file_indexes_ch = arg_files_ch
             .filter {  it.getExtension()  == "tbi" }
             .collect()
             .ifEmpty([])
-            //.dump(tag: "PHYLOGENY_ANALYSIS resources_file_indexes_ch: ", pretty: true)
+            .dump(tag: "PHYLOGENY_ANALYSIS resources_file_indexes_ch: ", pretty: true)
 
 
         // merge_phylogeny_prep_inccomplex
         GATK_SELECT_VARIANTS__PHYLOGENY('SNP',
                             prefix_ch,
                             vcf_ch,
-                            args_ch,
-                            resources_files_ch,
-                            resources_file_indexes_ch,
+                                        '',
+                                        [],
+                                        [],
                             params.ref_fasta,
                             [params.ref_fasta_fai, params.ref_fasta_dict])
 
