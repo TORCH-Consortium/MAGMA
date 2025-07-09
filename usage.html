@@ -179,6 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#nextflow" id="toc-nextflow" class="nav-link" data-scroll-target="#nextflow">Nextflow</a></li>
   </ul></li>
+  <li><a href="#pipeline-setup-sanity-check" id="toc-pipeline-setup-sanity-check" class="nav-link" data-scroll-target="#pipeline-setup-sanity-check">Pipeline setup sanity check</a></li>
   <li><a href="#samplesheet" id="toc-samplesheet" class="nav-link" data-scroll-target="#samplesheet">Samplesheet</a></li>
   <li><a href="#customization" id="toc-customization" class="nav-link" data-scroll-target="#customization">Customization</a></li>
   </ul></li>
@@ -285,9 +286,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   Encoding: UTF-8 (UTF-8)
 </code></pre>
 <blockquote class="blockquote">
-<p>:heavy_check_mark: <strong>With this you’re all set with Nextflow. Next stop, conda or docker - pick one!</strong>: <br></p>
+<p>:heavy_check_mark: <strong>With this you’re all set with Nextflow. Next we shall do a sanity-check for the pipeline setup.</strong>: <br></p>
 </blockquote>
 </section>
+</section>
+<section id="pipeline-setup-sanity-check" class="level2">
+<h2 class="anchored" data-anchor-id="pipeline-setup-sanity-check">Pipeline setup sanity check</h2>
+<p>We provide the <code>test</code> profile, which can be used to test the pipeline as it will 1. Download 3 publicly available samples from the MAGMA publication https://doi.org/10.1371/journal.pcbi.1011648 2. Save you the trouble of settings up a <code>samplesheet.csv</code> with your own samples 3. Save you the trouble of preparing a <code>parameters.yaml</code> file for the analysis</p>
+<p>You can initiate the test as shown below, assuming you will run this on a machine with low resources, we suggest you add <code>laptop</code> as well.</p>
+<pre class="console"><code>nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
+         -profile test,docker,laptop \
+         -r v2.2.0</code></pre>
+<blockquote class="blockquote">
+<p>:warning: <strong>Run in background!</strong>: You might want to run the test in background, using <code>screen</code> or <code>tmux</code>.</p>
+</blockquote>
 </section>
 <section id="samplesheet" class="level2">
 <h2 class="anchored" data-anchor-id="samplesheet">Samplesheet</h2>
@@ -382,13 +394,12 @@ Study_Name,S0004,1,1,full_path_to_directory_of_fastq_files/S0004_01_R1.fastq.gz,
 <blockquote class="blockquote">
 <p><strong>Note</strong> We are currently working on the transition to nf-core standard (see https://github.com/TORCH-Consortium/MAGMA/issues/188), which would add standardized configurations and pipeline structure to benefit from the nf-core <a href="https://github.com/nf-core/modules">nf-core/modules</a> and <a href="https://github.com/nf-core/configs">nf-core/configs</a> projects.</p>
 </blockquote>
-<p>The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a <code>yml</code> file as shown below</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample contents of my_parameters_1.yml file</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">input_samplesheet</span><span class="kw">:</span><span class="at"> /path/to/your_samplesheet.csv</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">only_validate_fastqs</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">conda_envs_location</span><span class="kw">:</span><span class="at"> /path/to/folder/with/conda_envs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a <code>yml</code> (or <code>yaml</code>) file as shown below</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample contents of my_parameters_1.yml file</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">input_samplesheet</span><span class="kw">:</span><span class="at"> /path/to/your_samplesheet.csv</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">only_validate_fastqs</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>When running the pipeline, use profiles to ensure smooth execution on your computing system. The two types of profiles employed by the pipeline are: execution environment + memory/computing requirements</p>
 <p><em>Execution environment profiles:</em></p>
 <ul>
@@ -407,8 +418,8 @@ Study_Name,S0004,1,1,full_path_to_directory_of_fastq_files/S0004_01_R1.fastq.gz,
 </blockquote>
 <p>Which could be provided to the pipeline using <code>-params-file</code> parameter as shown below</p>
 <pre class="console"><code>nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
-         -profile conda_local, server \
-         -r v1.1.1 \
+         -profile docker,server \
+         -r v2.2.0 \
          -params-file  my_parameters_1.yml
 </code></pre>
 </section>
@@ -436,10 +447,10 @@ Study_Name,S0004,1,1,full_path_to_directory_of_fastq_files/S0004_01_R1.fastq.gz,
 wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-env-1.yml
 </code></pre>
 <p>The <code>conda</code> environments are expected by the <code>conda_local</code> profile of the pipeline, it is recommended that it should be created <strong>prior</strong> to the use of the pipeline, using the following commands. Note that if you have <code>mamba</code> (or <code>micromamba</code>) available you can rely upon that instead of <code>conda</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-env-1 <span class="at">--file</span> magma-env-1.yml</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-env-2 <span class="at">--file</span> magma-env-2.yml</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-tbprofiler-env <span class="at">--file</span> magma-tbprofiler-env.yaml</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-ntmprofiler-env <span class="at">--file</span> magma-ntmprofiler-env.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-env-1 <span class="at">--file</span> magma-env-1.yml</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-env-2 <span class="at">--file</span> magma-env-2.yml</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-tbprofiler-env <span class="at">--file</span> magma-tbprofiler-env.yaml</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">-n</span> magma-ntmprofiler-env <span class="at">--file</span> magma-ntmprofiler-env.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Optionally, you can run <code>bash ./conda/setup_conda_envs.sh</code> to build all the necessary conda environments.</p>
 <p>Once the environments are created, you can make use of the pipeline parameter <code>conda_envs_location</code> to inform the pipeline of the names and location of the conda envs.</p>
 <p>Next, you need to load the WHO Resistance Catalog within <code>tb-profiler</code>; basically the <a href="https://github.com/TORCH-Consortium/MAGMA/blob/master/conda_envs/setup_conda_envs.sh#L20-L23">instructions</a>, which are used to build the necessary containers.</p>
