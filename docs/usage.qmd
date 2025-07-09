@@ -78,7 +78,28 @@ $ nextflow info
 
 ```
 
-> :heavy_check_mark: **With this you're all set with Nextflow. Next stop, conda or docker - pick one!**: <br>
+> :heavy_check_mark: **With this you're all set with Nextflow. Next we shall do a sanity-check for the pipeline setup.**: <br>
+
+
+## Pipeline setup sanity check
+
+We provide the `test` profile, which can be used to test the pipeline as it will
+1. Download 3 publicly available samples from the MAGMA publication https://doi.org/10.1371/journal.pcbi.1011648
+2. Save you the trouble of settings up a `samplesheet.csv` with your own samples
+3. Save you the trouble of preparing a `parameters.yaml` file for the analysis
+
+You can initiate the test as shown below, assuming you will run this on a machine with low resources, we suggest you add `laptop` as well.
+
+```console
+nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
+         -profile test,docker,laptop \
+         -r v2.2.0
+```
+
+> :warning: **Run in background!**:
+You might want to run the test in background, using `screen` or `tmux`.
+
+
 
 ## Samplesheet
 
@@ -122,7 +143,7 @@ Here's a formatted version of the CSV above, including all optional fields
 We are currently working on the transition to nf-core standard (see https://github.com/TORCH-Consortium/MAGMA/issues/188), which would add standardized configurations and pipeline structure to benefit from the nf-core [nf-core/modules](https://github.com/nf-core/modules) and [nf-core/configs](https://github.com/nf-core/configs) projects.
 
 
-The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a `yml` file as shown below
+The pipeline parameters are distinct from Nextflow parameters, and therefore it is recommended that they are provided using a `yml` (or `yaml`) file as shown below
 
 
 ```yml
@@ -131,7 +152,6 @@ The pipeline parameters are distinct from Nextflow parameters, and therefore it 
 
 input_samplesheet: /path/to/your_samplesheet.csv
 only_validate_fastqs: true
-conda_envs_location: /path/to/folder/with/conda_envs
 ```
 
 When running the pipeline, use profiles to ensure smooth execution on your computing system. The two types of profiles employed by the pipeline are: execution environment + memory/computing requirements
@@ -159,8 +179,8 @@ Which could be provided to the pipeline using `-params-file` parameter as shown 
 
 ```console
 nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
-         -profile conda_local, server \
-         -r v1.1.1 \
+         -profile docker,server \
+         -r v2.2.0 \
          -params-file  my_parameters_1.yml
 
 ```
