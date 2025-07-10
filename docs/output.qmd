@@ -44,7 +44,7 @@ In this directory you will find files related to the quality control carried out
 
 ```
 
-### **cohort**
+### cohort
 
 Here you will find the `joint.merged_cohort_stats.tsv` which contains the QC statistics for all samples in the samplesheet and allows users to determine why certain samples failed to be incorporated in the cohort analysis steps
 
