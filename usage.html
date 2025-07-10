@@ -292,7 +292,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="pipeline-setup-sanity-check" class="level2">
 <h2 class="anchored" data-anchor-id="pipeline-setup-sanity-check">Pipeline setup sanity check</h2>
-<p>We provide the <code>test</code> profile, which can be used to test the pipeline as it will 1. Download 3 publicly available samples from the MAGMA publication https://doi.org/10.1371/journal.pcbi.1011648 2. Save you the trouble of settings up a <code>samplesheet.csv</code> with your own samples 3. Save you the trouble of preparing a <code>parameters.yaml</code> file for the analysis</p>
+<p>We provide the <code>test</code> profile, which can be used to test the pipeline as it will</p>
+<ol type="1">
+<li><p>Download 3 publicly available samples from the MAGMA publication https://doi.org/10.1371/journal.pcbi.1011648</p></li>
+<li><p>Save you the trouble of settings up a <code>samplesheet.csv</code> with your own samples</p></li>
+<li><p>Save you the trouble of preparing a <code>parameters.yaml</code> file for the analysis</p></li>
+</ol>
 <p>You can initiate the test as shown below, assuming you will run this on a machine with low resources, we suggest you add <code>laptop</code> as well.</p>
 <pre class="console"><code>nextflow run 'https://github.com/TORCH-Consortium/MAGMA' \
          -profile test,docker,laptop \
