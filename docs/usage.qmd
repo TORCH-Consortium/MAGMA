@@ -84,8 +84,11 @@ $ nextflow info
 ## Pipeline setup sanity check
 
 We provide the `test` profile, which can be used to test the pipeline as it will
+
 1. Download 3 publicly available samples from the MAGMA publication https://doi.org/10.1371/journal.pcbi.1011648
+
 2. Save you the trouble of settings up a `samplesheet.csv` with your own samples
+
 3. Save you the trouble of preparing a `parameters.yaml` file for the analysis
 
 You can initiate the test as shown below, assuming you will run this on a machine with low resources, we suggest you add `laptop` as well.
