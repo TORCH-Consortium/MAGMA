@@ -124,6 +124,8 @@ workflow MERGE_WF {
 
 
 
+                excomplex_prefix_ch = Channel.of('ExDR.ExComplex')
+                excomplex_phylo_snp_dists_ch = Channel.empty()
 
                 PHYLOGENY_ANALYSIS__EXCOMPLEX(excomplex_prefix_ch,
                                               excomplex_exclude_interval_ref_ch,
@@ -132,6 +134,8 @@ workflow MERGE_WF {
 
 
                 CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
+
+                excomplex_phylo_snp_dists_ch = PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snp_dists_ch
 
         }
 
@@ -170,5 +174,4 @@ workflow MERGE_WF {
 
     emit:
         major_variants_results_ch =  MAJOR_VARIANT_ANALYSIS.out.major_variants_results_ch
-        snps_dists_ch = PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snp_dists_ch
-}
+
