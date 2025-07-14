@@ -174,4 +174,5 @@ workflow MERGE_WF {
 
     emit:
         major_variants_results_ch =  MAJOR_VARIANT_ANALYSIS.out.major_variants_results_ch
-
+        snps_dists_ch = excomplex_phylo_snp_dists_ch
+}
