@@ -28,7 +28,7 @@ process MULTIQC {
     label 'cpu_4_memory_16'
 
     input:
-    	path(multiqc_config)
+      path(multiqc_config)
         path("*")
 
     output:
@@ -38,13 +38,15 @@ process MULTIQC {
     script:
         def config = multiqc_config ? "--config $multiqc_config" : ''
 
-        def prepare_script_options =  !params.skip_merge_analysis ? '' : '--skip_merge_analysis'
+        def arg_skip_merge_analysis =  !params.skip_merge_analysis ? '' : '--skip_merge_analysis'
+        def arg_skip_phylogeny_and_clustering =  !params.skip_phylogeny_and_clustering ? '' : '--skip_phylogeny_and_clustering'
 
         """
         preprocess_multiqc_input.py   \\
-        ${prepare_script_options} \\
-        --merged_cohort_stats joint.merged_cohort_stats.tsv \\
-	--distance_matrix joint.ExDR.ExComplex.snp_dists.tsv
+            ${arg_skip_merge_analysis} \\
+            ${arg_skip_phylogeny_and_clustering} \\
+            --merged_cohort_stats joint.merged_cohort_stats.tsv \\
+            --distance_matrix joint.ExDR.ExComplex.snp_dists.tsv
 
         ${params.multiqc_path} $config .
         """

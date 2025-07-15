@@ -49,21 +49,20 @@ def prepare_distance_matrix(matrix_file, output_file):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Prepare TSV files for multiqc report generation.')
-    parser.add_argument('--merged_cohort_stats', required=True, help='Path to the merged cohort status TSV file.')
-    
-    parser.add_argument('--output_prefix',required=False,default="prepared", type=str) 
+    # For workflow steps
     parser.add_argument('--skip_merge_analysis', action="store_false", help='If used, specify that merge analysis skipped.')
+    # For merged cohort stats
+    parser.add_argument('--merged_cohort_stats', required=True, help='Path to the merged cohort status TSV file.')
+    parser.add_argument('--output_prefix',required=False,default="prepared", type=str)
     parser.add_argument('--distance_matrix', required=False, help='Path to the distance matrix TSV file')
 
 
 
     args = parser.parse_args()
-    prepare_cohort_output_name = args.output_prefix + "_" + args.merged_cohort_stats 
+    prepare_cohort_output_name = args.output_prefix + "_" + args.merged_cohort_stats
     prepare_cohort_stats(args.merged_cohort_stats,prepare_cohort_output_name)
 
     if args.skip_merge_analysis:
-        print("merge was not skipped")       
+        print("merge was not skipped")
         prepare_distance_matrix_output_name = args.output_prefix + "_" + args.distance_matrix
         prepare_distance_matrix(args.distance_matrix, prepare_distance_matrix_output_name)
-        
-
