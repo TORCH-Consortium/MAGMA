@@ -82,7 +82,7 @@ workflow PHYLOGENY_ANALYSIS {
 
         SNPDISTS(prefix_ch, SNPSITES.out)
 
-        snpsites_tree_tuple = Channel.empty()
+        snpsites_tree_tuple_ch = Channel.empty()
 
         if (!params.skip_phylogeny_and_clustering) {
 
