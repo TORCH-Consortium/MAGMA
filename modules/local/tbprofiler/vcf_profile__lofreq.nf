@@ -41,8 +41,8 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
 
         """
 
-        bcftools view ${mergedLofreqVcf} | sed 's/NC-000962-3-H37Rv/Chromosome/g' > intermediate.vcf
-         
+        bcftools view ${mergedLofreqVcf} | sed 's/${params.ref_fasta_basename}/Chromosome/g' > intermediate.vcf
+
         cat  intermediate.vcf | bcftools view -Oz -o intermediate.vcf.gz
 
         ${params.tbprofiler_path} profile \\

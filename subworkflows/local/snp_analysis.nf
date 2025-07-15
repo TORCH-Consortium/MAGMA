@@ -47,7 +47,14 @@ workflow SNP_ANALYSIS {
                                 [params.ref_fasta_fai, params.ref_fasta_dict] )
 
 
-        // merge_vqsr_snp
+        //NOTE: Set the default content of these channels
+        excluding_complex_regions_ch = Channel.of([])
+        including_complex_regions_ch = Channel.of([])
+
+
+    if(!params.skip_variant_recalibration ) {
+
+ // merge_vqsr_snp
 
         arg_files_ch = Channel.of(["coll2014,known=false,training=true,truth=true,prior=15.0", file(params.coll2014_vcf), file(params.coll2014_vcf_tbi)],
                               ["coll2018,known=false,training=true,truth=true,prior=15.0", file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)],
@@ -82,7 +89,7 @@ workflow SNP_ANALYSIS {
 
 
 
-        if(!params.skip_variant_recalibration) {
+        if(params.optimize_variant_recalibration) {
 
             OPTIMIZE_VARIANT_RECALIBRATION('SNP',
                                         GATK_SELECT_VARIANTS__SNP.out.variantsVcfTuple,
@@ -110,11 +117,16 @@ workflow SNP_ANALYSIS {
         }
 
 
+    //NOTE: Possibly the next two processes should be included in the
+    //"skip_variant_recalibration" param
         // merge_apply_vqsr_snp
         GATK_APPLY_VQSR__SNP('SNP',
                             vqsr_ch,
                             params.ref_fasta,
                             [params.ref_fasta_fai, params.ref_fasta_dict])
+
+
+        including_complex_regions_ch = GATK_APPLY_VQSR__SNP.out.filteredVcfTuple
 
         GATK_SELECT_VARIANTS__EXCLUSION__SNP('SNP',
                                             GATK_APPLY_VQSR__SNP.out.filteredVcfTuple,
@@ -123,8 +135,12 @@ workflow SNP_ANALYSIS {
                                             [params.ref_fasta_fai, params.ref_fasta_dict])
 
 
-    emit:
-        snp_exc_vcf_ch = GATK_SELECT_VARIANTS__EXCLUSION__SNP.out
-        snp_inc_vcf_ch = GATK_APPLY_VQSR__SNP.out.filteredVcfTuple
+        excluding_complex_regions_ch = GATK_SELECT_VARIANTS__EXCLUSION__SNP.out
 
+    }
+
+    emit:
+        snp_vcf_ch = GATK_SELECT_VARIANTS__SNP.out
+        snp_exc_vcf_ch = excluding_complex_regions_ch
+        snp_inc_vcf_ch = including_complex_regions_ch
 }

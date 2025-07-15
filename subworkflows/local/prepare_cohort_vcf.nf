@@ -26,6 +26,8 @@
 include { GATK_COMBINE_GVCFS } from "../../modules/local/gatk/combine_gvcfs.nf" addParams ( params.GATK_COMBINE_GVCFS )
 include { GATK_GENOTYPE_GVCFS } from "../../modules/local/gatk/genotype_gvcfs.nf" addParams ( params.GATK_GENOTYPE_GVCFS )
 include { SNPEFF } from "../../modules/local/snpeff/snpeff.nf" addParams ( params.SNPEFF )
+include { SNPEFF_SNPEFF as SNPEFF__NFCORE } from "../../modules/nf-core/snpeff/snpeff"
+include { SNPEFF_DOWNLOAD as SNPEFF_DOWNLOAD__NFCORE } from "../../modules/nf-core/snpeff/download"
 include { BGZIP } from "../../modules/local/bgzip/bgzip.nf" addParams( params.BGZIP )
 include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__COHORT } from "../../modules/local/gatk/index_feature_file" addParams( params.GATK_INDEX_FEATURE_FILE__COHORT )
 
@@ -74,6 +76,9 @@ workflow PREPARE_COHORT_VCF {
         SNPEFF(GATK_GENOTYPE_GVCFS.out, params.ref_fasta)
         BGZIP(SNPEFF.out)
         GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out, '')
+
+        SNPEFF_DOWNLOAD__NFCORE([[ id:"Mycobacterium_bovis_gca_000729755" ], "Mycobacterium_bovis_gca_000729755" ])
+        SNPEFF__NFCORE(GATK_GENOTYPE_GVCFS.out, "Mycobacterium_bovis_gca_000729755", SNPEFF_DOWNLOAD__NFCORE.out.cache)
 
     emit:
         cohort_vcf_and_index_ch = GATK_INDEX_FEATURE_FILE__COHORT.out.sample_vcf_tuple
