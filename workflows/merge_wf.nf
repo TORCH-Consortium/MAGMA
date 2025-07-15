@@ -101,17 +101,17 @@ workflow MERGE_WF {
 
         // excomplex_exclude_interval_ref_ch.view{ it -> "\n\n MAGMA-LOG MERGE_WF excomplex_exclude_interval_ref_ch: $it \n\n"}
 
-        excomplex_prefix_ch = Channel.of('ExDR.ExComplex')
-        excomplex_phylo_snp_dists_ch = Channel.empty()
+                excomplex_prefix_ch = Channel.of('ExDR.ExComplex')
 
-            if (!params.skip_phylogeny_and_clustering) {
                 PHYLOGENY_ANALYSIS__EXCOMPLEX(excomplex_prefix_ch,
                                                excomplex_exclude_interval_ref_ch,
                                                SNP_ANALYSIS.out.snp_exc_vcf_ch)
 
+                excomplex_phylo_snp_dists_ch = PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snp_dists_ch
+
+            if (!params.skip_phylogeny_and_clustering) {
                 CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
 
-                excomplex_phylo_snp_dists_ch = PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snp_dists_ch
 
         }
 
@@ -130,13 +130,13 @@ workflow MERGE_WF {
             inccomplex_prefix_ch = Channel.of('ExDR.IncComplex')
 
 
-            if (!params.skip_phylogeny_and_clustering) {
                 //NOTE: Both phylogenies should be excluding DR and excluding rRNA, then it is again filtered in two datasets one including complex regions and one excluding complex regions.
                 //Ergo PHYLOGENY_...__INCCOMPLEX should take snp_exc_vcf_ch. Refer https://github.com/TORCH-Consortium/MAGMA/pull/114#discussion_r947732253
                 PHYLOGENY_ANALYSIS__INCCOMPLEX(inccomplex_prefix_ch,
                                                inccomplex_exclude_interval_ref_ch,
                                                SNP_ANALYSIS.out.snp_exc_vcf_ch)
 
+            if (!params.skip_phylogeny_and_clustering) {
                 CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snpsites_tree_tuple, inccomplex_prefix_ch)
             }
 

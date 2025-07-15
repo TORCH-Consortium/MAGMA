@@ -82,11 +82,17 @@ workflow PHYLOGENY_ANALYSIS {
 
         SNPDISTS(prefix_ch, SNPSITES.out)
 
-        // merge_iqtree_inccomplex
-        IQTREE(prefix_ch, SNPSITES.out)
+        snpsites_tree_tuple = Channel.empty()
+
+        if (!params.skip_phylogeny_and_clustering) {
+
+            // merge_iqtree_inccomplex
+            IQTREE(prefix_ch, SNPSITES.out)
+            snpsites_tree_tuple_ch = SNPSITES.out.join(IQTREE.out.tree_tuple)
+        }
 
 
     emit:
-        snpsites_tree_tuple = SNPSITES.out.join(IQTREE.out.tree_tuple)
-  snp_dists_ch = SNPDISTS.out.snp_dists_file
-}
+        snpsites_tree_tuple = snpsites_tree_tuple_ch
+        snp_dists_ch = SNPDISTS.out.snp_dists_file
+    }
