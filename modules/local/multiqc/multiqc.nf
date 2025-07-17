@@ -39,12 +39,10 @@ process MULTIQC {
         def config = multiqc_config ? "--config $multiqc_config" : ''
 
         def arg_skip_merge_analysis =  !params.skip_merge_analysis ? '' : '--skip_merge_analysis'
-        def arg_skip_phylogeny_and_clustering =  !params.skip_phylogeny_and_clustering ? '' : '--skip_phylogeny_and_clustering'
 
         """
         preprocess_multiqc_input.py   \\
             ${arg_skip_merge_analysis} \\
-            ${arg_skip_phylogeny_and_clustering} \\
             --merged_cohort_stats joint.merged_cohort_stats.tsv \\
             --distance_matrix joint.ExDR.ExComplex.snp_dists.tsv
 
