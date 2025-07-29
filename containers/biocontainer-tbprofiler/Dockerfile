@@ -35,4 +35,4 @@ FROM base AS tbprofiler
 # MAGMA branch 
 #RUN tb-profiler update_tbdb --branch MAGMA --logging DEBUG
 
-RUN tb-profiler update_tbdb --commit 30f8bc37df15affa378ebbfbd3e1eb4c5903056e --logging DEBUG
+RUN tb-profiler update_tbdb --commit 70c0f203d9ca69aaf8efb39c8d6865be3306ee92 --logging DEBUG
