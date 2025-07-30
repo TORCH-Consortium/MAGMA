@@ -32,7 +32,7 @@ conda activate "./magma-tbprofiler-env"
 #tb-profiler update_tbdb --commit bdace1f82d948ce0001e1dade6eb93d2da9c47e5 --logging DEBUG
 
 #echo "INFO: Use MAGMA branch from tbdb database in magma-tbprofiler-env"
-tb-profiler update_tbdb --commit 30f8bc37df15affa378ebbfbd3e1eb4c5903056e --logging DEBUG
+tb-profiler update_tbdb --commit 70c0f203d9ca69aaf8efb39c8d6865be3306ee92 --logging DEBUG
 
 
 echo "INFO: Deactivate the magma-tbprofiler-env "
