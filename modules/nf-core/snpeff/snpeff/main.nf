@@ -30,7 +30,7 @@ process SNPEFF_SNPEFF {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
-    def prefix = "" //task.ext.prefix ?: "${meta.id}"
+    def prefix = "joint" //task.ext.prefix ?: "${meta.id}"
     def cache_command = cache ? "-dataDir \${PWD}/${cache}" : ""
     """
     snpEff \\
