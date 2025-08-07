@@ -73,12 +73,13 @@ workflow PREPARE_COHORT_VCF {
         GATK_GENOTYPE_GVCFS(GATK_COMBINE_GVCFS.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
 
         // merge_snpeff_annotate
-        SNPEFF(GATK_GENOTYPE_GVCFS.out, params.ref_fasta)
-        BGZIP(SNPEFF.out)
-        GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out, '')
+        //SNPEFF(GATK_GENOTYPE_GVCFS.out, params.ref_fasta)
+        //BGZIP(SNPEFF.out)
 
-        SNPEFF_DOWNLOAD__NFCORE([[ id:"Mycobacterium_bovis_af2122_97" ], "Mycobacterium_bovis_af2122_97" ])
-        SNPEFF__NFCORE(GATK_GENOTYPE_GVCFS.out, "Mycobacterium_bovis_af2122_97", SNPEFF_DOWNLOAD__NFCORE.out.cache)
+        GATK_INDEX_FEATURE_FILE__COHORT(GATK_GENOTYPE_GVCFS.out, '')
+
+        //SNPEFF_DOWNLOAD__NFCORE([[ id:"Mycobacterium_bovis_af2122_97" ], "Mycobacterium_bovis_af2122_97" ])
+        //SNPEFF__NFCORE(GATK_GENOTYPE_GVCFS.out, "Mycobacterium_bovis_af2122_97", SNPEFF_DOWNLOAD__NFCORE.out.cache)
 
     emit:
         cohort_vcf_and_index_ch = GATK_INDEX_FEATURE_FILE__COHORT.out.sample_vcf_tuple
