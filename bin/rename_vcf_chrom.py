@@ -55,17 +55,21 @@ def cmd_out(cmd,verbose=1):
 
 def main(args):
     generator = cmd_out("bcftools view " + args.vcf) if args.vcf else sys.stdin
-    convert = dict(zip(args.source,args.target))
+    convert = dict(zip(args.source, args.target))
 
-    # Open the output file for writing
-    with open(args.outfile, 'w') as outfile:
+    # Open the output file for writing, or use stdout if not specified
+    outfile = open(args.outfile, 'w') if args.outfile else sys.stdout
+    try:
         for l in generator:
-            if l[0]=="#":
-                outfile.write(l.strip()+"\n")
+            if l[0] == "#":
+                outfile.write(l.strip() + "\n")
             else:
                 row = l.strip().split()
                 row[0] = convert[row[0]]
-                outfile.write("\t".join(row)+"\n")
+                outfile.write("\t".join(row) + "\n")
+    finally:
+        if args.outfile:
+            outfile.close()
 
 parser = argparse.ArgumentParser(description='tbprofiler script',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--vcf',type=str,help='')
