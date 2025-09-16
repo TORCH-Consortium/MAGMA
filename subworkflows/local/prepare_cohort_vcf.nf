@@ -73,7 +73,7 @@ workflow PREPARE_COHORT_VCF {
         GATK_GENOTYPE_GVCFS(GATK_COMBINE_GVCFS.out, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
 
         // merge_snpeff_annotate
-        //SNPEFF(GATK_GENOTYPE_GVCFS.out, params.ref_fasta)
+        SNPEFF(GATK_GENOTYPE_GVCFS.out, params.ref_fasta, params.snpeff_config)
         //BGZIP(SNPEFF.out)
 
         GATK_INDEX_FEATURE_FILE__COHORT(GATK_GENOTYPE_GVCFS.out, '')

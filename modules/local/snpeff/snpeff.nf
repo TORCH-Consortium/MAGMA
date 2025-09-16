@@ -30,6 +30,7 @@ process SNPEFF {
     input:
         tuple val(joint_name), path(rawJointVariantsFile)
         path(ref_fasta)
+        path(snpeff_config)
 
     output:
         tuple val(joint_name), path("*.annotated.vcf")
@@ -38,9 +39,9 @@ process SNPEFF {
     shell:
 
         '''
-        rename_vcf_chrom.py --vcf !{rawJointVariantsFile}  --source !{params.ref_fasta_basename} --target 'Chromosome' \
-            | !{params.snpeff_path} -nostats !{params.arguments}  \
-            | rename_vcf_chrom.py --target !{params.ref_fasta_basename} --source 'Chromosome' \
+        rename_vcf_chrom.py --vcf !{rawJointVariantsFile}  --source !{params.ref_fasta_basename} --target 'Chromosome' \\
+            | !{params.snpeff_path} -nostats !{params.arguments}  \\
+            | rename_vcf_chrom.py --target !{params.ref_fasta_basename} --source 'Chromosome' \\
          > !{joint_name}.raw_variants.annotated.vcf
         '''
 
