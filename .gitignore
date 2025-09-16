@@ -32,3 +32,4 @@ magma.sh
 docs/.quarto
 
 docs/_site
+resources/snpeff/data/mbovis_AF2122/snpEffectPredictor.bin
