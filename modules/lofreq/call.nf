@@ -16,7 +16,7 @@ process LOFREQ_CALL {
         """
         ${params.lofreq_path} call-parallel \\
             -f ${ref_fasta} \\
-            --pp-threads ${task.cpus} \\
+            --pp-threads 8 \\
             ${params.arguments} \\
             ${dindleBam} \\
             -o ${sampleName}.LoFreq.vcf
