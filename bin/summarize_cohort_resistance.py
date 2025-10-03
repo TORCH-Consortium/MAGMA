@@ -166,7 +166,8 @@ def process_folder(folder_path, method_name):
         num_samples = len(samples_set)
         percent = round((num_samples / total_samples) * 100, 2) if total_samples > 0 else 0
         methods = ",".join(sorted(variant_methods[(drug, vid, conf)]))
-        sample_list = "[" + ",".join(sorted(samples_set)) + "]"
+        samples_cleaned = [s.replace(".results", "") for s in sorted(samples_set)]
+        sample_list = "[" + ",".join(samples_cleaned) + "]"
         final_rows.append([drug, gene, chrom, pos, mutation_str, hgvs, conf,
                            num_samples, percent, methods, sample_list])
 
@@ -177,11 +178,37 @@ def process_folder(folder_path, method_name):
 
     return summary_occurrences, summary_unique, df_final, total_samples
 
+def combine_results(results):
+    # Combina ocorrências e variantes únicas
+    occ_combined = pd.DataFrame(0, index=drugs_list, columns=categories)
+    uniq_combined = pd.DataFrame(0, index=drugs_list, columns=categories)
+    df_list = []
+    total_samples = 0
+
+    for method_name in results:
+        occ, uniq, df_final, n_samples = results[method_name]
+        occ_combined += occ
+        uniq_combined += uniq
+        df_list.append(df_final)
+        total_samples += n_samples
+
+    df_final_combined = pd.concat(df_list, ignore_index=True)
+    # Opcional: remover duplicatas se necessário
+    df_final_combined = df_final_combined.drop_duplicates(subset=["Drug", "Mutation", "Classification", "Samples"])
+
+    occ_combined["Total of Variants Detected"] = occ_combined.sum(axis=1)
+    uniq_combined["Total of Unique Variants Detected"] = uniq_combined.sum(axis=1)
+
+    return occ_combined, uniq_combined, df_final_combined
+
 # Process the samples
 results = {}
 for method_name, folder in folders.items():
     occ, uniq, df_final, n_samples = process_folder(folder, method_name)
     results[method_name] = (occ, uniq, df_final, n_samples)
+
+# Relatório combinado
+occ_combined, uniq_combined, df_final_combined = combine_results(results)
 
 # Produce the output
 with pd.ExcelWriter(output_file) as writer:
@@ -189,5 +216,9 @@ with pd.ExcelWriter(output_file) as writer:
         results[method_name][0].to_excel(writer, sheet_name=f"{method_name}_total_occurrences")
         results[method_name][1].to_excel(writer, sheet_name=f"{method_name}_unique_occurrences")
         results[method_name][2].to_excel(writer, sheet_name=f"{method_name}_variants_summary", index=False)
+    # Tabelas combinadas
+    occ_combined.to_excel(writer, sheet_name="Combined_total_occurrences")
+    uniq_combined.to_excel(writer, sheet_name="Combined_unique_occurrences")
+    df_final_combined.to_excel(writer, sheet_name="Combined_variants_summary", index=False)
 
 print(f"Summary Created: {output_file}")
