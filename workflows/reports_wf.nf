@@ -27,6 +27,7 @@ nextflow.enable.dsl = 2
 
 include { MULTIQC } from '../modules/local/multiqc/multiqc.nf' addParams (params.MULTIQC)
 include { UTILS_SUMMARIZE_RESISTANCE_RESULTS } from '../modules/local/utils/summarize_resistance_results.nf' addParams (params.UTILS_SUMMARIZE_RESISTANCE_RESULTS)
+include { UTILS_SUMMARIZE_COHORT_RESISTANCE } from '../modules/local/utils/summarize_cohort_resistance.nf' addParams (params.UTILS_SUMMARIZE_COHORT_RESISTANCE)
 include { UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION } from "../modules/local/utils/summarize_resistance_results_mixed_infection.nf" addParams (params.UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION)
 
 
@@ -50,7 +51,13 @@ workflow REPORTS_WF {
             structural_variants_results_ch
         )
 
-        UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION(
+    UTILS_SUMMARIZE_COHORT_RESISTANCE(
+            major_variants_results_ch,
+            minor_variants_results_ch,
+            structural_variants_results_ch
+        )
+
+    UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION(
             merged_cohort_stats_ch,
             minor_variants_results_ch,
             structural_variants_results_ch
