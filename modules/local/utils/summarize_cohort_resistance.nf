@@ -23,7 +23,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-process UTILS_SUMMARIZE_RESISTANCE_RESULTS {
+process UTILS_SUMMARIZE_COHORT_RESISTANCE {
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
     stageInMode 'copy'
 
