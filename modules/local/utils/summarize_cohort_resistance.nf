@@ -36,7 +36,6 @@ process UTILS_SUMMARIZE_COHORT_RESISTANCE {
         path("cohort_resistance_variants_summary.xlsx")
 
     script:
-       
         """
         summarize_cohort_resistance.py --major major_variants/results --minor minor_variants/results --delly structural_variants/results  --output cohort_resistance_variants_summary.xlsx
         """
