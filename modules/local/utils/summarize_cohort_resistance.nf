@@ -40,8 +40,7 @@ process UTILS_SUMMARIZE_COHORT_RESISTANCE {
         summarize_cohort_resistance.py --major major_variants/results --minor minor_variants/results --delly structural_variants/results  --output cohort_resistance_variants_summary.xlsx
         """
 
-    stub: 
-
+    stub:
         """
         touch cohort_resistance_variants_summary.xlsx
         """ 
