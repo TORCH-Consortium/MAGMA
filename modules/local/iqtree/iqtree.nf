@@ -49,14 +49,14 @@ process IQTREE {
     script:
         if(params.iqtree_custom_argument) {
             arguments = params.iqtree_custom_argument
-        } else if(params.iqtree_standard_bootstrap) {
-            arguments = '-b 1000'
         } else if(params.iqtree_fast_ml_only) {
             arguments = '-fast'
         } else if(params.iqtree_fast_bootstrapped_phylogeny) {
             arguments = '-bb 1000 -alrt 1000'
         } else if(params.iqtree_accurate_ml_only) {
             arguments = '-allnni'
+        } else if(params.iqtree_standard_bootstrap) {
+            arguments = '-b 1000'
         } else {
         //NOTE: Use iqtree_accurate_ml_only as the default
             arguments = '-allnni'
