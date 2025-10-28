@@ -49,32 +49,32 @@ workflow PHYLOGENY_ANALYSIS {
                     }
                 }
             }
-            .dump(tag: "PHYLOGENY_ANALYSIS args_ch: ", pretty: true)
+            .dump(tag: "PHYLOGENY_ANALYSIS_args_ch", pretty: true)
 
 
         resources_files_ch = arg_files_ch
             .filter {  (it.getExtension()  == "gz") || (it.getExtension()  == "list") }
             .collect()
             .ifEmpty([])
-            .dump(tag: "PHYLOGENY_ANALYSIS resources_files_ch: ", pretty: true)
+            .dump(tag: "PHYLOGENY_ANALYSIS_resources_files_ch", pretty: true)
 
 
         resources_file_indexes_ch = arg_files_ch
             .filter {  it.getExtension()  == "tbi" }
             .collect()
             .ifEmpty([])
-            .dump(tag: "PHYLOGENY_ANALYSIS resources_file_indexes_ch: ", pretty: true)
+            .dump(tag: "PHYLOGENY_ANALYSIS_resources_file_indexes_ch", pretty: true)
 
 
         // merge_phylogeny_prep_inccomplex
         GATK_SELECT_VARIANTS__PHYLOGENY('SNP',
-                            prefix_ch,
-                            vcf_ch,
+                                        prefix_ch,
+                                        vcf_ch,
                                         '',
                                         [],
                                         [],
-                            params.ref_fasta,
-                            [params.ref_fasta_fai, params.ref_fasta_dict])
+                                        params.ref_fasta,
+                                        [params.ref_fasta_fai, params.ref_fasta_dict])
 
         GATK_VARIANTS_TO_TABLE(prefix_ch, GATK_SELECT_VARIANTS__PHYLOGENY.out)
 
@@ -88,5 +88,5 @@ workflow PHYLOGENY_ANALYSIS {
 
     emit:
         snpsites_tree_tuple = SNPSITES.out.join(IQTREE.out.tree_tuple)
-  snp_dists_ch = SNPDISTS.out.snp_dists_file
+        snp_dists_ch = SNPDISTS.out.snp_dists_file
 }
