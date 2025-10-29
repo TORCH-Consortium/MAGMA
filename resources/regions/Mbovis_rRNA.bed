@@ -1,0 +1,5 @@
+# rRNA regions for NC_002945
+# Format: chromosome start end name score strand
+NC_002945	1474290	1475827	rrs	0	+
+NC_002945	1476102	1479240	rrl	0	+
+NC_002945	1479343	1479458	rrf	0	+
