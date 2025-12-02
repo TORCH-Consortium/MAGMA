@@ -53,6 +53,9 @@ workflow SNP_ANALYSIS {
 
         arg_files_ch = Channel.empty()
         args_ch = Channel.empty()
+        resources_files_ch = Channel.empty()
+        resources_file_indexes_ch = Channel.empty()
+
 
     if(!params.skip_variant_recalibration ) {
 
@@ -63,7 +66,6 @@ workflow SNP_ANALYSIS {
                               ["coll2018,known=false,training=true,truth=true,prior=15.0", file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)],
                               ["Napier2020,known=false,training=true,truth=true,prior=15.0", file(params.napier2020_vcf), file(params.napier2020_vcf_tbi)],
                               ["Benavente2015,known=true,training=false,truth=false,prior=5.0", file(params.benavente2015_vcf), file(params.benavente2015_vcf_tbi)])
-            .ifEmpty([])
             .map { it -> it != [] ? [ "${it[0]} ${it[1].getName()}", it[1], it[2] ] : [] }
             .flatten()
             .dump(tag:"SNP_ANALYSIS__arg_files_ch : ", pretty:true)
@@ -72,7 +74,6 @@ workflow SNP_ANALYSIS {
         args_ch = arg_files_ch
             .filter { it.class == org.codehaus.groovy.runtime.GStringImpl }
             .reduce { a, b -> "$a --resource:$b " }
-            .ifEmpty("")
             .dump(tag:"SNP_ANALYSIS__args_ch", pretty:true)
 
 
@@ -80,16 +81,13 @@ workflow SNP_ANALYSIS {
             .filter { it.class != org.codehaus.groovy.runtime.GStringImpl }
             .filter {  it.getExtension()  == "gz" }
             .collect()
-            .ifEmpty([])
             .dump(tag:"SNP_ANALYSIS__resources_files_ch", pretty:true)
 
         resources_file_indexes_ch = arg_files_ch
             .filter { it.class != org.codehaus.groovy.runtime.GStringImpl }
             .filter {  it.getExtension()  == "tbi" }
             .collect()
-            .ifEmpty([])
             .dump(tag:"SNP_ANALYSIS__resources_file_indexes_ch", pretty:true)
-
 
 
         if(params.optimize_variant_recalibration) {
