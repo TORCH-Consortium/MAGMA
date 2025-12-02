@@ -76,7 +76,7 @@ workflow PREPARE_COHORT_VCF {
         SNPEFF(GATK_GENOTYPE_GVCFS.out, params.ref_fasta, params.snpeff_config, params.snpeff_db)
         BGZIP(SNPEFF.out)
 
-        GATK_INDEX_FEATURE_FILE__COHORT(GATK_GENOTYPE_GVCFS.out, '')
+        GATK_INDEX_FEATURE_FILE__COHORT(BGZIP.out, '')
 
         //SNPEFF_DOWNLOAD__NFCORE([[ id:"Mycobacterium_bovis_af2122_97" ], "Mycobacterium_bovis_af2122_97" ])
         //SNPEFF__NFCORE(GATK_GENOTYPE_GVCFS.out, "Mycobacterium_bovis_af2122_97", SNPEFF_DOWNLOAD__NFCORE.out.cache)
