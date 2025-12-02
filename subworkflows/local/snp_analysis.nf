@@ -51,10 +51,13 @@ workflow SNP_ANALYSIS {
         excluding_complex_regions_ch = Channel.of([])
         including_complex_regions_ch = Channel.of([])
 
+        arg_files_ch = Channel.empty()
+        args_ch = Channel.empty()
 
     if(!params.skip_variant_recalibration ) {
 
  // merge_vqsr_snp
+
 
         arg_files_ch = Channel.of(["coll2014,known=false,training=true,truth=true,prior=15.0", file(params.coll2014_vcf), file(params.coll2014_vcf_tbi)],
                               ["coll2018,known=false,training=true,truth=true,prior=15.0", file(params.coll2018_vcf), file(params.coll2018_vcf_tbi)],
@@ -63,7 +66,7 @@ workflow SNP_ANALYSIS {
             .ifEmpty([])
             .map { it -> it != [] ? [ "${it[0]} ${it[1].getName()}", it[1], it[2] ] : [] }
             .flatten()
-            .dump(tag:"SNP_ANALYSIS arg_files_ch : ", pretty:true)
+            .dump(tag:"SNP_ANALYSIS__arg_files_ch : ", pretty:true)
 
 
         args_ch = arg_files_ch
