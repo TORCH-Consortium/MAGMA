@@ -27,7 +27,6 @@ process GATK_VARIANT_RECALIBRATOR {
     tag "annotation: ${annotations}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
-
     input:
         val(analysisMode)
         val(annotations)
@@ -47,16 +46,11 @@ process GATK_VARIANT_RECALIBRATOR {
         tuple val(joint_name), path("*${analysisMode}*.command.log"), emit: annotationsLog
 
     script:
-
-        def finalResourceFilesArg =    (resourceFilesArg  ? "--resource:${resourceFilesArg}" : "")
-
-        def optionalAnnotationPrefix = ""
-
-        if (task.process.split("__").length == 1) {
-            optionalAnnotationPrefix = ""
-        } else {
-            optionalAnnotationPrefix = ".${task.process.split("__")[-1]}"
-        }
+        // Only add --resource argument if resourceFiles and resourceFileIndexes are non-empty
+        def resourceFilesExist = resourceFiles && resourceFiles.size() > 0
+        def resourceFileIndexesExist = resourceFileIndexes && resourceFileIndexes.size() > 0
+        def finalResourceFilesArg = (resourceFilesArg && resourceFilesExist && resourceFileIndexesExist) ? "--resource:${resourceFilesArg}" : ""
+        def optionalAnnotationPrefix = (task.process.split("__").length == 1) ? "" : ".${task.process.split('__')[-1]}"
 
         """
         ${params.gatk_path} VariantRecalibrator --java-options "-Xmx${task.memory.giga}G" \\
@@ -73,15 +67,5 @@ process GATK_VARIANT_RECALIBRATOR {
             2>${joint_name}.${analysisMode}${optionalAnnotationPrefix}.command.log
 
         cp ${joint_name}.${analysisMode}${optionalAnnotationPrefix}.command.log .command.log
-
-        """
-
-    stub:
-
-        """
-        touch ${joint_name}.${analysisMode}.tranches
-        touch ${joint_name}.${analysisMode}.R
-        touch ${joint_name}.${analysisMode}.recal.vcf.gz
-        touch ${joint_name}.${analysisMode}.mod
         """
 }
