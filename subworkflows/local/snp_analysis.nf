@@ -70,7 +70,7 @@ workflow SNP_ANALYSIS {
             .filter { it.class == org.codehaus.groovy.runtime.GStringImpl }
             .reduce { a, b -> "$a --resource:$b " }
             .ifEmpty("")
-            .dump(tag:"SNP_ANALYSIS args_ch : ", pretty:true)
+            .dump(tag:"SNP_ANALYSIS__args_ch", pretty:true)
 
 
         resources_files_ch = arg_files_ch
@@ -78,14 +78,14 @@ workflow SNP_ANALYSIS {
             .filter {  it.getExtension()  == "gz" }
             .collect()
             .ifEmpty([])
-            .dump(tag:"SNP_ANALYSIS resources_files_ch : ", pretty:true)
+            .dump(tag:"SNP_ANALYSIS__resources_files_ch", pretty:true)
 
         resources_file_indexes_ch = arg_files_ch
             .filter { it.class != org.codehaus.groovy.runtime.GStringImpl }
             .filter {  it.getExtension()  == "tbi" }
             .collect()
             .ifEmpty([])
-            .dump(tag:"SNP_ANALYSIS resources_file_indexes_ch : ", pretty:true)
+            .dump(tag:"SNP_ANALYSIS__resources_file_indexes_ch", pretty:true)
 
 
 
