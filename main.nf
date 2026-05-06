@@ -82,6 +82,9 @@ workflow {
                                   MINOR_VARIANTS_ANALYSIS_WF.out.rejected_samples_ch,
                                   CALL_WF.out.cohort_stats_tsv )
 
+		UTILS_GENERATE_COHORT_WARNINGS( UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch,
+										params.cutoff_lofreq_median_coverage )
+
 
         all_samples_ch = UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch
                                 .splitCsv(header: false, skip: 1, sep: '\t' )
