@@ -2,7 +2,7 @@ process UTILS_FILTER_LOFREQ_TBPROFILER_JSONS_BY_COVERAGE {
 
     input:
         path resistance_jsons
-        path cohort_stats_tsv
+        path call_wf_cohort_stats_tsv
         val cutoff
 
     output:
