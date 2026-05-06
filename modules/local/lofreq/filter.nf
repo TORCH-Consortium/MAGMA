@@ -32,7 +32,7 @@ process LOFREQ_FILTER {
         path(ref_fasta)
 
     output:
-        tuple val(sampleName), path("*.Filtered_AF.vcf")
+        tuple val(sampleName), path("*.Filtered_AF.vcf"), emit: vcf
 
     script:
 
