@@ -33,6 +33,8 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
 
     take:
         reformatted_lofreq_vcfs_tuple_ch
+        call_wf_cohort_stats_tsv
+
 
     main:
 
@@ -54,8 +56,14 @@ workflow MINOR_VARIANTS_ANALYSIS_WF {
 
         TBPROFILER_VCF_PROFILE__LOFREQ(BCFTOOLS_MERGE__LOFREQ.out, resistanceDb)
 
+        UTILS_FILTER_LOFREQ_TBPROFILER_JSONS_BY_COVERAGE(
+            TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
+            cohort_stats_tsv,
+            params.cutoff_lofreq_median_coverage
+        )
+
         TBPROFILER_COLLATE__LOFREQ(params.vcf_name,
-                                  TBPROFILER_VCF_PROFILE__LOFREQ.out.resistance_json.collect(),
+                                  UTILS_FILTER_LOFREQ_TBPROFILER_JSONS_BY_COVERAGE.out.filtered_jsons.collect(),
                                   resistanceDb)
 
         UTILS_MULTIPLE_INFECTION_FILTER(TBPROFILER_COLLATE__LOFREQ.out.per_sample_results)
