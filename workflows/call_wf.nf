@@ -136,7 +136,7 @@ workflow CALL_WF {
         // Reformat individual results from LOFREQ
         //----------------------------------------------------------------------------------
 
-        UTILS_REFORMAT_LOFREQ(LOFREQ_CALL.out)
+        UTILS_REFORMAT_LOFREQ(LOFREQ_FILTER.out)
 
         BGZIP__LOFREQ(UTILS_REFORMAT_LOFREQ.out)
 
