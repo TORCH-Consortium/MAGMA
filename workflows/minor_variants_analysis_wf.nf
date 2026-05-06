@@ -28,6 +28,7 @@ include { BGZIP } from "../modules/local/bgzip/bgzip.nf" addParams( params.BGZIP
 include { TBPROFILER_VCF_PROFILE__LOFREQ } from "../modules/local/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__LOFREQ)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__LOFREQ } from "../modules/local/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__LOFREQ)
 include { UTILS_MULTIPLE_INFECTION_FILTER } from "../modules/local/utils/multiple_infection_filter.nf" addParams (params.UTILS_MULTIPLE_INFECTION_FILTER)
+include { UTILS_FILTER_LOFREQ_TBPROFILER_JSONS_BY_COVERAGE } from "../modules/local/utils/<actual_file_name>.nf" addParams(params.UTILS_FILTER_LOFREQ_TBPROFILER_JSONS_BY_COVERAGE)
 
 workflow MINOR_VARIANTS_ANALYSIS_WF {
 
