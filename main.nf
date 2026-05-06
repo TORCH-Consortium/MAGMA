@@ -42,6 +42,7 @@ include { REPORTS_WF } from './workflows/reports_wf.nf'
 include { SAMPLESHEET_VALIDATION } from './modules/local/utils/samplesheet_validation.nf'  addParams ( params.SAMPLESHEET_VALIDATION )
 include { STRUCTURAL_VARIANTS_ANALYSIS_WF } from './workflows/structural_variants_analysis_wf.nf'
 include { UTILS_MERGE_COHORT_STATS } from "./modules/local/utils/merge_cohort_stats.nf" addParams ( params.UTILS_MERGE_COHORT_STATS )
+include { UTILS_GENERATE_COHORT_WARNINGS } from "./modules/local/utils/generate_cohort_warnings.nf"
 
 //================================================================================
 // Main workflow
