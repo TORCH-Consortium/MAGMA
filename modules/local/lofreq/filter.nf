@@ -38,7 +38,7 @@ process LOFREQ_FILTER {
 
         """
         ${params.lofreq_path} filter \\
-            -a 0.03 \\
+            -a 0.03 -k bonf -l 0.0001 \\
             -i ${vcf}  \\
         > ${sampleName}.Filtered_AF.vcf
         """
@@ -47,7 +47,7 @@ process LOFREQ_FILTER {
 
         """
         echo "lofreq filter \\
-            -a 0.03 \\
+            -a 0.03 -k bonf -l 0.0001 \\
             -i ${vcf}  \\
             ${sampleName}.Filtered_AF.vcf"
 
