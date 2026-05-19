@@ -10,17 +10,21 @@ process SAMTOOLS_COVERAGE_STATS_DR_REGIONS {
 
     script:
         """
-        awk -F '[:-]' '
+        awk '
         BEGIN {
             OFS="\\t"
         }
         {
-            # Input format:
-            # chrom:start-end
-            #
-            # Convert to BED:
-            # chrom  start-1  end
-            print \$1, \$2 - 1, \$3
+            split($0, region_parts, ":")
+            chrom = region_parts[1]
+            coords = region_parts[2]
+        
+            split(coords, coord_parts, "-")
+            start = coord_parts[1]
+            end = coord_parts[2]
+        
+            # Convert 1-based closed region coordinates to 0-based BED start.
+            print chrom, start - 1, end
         }
         ' ${regions} > dr_regions.bed
 
