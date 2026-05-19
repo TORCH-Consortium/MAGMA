@@ -25,13 +25,13 @@
  */
 process UTILS_SAMPLE_STATS {
     tag "${sampleName}"
-    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+    publishDir params.results_dir, mode: params.save_mode, enabled: false
 
     input:
         tuple val(sampleName), path(samtoolsStats), path(wgsMetrics), path(flagStats), path(ntmFraction)
 
     output:
-        path("*.stats.tsv")
+        tuple val(sampleName), path("*.stats.tsv"), emit: stats
 
     script:
         """
@@ -45,5 +45,4 @@ process UTILS_SAMPLE_STATS {
             --cutoff_breadth_of_coverage ${params.cutoff_breadth_of_coverage} \\
             --cutoff_ntm_fraction ${params.cutoff_ntm_fraction}
         """
-
 }
