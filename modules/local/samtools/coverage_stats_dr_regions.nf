@@ -10,24 +10,7 @@ process SAMTOOLS_COVERAGE_STATS_DR_REGIONS {
 
     script:
         """
-        awk '
-        BEGIN {
-            OFS="\\t"
-        }
-        {
-            split(\\$0, region_parts, ":")
-            chrom = region_parts[1]
-            coords = region_parts[2]
-
-            split(coords, coord_parts, "-")
-            start = coord_parts[1]
-            end = coord_parts[2]
-
-            print chrom, start - 1, end
-        }
-        ' ${regions} > dr_regions.bed
-
-        samtools bedcov dr_regions.bed ${bam} > ${sampleName}.dr_region_coverage.long.tsv
+        samtools bedcov ${regions} ${bam} > ${sampleName}.dr_region_coverage.long.tsv
 
         awk -v sample="${sampleName}" '
         BEGIN {
@@ -36,14 +19,13 @@ process SAMTOOLS_COVERAGE_STATS_DR_REGIONS {
             values=sample
         }
         {
-            chrom=\\$1
-            start=\\$2
-            end=\\$3
-            summed_depth=\\$NF
+            chrom=\$1
+            start=\$2
+            end=\$3
+            summed_depth=\$NF
             length=end-start
 
             display_start=start + 1
-
             region=chrom "_" display_start "_" end
             mean_depth=(length > 0 ? summed_depth / length : "NA")
 
