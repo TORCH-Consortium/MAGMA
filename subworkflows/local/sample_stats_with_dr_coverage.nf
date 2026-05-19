@@ -35,4 +35,3 @@ workflow UTILS_SAMPLE_STATS {
     emit:
         UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE.out.stats
 }
-}
