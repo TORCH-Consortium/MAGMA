@@ -95,7 +95,7 @@ def main():
     )
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    merged.to_csv(args.output, sep="\t", index=False)
+    merged.to_csv(args.output, sep="\t", index=False, header=False)
 
 
 if __name__ == "__main__":
