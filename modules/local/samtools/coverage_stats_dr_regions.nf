@@ -1,4 +1,4 @@
-process UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE {
+process SAMTOOLS_COVERAGE_STATS_DR_REGIONS {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
