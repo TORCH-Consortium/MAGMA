@@ -15,7 +15,7 @@ workflow UTILS_SAMPLE_STATS {
 
     main:
         ch_dr_regions = Channel.value(
-            file("${projectDir}/resources/regions/WHO_Tier1_Tier2_DR.bed")
+            file("${projectDir}/resources/regions/tbprofiler_whov2plus_genes.bed")
         )
 
         UTILS_RAW_SAMPLE_STATS(ch_sample_stats_input)
