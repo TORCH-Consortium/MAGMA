@@ -24,14 +24,14 @@ workflow UTILS_SAMPLE_STATS {
             ch_dr_regions
         )
 
-        ch_merged_input = UTILS_RAW_SAMPLE_STATS.out.stats
-            .join(SAMTOOLS_COVERAGE_STATS_DR_REGIONS.out.coverage)
+        ch_merged_input = UTILS_RAW_SAMPLE_STATS.out
+            .join(SAMTOOLS_COVERAGE_STATS_DR_REGIONS.out)
             .map { sampleName, sampleStats, drCoverage ->
                 tuple(sampleName, sampleStats, drCoverage)
             }
-
+        
         UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE(ch_merged_input)
 
     emit:
-        UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE.out.stats
+        UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE.out
 }
