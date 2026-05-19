@@ -2,10 +2,10 @@
  * Copyright ...
  */
 
-include { UTILS_SAMPLE_STATS as UTILS_RAW_SAMPLE_STATS } from '../../modules/local/utils/sample_stats'
-include { SAMTOOLS_COVERAGE_STATS_DR_REGIONS } from '../../modules/local/samtools/coverage_stats_dr_regions'
-include { UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE } from '../../modules/local/utils/merge_sample_stats_dr_coverage'
-include { UTILS_FORMAT_DR_REGION_COVERAGE } from '../../modules/local/utils/format_dr_region_coverage'
+include { UTILS_SAMPLE_STATS as UTILS_RAW_SAMPLE_STATS } from '../../modules/local/utils/sample_stats' addParams( params.UTILS_SAMPLE_STATS )
+include { SAMTOOLS_COVERAGE_STATS_DR_REGIONS } from '../../modules/local/samtools/coverage_stats_dr_regions' addParams( params.SAMTOOLS_COVERAGE_STATS_DR_REGIONS )
+include { UTILS_FORMAT_DR_REGION_COVERAGE } from '../../modules/local/utils/format_dr_region_coverage' addParams( params.UTILS_FORMAT_DR_REGION_COVERAGE )
+include { UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE } from '../../modules/local/utils/merge_sample_stats_dr_coverage' addParams( params.UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE )
 
 workflow UTILS_SAMPLE_STATS {
 
