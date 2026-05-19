@@ -19,17 +19,17 @@ process SAMTOOLS_COVERAGE_STATS_DR_REGIONS {
             values=sample
         }
         {
-            chrom=\$1
-            start=\$2
-            stop=\$3
-            summed_depth=\$NF
-            length=end-start
+            chrom=\\$1
+            bed_start=\\$2
+            bed_stop=\\$3
+            summed_depth=\\$NF
+            region_size=bed_stop-bed_start
 
-            display_start=start + 1
-            region=chrom "_" display_start "_" end
-            mean_depth=(length > 0 ? summed_depth / length : "NA")
+            display_start=bed_start + 1
+            region_name=chrom "_" display_start "_" bed_stop
+            mean_depth=(region_size > 0 ? summed_depth / region_size : "NA")
 
-            header=header OFS "dr_region_" region "_mean_depth"
+            header=header OFS "dr_region_" region_name "_mean_depth"
             values=values OFS mean_depth
         }
         END {
