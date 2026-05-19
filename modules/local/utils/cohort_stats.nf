@@ -29,6 +29,7 @@ process UTILS_COHORT_STATS {
 
     input:
         path("sample_stats/*")
+        path drRegionsBed
 
     output:
         path("*.cohort_stats.tsv")
