@@ -155,14 +155,9 @@ workflow CALL_WF {
             .join(GATK_FLAG_STAT.out)
             .join(LOFREQ_CALL__NTM.out)
         
-        // SAMTOOLS_INDEX.out is tuple(sampleName, bai, bam).
-        // DR coverage expects tuple(sampleName, bam, bai).
         dr_coverage_bam_ch = SAMTOOLS_INDEX.out.map { sampleName, bai, bam ->
             tuple(sampleName, bam, bai)
         }
-        
-        //.dump(tag: "CALL_WF sample_stats_ch : ", pretty: true)
-        //.dump(tag: "CALL_WF dr_coverage_bam_ch : ", pretty: true)
         
         UTILS_SAMPLE_STATS(
             sample_stats_ch,
