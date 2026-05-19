@@ -69,8 +69,8 @@ def read_one_row_tsv(path: Path, label: str) -> pd.DataFrame:
 def main():
     args = parse_args()
 
-    sample_stats = read_one_row_tsv(args.sample_stats, "sample stats")
-    dr_coverage = read_one_row_tsv(args.dr_coverage, "DR coverage")
+    sample_stats = pd.read_csv(args.sample_stats, sep="\t", header=None)
+    dr_coverage = pd.read_csv(args.dr_coverage, sep="\t")
 
     # The DR coverage file may include a sample-identifying first column.
     # Drop it before column-wise concatenation to avoid duplicate IDs.
