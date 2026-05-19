@@ -164,7 +164,14 @@ workflow CALL_WF {
             dr_coverage_bam_ch
         )
         
-        UTILS_COHORT_STATS(UTILS_SAMPLE_STATS.out.collect())
+        ch_dr_regions = Channel.value(
+            file("${projectDir}/resources/regions/tbprofiler_whov2plus_genes.bed")
+        )
+        
+        UTILS_COHORT_STATS(
+            UTILS_SAMPLE_STATS.out.collect(),
+            ch_dr_regions
+        )
 
     emit:
         cohort_stats_tsv = UTILS_COHORT_STATS.out
