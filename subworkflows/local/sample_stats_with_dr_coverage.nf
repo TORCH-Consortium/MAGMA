@@ -5,6 +5,7 @@
 include { UTILS_SAMPLE_STATS as UTILS_RAW_SAMPLE_STATS } from '../../modules/local/utils/sample_stats'
 include { SAMTOOLS_COVERAGE_STATS_DR_REGIONS } from '../../modules/local/samtools/coverage_stats_dr_regions'
 include { UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE } from '../../modules/local/utils/merge_sample_stats_dr_coverage'
+include { UTILS_FORMAT_DR_REGION_COVERAGE } from '../../modules/local/utils/format_dr_region_coverage'
 
 workflow UTILS_SAMPLE_STATS {
 
@@ -23,14 +24,18 @@ workflow UTILS_SAMPLE_STATS {
             ch_bam,
             ch_dr_regions
         )
-
+        
+        UTILS_FORMAT_DR_REGION_COVERAGE(
+            SAMTOOLS_COVERAGE_STATS_DR_REGIONS.out.bedcov
+        )
+        
         ch_merged_input = UTILS_RAW_SAMPLE_STATS.out
-            .join(SAMTOOLS_COVERAGE_STATS_DR_REGIONS.out)
+            .join(UTILS_FORMAT_DR_REGION_COVERAGE.out.coverage)
             .map { sampleName, sampleStats, drCoverage ->
                 tuple(sampleName, sampleStats, drCoverage)
             }
-        
-        UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE(ch_merged_input)
+
+UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE(ch_merged_input)
 
     emit:
         UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE.out
