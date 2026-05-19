@@ -2,24 +2,44 @@
 
 import argparse
 import csv
+import re
 from pathlib import Path
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Convert samtools bedcov output into one-row DR-region coverage TSV."
+        description="Convert samtools bedcov output into one-row DR gene coverage TSV."
     )
     parser.add_argument("--sample-name", required=True)
     parser.add_argument("--bedcov", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument(
+        "--gene-name-column",
+        type=int,
+        default=5,
+        help=(
+            "1-based column index in the BED/bedcov file containing the gene name. "
+            "For tbprofiler_whov2plus_genes.bed this is column 5."
+        ),
+    )
     return parser.parse_args()
+
+
+def clean_column_name(value: str) -> str:
+    value = value.strip()
+    value = re.sub(r"[^A-Za-z0-9_.-]+", "_", value)
+    value = value.strip("_")
+    return value or "unknown_gene"
 
 
 def main():
     args = parse_args()
 
+    gene_idx = args.gene_name_column - 1
+
     header = ["sample"]
     values = [args.sample_name]
+    seen = {}
 
     with args.bedcov.open() as handle:
         reader = csv.reader(handle, delimiter="\t")
@@ -28,18 +48,29 @@ def main():
             if not row:
                 continue
 
-            chrom = row[0]
+            if len(row) <= gene_idx:
+                raise ValueError(
+                    f"Expected gene name column {args.gene_name_column}, "
+                    f"but row only has {len(row)} columns: {row}"
+                )
+
             bed_start = int(row[1])
             bed_stop = int(row[2])
+            gene_name = clean_column_name(row[gene_idx])
             summed_depth = float(row[-1])
 
             region_size = bed_stop - bed_start
-            display_start = bed_start + 1
-
-            region_name = f"{chrom}_{display_start}_{bed_stop}"
             mean_depth = summed_depth / region_size if region_size > 0 else "NA"
 
-            header.append(f"dr_region_{region_name}_mean_depth")
+            # Guard against duplicated gene names. Your uploaded BED has unique gene names,
+            # but this makes the script safe if that changes later.
+            seen[gene_name] = seen.get(gene_name, 0) + 1
+            if seen[gene_name] == 1:
+                column_name = f"dr_gene_{gene_name}_mean_depth"
+            else:
+                column_name = f"dr_gene_{gene_name}_{seen[gene_name]}_mean_depth"
+
+            header.append(column_name)
             values.append(mean_depth)
 
     with args.output.open("w", newline="") as handle:
