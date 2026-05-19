@@ -21,7 +21,7 @@ process SAMTOOLS_COVERAGE_STATS_DR_REGIONS {
         {
             chrom=\$1
             start=\$2
-            end=\$3
+            stop=\$3
             summed_depth=\$NF
             length=end-start
 
