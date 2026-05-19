@@ -15,15 +15,14 @@ process SAMTOOLS_COVERAGE_STATS_DR_REGIONS {
             OFS="\\t"
         }
         {
-            split($0, region_parts, ":")
+            split(\\$0, region_parts, ":")
             chrom = region_parts[1]
             coords = region_parts[2]
-        
+
             split(coords, coord_parts, "-")
             start = coord_parts[1]
             end = coord_parts[2]
-        
-            # Convert 1-based closed region coordinates to 0-based BED start.
+
             print chrom, start - 1, end
         }
         ' ${regions} > dr_regions.bed
@@ -37,13 +36,12 @@ process SAMTOOLS_COVERAGE_STATS_DR_REGIONS {
             values=sample
         }
         {
-            chrom=\$1
-            start=\$2
-            end=\$3
-            summed_depth=\$NF
+            chrom=\\$1
+            start=\\$2
+            end=\\$3
+            summed_depth=\\$NF
             length=end-start
 
-            # Convert BED start back to 1-based display coordinate
             display_start=start + 1
 
             region=chrom "_" display_start "_" end
