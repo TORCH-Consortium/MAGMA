@@ -39,8 +39,7 @@ def main():
 
     header = ["sample"]
     values = [args.sample_name]
-    seen = {}
-
+    
     with args.bedcov.open() as handle:
         reader = csv.reader(handle, delimiter="\t")
 
@@ -58,17 +57,10 @@ def main():
             bed_stop = int(row[2])
             gene_name = row[4]
             summed_depth = float(row[-1])
+            column_name = f"dr_gene_{gene_name}_mean_depth"
 
             region_size = bed_stop - bed_start
             mean_depth = summed_depth / region_size if region_size > 0 else "NA"
-
-            # Guard against duplicated gene names. Your uploaded BED has unique gene names,
-            # but this makes the script safe if that changes later.
-            seen[gene_name] = seen.get(gene_name, 0) + 1
-            if seen[gene_name] == 1:
-                column_name = f"dr_gene_{gene_name}_mean_depth"
-            else:
-                column_name = f"dr_gene_{gene_name}_{seen[gene_name]}_mean_depth"
 
             header.append(f"dr_gene_{gene_name}_mean_depth")
             values.append(mean_depth)
