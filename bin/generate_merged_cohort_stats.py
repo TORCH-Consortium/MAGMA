@@ -56,51 +56,46 @@ if __name__ == '__main__':
     df_relabundance_stats_concat = pd.concat([df_approved_relabundance_stats, df_rejected_relabundance_stats])
     df_joint_cohort_stats = df_cohort_stats.join(df_relabundance_stats_concat, how="outer")
 
-    # Reorder the columns
-    df_joint_cohort_stats.columns = df_joint_cohort_stats.columns.str.strip()
-        # Reorder the columns
-    df_joint_cohort_stats.columns = df_joint_cohort_stats.columns.str.strip()
+base_cols = [
+    'AVG_INSERT_SIZE',
+    'MAPPED_PERCENTAGE',
+    'RAW_TOTAL_SEQS',
+    'AVERAGE_BASE_QUALITY',
+    'MEAN_COVERAGE',
+    'SD_COVERAGE',
+    'MEDIAN_COVERAGE',
+    'MAD_COVERAGE',
+    'PCT_EXC_ADAPTER',
+    'PCT_EXC_MAPQ',
+    'PCT_EXC_DUPE',
+    'PCT_EXC_UNPAIRED',
+    'PCT_EXC_BASEQ',
+    'PCT_EXC_OVERLAP',
+    'PCT_EXC_CAPPED',
+    'PCT_EXC_TOTAL',
+    'PCT_1X',
+    'PCT_5X',
+    'PCT_10X',
+    'PCT_30X',
+    'PCT_50X',
+    'PCT_100X',
+    'LINEAGES',
+    'FREQUENCIES',
+    'MAPPED_NTM_FRACTION_16S',
+    'MAPPED_NTM_FRACTION_16S_THRESHOLD_MET',
+    'COVERAGE_THRESHOLD_MET',
+    'BREADTH_OF_COVERAGE_THRESHOLD_MET',
+    'RELABUNDANCE_THRESHOLD_MET',
+]
 
-    base_cols = [
-        'AVG_INSERT_SIZE',
-        'MAPPED_PERCENTAGE',
-        'RAW_TOTAL_SEQS',
-        'AVERAGE_BASE_QUALITY',
-        'MEAN_COVERAGE',
-        'SD_COVERAGE',
-        'MEDIAN_COVERAGE',
-        'MAD_COVERAGE',
-        'PCT_EXC_ADAPTER',
-        'PCT_EXC_MAPQ',
-        'PCT_EXC_DUPE',
-        'PCT_EXC_UNPAIRED',
-        'PCT_EXC_BASEQ',
-        'PCT_EXC_OVERLAP',
-        'PCT_EXC_CAPPED',
-        'PCT_EXC_TOTAL',
-        'PCT_1X',
-        'PCT_5X',
-        'PCT_10X',
-        'PCT_30X',
-        'PCT_50X',
-        'PCT_100X',
-        'LINEAGES',
-        'FREQUENCIES',
-        'MAPPED_NTM_FRACTION_16S',
-        'MAPPED_NTM_FRACTION_16S_THRESHOLD_MET',
-        'COVERAGE_THRESHOLD_MET',
-        'BREADTH_OF_COVERAGE_THRESHOLD_MET',
-        'RELABUNDANCE_THRESHOLD_MET',
-        'ALL_THRESHOLDS_MET',
-    ]
+dr_cols = [
+    col for col in df_joint_cohort_stats.columns
+    if col.startswith('dr_gene_') or col.startswith('dr_region_')
+]
 
-    dr_cols = [
-        col for col in df_joint_cohort_stats.columns
-        if col.startswith('dr_gene_') or col.startswith('dr_region_')
-    ]
+new_cols = base_cols + dr_cols + ['ALL_THRESHOLDS_MET']
 
-    new_cols = base_cols + dr_cols
-    df_final_cohort_stats = df_joint_cohort_stats[new_cols]
+df_final_cohort_stats = df_joint_cohort_stats[new_cols]
     
     # Impute the NaN value after join
     df_final_cohort_stats['RELABUNDANCE_THRESHOLD_MET'] = df_final_cohort_stats['RELABUNDANCE_THRESHOLD_MET'].fillna(0)
