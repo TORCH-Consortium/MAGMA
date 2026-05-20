@@ -29,7 +29,7 @@ workflow UTILS_SAMPLE_STATS {
             SAMTOOLS_COVERAGE_STATS_DR_REGIONS.out.bedcov
         )
         
-        ch_merged_input = UTILS_RAW_SAMPLE_STATS.out
+        ch_merged_input = UTILS_RAW_SAMPLE_STATS.out.stats
             .join(UTILS_FORMAT_DR_REGION_COVERAGE.out.coverage)
             .map { sampleName, sampleStats, drCoverage ->
                 tuple(sampleName, sampleStats, drCoverage)
