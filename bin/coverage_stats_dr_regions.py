@@ -56,7 +56,7 @@ def main():
 
             bed_start = int(row[1])
             bed_stop = int(row[2])
-            gene_name = clean_column_name(row[gene_idx])
+            gene_name = row[4]
             summed_depth = float(row[-1])
 
             region_size = bed_stop - bed_start
