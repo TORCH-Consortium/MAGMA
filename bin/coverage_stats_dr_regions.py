@@ -70,7 +70,7 @@ def main():
             else:
                 column_name = f"dr_gene_{gene_name}_{seen[gene_name]}_mean_depth"
 
-            header.append(column_name)
+            header.append(f"dr_gene_{gene_name}_mean_depth")
             values.append(mean_depth)
 
     with args.output.open("w", newline="") as handle:
