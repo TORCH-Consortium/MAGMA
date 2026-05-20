@@ -16,10 +16,10 @@ def parse_args():
     parser.add_argument(
         "--gene-name-column",
         type=int,
-        default=5,
+        default=4,
         help=(
             "1-based column index in the BED/bedcov file containing the gene name. "
-            "For tbprofiler_whov2plus_genes.bed this is column 5."
+            "For tbprofiler_whov2plus_genes.bed this is column 4."
         ),
     )
     return parser.parse_args()
@@ -55,7 +55,7 @@ def main():
 
             bed_start = int(row[1])
             bed_stop = int(row[2])
-            gene_name = row[4]
+            gene_name = clean_column_name(row[gene_idx])
             summed_depth = float(row[-1])
             column_name = f"dr_gene_{gene_name}_mean_depth"
 
