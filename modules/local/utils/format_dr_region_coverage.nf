@@ -14,7 +14,7 @@ process UTILS_FORMAT_DR_REGION_COVERAGE {
         coverage_stats_dr_regions.py \\
             --sample-name ${sampleName} \\
             --bedcov ${bedcovTsv} \\
-            --gene-name-column 4 \\
+            --gene-name-column 5 \\
             --output ${sampleName}.dr_region_coverage.tsv
         """
 }
