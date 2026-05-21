@@ -71,3 +71,4 @@ NC-000962-3-H37Rv	4326004	4330174	Rv3854c	ethA	ethionamide,prothionamide
 NC-000962-3-H37Rv	4327328	4328199	Rv3855	ethR	ethionamide,prothionamide
 NC-000962-3-H37Rv	4338171	4338961	Rv3862c	whiB6	amikacin,capreomycin,kanamycin
 NC-000962-3-H37Rv	4407528	4408481	Rv3919c	gid	streptomycin
+NC-000962-3-H37Rv	4407528	4408481	Rv0667-RRDR-region	rpoB-rrdr	rifampicin,rifapentine
