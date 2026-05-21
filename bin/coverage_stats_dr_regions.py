@@ -62,7 +62,7 @@ def main():
             region_size = bed_stop - bed_start
             mean_depth = summed_depth / region_size if region_size > 0 else "NA"
 
-            header.append(f"dr_gene_{gene_name}_mean_depth")
+            header.append(f"{gene_name}_mean_depth")
             values.append(mean_depth)
 
     with args.output.open("w", newline="") as handle:
