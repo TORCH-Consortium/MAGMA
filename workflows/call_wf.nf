@@ -33,6 +33,7 @@ include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/local/gatk/ha
 include { LOFREQ_CALL__NTM } from "../modules/local/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
 include { LOFREQ_INDELQUAL } from "../modules/local/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
 include { SAMTOOLS_INDEX } from "../modules/local/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
+include { SAMTOOLS_VIEW_CRAM } from "../modules/local/samtools/view_cram.nf"
 include { SAMTOOLS_INDEX__LOFREQ } from "../modules/local/samtools/index__lofreq.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
 include { LOFREQ_CALL } from "../modules/local/lofreq/call.nf" addParams ( params.LOFREQ_CALL )
 include { LOFREQ_FILTER } from "../modules/local/lofreq/filter.nf" addParams ( params.LOFREQ_FILTER )
@@ -92,7 +93,24 @@ workflow CALL_WF {
 
         //recalibrated_bam_ch.dump(tag: "CALL_WF recalibrated_bam_ch: ", pretty:true)
 
-        SAMTOOLS_INDEX(recalibrated_bam_ch)
+        // Optional BAM → CRAM checkpoint at the post-MarkDup-or-BQSR junction.
+        // params.bam_checkpoint_compression:
+        //   'none' (default) → SAMTOOLS_INDEX  → emits (sampleName, *.bai, *.bam)
+        //   'cram'           → SAMTOOLS_VIEW_CRAM → emits (sampleName, *.crai, *.cram)
+        // Both branches produce the IDENTICAL channel shape so HaplotypeCaller,
+        // minor-variants HC, and any consumer reading SAMTOOLS_INDEX.out remain
+        // agnostic — GATK reads CRAM directly via `-I <cram> -R <ref>`.
+        // (See abc-universe/specs/active/magma-bam-checkpoints.md §1 / §4.)
+        def aligned_indexed_ch
+        if (params.bam_checkpoint_compression == 'cram') {
+            SAMTOOLS_VIEW_CRAM(recalibrated_bam_ch,
+                               params.ref_fasta,
+                               [params.ref_fasta_fai, params.ref_fasta_dict])
+            aligned_indexed_ch = SAMTOOLS_VIEW_CRAM.out
+        } else {
+            SAMTOOLS_INDEX(recalibrated_bam_ch)
+            aligned_indexed_ch = SAMTOOLS_INDEX.out
+        }
 
         //----------------------------------------------------------------------------------
         // Call Variants for follow up calling
@@ -101,13 +119,13 @@ workflow CALL_WF {
 
 
         // call_haplotype_caller
-        GATK_HAPLOTYPE_CALLER(SAMTOOLS_INDEX.out,
+        GATK_HAPLOTYPE_CALLER(aligned_indexed_ch,
                           params.ref_fasta,
                           [params.ref_fasta_fai, params.ref_fasta_dict])
 
         // call_haplotype_caller_minor_variants
         if (!params.skip_minor_variants_gatk) {
-            GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(SAMTOOLS_INDEX.out,
+            GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS(aligned_indexed_ch,
                                                 params.ref_fasta,
                                                 [params.ref_fasta_fai, params.ref_fasta_dict])
         }
@@ -117,8 +135,8 @@ workflow CALL_WF {
         //----------------------------------------------------------------------------------
 
 
-        // call_ntm
-        LOFREQ_CALL__NTM(SAMTOOLS_INDEX.out,
+        // call_ntm — LoFreq is htslib-backed, accepts BAM or CRAM via `-f <ref>`
+        LOFREQ_CALL__NTM(aligned_indexed_ch,
                          params.ref_fasta,
                          [params.ref_fasta_fai])
 
@@ -169,5 +187,5 @@ workflow CALL_WF {
         gvcf_ch = GATK_HAPLOTYPE_CALLER.out.gvcf_ch.collect()
         reformatted_lofreq_vcfs_tuple_ch = GATK_INDEX_FEATURE_FILE__LOFREQ.out.vcf_tuple.collect(sort:true)
         bgzip_ch = BGZIP__LOFREQ.out.collect()
-        samtools_bam_ch = SAMTOOLS_INDEX.out
+        samtools_bam_ch = aligned_indexed_ch
 }
