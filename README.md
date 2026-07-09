@@ -209,8 +209,8 @@ These files can be downloaded using the following commands
 ```console
 wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-env-2.yml
 wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-env-1.yml
-wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-ntmprofiler-env.yaml
-wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-tbprofiler-env.yaml
+wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-ntmprofiler-env.yml
+wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-tbprofiler-env.yml
 ```
 
 The `conda` environments are expected by the `conda_local` profile of the pipeline, it is recommended that it should be created **prior** to the use of the pipeline, using the following commands. Note that if you have `mamba` (or `micromamba`) available you can rely upon that instead of `conda`.
