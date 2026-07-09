@@ -43,7 +43,7 @@ eval "$(conda shell.bash hook)"
 conda activate "./magma-ntmprofiler-env"
 
 # Use NTM profiler to download the built-in database
-ntm-profiler update_db
+ntm-profiler update_db --logging DEBUG
 
 echo "INFO: Deactivate the magma-ntmprofiler-env "
 conda deactivate
