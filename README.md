@@ -201,8 +201,8 @@ You can use the `conda` based setup for the pipeline for running MAGMA
 All the requisite softwares have been provided as a `conda` recipe (i.e. `yml` files)
 - [magma-env-1.yml](./conda_envs/magma-env-1.yml)
 - [magma-env-2.yml](./conda_envs/magma-env-2.yml)
-- [magma-ntmprofiler-env.yaml](./conda_envs/magma-ntmprofiler-env.yaml)
-- [magma-tbprofiler-env.yaml](./conda_envs/magma-tbprofiler-env.yaml)
+- [magma-ntmprofiler-env.yml](./conda_envs/magma-ntmprofiler-env.yml)
+- [magma-tbprofiler-env.yml](./conda_envs/magma-tbprofiler-env.yml)
 
 These files can be downloaded using the following commands
 
