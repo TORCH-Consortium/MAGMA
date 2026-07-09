@@ -266,7 +266,7 @@ conda env list
 
 8. Use the prior command result to update the "conda_envs_location" parameter with a suitable path
 
-> :warning::warning::warning: **If you used the setup conda envs script, this step is unecessary**
+> :warning::warning::warning: **If you used the setup conda envs script, this step is unnecessary**
 
 ## Running MAGMA using docker
 
