@@ -120,5 +120,29 @@ if __name__ == '__main__':
     )
     df_final_cohort_stats['ALL_THRESHOLDS_MET'] = df_final_cohort_stats['ALL_THRESHOLDS_MET'].replace({True: 1, False: 0})
 
+    # Identify DR genes with mean depth below 20x.
+    dr_depth_cols = [
+        col for col in df_final_cohort_stats.columns
+        if col.startswith("dr_gene_") and col.endswith("_mean_depth")
+    ]
+    
+    def potential_fn(row):
+        genes = []
+    
+        for col in dr_depth_cols:
+            depth = pd.to_numeric(row[col], errors="coerce")
+    
+            if pd.notna(depth) and depth < 20:
+                gene = col.replace("dr_gene_", "", 1).replace("_mean_depth", "")
+                genes.append(gene)
+    
+        return "|".join(genes)
+    
+    df_final_cohort_stats["potential_FN"] = df_final_cohort_stats.apply(potential_fn, axis=1)
+    
+    # Keep ALL_THRESHOLDS_MET as the final column because downstream code expects this.
+    cols = [col for col in df_final_cohort_stats.columns if col != "ALL_THRESHOLDS_MET"]
+    df_final_cohort_stats = df_final_cohort_stats[cols + ["ALL_THRESHOLDS_MET"]]
+
     # Write the final dataframe to file
     df_final_cohort_stats.to_csv(args['output_file'], sep="\t")
