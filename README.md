@@ -235,7 +235,7 @@ Next, you need to load the WHO Resistance Catalog within `tb-profiler`; basicall
 conda activate magma-tbprofiler-env
 ```
 
-2. Use tbprofiler updatedb command to download the correct database
+2. Use `tb-profiler update_tbdb` to download the correct database
 
 ```console
 tb-profiler update_tbdb --commit 30f8bc37df15affa378ebbfbd3e1eb4c5903056e --logging DEBUG
