@@ -201,13 +201,16 @@ You can use the `conda` based setup for the pipeline for running MAGMA
 All the requisite softwares have been provided as a `conda` recipe (i.e. `yml` files)
 - [magma-env-1.yml](./conda_envs/magma-env-1.yml)
 - [magma-env-2.yml](./conda_envs/magma-env-2.yml)
+- [magma-ntmprofiler-env.yml](./conda_envs/magma-ntmprofiler-env.yml)
+- [magma-tbprofiler-env.yml](./conda_envs/magma-tbprofiler-env.yml)
 
 These files can be downloaded using the following commands
 
 ```console
 wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-env-2.yml
 wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-env-1.yml
-
+wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-ntmprofiler-env.yml
+wget https://raw.githubusercontent.com/TORCH-Consortium/MAGMA/master/conda_envs/magma-tbprofiler-env.yml
 ```
 
 The `conda` environments are expected by the `conda_local` profile of the pipeline, it is recommended that it should be created **prior** to the use of the pipeline, using the following commands. Note that if you have `mamba` (or `micromamba`) available you can rely upon that instead of `conda`.
@@ -225,37 +228,45 @@ Once the environments are created, you can make use of the pipeline parameter `c
 
 Next, you need to load the WHO Resistance Catalog within `tb-profiler`; basically the [instructions](https://github.com/TORCH-Consortium/MAGMA/blob/master/conda_envs/setup_conda_envs.sh#L20-L23), which are used to build the necessary containers.
 
-1. Download [magma_resistance_db_who_v1.zip](https://github.com/TORCH-Consortium/MAGMA/files/14559680/resistance_db_who_v1.zip)  and unzip it
+
+1. Activate `magma-tbprofiler-env`, which has `tb-profiler`
 
 ```console
-wget https://github.com/TORCH-Consortium/MAGMA/files/14559680/resistance_db_who_v1.zip
-
-unzip resistance_db_who
-
+conda activate magma-tbprofiler-env
 ```
 
-2. Activate `magma-env-1`, which has `tb-profiler`
+2. Use `tb-profiler update_tbdb` to download the correct database
 
 ```console
-conda activate magma-env-1
-
+tb-profiler update_tbdb --commit 30f8bc37df15affa378ebbfbd3e1eb4c5903056e --logging DEBUG
 ```
 
-3. Move inside that folder and use `tb-profiler load_library` functionality to load the database
+3. Now you can deactivate the environment and setup the next one
+```console
+conda deactivate
+```
+4. Activate `magma-ntmprofiler-env`, which has `ntm-profiler`
+```console
+conda activate magma-ntmprofiler-env
+```
+5. Use NTM profiler to download the built-in database
+```console
+ntm-profiler update_db --logging DEBUG
+```
+6. Now you can deactivate the environment
+```console
+conda deactivate
+```
 
+7. Prior to running MAGMA you should locate the conda environments created
 
 ```console
-
-cd resistance_db_who
-
-tb-profiler load_library ./resistance_db_who
-
+conda env list
 ```
 
-Success, would look like this
-<img width="1060" alt="image" src="https://github.com/TORCH-Consortium/MAGMA/assets/12799326/de5eb0fc-c636-44f6-a787-39bbbf8bc8c7">
+8. Use the prior command result to update the "conda_envs_location" parameter with a suitable path
 
-
+> :warning::warning::warning: **If you used the setup conda envs script, this step is unnecessary**
 
 ## Running MAGMA using docker
 

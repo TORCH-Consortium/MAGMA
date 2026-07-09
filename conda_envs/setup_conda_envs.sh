@@ -14,10 +14,6 @@ $resolverCondaBinary env create -p magma-env-1 --file magma-env-1.yml
 
 $resolverCondaBinary env create -p magma-env-2 --file magma-env-2.yml 
 
-$resolverCondaBinary env create -p magma-ntmprofiler-env --file magma-ntmprofiler-env.yml
-
-$resolverCondaBinary env create -p magma-tbprofiler-env --file magma-tbprofiler-env.yml
-
 #===========================================================
 
 #NOTE: Setup the tbprofiler env with WHO v2 Database
@@ -36,4 +32,18 @@ tb-profiler update_tbdb --commit 30f8bc37df15affa378ebbfbd3e1eb4c5903056e --logg
 
 
 echo "INFO: Deactivate the magma-tbprofiler-env "
+conda deactivate
+
+#NOTE: Setup the ntmprofiler env with ntm database
+
+$resolverCondaBinary env create -p magma-ntmprofiler-env --file magma-ntmprofiler-env.yml
+
+echo "INFO: Activate conda env with ntm-profiler and setup the ntm database"
+eval "$(conda shell.bash hook)"
+conda activate "./magma-ntmprofiler-env"
+
+# Use NTM profiler to download the built-in database
+ntm-profiler update_db --logging DEBUG
+
+echo "INFO: Deactivate the magma-ntmprofiler-env "
 conda deactivate
