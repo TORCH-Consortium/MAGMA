@@ -23,18 +23,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-include { CLUSTERPICKER as CLUSTERPICKER__5SNP  } from "../../modules/local/clusterpicker/clusterpicker.nf" addParams ( params.CLUSTERPICKER )
-include { CLUSTERPICKER as CLUSTERPICKER__12SNP  } from "../../modules/local/clusterpicker/clusterpicker.nf" addParams ( params.CLUSTERPICKER )
+
+include { CATNIP as CATNIP__5SNP } from "../../modules/local/catnip/catnip.nf" addParams ( params.CATNIP )
+include { CATNIP as CATNIP__12SNP } from "../../modules/local/catnip/catnip.nf" addParams ( params.CATNIP )
 
 workflow CLUSTER_ANALYSIS {
 
     take:
-        cluster_files_ch
-        prefix
-
+    snp_dists_ch
+    prefix
 
     main:
-        CLUSTERPICKER__5SNP(cluster_files_ch, 5, prefix)
-        CLUSTERPICKER__12SNP(cluster_files_ch, 12, prefix)
-
+    CATNIP__5SNP(snp_dists_ch, 5, prefix)
+    CATNIP__12SNP(snp_dists_ch, 12, prefix)
 }
