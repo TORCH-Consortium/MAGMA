@@ -31,10 +31,12 @@ workflow CLUSTER_ANALYSIS {
 
     take:
     snp_dists_ch
+    tree_ch
     prefix
 
     main:
     catnip_script = file("${projectDir}/bin/catnip.py", checkIfExists: true)
+    catnip_input_ch = snp_dists_ch.join(tree_ch)
 
     CATNIP__5SNP(
         snp_dists_ch,
