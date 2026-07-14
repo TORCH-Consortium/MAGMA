@@ -34,6 +34,19 @@ workflow CLUSTER_ANALYSIS {
     prefix
 
     main:
-    CATNIP__5SNP(snp_dists_ch, 5, prefix)
-    CATNIP__12SNP(snp_dists_ch, 12, prefix)
+    catnip_script = file("${projectDir}/bin/catnip.py", checkIfExists: true)
+
+    CATNIP__5SNP(
+        snp_dists_ch,
+        5,
+        prefix,
+        catnip_script
+    )
+
+    CATNIP__12SNP(
+        snp_dists_ch,
+        12,
+        prefix,
+        catnip_script
+    )
 }
