@@ -19,8 +19,8 @@ process CATNIP {
     """
     python3 catnip.py \
         ${snp_matrix} \
-        ${snp_threshold} \
-        > ${prefix}.${snp_threshold}SNPcluster.tsv
+        ${prefix}.${snp_threshold}SNPcluster.tsv \
+        --threshold ${snp_threshold}
     """
 
     stub:
