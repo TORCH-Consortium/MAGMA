@@ -139,6 +139,27 @@ if __name__ == '__main__':
         return "|".join(genes)
     
     df_final_cohort_stats["potential_FN"] = df_final_cohort_stats.apply(potential_fn, axis=1)
+
+    # Flag mixed/multiple infection candidates from semicolon-separated lineages.
+    def multiple_infection_check(lineages):
+        if pd.isna(lineages):
+            return ""
+    
+        lineages = str(lineages).strip()
+    
+        if ";" not in lineages:
+            return ""
+    
+        parts = [part.strip() for part in lineages.split(";")]
+    
+        if len(parts) < 2:
+            return ""
+    
+        return f"{parts[0]} and {parts[1]}"
+    
+    df_final_cohort_stats["multiple_infection_check"] = df_final_cohort_stats["LINEAGES"].apply(
+        multiple_infection_check
+    )
     
     # Keep ALL_THRESHOLDS_MET as the final column because downstream code expects this.
     cols = [col for col in df_final_cohort_stats.columns if col != "ALL_THRESHOLDS_MET"]
