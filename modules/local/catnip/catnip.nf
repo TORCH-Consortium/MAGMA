@@ -34,5 +34,6 @@ process CATNIP {
     stub:
     """
     touch ${prefix}.${snp_threshold}SNPcluster.tsv
+    touch ${joint_name}.${prefix}.${snp_threshold}SNPcluster.nexus
     """
 }
