@@ -135,7 +135,7 @@ workflow MERGE_WF {
                                                inccomplex_exclude_interval_ref_ch,
                                                SNP_ANALYSIS.out.snp_exc_vcf_ch)
 
-                CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snp_dists_ch,PHYLOGENY_ANALYSIS__INCCOMPLEX.out.tree_ch inccomplex_prefix_ch)
+                CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snp_dists_ch,PHYLOGENY_ANALYSIS__INCCOMPLEX.out.tree_ch, inccomplex_prefix_ch)
             }
 
         }
