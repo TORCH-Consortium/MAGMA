@@ -30,13 +30,24 @@ include { CATNIP as CATNIP__12SNP } from "../../modules/local/catnip/catnip.nf" 
 workflow CLUSTER_ANALYSIS {
 
     take:
-    snp_dists_ch
-    tree_ch
+    cluster_input_ch
     prefix
 
     main:
-    catnip_script = file("${projectDir}/bin/catnip.py", checkIfExists: true)
-    catnip_input_ch = snp_dists_ch.join(tree_ch)
+    catnip_script = file(
+        "${projectDir}/bin/catnip.py",
+        checkIfExists: true
+    )
+
+    catnip_input_ch = cluster_input_ch.map {
+        joint_name, fasta, treefile, snp_matrix ->
+
+        tuple(
+            joint_name,
+            snp_matrix,
+            treefile
+        )
+    }
 
     CATNIP__5SNP(
         catnip_input_ch,
