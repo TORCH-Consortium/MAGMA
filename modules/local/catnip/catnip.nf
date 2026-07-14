@@ -13,8 +13,13 @@ process CATNIP {
     path(catnip_script)
 
     output:
-    path("${prefix}.${snp_threshold}SNPcluster.tsv"),
-        emit: cluster_annotation
+    tuple val(joint_name),
+          path("${joint_name}.${prefix}.${snp_threshold}SNPcluster.tsv"),
+          emit: cluster_annotation
+    
+    tuple val(joint_name),
+          path("${joint_name}.${prefix}.${snp_threshold}SNPcluster.nexus"),
+          emit: nexus_tree
 
     script:
     """
