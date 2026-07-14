@@ -7,7 +7,7 @@ process CATNIP {
         enabled: params.should_publish
 
     input:
-    path(snp_matrix)
+    tuple val(joint_name), path(snp_matrix), path(treefile)
     val(snp_threshold)
     val(prefix)
     path(catnip_script)
@@ -20,8 +20,10 @@ process CATNIP {
     """
     python3 ${catnip_script} \
         ${snp_matrix} \
-        ${prefix}.${snp_threshold}SNPcluster.tsv \
-        --threshold ${snp_threshold}
+        ${joint_name}.${prefix}.${snp_threshold}SNPcluster.tsv \
+        --threshold ${snp_threshold} \
+        --tree ${treefile} \
+        --tree-out ${joint_name}.${prefix}.${snp_threshold}SNPcluster.nexus
     """
 
     stub:
