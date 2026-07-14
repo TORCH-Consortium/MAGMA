@@ -10,6 +10,7 @@ process CATNIP {
     path(snp_matrix)
     val(snp_threshold)
     val(prefix)
+    path(catnip_script)
 
     output:
     path("${prefix}.${snp_threshold}SNPcluster.tsv"),
@@ -17,7 +18,7 @@ process CATNIP {
 
     script:
     """
-    python3 catnip.py \
+    python3 ${catnip_script} \
         ${snp_matrix} \
         ${prefix}.${snp_threshold}SNPcluster.tsv \
         --threshold ${snp_threshold}
