@@ -28,7 +28,7 @@ set -uex
 
 # NOTE: Make sure you've set the environment correctly and are logged in to the registry.
 
-CONTAINER_TAG=0.4.0
+CONTAINER_TAG=0.8.0
 DOCKER_NAMESPACE="ghcr.io/torch-consortium/magma"
 CONTAINER_NAME="$DOCKER_NAMESPACE/biocontainer-ntmprofiler:$CONTAINER_TAG"
 echo "Building container : $CONTAINER_NAME "
