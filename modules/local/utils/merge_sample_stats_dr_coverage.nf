@@ -23,26 +23,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
-process UTILS_SAMPLE_STATS {
+
+process UTILS_MERGE_SAMPLE_STATS_DR_COVERAGE {
     tag "${sampleName}"
-    publishDir params.results_dir, mode: params.save_mode, enabled: false
+    publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
-        tuple val(sampleName), path(samtoolsStats), path(wgsMetrics), path(flagStats), path(ntmFraction)
+        tuple val(sampleName), path(sampleStats), path(drCoverage)
 
     output:
-        tuple val(sampleName), path("*.stats.tsv"), emit: stats
+        path("${sampleName}.stats.tsv")
 
     script:
         """
-        sample_stats.py \\
-            --sample_name ${sampleName} \\
-            --flagstat_file ${flagStats}  \\
-            --samtoolsstats_file ${samtoolsStats} \\
-            --wgsmetrics_file ${wgsMetrics} \\
-            --ntmfraction_file ${ntmFraction} \\
-            --cutoff_median_coverage ${params.cutoff_median_coverage} \\
-            --cutoff_breadth_of_coverage ${params.cutoff_breadth_of_coverage} \\
-            --cutoff_ntm_fraction ${params.cutoff_ntm_fraction}
+        merge_sample_stats_dr_coverage.py \\
+            --sample-name ${sampleName} \\
+            --sample-stats ${sampleStats} \\
+            --dr-coverage ${drCoverage} \\
+            --output ${sampleName}.stats.tsv
         """
 }

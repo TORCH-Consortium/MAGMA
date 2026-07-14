@@ -39,7 +39,7 @@ include { LOFREQ_FILTER } from "../modules/local/lofreq/filter.nf" addParams ( p
 include { SAMTOOLS_STATS } from "../modules/local/samtools/stats.nf" addParams ( params.SAMTOOLS_STATS )
 include { GATK_COLLECT_WGS_METRICS } from "../modules/local/gatk/collect_wgs_metrics.nf" addParams ( params.GATK_COLLECT_WGS_METRICS )
 include { GATK_FLAG_STAT } from "../modules/local/gatk/flag_stat.nf" addParams ( params.GATK_FLAG_STAT )
-include { UTILS_SAMPLE_STATS } from "../modules/local/utils/sample_stats.nf" addParams ( params.UTILS_SAMPLE_STATS )
+include { UTILS_SAMPLE_STATS } from '../subworkflows/local/sample_stats_with_dr_coverage'
 include { UTILS_COHORT_STATS } from "../modules/local/utils/cohort_stats.nf" addParams ( params.UTILS_COHORT_STATS )
 include { UTILS_REFORMAT_LOFREQ } from "../modules/local/utils/reformat_lofreq.nf" addParams ( params.UTILS_REFORMAT_LOFREQ )
 include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__LOFREQ } from "../modules/local/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE__LOFREQ )
@@ -145,24 +145,33 @@ workflow CALL_WF {
         //----------------------------------------------------------------------------------
         // STATS
         //----------------------------------------------------------------------------------
-
-
         // call_stats
         SAMTOOLS_STATS(recalibrated_bam_ch, params.ref_fasta)
         GATK_COLLECT_WGS_METRICS(recalibrated_bam_ch, params.ref_fasta)
         GATK_FLAG_STAT(recalibrated_bam_ch, params.ref_fasta, [params.ref_fasta_fai, params.ref_fasta_dict])
-
-
+        
         sample_stats_ch = (SAMTOOLS_STATS.out)
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
             .join(LOFREQ_CALL__NTM.out)
-            //.dump(tag: "CALL_WF sample_stats_ch : ", pretty: true)
-
-
-        UTILS_SAMPLE_STATS(sample_stats_ch)
-
-        UTILS_COHORT_STATS(UTILS_SAMPLE_STATS.out.collect())
+        
+        dr_coverage_bam_ch = SAMTOOLS_INDEX.out.map { sampleName, bai, bam ->
+            tuple(sampleName, bam, bai)
+        }
+        
+        UTILS_SAMPLE_STATS(
+            sample_stats_ch,
+            dr_coverage_bam_ch
+        )
+        
+        ch_dr_regions = Channel.value(
+            file("${projectDir}/resources/regions/tbprofiler_whov2plus_genes.bed")
+        )
+        
+        UTILS_COHORT_STATS(
+            UTILS_SAMPLE_STATS.out.collect(),
+            ch_dr_regions
+        )
 
     emit:
         cohort_stats_tsv = UTILS_COHORT_STATS.out

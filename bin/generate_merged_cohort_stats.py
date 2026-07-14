@@ -58,9 +58,50 @@ if __name__ == '__main__':
 
     # Reorder the columns
     df_joint_cohort_stats.columns = df_joint_cohort_stats.columns.str.strip()
-    new_cols = ['AVG_INSERT_SIZE', 'MAPPED_PERCENTAGE', 'RAW_TOTAL_SEQS', 'AVERAGE_BASE_QUALITY', 'MEAN_COVERAGE', 'SD_COVERAGE', 'MEDIAN_COVERAGE', 'MAD_COVERAGE', 'PCT_EXC_ADAPTER', 'PCT_EXC_MAPQ', 'PCT_EXC_DUPE', 'PCT_EXC_UNPAIRED', 'PCT_EXC_BASEQ', 'PCT_EXC_OVERLAP', 'PCT_EXC_CAPPED', 'PCT_EXC_TOTAL', 'PCT_1X', 'PCT_5X', 'PCT_10X', 'PCT_30X', 'PCT_50X', 'PCT_100X', 'LINEAGES', 'FREQUENCIES', 'MAPPED_NTM_FRACTION_16S', 'MAPPED_NTM_FRACTION_16S_THRESHOLD_MET', 'COVERAGE_THRESHOLD_MET', 'BREADTH_OF_COVERAGE_THRESHOLD_MET', 'RELABUNDANCE_THRESHOLD_MET', 'ALL_THRESHOLDS_MET']
-    df_final_cohort_stats = df_joint_cohort_stats[new_cols]
+    # Reorder the columns
+    df_joint_cohort_stats.columns = df_joint_cohort_stats.columns.str.strip()
 
+    base_cols = [
+        'AVG_INSERT_SIZE',
+        'MAPPED_PERCENTAGE',
+        'RAW_TOTAL_SEQS',
+        'AVERAGE_BASE_QUALITY',
+        'MEAN_COVERAGE',
+        'SD_COVERAGE',
+        'MEDIAN_COVERAGE',
+        'MAD_COVERAGE',
+        'PCT_EXC_ADAPTER',
+        'PCT_EXC_MAPQ',
+        'PCT_EXC_DUPE',
+        'PCT_EXC_UNPAIRED',
+        'PCT_EXC_BASEQ',
+        'PCT_EXC_OVERLAP',
+        'PCT_EXC_CAPPED',
+        'PCT_EXC_TOTAL',
+        'PCT_1X',
+        'PCT_5X',
+        'PCT_10X',
+        'PCT_30X',
+        'PCT_50X',
+        'PCT_100X',
+        'LINEAGES',
+        'FREQUENCIES',
+        'MAPPED_NTM_FRACTION_16S',
+        'MAPPED_NTM_FRACTION_16S_THRESHOLD_MET',
+        'COVERAGE_THRESHOLD_MET',
+        'BREADTH_OF_COVERAGE_THRESHOLD_MET',
+        'RELABUNDANCE_THRESHOLD_MET',
+    ]
+    
+    dr_cols = [
+        col for col in df_joint_cohort_stats.columns
+        if col.startswith('dr_gene_') or col.startswith('dr_region_')
+    ]
+    
+    new_cols = base_cols + dr_cols + ['ALL_THRESHOLDS_MET']
+    
+    df_final_cohort_stats = df_joint_cohort_stats[new_cols]
+    
     # Impute the NaN value after join
     df_final_cohort_stats['RELABUNDANCE_THRESHOLD_MET'] = df_final_cohort_stats['RELABUNDANCE_THRESHOLD_MET'].fillna(0)
 
@@ -78,6 +119,51 @@ if __name__ == '__main__':
         df_final_cohort_stats['RELABUNDANCE_THRESHOLD_MET'].astype('bool')
     )
     df_final_cohort_stats['ALL_THRESHOLDS_MET'] = df_final_cohort_stats['ALL_THRESHOLDS_MET'].replace({True: 1, False: 0})
+
+    # Identify DR genes with mean depth below 20x.
+    dr_depth_cols = [
+        col for col in df_final_cohort_stats.columns
+        if col.startswith("dr_gene_") and col.endswith("_mean_depth")
+    ]
+    
+    def potential_fn(row):
+        genes = []
+    
+        for col in dr_depth_cols:
+            depth = pd.to_numeric(row[col], errors="coerce")
+    
+            if pd.notna(depth) and depth < 20:
+                gene = col.replace("dr_gene_", "", 1).replace("_mean_depth", "")
+                genes.append(gene)
+    
+        return "|".join(genes)
+    
+    df_final_cohort_stats["potential_FN"] = df_final_cohort_stats.apply(potential_fn, axis=1)
+
+    # Flag mixed/multiple infection candidates from semicolon-separated lineages.
+    def multiple_infection_check(lineages):
+        if pd.isna(lineages):
+            return ""
+    
+        lineages = str(lineages).strip()
+    
+        if ";" not in lineages:
+            return ""
+    
+        parts = [part.strip() for part in lineages.split(";")]
+    
+        if len(parts) < 2:
+            return ""
+    
+        return f"{parts[0]} and {parts[1]}"
+    
+    df_final_cohort_stats["multiple_infection_check"] = df_final_cohort_stats["LINEAGES"].apply(
+        multiple_infection_check
+    )
+    
+    # Keep ALL_THRESHOLDS_MET as the final column because downstream code expects this.
+    cols = [col for col in df_final_cohort_stats.columns if col != "ALL_THRESHOLDS_MET"]
+    df_final_cohort_stats = df_final_cohort_stats[cols + ["ALL_THRESHOLDS_MET"]]
 
     # Write the final dataframe to file
     df_final_cohort_stats.to_csv(args['output_file'], sep="\t")
