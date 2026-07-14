@@ -17,7 +17,7 @@ process CATNIP {
 
     script:
     """
-    catnip.py \
+    python3 ${projectDir}/bin/catnip.py \
         ${snp_matrix} \
         ${snp_threshold} \
         > ${prefix}.${snp_threshold}SNPcluster.tsv
