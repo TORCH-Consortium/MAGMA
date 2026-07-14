@@ -109,7 +109,7 @@ workflow MERGE_WF {
                                                excomplex_exclude_interval_ref_ch,
                                                SNP_ANALYSIS.out.snp_exc_vcf_ch)
 
-                CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snpsites_tree_tuple, excomplex_prefix_ch)
+                CLUSTER_ANALYSIS__EXCOMPLEX(PHYLOGENY_ANALYSIS__EXCOMPLEX.out.snp_dists_ch, excomplex_prefix_ch)
 
         }
 
@@ -135,7 +135,7 @@ workflow MERGE_WF {
                                                inccomplex_exclude_interval_ref_ch,
                                                SNP_ANALYSIS.out.snp_exc_vcf_ch)
 
-                CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snpsites_tree_tuple, inccomplex_prefix_ch)
+                CLUSTER_ANALYSIS__INCCOMPLEX(PHYLOGENY_ANALYSIS__INCCOMPLEX.out.snp_dists_ch, inccomplex_prefix_ch)
             }
 
         }
