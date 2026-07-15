@@ -31,35 +31,22 @@ workflow CLUSTER_ANALYSIS {
 
     take:
     cluster_input_ch
-    prefix
     approved_sample_ids
+    prefix
 
     main:
-    catnip_script = file(
-        "${projectDir}/bin/catnip.py",
-        checkIfExists: true
-    )
-
-    catnip_input_ch = cluster_input_ch.map {
-        joint_name, fasta, treefile, snp_matrix ->
-
-        tuple(
-            joint_name,
-            snp_matrix,
-            treefile
-        )
-    }
+    catnip_script = file("${projectDir}/bin/catnip.py")
 
     CATNIP__5SNP(
-        catnip_input_ch,
+        cluster_input_ch,
         5,
         approved_sample_ids,
         prefix,
         catnip_script
     )
-    
+
     CATNIP__12SNP(
-        catnip_input_ch,
+        cluster_input_ch,
         12,
         approved_sample_ids,
         prefix,
