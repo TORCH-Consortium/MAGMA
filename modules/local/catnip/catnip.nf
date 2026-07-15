@@ -36,7 +36,7 @@ process CATNIP {
         ${joint_name}.${prefix}.${snp_threshold}SNPcluster.tsv \
         --threshold ${snp_threshold} \
         --tree ${treefile} \
-        --tree-out ${joint_name}.${prefix}.${snp_threshold}SNPcluster.nexus
+        --tree-out ${joint_name}.${prefix}.${snp_threshold}SNPcluster.nexus \
         --query-samples '${query_samples}'
     """
 
