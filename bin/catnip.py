@@ -123,14 +123,7 @@ def write_clusters(outfile, clusters):
                 writer.writerow([cluster_id, sample])
 
             cluster_id += 1
-def write_sample_cluster_files(outfile, clusters, query_samples):
-    """
-    Write one file for each requested query sample.
-
-    Each file lists the other samples in the same connected cluster.
-    Samples that do not cluster receive an empty file.
-    Files are written beside the cohort cluster TSV.
-    """
+def write_sample_cluster_files(outfile, clusters, query_samples, threshold):
     output_dir = os.path.dirname(os.path.abspath(outfile))
 
     cluster_lookup = {
@@ -150,7 +143,7 @@ def write_sample_cluster_files(outfile, clusters, query_samples):
 
         output_file = os.path.join(
             output_dir,
-            f"{sample}.cluster.txt",
+            f"{sample}.{threshold}SNPcluster.txt",
         )
 
         with open(output_file, "w") as handle:
@@ -255,6 +248,12 @@ def main():
 
     args = parser.parse_args()
 
+    query_samples = [
+        sample.strip()
+        for sample in args.query_samples.split(",")
+        if sample.strip()
+    ]
+
     samples, matrix = read_distance_matrix(args.input_tsv)
     graph = build_graph(samples, matrix, args.threshold)
     clusters = connected_components(graph)
@@ -262,7 +261,12 @@ def main():
     exported_clusters = [c for c in clusters if len(c) > 1]
 
     write_clusters(args.output_tsv, exported_clusters)
-    write_sample_cluster_files(args.output_tsv, clusters)
+    write_sample_cluster_files(
+        args.output_tsv,
+        clusters,
+        query_samples,
+		args.threshold,
+    )
 	
     if args.tree:
         if not args.tree_out:
