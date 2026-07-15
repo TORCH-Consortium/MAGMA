@@ -123,32 +123,40 @@ def write_clusters(outfile, clusters):
                 writer.writerow([cluster_id, sample])
 
             cluster_id += 1
-def write_sample_cluster_files(outfile, clusters):
+def write_sample_cluster_files(outfile, clusters, query_samples):
     """
-    Write one file per sample listing the other samples in its cluster.
+    Write one file for each requested query sample.
 
-    Singleton samples receive an empty file.
+    Each file lists the other samples in the same connected cluster.
+    Samples that do not cluster receive an empty file.
     Files are written beside the cohort cluster TSV.
     """
     output_dir = os.path.dirname(os.path.abspath(outfile))
 
-    for members in clusters:
-        for sample in members:
-            output_file = os.path.join(
-                output_dir,
-                f"{sample}.cluster.txt",
-            )
+    cluster_lookup = {
+        sample: members
+        for members in clusters
+        for sample in members
+    }
 
-            cluster_mates = [
-                other_sample
-                for other_sample in members
-                if other_sample != sample
-            ]
+    for sample in query_samples:
+        members = cluster_lookup.get(sample, [])
 
-            with open(output_file, "w") as handle:
-                for cluster_mate in cluster_mates:
-                    handle.write(f"{cluster_mate}\n")
+        cluster_mates = [
+            other_sample
+            for other_sample in members
+            if other_sample != sample
+        ]
 
+        output_file = os.path.join(
+            output_dir,
+            f"{sample}.cluster.txt",
+        )
+
+        with open(output_file, "w") as handle:
+            for cluster_mate in cluster_mates:
+                handle.write(f"{cluster_mate}\n")
+				
 def write_coloured_tree(treefile, outfile, clusters, samples):
     """Write a Nexus tree with taxon labels coloured by cluster."""
 
@@ -235,6 +243,14 @@ def main():
     parser.add_argument(
         "--tree-out",
         help="Output coloured Nexus tree."
+    )
+    parser.add_argument(
+        "--query-samples",
+        required=True,
+        help=(
+            "Comma-separated sample IDs for which .cluster.txt "
+            "files should be written."
+        ),
     )
 
     args = parser.parse_args()
