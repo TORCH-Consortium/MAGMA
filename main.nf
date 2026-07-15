@@ -108,10 +108,13 @@ workflow {
                                     .map { [ it[0] ] }
                                     //.dump(tag:'MERGE_WF: approved_samples_ch', pretty: true)
 
+			approved_sample_ids_ch = approved_samples_ch
+			    .flatten()
+			    .collect()
 
             MERGE_WF( CALL_WF.out.gvcf_ch,
                       CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch,
-                      approved_samples_ch )
+                      approved_samples_ch, approved_sample_ids_ch)
 
 
             REPORTS_WF( QUALITY_CHECK_WF.out.reports_fastqc_ch,
