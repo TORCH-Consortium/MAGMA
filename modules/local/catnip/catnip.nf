@@ -39,5 +39,6 @@ process CATNIP {
     """
     touch ${prefix}.${snp_threshold}SNPcluster.tsv
     touch ${joint_name}.${prefix}.${snp_threshold}SNPcluster.nexus
+    touch stub.cluster.txt
     """
 }
