@@ -21,6 +21,7 @@ Options:
 import argparse
 import csv
 import re
+import os
 import colorsys
 from collections import defaultdict
 
@@ -122,6 +123,31 @@ def write_clusters(outfile, clusters):
                 writer.writerow([cluster_id, sample])
 
             cluster_id += 1
+def write_sample_cluster_files(outfile, clusters):
+    """
+    Write one file per sample listing the other samples in its cluster.
+
+    Singleton samples receive an empty file.
+    Files are written beside the cohort cluster TSV.
+    """
+    output_dir = os.path.dirname(os.path.abspath(outfile))
+
+    for members in clusters:
+        for sample in members:
+            output_file = os.path.join(
+                output_dir,
+                f"{sample}.cluster.txt",
+            )
+
+            cluster_mates = [
+                other_sample
+                for other_sample in members
+                if other_sample != sample
+            ]
+
+            with open(output_file, "w") as handle:
+                for cluster_mate in cluster_mates:
+                    handle.write(f"{cluster_mate}\n")
 
 def write_coloured_tree(treefile, outfile, clusters, samples):
     """Write a Nexus tree with taxon labels coloured by cluster."""
@@ -220,6 +246,7 @@ def main():
     exported_clusters = [c for c in clusters if len(c) > 1]
 
     write_clusters(args.output_tsv, exported_clusters)
+	write_sample_cluster_files(args.output_tsv, clusters)
 
     if args.tree:
         if not args.tree_out:
