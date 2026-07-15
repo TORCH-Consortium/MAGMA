@@ -9,6 +9,7 @@ process CATNIP {
     input:
     tuple val(joint_name), path(snp_matrix), path(treefile)
     val(snp_threshold)
+    val(sample_ids)
     val(prefix)
     path(catnip_script)
 
@@ -26,6 +27,9 @@ process CATNIP {
           emit: sample_cluster_files
 
     script:
+
+    def query_samples = sample_ids.join(',')
+
     """
     python3 ${catnip_script} \
         ${snp_matrix} \
@@ -33,6 +37,7 @@ process CATNIP {
         --threshold ${snp_threshold} \
         --tree ${treefile} \
         --tree-out ${joint_name}.${prefix}.${snp_threshold}SNPcluster.nexus
+        --query-samples '${query_samples}'
     """
 
     stub:
