@@ -52,16 +52,16 @@ workflow CLUSTER_ANALYSIS {
 
     CATNIP__5SNP(
         catnip_input_ch,
-        approved_sample_ids,
         5,
+        approved_sample_ids,
         prefix,
         catnip_script
     )
-
+    
     CATNIP__12SNP(
         catnip_input_ch,
-        approved_sample_ids,
         12,
+        approved_sample_ids,
         prefix,
         catnip_script
     )
