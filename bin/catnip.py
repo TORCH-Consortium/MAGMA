@@ -246,8 +246,8 @@ def main():
     exported_clusters = [c for c in clusters if len(c) > 1]
 
     write_clusters(args.output_tsv, exported_clusters)
-	write_sample_cluster_files(args.output_tsv, clusters)
-
+    write_sample_cluster_files(args.output_tsv, clusters)
+	
     if args.tree:
         if not args.tree_out:
             raise ValueError("--tree-out must be supplied when using --tree")
