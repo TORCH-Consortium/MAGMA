@@ -39,6 +39,7 @@ workflow MERGE_WF {
         gvcf_ch
         reformatted_lofreq_vcfs_tuple_ch
         approved_samples_ch
+        approved_sample_ids_ch
 
     main:
 
