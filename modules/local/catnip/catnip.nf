@@ -23,7 +23,7 @@ process CATNIP {
           emit: nexus_tree
 
     tuple val(joint_name),
-          path("*.cluster.txt"),
+          path("*.${snp_threshold}SNPcluster.txt", optional: true),
           emit: sample_cluster_files
 
     script:
