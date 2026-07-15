@@ -32,6 +32,7 @@ workflow CLUSTER_ANALYSIS {
     take:
     cluster_input_ch
     prefix
+    approved_sample_ids
 
     main:
     catnip_script = file(
@@ -51,6 +52,7 @@ workflow CLUSTER_ANALYSIS {
 
     CATNIP__5SNP(
         catnip_input_ch,
+        approved_sample_ids,
         5,
         prefix,
         catnip_script
@@ -58,6 +60,7 @@ workflow CLUSTER_ANALYSIS {
 
     CATNIP__12SNP(
         catnip_input_ch,
+        approved_sample_ids,
         12,
         prefix,
         catnip_script
