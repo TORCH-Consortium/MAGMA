@@ -34,11 +34,22 @@ process BCFTOOLS_MERGE__DELLY {
         tuple val(params.vcf_name), path("*.vcf.gz.csi"), path("*.${params.file_format}.vcf.gz")
 
     script:
-
+    
         """
-        bcftools merge *.gz -o ${params.vcf_name}.${params.file_format}.vcf
+        if [ "\$(find . -maxdepth 1 -name '*.bcf.gz' | wc -l)" -eq 1 ]; then
+            ${params.bcftools_path} view \
+                *.bcf.gz \
+                -o ${params.vcf_name}.${params.file_format}.vcf
+        else
+            ${params.bcftools_path} merge \
+                *.bcf.gz \
+                -o ${params.vcf_name}.${params.file_format}.vcf
+        fi
+    
         bgzip ${params.vcf_name}.${params.file_format}.vcf
-        ${params.bcftools_path} index ${params.vcf_name}.${params.file_format}.vcf.gz
+    
+        ${params.bcftools_path} index \
+            ${params.vcf_name}.${params.file_format}.vcf.gz
         """
 
     stub:
