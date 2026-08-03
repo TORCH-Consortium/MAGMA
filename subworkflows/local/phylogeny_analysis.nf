@@ -88,7 +88,7 @@ workflow PHYLOGENY_ANALYSIS {
 
     snpsites_tree_tuple_ch = SNPSITES.out.join(IQTREE.out.tree_tuple)
 
-    cluster_input_ch = snpsites_tree_tuple_ch.join(
+    cluster_input_ch = SNPDISTS.out.snp_dists_tuple.join(
         IQTREE.out.tree_tuple
     )
     
