@@ -86,7 +86,14 @@ workflow PHYLOGENY_ANALYSIS {
         IQTREE(prefix_ch, SNPSITES.out)
 
 
+    snpsites_tree_tuple_ch = SNPSITES.out.join(IQTREE.out.tree_tuple)
+
+    cluster_input_ch = SNPDISTS.out.snp_dists_tuple.join(
+        IQTREE.out.tree_tuple
+    )
+    
     emit:
-        snpsites_tree_tuple = SNPSITES.out.join(IQTREE.out.tree_tuple)
-  snp_dists_ch = SNPDISTS.out.snp_dists_file
+    snpsites_tree_tuple = snpsites_tree_tuple_ch
+    cluster_input_ch = cluster_input_ch
+    snp_dists_ch = SNPDISTS.out.snp_dists_file 
 }

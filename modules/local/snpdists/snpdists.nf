@@ -31,9 +31,12 @@ process SNPDISTS {
         val(prefix)
         tuple val(joint_name), path(alignmentFasta)
 
-    output:
-        tuple val(joint_name), path("*.snp_dists.tsv")
-	path("*snp_dists.tsv"), emit: snp_dists_file 
+	output:
+	tuple val(joint_name), path("*.snp_dists.tsv"),
+	    emit: snp_dists_tuple
+	
+	path("*snp_dists.tsv"),
+	    emit: snp_dists_file
 
     script:
 
