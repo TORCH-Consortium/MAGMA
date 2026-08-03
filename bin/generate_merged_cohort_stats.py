@@ -53,8 +53,24 @@ if __name__ == '__main__':
     df_rejected_relabundance_stats = df_rejected_relabundance_stats.set_index('SAMPLE')
 
     # Join the datasets
-    df_relabundance_stats_concat = pd.concat([df_approved_relabundance_stats, df_rejected_relabundance_stats])
-    df_joint_cohort_stats = df_cohort_stats.join(df_relabundance_stats_concat, how="outer")
+    # TBProfiler uses the placeholder ID "tbprofiler" for a single-sample VCF.
+    # Replace it only when both inputs unambiguously contain exactly one sample.
+    df_relabundance_stats_concat = pd.concat([
+        df_approved_relabundance_stats,
+        df_rejected_relabundance_stats
+    ])
+    
+    if (
+        len(df_cohort_stats) == 1
+        and len(df_relabundance_stats_concat) == 1
+        and df_relabundance_stats_concat.index[0] == "tbprofiler"
+    ):
+        df_relabundance_stats_concat.index = df_cohort_stats.index
+    
+    df_joint_cohort_stats = df_cohort_stats.join(
+        df_relabundance_stats_concat,
+        how="outer"
+    )
 
     # Reorder the columns
     df_joint_cohort_stats.columns = df_joint_cohort_stats.columns.str.strip()
