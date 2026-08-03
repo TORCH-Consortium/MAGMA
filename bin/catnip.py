@@ -255,12 +255,12 @@ def main():
     ]
 
     samples, matrix = read_distance_matrix(args.input_tsv)
-
+	
 	print(f"Distance matrix file: {args.input_tsv}")
 	print(f"Distance matrix samples: {len(samples)}")
 	print(f"First samples: {samples[:5]}")
 
-    graph = build_graph(samples, matrix, args.threshold)
+	graph = build_graph(samples, matrix, args.threshold)
     clusters = connected_components(graph)
 
     exported_clusters = [c for c in clusters if len(c) > 1]
