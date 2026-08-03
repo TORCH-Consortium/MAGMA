@@ -135,7 +135,7 @@ def write_sample_cluster_files(outfile, clusters, query_samples, threshold):
         ]
         output_file = os.path.join(
             output_dir,
-            f"{sample}.{threshold}SNPcluster.txt",
+            f"{sample}.{threshold:g}SNPcluster.txt",
         )
 
         with open(output_file, "w") as handle:
