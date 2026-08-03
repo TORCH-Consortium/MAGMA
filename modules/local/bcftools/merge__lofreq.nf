@@ -36,10 +36,11 @@ process BCFTOOLS_MERGE__LOFREQ {
 
     script:
     """
-    vcf_count=\$(grep -cve '^\\s*$' ${vcfs_file})
+    vcf_count=\$(grep -c '[^[:space:]]' ${vcfs_file})
     
     if [ "\${vcf_count}" -eq 1 ]; then
-        input_vcf=\$(grep -ve '^\\s*$' ${vcfs_file})
+        input_vcf=\$(grep '[^[:space:]]' ${vcfs_file})
+    
         ${params.bcftools_path} view \
             "\${input_vcf}" \
             -o ${params.vcf_name}.${params.file_format}.vcf
