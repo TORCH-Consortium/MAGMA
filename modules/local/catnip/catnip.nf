@@ -32,12 +32,6 @@ process CATNIP {
     def query_samples = sample_ids.join(',')
 
     """
-    echo "CATNIP matrix: ${snp_matrix}"
-    echo "Matrix bytes: \$(wc -c < ${snp_matrix})"
-    echo "Matrix lines: \$(wc -l < ${snp_matrix})"
-    echo "Header fields: \$(head -n 1 ${snp_matrix} | awk -F '\\t' '{print NF}')"
-    head -n 1 ${snp_matrix} | cut -f1-4 | cat -A
-    
     python3 ${catnip_script} \
         ${snp_matrix} \
         ${joint_name}.${prefix}.${snp_threshold}SNPcluster.tsv \
