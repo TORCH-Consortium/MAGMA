@@ -92,7 +92,7 @@ workflow {
                                 .map { [ it[0] ] }
                                 //.dump(tag:'MERGE_WF: all_samples_ch', pretty: true)
 
-        STRUCTURAL_VARIANTS_ANALYSIS_WF ( VALIDATE_FASTQS_WF.out.approved_fastqs_ch, all_samples_ch )
+        STRUCTURAL_VARIANTS_ANALYSIS_WF ( VALIDATE_FASTQS_WF.out.approved_fastqs_ch, approved_samples_ch )
 
 
         if (!params.skip_merge_analysis) {
