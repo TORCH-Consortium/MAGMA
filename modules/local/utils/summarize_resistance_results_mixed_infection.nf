@@ -38,6 +38,7 @@ process UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION {
     script:
        
         """
+        mkdir -p structural_variants
         summarize_resistance_mixed_infection.py ${merge_cohort_stats} minor_variants structural_variants combined_resistance_summaries_mixed_infection_samples
         """
 
