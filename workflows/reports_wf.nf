@@ -42,18 +42,20 @@ workflow REPORTS_WF {
     main:
 
 	ch_multiqc_files = Channel.empty()
+	structural_variants_results_list_ch =
+		structural_variants_results_ch.toList()
 
 	UTILS_SUMMARIZE_RESISTANCE_RESULTS(
             merged_cohort_stats_ch,
             major_variants_results_ch,
             minor_variants_results_ch,
-            structural_variants_results_ch
+            structural_variants_results_list_ch
         )
 
         UTILS_SUMMARIZE_RESISTANCE_RESULTS_MIXED_INFECTION(
             merged_cohort_stats_ch,
             minor_variants_results_ch,
-            structural_variants_results_ch
+            structural_variants_results_list_ch
         )
         ch_multiqc_config = Channel.fromPath("$projectDir/assets/multiqc_config.yml", checkIfExists: true)
 
