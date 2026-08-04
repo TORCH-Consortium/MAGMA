@@ -43,7 +43,7 @@ workflow STRUCTURAL_VARIANTS_ANALYSIS_WF {
 
     take:
         validated_reads_ch
-        samples_ch
+        approved_samples_ch
 
     main:
 
