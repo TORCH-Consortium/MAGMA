@@ -34,7 +34,7 @@ include { SAMTOOLS_INDEX as SAMTOOLS_INDEX__DELLY } from "../modules/local/samto
 include { BCFTOOLS_VIEW__DELLY } from "../modules/local/bcftools/view__delly.nf" addParams ( params.BCFTOOLS_VIEW__DELLY )
 include { BCFTOOLS_VIEW__ISMAPPER } from "../modules/local/bcftools/view__ismapper.nf" addParams ( params.BCFTOOLS_VIEW__ISMAPPER )
 include { BCFTOOLS_MERGE__DELLY } from "../modules/local/bcftools/merge__delly.nf" addParams ( params.BCFTOOLS_MERGE__DELLY )
-include { TBPROFILER_VCF_PROFILE__COHORT as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/local/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
+include { TBPROFILER_VCF_PROFILE__LOFREQ as TBPROFILER_VCF_PROFILE__DELLY } from "../modules/local/tbprofiler/vcf_profile__lofreq.nf" addParams (params.TBPROFILER_VCF_PROFILE__DELLY)
 include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__DELLY } from "../modules/local/tbprofiler/collate.nf" addParams (params.TBPROFILER_COLLATE__DELLY)
 include { ISMAPPER } from "../modules/local/ismapper/ismapper.nf" addParams ( params.ISMAPPER )
 
