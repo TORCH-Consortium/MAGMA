@@ -9,6 +9,10 @@ process NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE {
           path("${sampleName}.potential_NTM_fraction.txt"),
           emit: fraction
 
+    tuple val(sampleName),
+          path(profileJson),
+          emit: enriched_json
+
     script:
     """
     ntmprofiler_json_extract_ntm_relative_abundance.py \
