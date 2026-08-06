@@ -23,6 +23,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program . If not, see <http://www.gnu.org/licenses/>.
  */
+
+#this is no longer used in this version, instead NTMProfiler json is used (see modules/local/ntmprofiler)
+
 process LOFREQ_CALL__NTM {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
