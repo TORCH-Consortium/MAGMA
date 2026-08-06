@@ -72,7 +72,7 @@ workflow QUALITY_CHECK_WF {
             )
 
             ntmprofiler_jsons_ch =
-                NTMPROFILER_PROFILE.out.profile_json
+                NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE.out.enriched_json
                     .map { sampleName, profileJson -> profileJson }
                     .collect()
 
