@@ -30,7 +30,6 @@ include { GATK_BASE_RECALIBRATOR } from "../modules/local/gatk/base_recalibrator
 include { GATK_APPLY_BQSR } from "../modules/local/gatk/apply_bqsr.nf" addParams ( params.GATK_APPLY_BQSR )
 include { GATK_HAPLOTYPE_CALLER } from "../modules/local/gatk/haplotype_caller.nf" addParams ( params.GATK_HAPLOTYPE_CALLER )
 include { GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS } from "../modules/local/gatk/haplotype_caller__minor_variants.nf" addParams ( params.GATK_HAPLOTYPE_CALLER__MINOR_VARIANTS )
-include { LOFREQ_CALL__NTM } from "../modules/local/lofreq/call__ntm.nf" addParams ( params.LOFREQ_CALL__NTM )
 include { LOFREQ_INDELQUAL } from "../modules/local/lofreq/indelqual.nf" addParams ( params.LOFREQ_INDELQUAL )
 include { SAMTOOLS_INDEX } from "../modules/local/samtools/index.nf" addParams ( params.SAMTOOLS_INDEX )
 include { SAMTOOLS_INDEX__LOFREQ } from "../modules/local/samtools/index__lofreq.nf" addParams ( params.SAMTOOLS_INDEX__LOFREQ )
@@ -49,6 +48,7 @@ include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__LOFREQ } from "../
 workflow CALL_WF {
     take:
         bam_sorted_reads_ch
+        ntm_fraction_ch
 
 
     main:
@@ -113,16 +113,6 @@ workflow CALL_WF {
         }
 
         //----------------------------------------------------------------------------------
-        // Infer potential NTM contamination
-        //----------------------------------------------------------------------------------
-
-
-        // call_ntm
-        LOFREQ_CALL__NTM(SAMTOOLS_INDEX.out,
-                         params.ref_fasta,
-                         [params.ref_fasta_fai])
-
-        //----------------------------------------------------------------------------------
         // Infer minor variants with LoFreq
         //----------------------------------------------------------------------------------
 
@@ -153,7 +143,7 @@ workflow CALL_WF {
         sample_stats_ch = (SAMTOOLS_STATS.out)
             .join(GATK_COLLECT_WGS_METRICS.out)
             .join(GATK_FLAG_STAT.out)
-            .join(LOFREQ_CALL__NTM.out)
+            .join(ntm_fraction_ch)
         
         dr_coverage_bam_ch = SAMTOOLS_INDEX.out.map { sampleName, bai, bam ->
             tuple(sampleName, bam, bai)
