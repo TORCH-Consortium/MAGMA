@@ -55,8 +55,15 @@ workflow QUALITY_CHECK_WF {
                 NTMPROFILER_PROFILE.out.profile_json
             )
 
+            ntmprofiler_jsons_ch =
+                NTMPROFILER_PROFILE.out.profile_json
+                    .map { sampleName, profileJson -> profileJson }
+                    .collect()
+
             NTMPROFILER_COLLATE( params.vcf_name,
-                                 NTMPROFILER_PROFILE.out.profile_json.collect() )
+                                 NTMPROFILER_PROFILE.out.profile_json.collect()
+                                 ntmprofiler_jsons_ch
+            )
 
         }
 
