@@ -57,5 +57,5 @@ with open(args.output_file, "w") as handle:
     handle.write(f"{ntm_percentage / 100.0:.10g}\n")
 
 with open(args.input_json, "w") as handle:
-    json.dump(data, handle, indent=2)
+    json.dump(result, handle, indent=2)
     handle.write("\n")
