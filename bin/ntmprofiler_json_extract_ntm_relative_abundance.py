@@ -12,34 +12,50 @@ args = parser.parse_args()
 with open(args.input_json) as handle:
     result = json.load(handle)
 
-taxa = result.get("taxa")
+taxa = data.get("taxa")
+
 if not isinstance(taxa, list):
     raise ValueError("NTMProfiler JSON does not contain a valid 'taxa' list")
 
-ntm_percentage = 0.0
+if len(taxa) == 0:
+    ntm_fraction = 1.0
 
-for taxon in taxa:
-    species = taxon.get("species")
-    abundance = taxon.get("relative_abundance")
+    data["magma_interpretation"] = {
+        "status": "no_mycobacteria_detected",
+        "message": (
+            "Sample contains very little NTM or MTBC; "
+            "consider running the sample through a metagenomic classifier."
+        ),
+    }
+else:
+    ntm_percentage = 0.0
 
-    if abundance is None:
-        raise ValueError(f"Missing relative_abundance for {species!r}")
+    for taxon in taxa:
+        species = taxon.get("species")
+        abundance = taxon.get("relative_abundance")
+    
+        if abundance is None:
+            raise ValueError(f"Missing relative_abundance for {species!r}")
+    
+        abundance = float(abundance)
+    
+        if not math.isfinite(abundance) or abundance < 0 or abundance > 100:
+            raise ValueError(
+                f"Invalid relative_abundance for {species!r}: {abundance}"
+            )
+    
+        if species != "Mycobacterium tuberculosis":
+            ntm_percentage += abundance
 
-    abundance = float(abundance)
-
-    if not math.isfinite(abundance) or abundance < 0 or abundance > 100:
+    if ntm_percentage > 100:
         raise ValueError(
-            f"Invalid relative_abundance for {species!r}: {abundance}"
+            f"Summed non-tuberculosis relative abundance exceeds 100: "
+            f"{ntm_percentage}"
         )
-
-    if species != "Mycobacterium tuberculosis":
-        ntm_percentage += abundance
-
-if ntm_percentage > 100:
-    raise ValueError(
-        f"Summed non-tuberculosis relative abundance exceeds 100: "
-        f"{ntm_percentage}"
-    )
 
 with open(args.output_file, "w") as handle:
     handle.write(f"{ntm_percentage / 100.0:.10g}\n")
+
+with open(args.input_json, "w") as handle:
+    json.dump(data, handle, indent=2)
+    handle.write("\n")
