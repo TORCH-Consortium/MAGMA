@@ -1,4 +1,4 @@
-process NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE.nf {
+process NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE {
     tag "${sampleName}"
 
     input:
