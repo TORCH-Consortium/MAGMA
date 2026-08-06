@@ -51,7 +51,7 @@ workflow QUALITY_CHECK_WF {
 
             NTMPROFILER_PROFILE( reads_ch )
 
-            NTMPROFILER_FRACTION(
+            NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE(
                 NTMPROFILER_PROFILE.out.profile_json
             )
 
@@ -94,6 +94,6 @@ workflow QUALITY_CHECK_WF {
     //TODO: Publish more outputs from this subworkflow
     emit:
         reports_fastqc_ch =  FASTQC.out.collect()
-        ntm_fraction_ch = NTMPROFILER_FRACTION.out.fraction
+        ntm_fraction_ch = NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE.out.fraction
 
 }
