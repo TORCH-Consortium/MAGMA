@@ -94,5 +94,6 @@ workflow QUALITY_CHECK_WF {
     //TODO: Publish more outputs from this subworkflow
     emit:
         reports_fastqc_ch =  FASTQC.out.collect()
+        ntm_fraction_ch = NTMPROFILER_FRACTION.out.fraction
 
 }
