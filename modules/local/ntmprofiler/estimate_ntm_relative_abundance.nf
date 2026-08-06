@@ -11,7 +11,7 @@ process NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE {
 
     script:
     """
-    ntmprofiler_json_to_fraction.py \
+    ntmprofiler_json_extract_ntm_relative_abundance.py \
         ${profileJson} \
         ${sampleName}.potential_NTM_fraction.txt
     """
