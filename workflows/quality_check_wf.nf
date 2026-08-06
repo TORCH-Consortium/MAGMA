@@ -49,7 +49,23 @@ workflow QUALITY_CHECK_WF {
 
         if (!params.skip_ntmprofiler) {
 
-            NTMPROFILER_PROFILE( reads_ch )
+            # TO FIX: not so happy with this, temporary solution probably
+
+            ntmprofiler_reads_ch = reads_ch.map {
+                magmaSampleName, meta, sampleReads ->
+            
+                def parts = magmaSampleName.tokenize('.')
+            
+                if (parts.size() < 2) {
+                    error "Cannot derive Study.Sample from: ${magmaSampleName}"
+                }
+            
+                def sampleName = "${parts[0]}.${parts[1]}"
+            
+                tuple(sampleName, meta, sampleReads)
+            }
+            
+            NTMPROFILER_PROFILE(ntmprofiler_reads_ch)
 
             NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE(
                 NTMPROFILER_PROFILE.out.profile_json
