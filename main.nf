@@ -92,7 +92,18 @@ workflow {
                                 .map { [ it[0] ] }
                                 //.dump(tag:'MERGE_WF: all_samples_ch', pretty: true)
 
-        STRUCTURAL_VARIANTS_ANALYSIS_WF ( VALIDATE_FASTQS_WF.out.approved_fastqs_ch, all_samples_ch )
+        approved_samples_ch = UTILS_MERGE_COHORT_STATS.out.merged_cohort_stats_ch
+                                .splitCsv(header: false, skip: 1, sep: '\t' )
+                                .map { row -> [
+                                        row.first(),           // SAMPLE
+                                        row.last().toInteger() // ALL_THRESHOLDS_MET
+                                        ]
+                                    }
+								.filter { it[1] == 1} // Filter out samples which meet all the thresholds
+                                .map { [ it[0] ] }
+                                //.dump(tag:'MERGE_WF: all_samples_ch', pretty: true)
+
+        STRUCTURAL_VARIANTS_ANALYSIS_WF ( VALIDATE_FASTQS_WF.out.approved_fastqs_ch, approved_samples_ch )
 
 
         if (!params.skip_merge_analysis) {

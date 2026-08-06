@@ -39,6 +39,7 @@ process UTILS_SUMMARIZE_RESISTANCE_RESULTS {
     script:
        
         """
+        mkdir -p structural_variants
         summarize_resistance.py ${merge_cohort_stats} major_variants minor_variants structural_variants combined_resistance_summaries
         """
 

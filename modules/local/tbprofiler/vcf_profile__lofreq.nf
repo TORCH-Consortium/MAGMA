@@ -45,11 +45,24 @@ process TBPROFILER_VCF_PROFILE__LOFREQ {
          
         cat  intermediate.vcf | bcftools view -Oz -o intermediate.vcf.gz
 
-        ${params.tbprofiler_path} profile \\
-            ${optionalDb} \\
-            --threads ${task.cpus}\\
-            --vcf intermediate.vcf.gz \\
-            ${params.arguments}
+        sample_count=\$(bcftools query -l intermediate.vcf.gz | wc -l)
+        
+        if [ "\${sample_count}" -eq 1 ]; then
+            sample_name=\$(bcftools query -l intermediate.vcf.gz)
+        
+            ${params.tbprofiler_path} profile \
+                ${optionalDb} \
+                --threads ${task.cpus} \
+                --vcf intermediate.vcf.gz \
+                --prefix "\${sample_name}" \
+                ${params.arguments}
+        else
+            ${params.tbprofiler_path} profile \
+                ${optionalDb} \
+                --threads ${task.cpus} \
+                --vcf intermediate.vcf.gz \
+                ${params.arguments}
+        fi
         """
 
     stub:

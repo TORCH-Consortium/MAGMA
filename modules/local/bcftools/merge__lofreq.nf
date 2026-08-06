@@ -35,12 +35,26 @@ process BCFTOOLS_MERGE__LOFREQ {
         tuple val(params.vcf_name), path("*.vcf.gz.csi"), path("*.${params.file_format}.vcf.gz")
 
     script:
-
-        """
-        bcftools merge -o ${params.vcf_name}.${params.file_format}.vcf -l ${vcfs_file}
-        bgzip ${params.vcf_name}.${params.file_format}.vcf
-        ${params.bcftools_path} index ${params.vcf_name}.${params.file_format}.vcf.gz
-        """
+    """
+    vcf_count=\$(grep -c '[^[:space:]]' ${vcfs_file})
+    
+    if [ "\${vcf_count}" -eq 1 ]; then
+        input_vcf=\$(grep '[^[:space:]]' ${vcfs_file})
+    
+        ${params.bcftools_path} view \
+            "\${input_vcf}" \
+            -o ${params.vcf_name}.${params.file_format}.vcf
+    else
+        ${params.bcftools_path} merge \
+            -l ${vcfs_file} \
+            -o ${params.vcf_name}.${params.file_format}.vcf
+    fi
+    
+    bgzip ${params.vcf_name}.${params.file_format}.vcf
+    
+    ${params.bcftools_path} index \
+        ${params.vcf_name}.${params.file_format}.vcf.gz
+    """
 
     stub:
 
