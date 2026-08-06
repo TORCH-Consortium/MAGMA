@@ -61,7 +61,6 @@ workflow QUALITY_CHECK_WF {
                     .collect()
 
             NTMPROFILER_COLLATE( params.vcf_name,
-                                 NTMPROFILER_PROFILE.out.profile_json.collect()
                                  ntmprofiler_jsons_ch
             )
 
