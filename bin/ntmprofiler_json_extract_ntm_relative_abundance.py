@@ -18,7 +18,7 @@ if not isinstance(taxa, list):
     raise ValueError("NTMProfiler JSON does not contain a valid 'taxa' list")
 
 if len(taxa) == 0:
-    ntm_fraction = 1.0
+    ntm_fraction = 0.0
 
     data["magma_interpretation"] = {
         "status": "no_mycobacteria_detected",
