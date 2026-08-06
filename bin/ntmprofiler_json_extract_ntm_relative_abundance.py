@@ -12,7 +12,7 @@ args = parser.parse_args()
 with open(args.input_json) as handle:
     result = json.load(handle)
 
-taxa = data.get("taxa")
+taxa = result.get("taxa")
 
 if not isinstance(taxa, list):
     raise ValueError("NTMProfiler JSON does not contain a valid 'taxa' list")
