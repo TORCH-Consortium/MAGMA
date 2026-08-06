@@ -49,7 +49,7 @@ workflow QUALITY_CHECK_WF {
 
         if (!params.skip_ntmprofiler) {
 
-            # TO FIX: not so happy with this, temporary solution probably
+            //FIXME Not so happy with this, temporary solution probably
 
             ntmprofiler_reads_ch = reads_ch.map {
                 magmaSampleName, meta, sampleReads ->
