@@ -20,7 +20,7 @@ if not isinstance(taxa, list):
 if len(taxa) == 0:
     ntm_fraction = 0.0
 
-    data["magma_interpretation"] = {
+    result["magma_interpretation"] = {
         "status": "no_mycobacteria_detected",
         "message": (
             "Sample contains very little NTM or MTBC; "
