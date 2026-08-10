@@ -28,7 +28,7 @@ if len(taxa) == 0:
         ),
     }
 else:
-    ntm_percentage = 0.0
+    ntm_fraction = 0.0
 
     for taxon in taxa:
         species = taxon.get("species")
@@ -45,16 +45,16 @@ else:
             )
     
         if species != "Mycobacterium tuberculosis":
-            ntm_percentage += abundance
+            ntm_fraction += abundance
 
-    if ntm_percentage > 100:
+    if ntm_fraction > 100:
         raise ValueError(
             f"Summed non-tuberculosis relative abundance exceeds 100: "
-            f"{ntm_percentage}"
+            f"{ntm_fraction}"
         )
 
 with open(args.output_file, "w") as handle:
-    handle.write(f"{ntm_percentage / 100.0:.10g}\n")
+    handle.write(f"{ntm_fraction / 100.0:.10g}\n")
 
 with open(args.input_json, "w") as handle:
     json.dump(result, handle, indent=2)
