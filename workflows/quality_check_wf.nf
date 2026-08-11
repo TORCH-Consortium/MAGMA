@@ -26,6 +26,7 @@
 include { FASTQC              } from '../modules/local/fastqc/fastqc.nf' addParams (params.FASTQC)
 include { NTMPROFILER_PROFILE } from '../modules/local/ntmprofiler/profile.nf' addParams (params.NTMPROFILER_PROFILE)
 include { NTMPROFILER_COLLATE } from '../modules/local/ntmprofiler/collate.nf' addParams (params.NTMPROFILER_COLLATE)
+include { NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE } from '../modules/local/ntmprofiler/estimate_ntm_relative_abundance.nf'
 
 include { TBPROFILER_FASTQ_PROFILE } from '../modules/local/tbprofiler/fastq_profile.nf' addParams (params.TBPROFILER_FASTQ_PROFILE)
 include { TBPROFILER_COLLATE as TBPROFILER_FASTQ_COLLATE } from '../modules/local/tbprofiler/collate.nf' addParams (params.TBPROFILER_FASTQ_COLLATE)
@@ -48,10 +49,36 @@ workflow QUALITY_CHECK_WF {
 
         if (!params.skip_ntmprofiler) {
 
-            NTMPROFILER_PROFILE( reads_ch )
+            //FIXME Not so happy with this, temporary solution probably
+
+            ntmprofiler_reads_ch = reads_ch.map {
+                magmaSampleName, meta, sampleReads ->
+            
+                def parts = magmaSampleName.tokenize('.')
+            
+                if (parts.size() < 2) {
+                    error "Cannot derive Study.Sample from: ${magmaSampleName}"
+                }
+            
+                def sampleName = "${parts[0]}.${parts[1]}"
+            
+                tuple(sampleName, meta, sampleReads)
+            }
+            
+            NTMPROFILER_PROFILE(ntmprofiler_reads_ch)
+
+            NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE(
+                NTMPROFILER_PROFILE.out.profile_json
+            )
+
+            ntmprofiler_jsons_ch =
+                NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE.out.enriched_json
+                    .map { sampleName, profileJson -> profileJson }
+                    .collect()
 
             NTMPROFILER_COLLATE( params.vcf_name,
-                                 NTMPROFILER_PROFILE.out.profile_json.collect() )
+                                 ntmprofiler_jsons_ch
+            )
 
         }
 
@@ -89,5 +116,6 @@ workflow QUALITY_CHECK_WF {
     //TODO: Publish more outputs from this subworkflow
     emit:
         reports_fastqc_ch =  FASTQC.out.collect()
+        ntm_fraction_ch = NTMPROFILER_ESTIMATE_NTM_RELATIVE_ABUNDANCE.out.fraction
 
 }

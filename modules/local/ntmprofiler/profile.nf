@@ -32,7 +32,7 @@ process NTMPROFILER_PROFILE {
 
     output:
         path("results/*txt"), emit: profile_txt
-        path("results/*json"), emit: profile_json
+        tuple val(sampleName), path("results/*json"), emit: profile_json
 
     script:
 

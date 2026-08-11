@@ -72,7 +72,7 @@ workflow {
 
         MAP_WF( VALIDATE_FASTQS_WF.out.approved_fastqs_ch  )
 
-        CALL_WF( MAP_WF.out.sorted_reads_ch )
+        CALL_WF( MAP_WF.out.sorted_reads_ch, QUALITY_CHECK_WF.out.ntm_fraction_ch )
 
         //NOTE: Samples implicitly get filtered in BCFTOOLS_MERGE if they don't have any identified variants
         MINOR_VARIANTS_ANALYSIS_WF(CALL_WF.out.reformatted_lofreq_vcfs_tuple_ch)
