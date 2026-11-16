@@ -119,9 +119,9 @@ workflow CALL_WF {
         //----------------------------------------------------------------------------------
 
         // call_lofreq
-        BAMUTIL_CLIPOVERLAP(recalibrated_bam_ch)
-        LOFREQ_INDELQUAL(BAMUTIL_CLIPOVERLAP.out.bam, params.ref_fasta)
-        SAMTOOLS_INDEX__LOFREQ(LOFREQ_INDELQUAL.out)
+        LOFREQ_INDELQUAL(recalibrated_bam_ch, params.ref_fasta)
+        BAMUTIL_CLIPOVERLAP(LOFREQ_INDELQUAL.out)
+        SAMTOOLS_INDEX__LOFREQ(BAMUTIL_CLIPOVERLAP.out.bam)
         LOFREQ_CALL(SAMTOOLS_INDEX__LOFREQ.out, params.ref_fasta, [params.ref_fasta_fai])
         LOFREQ_FILTER(LOFREQ_CALL.out, params.ref_fasta)
 
