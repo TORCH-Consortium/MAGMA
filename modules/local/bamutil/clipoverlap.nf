@@ -8,7 +8,7 @@ process BAMUTIL_CLIPOVERLAP {
         tuple val(sampleName), path(bam)
 
     output:
-        tuple val(sampleName), path("*.clipped.bam")
+        tuple val(sampleName), path("*.clipped.bam"), emit: bam
         path("*.clipOverlap.log"), emit: stats
 
     script:
