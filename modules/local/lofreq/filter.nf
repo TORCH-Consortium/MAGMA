@@ -47,7 +47,7 @@ process LOFREQ_FILTER {
 
         """
         echo "lofreq filter \\
-            --af-min 0.03 -k bonf -l 0.0001 -v 30 \\
+            --af-min 0.03 -k bonf -l 0.0001 \\
             -i ${vcf}  \\
             ${sampleName}.Filtered_AF.vcf"
 
