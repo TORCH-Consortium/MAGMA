@@ -42,6 +42,8 @@ include { UTILS_SAMPLE_STATS } from '../subworkflows/local/sample_stats_with_dr_
 include { UTILS_COHORT_STATS } from "../modules/local/utils/cohort_stats.nf" addParams ( params.UTILS_COHORT_STATS )
 include { UTILS_REFORMAT_LOFREQ } from "../modules/local/utils/reformat_lofreq.nf" addParams ( params.UTILS_REFORMAT_LOFREQ )
 include { GATK_INDEX_FEATURE_FILE as GATK_INDEX_FEATURE_FILE__LOFREQ } from "../modules/local/gatk/index_feature_file.nf" addParams ( params.GATK_INDEX_FEATURE_FILE__LOFREQ )
+include { BAMUTIL_CLIPOVERLAP } from "../modules/local/bamutil/clipoverlap.nf"
+
 
 
 
@@ -117,7 +119,8 @@ workflow CALL_WF {
         //----------------------------------------------------------------------------------
 
         // call_lofreq
-        LOFREQ_INDELQUAL(recalibrated_bam_ch, params.ref_fasta)
+        BAMUTIL_CLIPOVERLAP(recalibrated_bam_ch)
+        LOFREQ_INDELQUAL(BAMUTIL_CLIPOVERLAP.out, params.ref_fasta)
         SAMTOOLS_INDEX__LOFREQ(LOFREQ_INDELQUAL.out)
         LOFREQ_CALL(SAMTOOLS_INDEX__LOFREQ.out, params.ref_fasta, [params.ref_fasta_fai])
         LOFREQ_FILTER(LOFREQ_CALL.out, params.ref_fasta)
