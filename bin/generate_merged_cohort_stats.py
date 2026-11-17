@@ -159,10 +159,6 @@ if __name__ == '__main__':
     # Flag mixed/multiple infection candidates from semicolon-separated lineages.
     def multiple_infection_check(lineages):
         if pd.isna(lineages):
-
-    # Flag mixed/multiple infection candidates from semicolon-separated lineages.
-    def multiple_infection_check(lineages):
-        if pd.isna(lineages):
             return ""
 
         lineages = str(lineages).strip()
