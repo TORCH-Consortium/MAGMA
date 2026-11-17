@@ -49,9 +49,10 @@ if __name__ == '__main__':
         sublins = [i for i in sample['lineage'] if i['lineage'] in sample['sub_lineage'].split(';')]
         lins = [i['lineage'] for i in sublins]
         fracs = [i['fraction'] for i in sublins]
+        missing_lineage_markers = (len(lins) == 1 or (len(lins) == 2 and any(l in ('lineage4', 'lineage4.9') for l in lins)))
         if not lins:
             rejected.append([sample['id'], 'None', 'None', 0])
-        elif max(fracs) < args['relative_abundance_threshold']:
+        elif not missing_lineage_markers and max(fracs) < args['relative_abundance_threshold']:
             rejected.append([sample['id'], ';'.join(lins), ';'.join(['{:.0%}'.format(i) for i in fracs]), 0])
         else:
             accepted.append([sample['id'], ';'.join(lins), ';'.join(['{:.0%}'.format(i) for i in fracs]), 1])
