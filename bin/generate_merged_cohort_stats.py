@@ -159,20 +159,30 @@ if __name__ == '__main__':
     # Flag mixed/multiple infection candidates from semicolon-separated lineages.
     def multiple_infection_check(lineages):
         if pd.isna(lineages):
+
+    # Flag mixed/multiple infection candidates from semicolon-separated lineages.
+    def multiple_infection_check(lineages):
+        if pd.isna(lineages):
             return ""
-    
+
         lineages = str(lineages).strip()
-    
+
         if ";" not in lineages:
             return ""
-    
-        parts = [part.strip() for part in lineages.split(";")]
-    
+
+        parts = [part.strip() for part in lineages.split(";") if part.strip()]
+
         if len(parts) < 2:
             return ""
-    
+
+        # Exception: two lineages where one is lineage4 or lineage4.9
+        if len(parts) == 2 and any(
+            l in ("lineage4", "lineage4.9") for l in parts
+        ):
+            return ""
+
         return f"{parts[0]} and {parts[1]}"
-    
+
     df_final_cohort_stats["multiple_infection_check"] = df_final_cohort_stats["LINEAGES"].apply(
         multiple_infection_check
     )
