@@ -30,6 +30,7 @@ process TBPROFILER_VCF_PROFILE__COHORT {
     input:
         tuple val(joint_name), path(mergedVcfIndex), path(mergedVcf)
         path(resistanceDb)
+        val sample_id_ch
 
     output:
         path("results/*")
@@ -37,10 +38,11 @@ process TBPROFILER_VCF_PROFILE__COHORT {
 
     script:
         def optionalDb  = resistanceDb ? "--db ${resistanceDb.name}" : ""
+        def sampleArg = sample_id_ch ? "--samples '${sample_id_ch}' --no-update" : ""
 
         """
 
-        bcftools view ${mergedVcf} | sed 's/NC-000962-3-H37Rv/Chromosome/g' > intermediate.vcf
+        bcftools view ${sampleArg} "${mergedVcf}" | sed 's/NC-000962-3-H37Rv/Chromosome/g' > intermediate.vcf
          
         cat  intermediate.vcf | bcftools view -Oz -o intermediate.vcf.gz
 
