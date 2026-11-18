@@ -29,14 +29,14 @@ include { TBPROFILER_COLLATE as TBPROFILER_COLLATE__COHORT } from "../../modules
 workflow MAJOR_VARIANT_ANALYSIS {
     take:
         merged_vcf_ch
-        reformatted_lofreq_vcf_ch
+        sample_id_ch
 
     main:
 
         def resistanceDb =  []
 
         // merge_call_resistance
-        TBPROFILER_VCF_PROFILE__COHORT(merged_vcf_ch, resistanceDb)
+        TBPROFILER_VCF_PROFILE__COHORT(merged_vcf_ch, resistanceDb, sample_id_ch)
         TBPROFILER_COLLATE__COHORT(params.vcf_name, TBPROFILER_VCF_PROFILE__COHORT.out, resistanceDb)
 
         emit:
