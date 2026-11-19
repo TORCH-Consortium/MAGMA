@@ -26,6 +26,7 @@
 process GATK_GENOTYPE_GVCFS {
     tag "${joint_name}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
+    label cpu_2_memory_4
 
 
     input:
