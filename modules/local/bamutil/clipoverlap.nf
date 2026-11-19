@@ -1,6 +1,6 @@
 process BAMUTIL_CLIPOVERLAP {
     tag "${sampleName}"
-    label 'cpu_2_memory_2'
+    label 'cpu_1_memory_2'
 
     container "community.wave.seqera.io/library/bamutil:1.0.15--1582863f9eda77c6"
 
