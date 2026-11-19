@@ -25,7 +25,7 @@
  */
 process LOFREQ_INDELQUAL {
     tag "${sampleName}"
-    label 'cpu_2_memory_2'
+    label 'cpu_1_memory_2'
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
 
     input:
