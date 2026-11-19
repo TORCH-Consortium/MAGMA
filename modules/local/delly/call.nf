@@ -26,7 +26,7 @@
 process DELLY_CALL {
     tag "${sampleName}"
     publishDir params.results_dir, mode: params.save_mode, enabled: params.should_publish
-    label cpu_1_memory_4
+    label 'cpu_1_memory_4'
 
     input:
         tuple val(sampleName), path(bai), path(recalibratedBam)
